@@ -1,22 +1,28 @@
 import * as React from 'react';
+<<<<<<< HEAD
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import LoginScreen from './src/screens/LoginScreen';
+=======
+import {StyleSheet, Text, View} from 'react-native';
+import Swiper from 'react-native-swiper';
+>>>>>>> 320503698281444b9b4969fe44c14e1e02d124c3
 
-function HomeScreen() {
+export default function App() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
+    <Swiper style={styles.wrapper}>
+      <View style={styles.slide1}>
+        <Text style={styles.text}>Hello Swiper</Text>
+      </View>
+      <View style={styles.slide2}>
+        <Text style={styles.text}>Beautiful</Text>
+        <Text style={styles.text}>Beautiful amazing</Text>
+      </View>
+      <View style={styles.slide3}>
+        <Text style={styles.text}>And simple</Text>
+      </View>
+    </Swiper>
   );
 }
 
