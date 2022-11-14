@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
   slide1: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+    alignItems:"center"
   },
 
   appIntroBut1: {
@@ -124,11 +125,13 @@ const styles = StyleSheet.create({
   slide2: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+    alignItems:"center"
   },
 
   slide3: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+    alignItems:"center"
   },
 
   text: {
