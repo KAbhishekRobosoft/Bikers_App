@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-export const ButtonLarge = (props) => {
+export const ButtonLarge = props => {
   return (
     <View>
       <LinearGradient
@@ -10,7 +10,7 @@ export const ButtonLarge = (props) => {
         end={{x: 1, y: 0}}
         colors={['#ED7E2B', '#F4A264']}
         style={styles.gradient}>
-        <Pressable>
+        <Pressable style={styles.btn}>
           <Text style={styles.text}>{props.title}</Text>
         </Pressable>
       </LinearGradient>
@@ -25,6 +25,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
+    
+    
   },
   text: {
     color: '#FFFFFF',
@@ -32,6 +34,6 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     letterSpacing: 0.5,
     textAlign: 'center',
-    fontFamily: 'Roboto'
+    fontFamily: 'Roboto',
   },
 });
