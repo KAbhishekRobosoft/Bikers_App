@@ -2,13 +2,8 @@ import React from 'react';
 import {
   View,
   Text,
-  ImageBackground,
   StyleSheet,
-  Image,
   SafeAreaView,
-  ScrollView,
-  Pressable,
-  TouchableOpacity,
 } from 'react-native';
 import { ButtonLarge } from '../components/Buttons';
 const Register = () => {
