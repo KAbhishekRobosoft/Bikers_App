@@ -29,6 +29,7 @@ export const Input = props => {
           keyboardType={props.keyboardType}
           secureTextEntry={props.secureTextEntry}
           returnKeyType={props.returnKey}
+          value={value}
           onChangeText={text => onChange(name)(text)}
           onBlur={() => {
             setFieldTouched(name);

@@ -1,13 +1,24 @@
-import {SafeAreaView, StyleSheet, Text, View, Image} from 'react-native';
-import React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+} from 'react-native';
+import React, {useState} from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 
 const OtpScreen = () => {
+  const [code, setCode] = useState('');
+  const [clear, setClear] = useState(false);
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
-        <Icon name="arrow-left" size={24} color="grey" />
+        <Pressable onPress={() => console.log('back')}>
+          <Icon name="arrow-left" size={24} color="grey" />
+        </Pressable>
       </View>
       <View style={styles.imgContainer}>
         <Image
@@ -22,20 +33,27 @@ const OtpScreen = () => {
       <View style={styles.bottomView}>
         <View style={styles.otpView}>
           <OTPInputView
-            style={{width: '80%', height: 200, color: '#4EB5F4'}}
+            style={{width: '70%', height: 200, color: '#fff000'}}
             pinCount={4}
+            clearInputs={clear}
             // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
-            // onCodeChanged = {code => { this.setState({code})}}
+            onCodeChanged={code => {
+              setCode(code);
+            }}
             autoFocusOnLoad
+            keyboardType="numeric"
             codeInputFieldStyle={styles.underlineStyleBase}
             codeInputHighlightStyle={styles.underlineStyleHighLighted}
             onCodeFilled={code => {
               console.log(`Code is ${code}, you are good to go!`);
+              setClear(!clear);
             }}
           />
         </View>
         <View style={styles.textView1}>
-          <Text style={styles.resendText}>Re-send Again</Text>
+          <Pressable onPress={() => console.log('Resend')}>
+            <Text style={styles.resendText}>Re-send Again</Text>
+          </Pressable>
         </View>
         <View style={styles.textView2}>
           <Text style={styles.secondsText}>20 seconds left</Text>
@@ -99,6 +117,7 @@ const styles = StyleSheet.create({
   secondsText: {
     color: 'rgba(174,168,168,0.87)',
   },
+
   underlineStyleBase: {
     width: 30,
     height: 45,

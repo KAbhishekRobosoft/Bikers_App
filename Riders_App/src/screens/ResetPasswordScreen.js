@@ -7,7 +7,7 @@ import {
   TextInput,
 } from 'react-native';
 import React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
 
 const ResetPasswordScreen = () => {
