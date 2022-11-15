@@ -10,11 +10,26 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import ButtonLarge from '../components/Buttons';
 import {Input} from '../components/InputFields';
 import {Password} from '../components/InputFields';
+import {Formik, Field} from 'formik';
+import * as yup from 'yup';
+
+const registerValidationSchema = yup.object().shape({
+  name: yup.string().required('Name is required'),
+  password: yup
+    .string()
+    .matches(/\w*[a-z]\w*/, 'Password must have a small letter')
+    .matches(/\w*[A-Z]\w*/, 'Password must have a capital letter')
+    .matches(/\d/, 'Password must have a number')
+    .min(6, ({min}) => `Password must be at least ${min} characters`)
+    .required(''),
+});
+
 const LoginScreen = () => {
+  const [secureText, setSecureText] = useState(true);
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.logoView}>
@@ -24,27 +39,44 @@ const LoginScreen = () => {
         />
       </View>
       <View style={styles.loginContainer}>
-        <View style={styles.inputTextView1}>
-          <Input
-            source={require('../assets/images/user.png')}
-            placeholderTextColor="grey"
-            placeholder="Mobile Number/Email id"
-            styleUser={styles.userLogo}
-          />
-        </View>
-        <View style={styles.inputTextView2}>
-          <Password
-            source={require('../assets/images/locked.png')}
-            placeholderTextColor="grey"
-            placeholder="Password"
-            styleUser={styles.lockImg}
-            keyboardType="numeric"
-          />
-        </View>
-        <Text style={styles.forgetText}>Forgot Password</Text>
-        <View style={styles.buttonView}>
-          <ButtonLarge title="LOGIN" />
-        </View>
+        <Formik
+          validationSchema={registerValidationSchema}
+          initialValues={{
+            name: '',
+            password: '',
+          }}>
+          {() => (
+            <>
+              <View style={styles.inputTextView1}>
+                <Field
+                  component={Input}
+                  name="name"
+                  source={require('../assets/images/user.png')}
+                  placeholderTextColor="grey"
+                  placeholder="Mobile Number/Email id"
+                  styleUser={styles.userLogo}
+                />
+              </View>
+              <View style={styles.inputTextView2}>
+                <Field
+                  component={Password}
+                  name="password"
+                  source={require('../assets/images/locked.png')}
+                  placeholderTextColor="grey"
+                  placeholder="Password"
+                  styleUser={styles.lockImg}
+                  keyboardType="numeric"
+                  secureTextEntry={secureText}
+                  onPress={() => setSecureText(!secureText)}
+                />
+              </View>
+              <Text style={styles.forgetText}>Forgot Password</Text>
+              <View style={styles.buttonView}>
+                <ButtonLarge title="LOGIN" />
+              </View>
+            </>
+          )}
+        </Formik>
       </View>
       <View style={styles.bottomView}>
         <ImageBackground

@@ -15,22 +15,25 @@ import {Formik, Field} from 'formik';
 import * as yup from 'yup';
 
 const registerValidationSchema = yup.object().shape({
-  name: yup
-    .string()
-    .required('Name is required'),
+  name: yup.string().required('Name is required'),
   mobileNumber: yup
     .string()
     .matches(/(\d){10}\b/, 'Enter a valid mobile number')
-    .required('Mobile Number is required'),
+    .required(''),
   email: yup
     .string()
-    .matches(/(\d){4}\b/, 'mPin must have a number')
-    .max(4, ({max}) => `mPin must be${max} of characters`)
+    .matches(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      'Email must have a number, special character, small and capital alphabets.',
+    )
     .required('Email is required'),
   password: yup
     .string()
-    .oneOf([yup.ref('mpin')], 'Mpin do not match')
-    .required('Password is required'),
+    .matches(/\w*[a-z]\w*/, 'Password must have a small letter')
+    .matches(/\w*[A-Z]\w*/, 'Password must have a capital letter')
+    .matches(/\d/, 'Password must have a number')
+    .min(6, ({min}) => `Password must be at least ${min} characters`)
+    .required(''),
 });
 
 const Register = () => {
@@ -47,8 +50,15 @@ const Register = () => {
           <Text style={styles.headerText}>Register</Text>
         </View>
         <ScrollView style={styles.scrollview}>
-          <Formik>
-            {({handleSubmit, isValid}) => (
+          <Formik
+            validationSchema={registerValidationSchema}
+            initialValues={{
+              name: '',
+              password: '',
+              mobileNumber: '',
+              email: '',
+            }}>
+            {({isValid}) => (
               <>
                 <Field
                   component={Input}
@@ -86,10 +96,15 @@ const Register = () => {
                   source={require('../assets/images/locked.png')}
                   styleUser={styles.lock}
                   keyboardType="default"
-                  secureTextEntry={true}
+                  // secureTextEntry={true}df
                 />
+                {/* {errors.password && 
+                  <Text style={{fontSize: 10, color: 'red'}}>
+                    {errors.password}
+                  </Text>
+                } */}
                 <View style={styles.btnView}>
-                  <ButtonLarge title="REGISTER" />
+                  <ButtonLarge title="REGISTER" disabled={!isValid} onPress={() => console.log('button submitted')} />
                 </View>
               </>
             )}
