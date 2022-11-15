@@ -18,7 +18,7 @@ function AppTourScreen() {
         </View>
         <Image
           style={styles.appIntroPic1}
-          source={require('../images/Illustration.png')}
+          source={require('../assets/images/Illustration.png')}
         />
         <Text style={styles.appIntroText1}>Ride Free</Text>
         <Text style={styles.appIntroText2}>
@@ -31,7 +31,7 @@ function AppTourScreen() {
         </View>
         <Image
           style={styles.appIntroPic2}
-          source={require('../images/Illustartion_2.png')}
+          source={require('../assets/images/Illustartion_2.png')}
         />
         <Text style={styles.appIntroText3}>Know your Bike</Text>
         <Text style={styles.appIntroText2}>Keep your bike fettle!</Text>
@@ -39,7 +39,7 @@ function AppTourScreen() {
       <View style={styles.slide3}>
         <Image
           style={styles.appIntroPic3}
-          source={require('../images/Illustration_3.png')}
+          source={require('../assets/images/Illustration_3.png')}
         />
         <Text style={styles.appIntroText4}>Your Cart</Text>
         <Text style={styles.appIntroText2}>Book bike online and shop{'\n'}accessories</Text>

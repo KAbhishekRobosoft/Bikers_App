@@ -8,7 +8,7 @@ function BikeConfirmation() {
     <View style={styles.confirmContainer}>
       <Image
         style={styles.confirmImg}
-        source={require('../images/Illustration_4.png')}
+        source={require('../assets/images/Illustration_4.png')}
       />
       <View style={{alignItems:"center",height:116}}>
         <Text style={styles.confirmText}>Do you have a</Text>
@@ -29,11 +29,11 @@ function BikeConfirmation() {
       <View style={styles.confirmTreeCon}>
         <Image
           style={styles.treeImg1}
-          source={require('../images/Group_4.png')}
+          source={require('../assets/images/Group_4.png')}
         />
         <Image
           style={styles.treeImg2}
-          source={require('../images/Group.png')}
+          source={require('../assets/images/Group.png')}
         />
       </View>
     </View>
