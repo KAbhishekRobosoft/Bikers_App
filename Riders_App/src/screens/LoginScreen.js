@@ -1,6 +1,7 @@
 import {
   Image,
   ImageBackground,
+  KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -9,10 +10,26 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import React from 'react';
-import {ButtonLarge} from '../components/Buttons';
+import React, {useState} from 'react';
+import ButtonLarge from '../components/Buttons';
+import {Input} from '../components/InputFields';
+import {Password} from '../components/InputFields';
+import {Formik, Field} from 'formik';
+import * as yup from 'yup';
+
+const registerValidationSchema = yup.object().shape({
+  name: yup.string().required('Name is required'),
+  password: yup
+    .string()
+    .matches(/\w*[a-z]\w*/, 'Password must have a small letter')
+    .matches(/\w*[A-Z]\w*/, 'Password must have a capital letter')
+    .matches(/\d/, 'Password must have a number')
+    .min(6, ({min}) => `Password must be at least ${min} characters`)
+    .required(''),
+});
 
 const LoginScreen = () => {
+  const [secureText, setSecureText] = useState(true);
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.logoView}>
@@ -22,36 +39,44 @@ const LoginScreen = () => {
         />
       </View>
       <View style={styles.loginContainer}>
-        <View style={styles.inputTextView1}>
-          <Image
-            source={require('../assets/images/user.png')}
-            style={styles.userLogo}
-          />
-          <TextInput
-            placeholderTextColor="grey"
-            placeholder="Mobile Number/Email id"
-            style={styles.textInput}
-          />
-        </View>
-        <View style={styles.inputTextView2}>
-          <Image
-            source={require('../assets/images/locked.png')}
-            style={styles.lockImg}
-          />
-          <TextInput
-            placeholderTextColor="grey"
-            placeholder="Password"
-            style={styles.textInput}
-          />
-          <Image
-            source={require('../assets/images/eye.png')}
-            style={styles.eyeImg}
-          />
-        </View>
-        <Text style={styles.forgetText}>Forgot Password</Text>
-        <View style={styles.buttonView}>
-          <ButtonLarge title="LOGIN" />
-        </View>
+        <Formik
+          validationSchema={registerValidationSchema}
+          initialValues={{
+            name: '',
+            password: '',
+          }}>
+          {() => (
+            <>
+              <View style={styles.inputTextView1}>
+                <Field
+                  component={Input}
+                  name="name"
+                  source={require('../assets/images/user.png')}
+                  placeholderTextColor="grey"
+                  placeholder="Mobile Number/Email id"
+                  styleUser={styles.userLogo}
+                />
+              </View>
+              <View style={styles.inputTextView2}>
+                <Field
+                  component={Password}
+                  name="password"
+                  source={require('../assets/images/locked.png')}
+                  placeholderTextColor="grey"
+                  placeholder="Password"
+                  styleUser={styles.lockImg}
+                  keyboardType="numeric"
+                  secureTextEntry={secureText}
+                  onPress={() => setSecureText(!secureText)}
+                />
+              </View>
+              <Text style={styles.forgetText}>Forgot Password</Text>
+              <View style={styles.buttonView}>
+                <ButtonLarge title="LOGIN" />
+              </View>
+            </>
+          )}
+        </Formik>
       </View>
       <View style={styles.bottomView}>
         <ImageBackground
@@ -59,11 +84,11 @@ const LoginScreen = () => {
           source={require('../assets/images/BG.png')}>
           <View style={styles.bottomImgView}>
             <Image
-              style={styles.bottomImg}
+              style={styles.bottomImg1}
               source={require('../assets/images/fb.png')}
             />
             <Image
-              style={styles.bottomImg}
+              style={styles.bottomImg2}
               source={require('../assets/images/g.png')}
             />
           </View>
@@ -82,6 +107,8 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   main: {
     flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   logoView: {
     width: '100%',
@@ -92,7 +119,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 99,
     height: 100,
-    marginTop: 35,
+    marginTop: 70,
   },
   loginContainer: {
     width: '100%',
@@ -102,22 +129,16 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   inputTextView1: {
-    width: '85%',
+    width: '120%',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    borderBottomWidth: 1,
-    borderColor: '#B4B3B3',
+    marginRight: '8%',
   },
   inputTextView2: {
-    width: '85%',
+    width: '116%',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 24,
-    borderBottomWidth: 1,
-    borderColor: '#B4B3B3',
+    paddingRight: '9%',
   },
   userLogo: {width: 18, height: 24},
   lockImg: {width: 20, height: 24},
@@ -134,7 +155,7 @@ const styles = StyleSheet.create({
     color: '#EF8B40',
     fontSize: 16,
     marginTop: 20,
-    width: '90%',
+    width: '88%',
     textAlign: 'right',
     fontFamily: 'Roboto-Regular',
   },
@@ -155,13 +176,20 @@ const styles = StyleSheet.create({
   },
   bottomImgView: {
     flexDirection: 'row',
-    width: '32%',
+    width: '35%',
     justifyContent: 'space-between',
     marginTop: 40,
+    height: '30%',
+    alignItems: 'center',
   },
-  bottomImg: {
-    width: 49,
-    height: 49,
+  bottomImg1: {
+    width: 60,
+    height: 60,
+    paddingHorizontal: 10,
+  },
+  bottomImg2: {
+    width: 57,
+    height: 57,
     paddingHorizontal: 10,
   },
   bottomTextView: {

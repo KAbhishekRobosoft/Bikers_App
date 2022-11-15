@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -37,6 +37,8 @@ const registerValidationSchema = yup.object().shape({
 });
 
 const Register = () => {
+  const [secureText, setSecureText] = useState(true);
+
   return (
     <View>
       <SafeAreaView>
@@ -96,13 +98,9 @@ const Register = () => {
                   source={require('../assets/images/locked.png')}
                   styleUser={styles.lock}
                   keyboardType="default"
-                  // secureTextEntry={true}df
+                  secureTextEntry={secureText}
+                  onPress={() => setSecureText(!secureText)}
                 />
-                {/* {errors.password && 
-                  <Text style={{fontSize: 10, color: 'red'}}>
-                    {errors.password}
-                  </Text>
-                } */}
                 <View style={styles.btnView}>
                   <ButtonLarge title="REGISTER" disabled={!isValid} onPress={() => console.log('button submitted')} />
                 </View>

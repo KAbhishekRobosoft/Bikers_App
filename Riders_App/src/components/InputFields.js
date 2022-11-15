@@ -1,5 +1,13 @@
 import React from 'react';
-import {View, StyleSheet, Image, TextInput, Platform, Text} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Image,
+  TextInput,
+  Platform,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 
 export const Input = props => {
   const {
@@ -63,10 +71,12 @@ export const Password = props => {
           {...inputProps}
         />
         <View style={styles.iconView}>
-          <Image
-            source={require('../assets/images/eye.png')}
-            style={styles.eye}
-          />
+          <TouchableOpacity onPress={props.onPress}>
+            <Image
+              source={require('../assets/images/eye.png')}
+              style={styles.eye}
+            />
+          </TouchableOpacity>
         </View>
       </View>
       {hasError && <Text style={styles.errorText}>{errors[name]}</Text>}
