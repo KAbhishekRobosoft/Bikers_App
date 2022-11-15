@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -13,10 +13,11 @@ import {Input} from '../components/InputFields';
 import {Password} from '../components/InputFields';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
+import axios from 'axios';
 
 const registerValidationSchema = yup.object().shape({
-  name: yup.string().required('Name is required'),
-  mobileNumber: yup
+  userName: yup.string().required('Name is required'),
+  mobile: yup
     .string()
     .matches(/(\d){10}\b/, 'Enter a valid mobile number')
     .required(''),
@@ -55,17 +56,34 @@ const Register = () => {
           <Formik
             validationSchema={registerValidationSchema}
             initialValues={{
-              name: '',
+              userName: '',
               password: '',
-              mobileNumber: '',
+              mobile: '',
               email: '',
+            }}
+            onSubmit={async (values) => {
+              // console.log(values.userName, values.password, values.mobile, values.email)
+              try {
+                const response = await axios.post(
+                  'https://riding-application.herokuapp.com/api/v1/register',
+                  {
+                    userName,
+                    password,
+                    mobile,
+                    email,
+                  },
+                );
+              } catch (error) {
+                console.log('An error as occurred');
+              }
             }}>
-            {({isValid}) => (
+            {({isValid, handleSubmit, values}) => (
               <>
                 <Field
                   component={Input}
-                  name="name"
+                  name="userName"
                   placeholder="Name"
+                  value={values.userName}
                   source={require('../assets/images/user.png')}
                   styleUser={styles.name}
                   keyboardType="default"
@@ -74,8 +92,9 @@ const Register = () => {
                 />
                 <Field
                   component={Input}
-                  name="mobileNumber"
+                  name="mobile"
                   placeholder="Registerted mobile number"
+                  value={values.mobile}
                   source={require('../assets/images/phone-call.png')}
                   styleUser={styles.call}
                   keyboardType="numeric"
@@ -86,6 +105,7 @@ const Register = () => {
                   component={Input}
                   name="email"
                   placeholder="Email"
+                  value={values.email}
                   source={require('../assets/images/new-email-outline.png')}
                   styleUser={styles.email}
                   keyboardType="email-address"
@@ -95,6 +115,7 @@ const Register = () => {
                   component={Password}
                   name="password"
                   placeholder="Password"
+                  value={values.password}
                   source={require('../assets/images/locked.png')}
                   styleUser={styles.lock}
                   keyboardType="default"
@@ -102,7 +123,11 @@ const Register = () => {
                   onPress={() => setSecureText(!secureText)}
                 />
                 <View style={styles.btnView}>
-                  <ButtonLarge title="REGISTER" disabled={!isValid} onPress={() => console.log('button submitted')} />
+                  <ButtonLarge
+                    title="REGISTER"
+                    disabled={!isValid}
+                    onPress={handleSubmit}
+                  />
                 </View>
               </>
             )}

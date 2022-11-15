@@ -27,6 +27,7 @@ export const Input = props => {
           placeholderTextColor={'#4F504F'}
           style={styles.textInput}
           keyboardType={props.keyboardType}
+          value={value}
           secureTextEntry={props.secureTextEntry}
           returnKeyType={props.returnKey}
           onChangeText={text => onChange(name)(text)}

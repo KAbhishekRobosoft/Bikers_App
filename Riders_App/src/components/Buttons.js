@@ -4,17 +4,17 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const ButtonLarge = props => {
   return (
-    <View style={styles.container}>
-      <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        colors={['#ED7E2B', '#F4A264']}
-        style={styles.gradient}>
-        <Pressable style={styles.btn} onPress={props.onPress} disabled={props.disabled}>
+    <Pressable onPress={props.onPress} disabled={props.disabled}>
+      <View style={styles.container}>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#ED7E2B', '#F4A264']}
+          style={styles.gradient}>
           <Text style={styles.text}>{props.title}</Text>
-        </Pressable>
-      </LinearGradient>
-    </View>
+        </LinearGradient>
+      </View>
+    </Pressable>
   );
 };
 export default ButtonLarge;
