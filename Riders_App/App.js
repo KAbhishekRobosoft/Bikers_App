@@ -8,16 +8,13 @@ import ResetPasswordScreen from './src/screens/ResetPasswordScreen';
 import SuccessPasswordScreen from './src/screens/SuccessPasswordScreen';
 
 
+import Register from './src/screens/RegisterScreen';
 
-const Tab = createBottomTabNavigator();
-
-export default function App() {
-  return (<LoginScreen/>
-    // <NavigationContainer>
-    //   <Tab.Navigator>
-    //     <Tab.Screen name="Home" component={HomeScreen} />
-    //     <Tab.Screen name="Settings" component={SettingsScreen} />
-    //   </Tab.Navigator>
-    // </NavigationContainer>
+const App = () => {
+  return (
+    <OtpScreen />
   );
 }
+
+export default App;
+
