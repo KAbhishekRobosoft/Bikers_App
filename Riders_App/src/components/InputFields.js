@@ -1,10 +1,18 @@
 import React from 'react';
-import {View, StyleSheet, Image, TextInput, Platform} from 'react-native';
+import {View, StyleSheet, Image, TextInput, Platform, Text} from 'react-native';
 
 export const Input = props => {
+  const {
+    field: {name, onBlur, onChange, value},
+    form: {errors, touched, setFieldTouched},
+    ...inputProps
+  } = props;
+
+  const hasError = errors[name] && touched[name];
+
   return (
     <View>
-      <View style={styles.inputTextView}>
+      <View style={[styles.inputTextView, hasError && styles.errorInput]}>
         <Image source={props.source} style={props.styleUser} />
         <TextInput
           placeholder={props.placeholder}
@@ -13,24 +21,46 @@ export const Input = props => {
           keyboardType={props.keyboardType}
           secureTextEntry={props.secureTextEntry}
           returnKeyType={props.returnKey}
+          onChangeText={text => onChange(name)(text)}
+          onBlur={() => {
+            setFieldTouched(name);
+            onBlur(name);
+          }}
+          {...inputProps}
         />
       </View>
+
+      {hasError && <Text style={styles.errorText}>{errors[name]}</Text>}
     </View>
   );
 };
 
 export const Password = props => {
+  const {
+    field: {name, onBlur, onChange, value},
+    form: {errors, touched, setFieldTouched},
+    ...inputProps
+  } = props;
+
+  const hasError = errors[name] && touched[name];
+
   return (
     <View>
-      <View style={styles.inputTextView}>
+      <View style={[styles.inputTextView, hasError && styles.errorInput]}>
         <Image source={props.source} style={props.styleUser} />
-
         <TextInput
           placeholder={props.placeholder}
           placeholderTextColor={'#4F504F'}
           style={styles.textPassword}
           keyboardType={props.keyboardType}
           secureTextEntry={props.secureTextEntry}
+          value={value}
+          onChangeText={text => onChange(name)(text)}
+          onBlur={() => {
+            setFieldTouched(name);
+            onBlur(name);
+          }}
+          {...inputProps}
         />
         <View style={styles.iconView}>
           <Image
@@ -39,6 +69,7 @@ export const Password = props => {
           />
         </View>
       </View>
+      {hasError && <Text style={styles.errorText}>{errors[name]}</Text>}
     </View>
   );
 };
@@ -53,7 +84,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingBottom: 10,
     marginLeft: 40,
-    // backgroundColor: 'grey',
+    // backgroundColor: 'red',
     alignItems: 'flex-end',
   },
   imageUserView: {
@@ -96,5 +127,14 @@ const styles = StyleSheet.create({
   },
   iconView: {
     paddingTop: 45,
+  },
+  errorText: {
+    fontSize: 10,
+    color: 'red',
+    // margin: 10,
+    alignSelf: 'center',
+  },
+  errorInput: {
+    borderColor: 'red',
   },
 });

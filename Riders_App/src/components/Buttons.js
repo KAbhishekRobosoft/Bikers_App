@@ -10,7 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
         end={{x: 1, y: 0}}
         colors={['#ED7E2B', '#F4A264']}
         style={styles.gradient}>
-        <Pressable style={styles.btn}>
+        <Pressable style={styles.btn} onPress={props.onPress} disabled={props.disabled}>
           <Text style={styles.text}>{props.title}</Text>
         </Pressable>
       </LinearGradient>
