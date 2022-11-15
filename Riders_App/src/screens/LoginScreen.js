@@ -2,6 +2,7 @@ import {
   Image,
   ImageBackground,
   KeyboardAvoidingView,
+  Pressable,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -28,7 +29,7 @@ const registerValidationSchema = yup.object().shape({
     .required(''),
 });
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
   return (
     <SafeAreaView style={styles.main}>
@@ -70,7 +71,9 @@ const LoginScreen = () => {
                   onPress={() => setSecureText(!secureText)}
                 />
               </View>
-              <Text style={styles.forgetText}>Forgot Password</Text>
+              <Pressable onPress= {()=>navigation.navigate('Otp')}>
+                <Text style={styles.forgetText}>Forgot Password</Text>
+              </Pressable>
               <View style={styles.buttonView}>
                 <ButtonLarge title="LOGIN" />
               </View>
@@ -94,7 +97,9 @@ const LoginScreen = () => {
           </View>
           <View style={styles.bottomTextView}>
             <Text style={styles.bottomText1}>Don't have an account?</Text>
-            <Text style={styles.bottomText2}> Register</Text>
+            <Pressable onPress={() => navigation.navigate('Confirm')}>
+              <Text style={styles.bottomText2}> Register</Text>
+            </Pressable>
           </View>
         </ImageBackground>
       </View>

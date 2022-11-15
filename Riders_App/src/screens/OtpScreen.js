@@ -1,13 +1,15 @@
-import {SafeAreaView, StyleSheet, Text, View, Image} from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View, Image, Pressable} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 
-const OtpScreen = () => {
+const OtpScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
+      <Pressable onPress= {()=>navigation.goBack()}>
         <Icon name="arrow-left" size={24} color="grey" />
+        </Pressable>
       </View>
       <View style={styles.imgContainer}>
         <Image
@@ -31,6 +33,7 @@ const OtpScreen = () => {
             codeInputHighlightStyle={styles.underlineStyleHighLighted}
             onCodeFilled={code => {
               console.log(`Code is ${code}, you are good to go!`);
+              
             }}
           />
         </View>
