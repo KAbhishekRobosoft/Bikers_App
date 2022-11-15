@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   ScrollView,
   Platform,
+  Pressable,
 } from 'react-native';
 import ButtonLarge from '../components/Buttons';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -36,19 +37,23 @@ const registerValidationSchema = yup.object().shape({
     .required(''),
 });
 
-const Register = () => {
+const Register = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
 
   return (
     <View>
       <SafeAreaView>
         <View style={[styles.header, styles.shadow]}>
+          <Pressable onPress= {()=>{
+              navigation.goBack()
+          }}>
           <Icon
             name="arrow-left"
             color={'white'}
             size={16}
             style={styles.icon}
           />
+          </Pressable>
           <Text style={styles.headerText}>Register</Text>
         </View>
         <ScrollView style={styles.scrollview}>

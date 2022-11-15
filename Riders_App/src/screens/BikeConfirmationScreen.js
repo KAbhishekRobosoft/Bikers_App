@@ -4,7 +4,7 @@ import SmallButton from '../components/SmallButton';
 import LinearGradient from 'react-native-linear-gradient';
 
 
-function BikeConfirmationScreen() {
+function BikeConfirmationScreen({navigation}) {
   const {width,height}= useWindowDimensions()
   const imgHeight1 = width > height ? (Platform.OS === 'ios' ? 150 : 160) : 200;
   const imgWidth1 = width > height ? (Platform.OS === 'ios' ? 200 : 180) : 220;
@@ -28,10 +28,10 @@ function BikeConfirmationScreen() {
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
           colors={['#ED7E2B', '#F4A264']}>
-          <SmallButton styleName="confirmStyle" name="YES" />
+          <SmallButton onPress={()=>navigation.navigate('Register')} styleName="confirmStyle" name="YES" />
         </LinearGradient>
         <View style={styles.confirmBut2}>
-          <SmallButton styleName="confirmStyle" name="NO" />
+          <SmallButton  onPress={()=>navigation.navigate('Register')} styleName="confirmStyle" name="NO" />
         </View>
       </View>
       <View style={styles.confirmTreeCon}>

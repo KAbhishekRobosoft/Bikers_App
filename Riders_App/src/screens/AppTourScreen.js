@@ -13,7 +13,7 @@ import Swiper from 'react-native-swiper';
 import SmallButton from '../components/SmallButton';
 import ButtonLarge from '../components/Buttons';
 
-function AppTourScreen() {
+function AppTourScreen({navigation}) {
   const {width, height} = useWindowDimensions();
   const marginRight = width > height ? (Platform.OS === 'ios' ? 80 : 80) : 10;
   const marginTop = width > height ? (Platform.OS === 'ios' ? 0 : 0) : 16;
@@ -32,7 +32,7 @@ function AppTourScreen() {
       loop={false}>
       <SafeAreaView style={styles.slide1}>
         <View style={[styles.appIntroBut1, {marginRight: marginRight}]}>
-          <SmallButton name="Skip" />
+          <SmallButton onPress= {()=>navigation.navigate('Login')} name="Skip" />
         </View>
         <View>
           <Image
@@ -47,7 +47,7 @@ function AppTourScreen() {
       </SafeAreaView>
       <SafeAreaView style={styles.slide2}>
         <View style={[styles.appIntroBut1, {marginRight: marginRight}]}>
-          <SmallButton name="Skip" />
+          <SmallButton onPress= {()=>navigation.navigate('Login')} name="Skip" />
         </View>
         <Image
           style={{marginTop: marginTop, height: imgHeight, width: imgWidth}}
@@ -66,7 +66,7 @@ function AppTourScreen() {
           Book bike online and shop{'\n'}accessories
         </Text>
         <View style={styles.registerButton}>
-          <ButtonLarge title="REGISTER" />
+          <ButtonLarge onPress= {()=>navigation.navigate('Confirm')} title="REGISTER" />
         </View>
       </SafeAreaView>
     </Swiper>
