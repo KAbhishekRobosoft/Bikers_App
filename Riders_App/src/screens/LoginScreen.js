@@ -1,4 +1,5 @@
 import {
+  Alert,
   Image,
   ImageBackground,
   KeyboardAvoidingView,
@@ -17,9 +18,11 @@ import {Input} from '../components/InputFields';
 import {Password} from '../components/InputFields';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
+import axios from 'axios';
 
 const registerValidationSchema = yup.object().shape({
-  name: yup.string().required('Name is required'),
+  number: yup.string().required('Number/Email  is required'),
+
   password: yup
     .string()
     .matches(/\w*[a-z]\w*/, 'Password must have a small letter')
@@ -43,19 +46,34 @@ const LoginScreen = ({navigation}) => {
         <Formik
           validationSchema={registerValidationSchema}
           initialValues={{
-            name: '',
+            number: '',
             password: '',
+          }}
+          onSubmit={async values => {
+            try {
+              const response = await axios.post(
+                'https://riding-application.herokuapp.com/api/v1/loginPhone',
+                {
+                  mobile: values.number,
+                  password: values.password,
+                },
+              );
+              alert(response.data.message);
+            } catch (error) {
+              console.log('errrr occured');
+            }
           }}>
-          {() => (
+          {({values, handleSubmit, isValid}) => (
             <>
               <View style={styles.inputTextView1}>
                 <Field
                   component={Input}
-                  name="name"
+                  name="number"
                   source={require('../assets/images/user.png')}
                   placeholderTextColor="grey"
                   placeholder="Mobile Number/Email id"
                   styleUser={styles.userLogo}
+                  value={values.number}
                 />
               </View>
               <View style={styles.inputTextView2}>
@@ -66,7 +84,7 @@ const LoginScreen = ({navigation}) => {
                   placeholderTextColor="grey"
                   placeholder="Password"
                   styleUser={styles.lockImg}
-                  keyboardType="numeric"
+                  value={values.password}
                   secureTextEntry={secureText}
                   onPress={() => setSecureText(!secureText)}
                 />
@@ -75,7 +93,11 @@ const LoginScreen = ({navigation}) => {
                 <Text style={styles.forgetText}>Forgot Password</Text>
               </Pressable>
               <View style={styles.buttonView}>
-                <ButtonLarge title="LOGIN" />
+                <ButtonLarge
+                  disabled={!isValid}
+                  title="LOGIN"
+                  onPress={handleSubmit}
+                />
               </View>
             </>
           )}

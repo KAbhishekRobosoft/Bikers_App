@@ -5,16 +5,19 @@ import {
   SafeAreaView,
   Image,
   TextInput,
+  Pressable,
 } from 'react-native';
 import React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
 
 const SuccessPasswordScreen = () => {
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
-        <Icon name="arrow-left" size={24} color="grey" />
+        <Pressable onPress={() => console.log('back')}>
+          <Icon name="arrow-left" size={24} color="grey" />
+        </Pressable>
       </View>
       <View style={styles.imgContainer}>
         <Image
@@ -71,8 +74,8 @@ const styles = StyleSheet.create({
   greenTick: {
     width: 97,
     height: 97,
-    position:'absolute',
-    top:"27%"
+    position: 'absolute',
+    top: '27%',
   },
   textView1: {
     marginTop: 20,

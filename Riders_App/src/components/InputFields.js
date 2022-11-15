@@ -30,6 +30,7 @@ export const Input = props => {
           value={value}
           secureTextEntry={props.secureTextEntry}
           returnKeyType={props.returnKey}
+          value={value}
           onChangeText={text => onChange(name)(text)}
           onBlur={() => {
             setFieldTouched(name);
