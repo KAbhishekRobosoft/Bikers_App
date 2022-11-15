@@ -1,13 +1,21 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image,useWindowDimensions,ScrollView,SafeAreaView} from 'react-native';
 import SmallButton from '../components/SmallButton';
 import LinearGradient from 'react-native-linear-gradient';
 
-function BikeConfirmation() {
+
+function BikeConfirmationScreen() {
+  const {width,height}= useWindowDimensions()
+  const imgHeight1 = width > height ? (Platform.OS === 'ios' ? 150 : 160) : 200;
+  const imgWidth1 = width > height ? (Platform.OS === 'ios' ? 200 : 180) : 220;
+  const marginTop1 = width > height ? (Platform.OS === 'ios' ? 20 : 20) : 20;
+
   return (
+    <SafeAreaView>
+    <ScrollView  showsVerticalScrollIndicator ={false}>
     <View style={styles.confirmContainer}>
       <Image
-        style={styles.confirmImg}
+        style={[styles.confirmImg,{width:imgWidth1,height:imgHeight1,marginTop:marginTop1}]}
         source={require('../assets/images/Illustration_4.png')}
       />
       <View style={{alignItems:"center",height:116}}>
@@ -36,7 +44,9 @@ function BikeConfirmation() {
           source={require('../assets/images/Group.png')}
         />
       </View>
-    </View>
+      </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -97,4 +107,4 @@ const styles = StyleSheet.create({
     backgroundColor: '#A29D9D',
   },
 });
-export default BikeConfirmation;
+export default BikeConfirmationScreen;
