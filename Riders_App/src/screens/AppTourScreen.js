@@ -5,6 +5,7 @@ import SmallButton from '../components/SmallButton';
 import ButtonLarge from '../components/Buttons'
 
 function AppTourScreen() {
+  
   return (
     <Swiper
       dotStyle={{width: 10, height: 10, borderRadius: 10}}
