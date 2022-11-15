@@ -1,6 +1,8 @@
 import {
   Image,
+  ImageBackground,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -8,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
+import {ButtonLarge} from '../components/Buttons';
 
 const LoginScreen = () => {
   return (
@@ -19,32 +22,56 @@ const LoginScreen = () => {
         />
       </View>
       <View style={styles.loginContainer}>
-        <View style={styles.inputTextView}>
+        <View style={styles.inputTextView1}>
           <Image
             source={require('../assets/images/user.png')}
             style={styles.userLogo}
           />
           <TextInput
+            placeholderTextColor="grey"
             placeholder="Mobile Number/Email id"
-            style={styles.textInput}></TextInput>
+            style={styles.textInput}
+          />
         </View>
-        <View style={styles.inputTextView}>
+        <View style={styles.inputTextView2}>
           <Image
             source={require('../assets/images/locked.png')}
             style={styles.lockImg}
           />
           <TextInput
+            placeholderTextColor="grey"
             placeholder="Password"
-            style={styles.textInput}></TextInput>
+            style={styles.textInput}
+          />
           <Image
             source={require('../assets/images/eye.png')}
             style={styles.eyeImg}
           />
         </View>
         <Text style={styles.forgetText}>Forgot Password</Text>
+        <View style={styles.buttonView}>
+          <ButtonLarge title="LOGIN" />
+        </View>
       </View>
-      <View style={{}}>
-        <Text>Forget Password</Text>
+      <View style={styles.bottomView}>
+        <ImageBackground
+          style={styles.bgImage}
+          source={require('../assets/images/BG.png')}>
+          <View style={styles.bottomImgView}>
+            <Image
+              style={styles.bottomImg}
+              source={require('../assets/images/fb.png')}
+            />
+            <Image
+              style={styles.bottomImg}
+              source={require('../assets/images/g.png')}
+            />
+          </View>
+          <View style={styles.bottomTextView}>
+            <Text style={styles.bottomText1}>Don't have an account?</Text>
+            <Text style={styles.bottomText2}> Register</Text>
+          </View>
+        </ImageBackground>
       </View>
     </SafeAreaView>
   );
@@ -58,7 +85,7 @@ const styles = StyleSheet.create({
   },
   logoView: {
     width: '100%',
-    height: '25%',
+    height: '22%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -68,20 +95,29 @@ const styles = StyleSheet.create({
     marginTop: 35,
   },
   loginContainer: {
-    //backgroundColor: 'grey',
     width: '100%',
-    height: '50%',
+    height: '45%',
     alignItems: 'center',
     justifyContent: 'center',
+    position: 'relative',
   },
-  inputTextView: {
-    backgroundColor: 'grey',
-    width: '90%',
-    //height:'30%',
+  inputTextView1: {
+    width: '85%',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
     paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderColor: '#B4B3B3',
+  },
+  inputTextView2: {
+    width: '85%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    paddingHorizontal: 24,
+    borderBottomWidth: 1,
+    borderColor: '#B4B3B3',
   },
   userLogo: {width: 18, height: 24},
   lockImg: {width: 20, height: 24},
@@ -89,16 +125,57 @@ const styles = StyleSheet.create({
   textInput: {
     width: '90%',
     height: 50,
-    // backgroundColor: 'red',
-    marginVertical: 10,
+    marginVertical: 7,
     fontSize: 16,
     marginLeft: 10,
+    fontFamily: 'Roboto-Regular',
   },
   forgetText: {
     color: '#EF8B40',
     fontSize: 16,
-    marginTop: 10,
+    marginTop: 20,
     width: '90%',
     textAlign: 'right',
+    fontFamily: 'Roboto-Regular',
+  },
+  buttonView: {
+    marginTop: 30,
+    position: 'absolute',
+    bottom: 0,
+  },
+  bottomView: {
+    width: '100%',
+    height: '100%',
+  },
+  bgImage: {
+    width: '100%',
+    height: 261,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bottomImgView: {
+    flexDirection: 'row',
+    width: '32%',
+    justifyContent: 'space-between',
+    marginTop: 40,
+  },
+  bottomImg: {
+    width: 49,
+    height: 49,
+    paddingHorizontal: 10,
+  },
+  bottomTextView: {
+    flexDirection: 'row',
+    marginVertical: 40,
+  },
+  bottomText1: {
+    color: '#ADAFB1',
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
+  },
+  bottomText2: {
+    color: '#F49D5C',
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
   },
 });
