@@ -1,11 +1,12 @@
 import React from 'react'
 import {Pressable,View,Text,StyleSheet} from 'react-native'
 
-function SmallButton({name,onPress}) {
+function SmallButton({name,onPress,styleName}) {
+    const color= styleName === "confirmStyle" ? "white" : "#F2944E"
   return (
             <View>
                 <Pressable onPress= {onPress}>
-                    <Text style={styles.smallButText}>
+                    <Text style={[styles.smallButText,{color:color}]}>
                         {name}
                     </Text>
                 </Pressable>
@@ -15,7 +16,6 @@ function SmallButton({name,onPress}) {
 
 const styles= StyleSheet.create({
     smallButText:{
-        color:"#F2944E",
         lineHeight:21,
         fontFamily:"Roboto-Medium",
         fontSize:16,
