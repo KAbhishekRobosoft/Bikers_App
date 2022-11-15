@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {ButtonLarge} from '../components/Buttons';
+import ButtonLarge from '../components/Buttons';
 
 const SuccessPasswordScreen = () => {
   return (

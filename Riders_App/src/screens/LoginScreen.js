@@ -1,6 +1,7 @@
 import {
   Image,
   ImageBackground,
+  KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -10,8 +11,9 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import {ButtonLarge} from '../components/Buttons';
-
+import ButtonLarge from '../components/Buttons';
+import {Input} from '../components/InputFields';
+import {Password} from '../components/InputFields';
 const LoginScreen = () => {
   return (
     <SafeAreaView style={styles.main}>
@@ -23,29 +25,20 @@ const LoginScreen = () => {
       </View>
       <View style={styles.loginContainer}>
         <View style={styles.inputTextView1}>
-          <Image
+          <Input
             source={require('../assets/images/user.png')}
-            style={styles.userLogo}
-          />
-          <TextInput
             placeholderTextColor="grey"
             placeholder="Mobile Number/Email id"
-            style={styles.textInput}
+            styleUser={styles.userLogo}
           />
         </View>
         <View style={styles.inputTextView2}>
-          <Image
+          <Password
             source={require('../assets/images/locked.png')}
-            style={styles.lockImg}
-          />
-          <TextInput
             placeholderTextColor="grey"
             placeholder="Password"
-            style={styles.textInput}
-          />
-          <Image
-            source={require('../assets/images/eye.png')}
-            style={styles.eyeImg}
+            styleUser={styles.lockImg}
+            keyboardType="numeric"
           />
         </View>
         <Text style={styles.forgetText}>Forgot Password</Text>
@@ -59,11 +52,11 @@ const LoginScreen = () => {
           source={require('../assets/images/BG.png')}>
           <View style={styles.bottomImgView}>
             <Image
-              style={styles.bottomImg}
+              style={styles.bottomImg1}
               source={require('../assets/images/fb.png')}
             />
             <Image
-              style={styles.bottomImg}
+              style={styles.bottomImg2}
               source={require('../assets/images/g.png')}
             />
           </View>
@@ -82,6 +75,8 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   main: {
     flex: 1,
+    alignItems: 'center',
+    backgroundColor: '#fff',
   },
   logoView: {
     width: '100%',
@@ -92,7 +87,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 99,
     height: 100,
-    marginTop: 35,
+    marginTop: 70,
   },
   loginContainer: {
     width: '100%',
@@ -102,22 +97,16 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   inputTextView1: {
-    width: '85%',
+    width: '120%',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 10,
-    borderBottomWidth: 1,
-    borderColor: '#B4B3B3',
+    marginRight: '8%',
   },
   inputTextView2: {
-    width: '85%',
+    width: '116%',
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
-    paddingHorizontal: 24,
-    borderBottomWidth: 1,
-    borderColor: '#B4B3B3',
+    paddingRight: '9%',
   },
   userLogo: {width: 18, height: 24},
   lockImg: {width: 20, height: 24},
@@ -134,7 +123,7 @@ const styles = StyleSheet.create({
     color: '#EF8B40',
     fontSize: 16,
     marginTop: 20,
-    width: '90%',
+    width: '88%',
     textAlign: 'right',
     fontFamily: 'Roboto-Regular',
   },
@@ -155,13 +144,20 @@ const styles = StyleSheet.create({
   },
   bottomImgView: {
     flexDirection: 'row',
-    width: '32%',
+    width: '35%',
     justifyContent: 'space-between',
     marginTop: 40,
+    height: '30%',
+    alignItems: 'center',
   },
-  bottomImg: {
-    width: 49,
-    height: 49,
+  bottomImg1: {
+    width: 60,
+    height: 60,
+    paddingHorizontal: 10,
+  },
+  bottomImg2: {
+    width: 57,
+    height: 57,
     paddingHorizontal: 10,
   },
   bottomTextView: {

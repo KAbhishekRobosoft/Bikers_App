@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {ButtonLarge} from '../components/Buttons';
+import ButtonLarge from '../components/Buttons';
 
 const ResetPasswordScreen = () => {
   return (
@@ -26,14 +26,14 @@ const ResetPasswordScreen = () => {
         </View>
       </View>
       <View style={styles.bottomView}>
-        <View style={styles.inputTextView1}>
+        <View style={styles.inputTextView}>
           <TextInput
             placeholderTextColor="grey"
             placeholder="New Password"
             style={styles.textInput}
           />
         </View>
-        <View style={styles.inputTextView1}>
+        <View style={styles.inputTextView}>
           <TextInput
             placeholderTextColor="grey"
             placeholder="Confirm Password"
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     color: 'black',
   },
-  inputTextView1: {
+  inputTextView: {
     width: '85%',
     alignItems: 'center',
     justifyContent: 'center',
@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     borderColor: '#B4B3B3',
     height: 50,
     marginTop: 15,
+    paddingTop:"5%"
   },
   btn: {
     marginTop: 40,
