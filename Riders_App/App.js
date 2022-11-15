@@ -1,9 +1,11 @@
 import * as React from 'react';
-import AppTourScreen from './src/screens/AppTourScreen';
+import Register from './src/screens/RegisterScreen';
 
-export default function App() {
+const App = () => {
   return (
-    <AppTourScreen  />
+    <Register />
   );
 }
+
+export default App;
 

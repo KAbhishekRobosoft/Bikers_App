@@ -2,9 +2,9 @@ import React from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const ButtonLarge = (props) => {
+ const ButtonLarge = (props) => {
   return (
-    <View>
+    <View style={styles.container}>
       <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
@@ -17,16 +17,24 @@ const ButtonLarge = (props) => {
     </View>
   );
 };
+export default ButtonLarge;
 
 const styles = StyleSheet.create({
+  container: {
+    shadowColor: 'grey',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 2,
+    shadowOpacity: 0.9,
+  },
   gradient: {
     height: 42,
     width: 279,
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    
-    
   },
   text: {
     color: '#FFFFFF',
@@ -38,4 +46,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ButtonLarge

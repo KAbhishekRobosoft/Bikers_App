@@ -1,22 +1,18 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  Image,
-  TextInput,
-} from 'react-native';
+import {View, StyleSheet, Image, TextInput, Platform} from 'react-native';
 
 export const Input = props => {
   return (
-    <View style={styles.container}>
+    <View>
       <View style={styles.inputTextView}>
-        <View style={styles.imageUserView}>
-          <Image source={props.source} style={props.styleUser} />
-        </View>
+        <Image source={props.source} style={props.styleUser} />
         <TextInput
           placeholder={props.placeholder}
           placeholderTextColor={'#4F504F'}
           style={styles.textInput}
+          keyboardType={props.keyboardType}
+          secureTextEntry={props.secureTextEntry}
+          returnKeyType={props.returnKey}
         />
       </View>
     </View>
@@ -25,15 +21,16 @@ export const Input = props => {
 
 export const Password = props => {
   return (
-    <View style={styles.container}>
+    <View>
       <View style={styles.inputTextView}>
-        <View style={styles.imageUserView}>
-          <Image source={props.source} style={props.styleUser} />
-        </View>
+        <Image source={props.source} style={props.styleUser} />
+
         <TextInput
           placeholder={props.placeholder}
           placeholderTextColor={'#4F504F'}
-          style={styles.textInput}
+          style={styles.textPassword}
+          keyboardType={props.keyboardType}
+          secureTextEntry={props.secureTextEntry}
         />
         <View style={styles.iconView}>
           <Image
@@ -47,32 +44,43 @@ export const Password = props => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    height: 75,
-  },
   inputTextView: {
     width: '80%',
+    height: 60,
     flexDirection: 'row',
     marginTop: 25,
     borderColor: '#B4B3B3',
     borderBottomWidth: 1,
+    paddingBottom: 10,
+    marginLeft: 40,
+    // backgroundColor: 'grey',
+    alignItems: 'flex-end',
   },
   imageUserView: {
-    marginTop: 36,
     height: 26,
-    width: '8%'
+    width: '8%',
   },
   textInput: {
     width: '80%',
-    height: 55,
-    marginVertical: 7,
+    // height: Platform.OS === 'android' ? 70 : 55,
+    marginVertical: Platform.OS === 'android' ? -17 : -3,
     fontSize: 16,
     marginLeft: 10,
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
-    paddingTop: 35,
-    textAlign: 'left'
+    // alignSelf: 'flex-end',
+    // paddingTop: 40,
+  },
+  textPassword: {
+    width: '83%',
+    // height: Platform.OS === 'android' ? 70 : 55,
+    marginVertical: Platform.OS === 'android' ? -17 : -3,
+    fontSize: 16,
+    marginLeft: 10,
+    fontFamily: 'Roboto-Regular',
+    color: '#4F504F',
+    // alignSelf: 'flex-end',
+    // paddingTop: 40,
   },
   user: {
     width: 23,
@@ -88,6 +96,5 @@ const styles = StyleSheet.create({
   },
   iconView: {
     paddingTop: 45,
-
   },
 });
