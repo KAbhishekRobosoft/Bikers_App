@@ -1,10 +1,27 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  SafeAreaView,
+  ScrollView,
+  useWindowDimensions,
+  Platform,
+} from 'react-native';
 import Swiper from 'react-native-swiper';
 import SmallButton from '../components/SmallButton';
-import ButtonLarge from '../components/Buttons'
+import ButtonLarge from '../components/Buttons';
 
 function AppTourScreen() {
+  const {width, height} = useWindowDimensions();
+  const marginRight = width > height ? (Platform.OS === 'ios' ? 80 : 80) : 10;
+  const marginTop = width > height ? (Platform.OS === 'ios' ? 0 : 0) : 16;
+  const imgHeight = width > height ? (Platform.OS === 'ios' ? 180 : 160) : 250;
+  const imgWidth = width > height ? (Platform.OS === 'ios' ? 220 : 220) : 300;
+  const imgHeight1 = width > height ? (Platform.OS === 'ios' ? 130 : 105) : 250;
+  const imgWidth1 = width > height ? (Platform.OS === 'ios' ? 200 : 165) : 300;
+  const marginTop1 = width > height ? (Platform.OS === 'ios' ? 20 : 20) : 20;
   
   return (
     <Swiper
@@ -13,41 +30,45 @@ function AppTourScreen() {
       activeDotStyle={{width: 14, height: 14, borderRadius: 10}}
       activeDotColor="orange"
       loop={false}>
-      <View style={styles.slide1}>
-        <View style={styles.appIntroBut1}>
+      <SafeAreaView style={styles.slide1}>
+        <View style={[styles.appIntroBut1, {marginRight: marginRight}]}>
+          <SmallButton name="Skip" />
+        </View>
+        <View>
+          <Image
+            style={{marginTop: marginTop, height: imgHeight, width: imgWidth}}
+            source={require('../assets/images/Illustration.png')}
+          />
+          <Text style={styles.appIntroText1}>Ride Free</Text>
+          <Text style={styles.appIntroText2}>
+            Create a hassle free ride{'\n'}anytime and anywhere
+          </Text>
+        </View>
+      </SafeAreaView>
+      <SafeAreaView style={styles.slide2}>
+        <View style={[styles.appIntroBut1, {marginRight: marginRight}]}>
           <SmallButton name="Skip" />
         </View>
         <Image
-          style={styles.appIntroPic1}
-          source={require('../assets/images/Illustration.png')}
-        />
-        <Text style={styles.appIntroText1}>Ride Free</Text>
-        <Text style={styles.appIntroText2}>
-          Create a hassle free ride{'\n'}anytime and anywhere
-        </Text>
-      </View>
-      <View style={styles.slide2}>
-        <View style={styles.appIntroBut1}>
-          <SmallButton name="Skip" />
-        </View>
-        <Image
-          style={styles.appIntroPic2}
+          style={{marginTop: marginTop, height: imgHeight, width: imgWidth}}
           source={require('../assets/images/Illustartion_2.png')}
         />
         <Text style={styles.appIntroText3}>Know your Bike</Text>
         <Text style={styles.appIntroText2}>Keep your bike fettle!</Text>
-      </View>
-      <View style={styles.slide3}>
+      </SafeAreaView>
+      <SafeAreaView style={styles.slide3}>
         <Image
-          style={styles.appIntroPic3}
+          style={{marginTop: marginTop1, height: imgHeight1, width: imgWidth1}}
           source={require('../assets/images/Illustration_3.png')}
         />
         <Text style={styles.appIntroText4}>Your Cart</Text>
-        <Text style={styles.appIntroText2}>Book bike online and shop{'\n'}accessories</Text>
+        <Text style={styles.appIntroText2}>
+          Book bike online and shop{'\n'}accessories
+        </Text>
         <View style={styles.registerButton}>
-            <ButtonLarge title="REGISTER" />
+          <ButtonLarge title="REGISTER" />
         </View>
-      </View>
+      </SafeAreaView>
     </Swiper>
   );
 }
@@ -57,20 +78,18 @@ const styles = StyleSheet.create({
   slide1: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    alignItems:"center"
+    alignItems: 'center',
   },
 
   appIntroBut1: {
     alignSelf: 'flex-end',
-    marginRight: 10,
     marginTop: 19,
   },
 
-  registerButton:{
-    width:'100%',
-    alignItems:"center",
-    marginTop:27
-
+  registerButton: {
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 27,
   },
 
   appIntroPic3: {
@@ -93,7 +112,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontFamily: 'Roboto-Regular',
     textAlign: 'center',
-    marginTop:34.04
+    marginTop: 34.04,
   },
 
   appIntroText3: {
@@ -113,10 +132,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
   },
 
-  appIntroPic1: {
-    marginTop: 16,
-  },
-
   appIntroPic2: {
     marginTop: 45,
     marginLeft: 10,
@@ -126,13 +141,13 @@ const styles = StyleSheet.create({
   slide2: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    alignItems:"center"
+    alignItems: 'center',
   },
 
   slide3: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    alignItems:"center"
+    alignItems: 'center',
   },
 
   text: {
