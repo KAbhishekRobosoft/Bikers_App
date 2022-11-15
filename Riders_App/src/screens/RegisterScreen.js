@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   ScrollView,
   Platform,
+  Pressable,
 } from 'react-native';
 import ButtonLarge from '../components/Buttons';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -36,17 +37,23 @@ const registerValidationSchema = yup.object().shape({
     .required(''),
 });
 
-const Register = () => {
+const Register = ({navigation}) => {
+  const [secureText, setSecureText] = useState(true);
+
   return (
     <View>
       <SafeAreaView>
         <View style={[styles.header, styles.shadow]}>
+          <Pressable onPress= {()=>{
+              navigation.goBack()
+          }}>
           <Icon
             name="arrow-left"
             color={'white'}
             size={16}
             style={styles.icon}
           />
+          </Pressable>
           <Text style={styles.headerText}>Register</Text>
         </View>
         <ScrollView style={styles.scrollview}>
@@ -96,13 +103,9 @@ const Register = () => {
                   source={require('../assets/images/locked.png')}
                   styleUser={styles.lock}
                   keyboardType="default"
-                  // secureTextEntry={true}df
+                  secureTextEntry={secureText}
+                  onPress={() => setSecureText(!secureText)}
                 />
-                {/* {errors.password && 
-                  <Text style={{fontSize: 10, color: 'red'}}>
-                    {errors.password}
-                  </Text>
-                } */}
                 <View style={styles.btnView}>
                   <ButtonLarge title="REGISTER" disabled={!isValid} onPress={() => console.log('button submitted')} />
                 </View>

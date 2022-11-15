@@ -10,7 +10,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
 
-const ResetPasswordScreen = () => {
+const ResetPasswordScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
@@ -41,7 +41,7 @@ const ResetPasswordScreen = () => {
           />
         </View>
         <View style={styles.btn}>
-          <ButtonLarge title="RESET" />
+          <ButtonLarge onPress= {()=>navigation.navigate('ResetSuccess')} title="RESET" />
         </View>
       </View>
     </SafeAreaView>
