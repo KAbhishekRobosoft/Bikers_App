@@ -12,8 +12,12 @@ import {
 import Swiper from 'react-native-swiper';
 import SmallButton from '../components/SmallButton';
 import ButtonLarge from '../components/Buttons';
+import { useDispatch,useSelector } from 'react-redux';
+
 
 function AppTourScreen({navigation}) {
+  const token= useSelector(state=>state.auth.userToken)
+  const dispatch= useDispatch()
   const {width, height} = useWindowDimensions();
   const marginRight = width > height ? (Platform.OS === 'ios' ? 80 : 80) : 10;
   const marginTop = width > height ? (Platform.OS === 'ios' ? 0 : 0) : 16;
@@ -23,6 +27,7 @@ function AppTourScreen({navigation}) {
   const imgWidth1 = width > height ? (Platform.OS === 'ios' ? 200 : 165) : 300;
   const marginTop1 = width > height ? (Platform.OS === 'ios' ? 20 : 20) : 20;
   
+  console.log(token)
   return (
     <Swiper
       dotStyle={{width: 10, height: 10, borderRadius: 10}}
@@ -32,7 +37,9 @@ function AppTourScreen({navigation}) {
       loop={false}>
       <SafeAreaView style={styles.slide1}>
         <View style={[styles.appIntroBut1, {marginRight: marginRight}]}>
-          <SmallButton onPress= {()=>navigation.navigate('Login')} name="Skip" />
+          <SmallButton onPress= {()=>{navigation.navigate('AuthPage')
+
+          }} name="Skip" />
         </View>
         <View>
           <Image
