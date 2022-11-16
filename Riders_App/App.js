@@ -5,7 +5,6 @@ import store from './src/redux/store';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
-import {Milestone} from './src/components/AddMilestones'
 
 let persistor = persistStore(store);
 

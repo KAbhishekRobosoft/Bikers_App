@@ -12,7 +12,6 @@ import {
 import Swiper from 'react-native-swiper';
 import SmallButton from '../components/SmallButton';
 import ButtonLarge from '../components/Buttons';
-import { useDispatch,useSelector } from 'react-redux';
 
 
 function AppTourScreen({navigation}) {
