@@ -22,6 +22,12 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Rider App requires photo,images access.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Rider App requires camera access for picture access.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Rider App requires quite access for all.</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
