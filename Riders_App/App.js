@@ -13,7 +13,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <Register />
+          <Register />
       </PersistGate>
     </Provider>
   );

@@ -1,15 +1,10 @@
 import {
-  Alert,
   Image,
   ImageBackground,
-  KeyboardAvoidingView,
   Pressable,
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  TextInput,
   View,
 } from 'react-native';
 import React, {useState} from 'react';
@@ -18,7 +13,12 @@ import {Input} from '../components/InputFields';
 import {Password} from '../components/InputFields';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { checkIn } from '../services/Auth';
+import Toast from 'react-native-simple-toast'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { login } from '../redux/RidersSlice';
+import { setToken } from '../redux/RidersSlice';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),
@@ -34,6 +34,24 @@ const registerValidationSchema = yup.object().shape({
 
 const LoginScreen = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
+  const dispatch= useDispatch()
+
+  async function signIn(values){
+      const response= await checkIn(values)
+
+      if (response.hasOwnProperty('token')) {
+        try {
+          await AsyncStorage.setItem('token', response.token);
+        } catch (e) {
+          console.log(e);
+        }
+        dispatch(login(values));
+        dispatch(setToken(response.token))
+      } else {
+        Toast.show('User Does not exist');
+      }
+  }
+  
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.logoView}>
@@ -44,24 +62,13 @@ const LoginScreen = ({navigation}) => {
       </View>
       <View style={styles.loginContainer}>
         <Formik
-          validationSchema={registerValidationSchema}
+          // validationSchema={registerValidationSchema}
           initialValues={{
             number: '',
             password: '',
           }}
           onSubmit={async values => {
-            try {
-              const response = await axios.post(
-                'https://riding-application.herokuapp.com/api/v1/loginPhone',
-                {
-                  mobile: values.number,
-                  password: values.password,
-                },
-              );
-              alert(response.data.message);
-            } catch (error) {
-              console.log('errrr occured');
-            }
+                signIn(values)
           }}>
           {({values, handleSubmit, isValid}) => (
             <>
