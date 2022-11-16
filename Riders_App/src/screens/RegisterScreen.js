@@ -14,7 +14,7 @@ import {Input} from '../components/InputFields';
 import {Password} from '../components/InputFields';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
-import { register } from '../services/Auth';
+import {register} from '../services/Auth';
 import axios from 'axios';
 
 const registerValidationSchema = yup.object().shape({
@@ -46,15 +46,16 @@ const Register = ({navigation}) => {
     <View>
       <SafeAreaView>
         <View style={[styles.header, styles.shadow]}>
-          <Pressable onPress= {()=>{
-              navigation.goBack()
-          }}>
-          <Icon
-            name="arrow-left"
-            color={'white'}
-            size={16}
-            style={styles.icon}
-          />
+          <Pressable
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Icon
+              name="arrow-left"
+              color={'white'}
+              size={16}
+              style={styles.icon}
+            />
           </Pressable>
           <Text style={styles.headerText}>Register</Text>
         </View>
@@ -67,7 +68,7 @@ const Register = ({navigation}) => {
               mobile: '',
               email: '',
             }}
-            onSubmit={ async (values) => {
+            onSubmit={async values => {
               const response = await register(values);
               alert(response.data.message);
             }}>
@@ -83,6 +84,7 @@ const Register = ({navigation}) => {
                   keyboardType="default"
                   secureTextEntry={false}
                   returnKey="next"
+                  
                 />
                 <Field
                   component={Input}
@@ -197,5 +199,21 @@ const styles = StyleSheet.create({
   },
   scrollview: {
     height: '90%',
+  },
+  form1: {
+    marginTop: Platform.OS == 'ios' ? 14 : 15,
+  },
+
+  form: {
+    marginTop: Platform.OS == 'ios' ? 40 : 30,
+  },
+  text: {
+    height: 17,
+    marginBottom: Platform.OS == 'ios' ? 10 : -2,
+    color: Platform.OS == 'ios' ? '#7A7A7A' : '#7A7A7A',
+    // fontFamily: 'Proxima Nova
+    fontSize: 14,
+    letterSpacing: 0.29,
+    lineHeight: 17,
   },
 });
