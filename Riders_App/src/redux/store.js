@@ -1,4 +1,4 @@
-import Reducer from './AuthSlice'
+import Reducer from '../redux/AuthSlice'
 import {configureStore} from '@reduxjs/toolkit';
 import {persistReducer} from 'redux-persist';
 import {combineReducers} from '@reduxjs/toolkit';

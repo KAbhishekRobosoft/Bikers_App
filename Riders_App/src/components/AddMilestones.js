@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     elevation: 5,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     height: 230,
     width: 321,
     alignSelf: 'center',
