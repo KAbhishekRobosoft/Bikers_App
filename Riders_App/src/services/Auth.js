@@ -18,6 +18,34 @@ export const register = async (values) => {
       }
 }
 
+export const checkIn = async values => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/loginPhone',
+      {
+        mobile: values.number,
+        password: values.password,
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.log('user does not exist');
+  }
+};
+
+export const refreshToken = async token => {
+
+  const options = {
+    method: 'POST',
+    url: 'https://riding-application.herokuapp.com/api/v1/getAccessToken',
+    headers: {
+       Authorization: `Bearer ${token}` 
+    }
+  };
+  const response= await axios.request(options)
+  return response.data
+};
+
 export const searchCity = async (string) => {
 
   const options = {
@@ -32,7 +60,5 @@ export const searchCity = async (string) => {
   const response = await axios.request(options)
 
   return response.data.results
-
-  
 
 }
