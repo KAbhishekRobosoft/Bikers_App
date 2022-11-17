@@ -10,7 +10,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
 import NavigationFunctionality from './src/utils/NavigationFunctionality'
 import { NavigationContainer } from '@react-navigation/native';
-import RegisterUserIntro from './src/screens/RegisterUserIntro'
+import RegisterUserIntro from './src/screens/RegisterUserIntro';
 import ImageSuccessPage from './src/screens/ImageSuccessPage'
 import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import BottomTabNavigation from './src/utils/BottomTabNavigation';

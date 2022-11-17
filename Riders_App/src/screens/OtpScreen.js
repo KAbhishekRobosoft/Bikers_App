@@ -9,14 +9,18 @@ import {
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
+import {useDispatch, useSelector} from 'react-redux';
+import {setOtpVerfied} from '../redux/AuthSlice';
 
 const OtpScreen = ({navigation}) => {
   const [code, setCode] = useState('');
+  const authData = useSelector(state => state.auth);
+  const dispatch = useDispatch();
   const [clear, setClear] = useState(false);
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
-        <Pressable onPress={() =>navigation.navigate('Login')}>
+        <Pressable onPress={() => navigation.navigate('Login')}>
           <Icon name="arrow-left" size={24} color="grey" />
         </Pressable>
       </View>
@@ -47,7 +51,11 @@ const OtpScreen = ({navigation}) => {
             onCodeFilled={code => {
               console.log(`Code is ${code}, you are good to go!`);
               setClear(!clear);
-              navigation.navigate('ResetPassword')
+              if (authDetails.forgotPassword === true) {
+                navigation.navigate('ResetPassword');
+              } else {
+                dispatch(setOtpVerfied());
+              }
             }}
           />
         </View>

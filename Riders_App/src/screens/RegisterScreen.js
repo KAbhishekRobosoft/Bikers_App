@@ -16,6 +16,8 @@ import {Formik, Field} from 'formik';
 import * as yup from 'yup';
 import {register} from '../services/Auth';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setRegistered } from '../redux/AuthSlice';
 
 const registerValidationSchema = yup.object().shape({
   userName: yup.string().required('Name is required'),
@@ -41,6 +43,7 @@ const registerValidationSchema = yup.object().shape({
 
 const Register = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
+  const dispatch= useDispatch()
 
   return (
     <View >
@@ -71,6 +74,8 @@ const Register = ({navigation}) => {
             onSubmit={async values => {
               const response = await register(values);
               alert(response.data.message);
+              dispatch(setRegistered())
+              navigation.navigate("Otp")
             }}>
             {({isValid, handleSubmit, values}) => (
               <>

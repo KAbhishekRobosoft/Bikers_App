@@ -19,6 +19,8 @@ import DatePicker from 'react-native-date-picker';
 import {onChange} from 'react-native-reanimated';
 import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
+import { useDispatch } from 'react-redux';
+import { deSetRegistered } from '../redux/AuthSlice';
 
 const CreateTrip = ({navigation}) => {
   const [open1, setOpen1] = useState(false);
@@ -29,6 +31,7 @@ const CreateTrip = ({navigation}) => {
   const [time, setTimer] = useState(new Date());
   const [recommend, setRecommend] = useState(false);
   const [mileStone, setMileStone] = useState(false);
+  const dispatch= useDispatch()
 
   return (
     <SafeAreaView style={styles.main}>
@@ -192,7 +195,9 @@ const CreateTrip = ({navigation}) => {
             <Text style={styles.text}>Add a milestone</Text>
           </View>
           <View style={styles.btn}>
-            <ButtonLarge title="Done" />
+            <ButtonLarge onPress={()=>{
+                  dispatch(deSetRegistered())
+            }} title="Done" />
           </View>
         </View>
       </ScrollView>
