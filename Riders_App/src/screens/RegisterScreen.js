@@ -43,7 +43,7 @@ const Register = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
 
   return (
-    <View>
+    <View >
       <SafeAreaView>
         <View style={[styles.header, styles.shadow]}>
           <Pressable
@@ -143,14 +143,15 @@ const styles = StyleSheet.create({
     height: 64,
     backgroundColor: '#ED7E2B',
     alignItems: 'center',
-    shadowColor: 'grey',
+    shadowColor: 'rgba(0,0,0,0.24)',
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowRadius: 3,
+    shadowRadius: 4,
     shadowOpacity: 0.9,
     elevation: 5,
+    opacity: 0.9,
   },
   shadow: {
     backgroundColor: '#ED7E2B',

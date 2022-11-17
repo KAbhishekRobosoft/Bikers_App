@@ -9,11 +9,6 @@ import {
   Image,
   Pressable,
 } from 'react-native';
-// import {
-//   TextField,
-//   FilledTextField,
-//   OutlinedTextField,
-// } from 'rn-material-ui-textfield';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {searchCity} from '../services/Auth';
 
@@ -45,7 +40,7 @@ export const SearchCity = () => {
             )}
           </>
         </View>
-        <View>
+        <View style={{flexDirection: 'row'}}>
           <TextInput
             name="search"
             placeholder="Where To?"
@@ -53,6 +48,12 @@ export const SearchCity = () => {
             value={text}
             onChangeText={value => search(value)}
             style={styles.textInput}
+          />
+          <Icon
+            name="times"
+            size={20}
+            color={'#A4A4A4'}
+            style={styles.times}
           />
         </View>
       </View>
@@ -94,8 +95,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#B4B3B3',
   },
   placeholder: {
-    // borderWidth: 1,
-    // height: 20,
     marginTop: 7,
   },
   textInput: {
@@ -151,12 +150,12 @@ const styles = StyleSheet.create({
   },
   text: {
     height: 17,
-    // marginBottom: Platform.OS == 'ios' ? 10 : -2,
     color: Platform.OS == 'ios' ? '#7A7A7A' : '#7A7A7A',
-    // fontFamily: 'Proxima Nova
     fontSize: 14,
     letterSpacing: 0.29,
     lineHeight: 17,
   },
+  times: {
+    marginHorizontal: '14%',
+  },
 });
-

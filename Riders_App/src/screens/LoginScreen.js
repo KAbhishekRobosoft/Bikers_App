@@ -17,8 +17,8 @@ import { useDispatch } from 'react-redux';
 import { checkIn } from '../services/Auth';
 import Toast from 'react-native-simple-toast'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { login } from '../redux/RidersSlice';
-import { setToken } from '../redux/RidersSlice';
+import { login } from '../redux/AuthSlice';
+import { setToken } from '../redux/AuthSlice';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),
