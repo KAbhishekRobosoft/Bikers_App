@@ -21,13 +21,16 @@ export default ButtonLarge;
 
 const styles = StyleSheet.create({
   container: {
-    shadowColor: 'grey',
+    shadowColor: 'rgba(126,118,118,0.5)',
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowRadius: 2,
+    shadowRadius: 4,
     shadowOpacity: 0.9,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    elevation: 10
   },
   gradient: {
     height: 42,
