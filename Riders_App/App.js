@@ -8,6 +8,10 @@ import store from './src/redux/store';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
+import {Milestone} from './src/components/AddMilestones'
+import {TripSummary} from './src/screens/TripSummaryScreen'
+import SuccessPasswordScreen from './src/screens/SuccessPasswordScreen'
+import {CreateTripSuccess} from './src/screens/CreateTripSuccessScreen'
 import NavigationFunctionality from './src/utils/NavigationFunctionality'
 import { NavigationContainer } from '@react-navigation/native';
 import RegisterUserIntro from './src/screens/RegisterUserIntro';
@@ -23,9 +27,10 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-      <NavigationContainer>
-          <NavigationFunctionality />
-      </NavigationContainer>
+          {/* <CreateTripSuccess /> */}
+          <TripSummary />
+          {/* <Contact /> */}
+          {/* <NewUserSubStack /> */}
       </PersistGate>
     </Provider>
   );

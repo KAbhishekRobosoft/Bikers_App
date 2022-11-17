@@ -46,6 +46,7 @@ const CreateTrip = ({navigation}) => {
       </View>
       <ScrollView style={{height: '80%'}} showsVerticalScrollIndicator={false}>
         <View style={styles.textInputView}>
+
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('SearchCity');
