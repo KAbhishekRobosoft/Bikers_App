@@ -12,6 +12,11 @@ import {Milestone} from './src/components/AddMilestones'
 import {TripSummary} from './src/screens/TripSummaryScreen'
 import SuccessPasswordScreen from './src/screens/SuccessPasswordScreen'
 import {CreateTripSuccess} from './src/screens/CreateTripSuccessScreen'
+import { BottomTabBar } from '@react-navigation/bottom-tabs';
+import BottomTabNavigation from './src/utils/BottomTabNavigation';
+import WelcomeAboardScreen from './src/screens/WelcomeAboardScreen';
+import NewUserSubStack from './src/utils/NewUserSubStack';
+
 let persistor = persistStore(store);
 
 const App = () => {
@@ -19,8 +24,9 @@ const App = () => {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
           {/* <CreateTripSuccess /> */}
-          {/* <Register /> */}
-          <CreateTrip />
+          <TripSummary />
+          {/* <Contact /> */}
+          {/* <NewUserSubStack /> */}
       </PersistGate>
     </Provider>
   );

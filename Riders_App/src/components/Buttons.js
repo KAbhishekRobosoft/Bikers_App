@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 export const CreateButton = (props) => {
   return (
-    <Pressable onPress={props.onPress} disabled={props.disabled}>
+    <Pressable onPress={props.onPress}>
       <View style={styles.containerCreateButton}>
         <LinearGradient
           start={{x: 0, y: 0}}
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 4,
     shadowOpacity: 0.9,
-    width: 700,
+    width: 400,
     height: 42
   },
   gradientCreateButton: {

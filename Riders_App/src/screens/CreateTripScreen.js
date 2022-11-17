@@ -5,27 +5,32 @@ import {
   View,
   Image,
   Pressable,
+  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
 import DateTimePickerAndroid from '@react-native-community/datetimepicker';
 import DatePicker from 'react-native-date-picker';
 import {onChange} from 'react-native-reanimated';
 import Recommendations from '../components/Recommendations';
+import {Milestone} from '../components/AddMilestones';
 
-const CreateTrip2 = () => {
+const CreateTrip = ({navigation}) => {
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [date, setDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [time, setTimer] = useState(new Date());
-  const [recommend,setRecommend]=useState(false)
+  const [recommend, setRecommend] = useState(false);
+  const [mileStone, setMileStone] = useState(false);
+  const [go, setGo] = useState('');
+
   return (
     <SafeAreaView style={styles.main}>
       <View style={[styles.header]}>
@@ -37,15 +42,22 @@ const CreateTrip2 = () => {
         </Pressable>
         <Text style={styles.headerText}>Create a trip</Text>
       </View>
-      <ScrollView style={{height: '80%'}}>
+      <ScrollView style={{height: '80%'}} showsVerticalScrollIndicator={false}>
         <View style={styles.textInputView}>
-          <TextInput
-            name="Go"
-            placeholderTextColor={'#4F504F'}
-            placeholder="Where do you want to go?"
-            style={styles.inputText}
-          />
+
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('SearchCity');
+            }}>
+            <TextInput
+              name="Go"
+              placeholderTextColor={'#4F504F'}
+              placeholder="Where do you want to go?"
+              style={styles.inputText}
+            />
+          </TouchableOpacity>
         </View>
+
         <View style={styles.textInputView}>
           <TextInput
             name="From"
@@ -81,6 +93,7 @@ const CreateTrip2 = () => {
               <DatePicker
                 mode="date"
                 modal
+                minimumDate={new Date()}
                 open={open1}
                 date={date}
                 onConfirm={value => {
@@ -105,6 +118,8 @@ const CreateTrip2 = () => {
               <DatePicker
                 mode="date"
                 modal
+                minimumDate={new Date()}
+                s
                 open={open2}
                 date={endDate}
                 onConfirm={value => {
@@ -119,41 +134,41 @@ const CreateTrip2 = () => {
               />
             </Pressable>
           </View>
-        </View>
-        <View style={styles.timeView}>
-          <TextInput
-            style={styles.dateText}
-            placeholderTextColor={'#4F504F'}
-            placeholder="Start time"
-            value={time.toLocaleTimeString()}
-          />
-          <Pressable
-            onPress={() => {
-              setOpen3(true);
-            }}>
-            <DatePicker
-              mode="time"
-              modal
-              open={open3}
-              date={time}
-              onConfirm={value => {
-                setTimer(value);
-                setOpen3(false);
-              }}
-              onCancel={() => setOpen3(false)}
+          <View style={styles.timeView}>
+            <TextInput
+              style={styles.dateText}
+              placeholderTextColor={'#4F504F'}
+              placeholder="Start time"
+              value={time.toLocaleTimeString()}
             />
-            <Image
-              style={styles.calenderImg}
-              source={require('../assets/images/clock.png')}
-            />
-          </Pressable>
+            <Pressable
+              onPress={() => {
+                setOpen3(true);
+              }}>
+              <DatePicker
+                mode="time"
+                modal
+                open={open3}
+                date={time}
+                onConfirm={value => {
+                  setTimer(value);
+                  setOpen3(false);
+                }}
+                onCancel={() => setOpen3(false)}
+              />
+              <Image
+                style={styles.calenderImg}
+                source={require('../assets/images/clock.png')}
+              />
+            </Pressable>
+          </View>
         </View>
-        <View >
-          {recommend? <Recommendations />:null}
-        
+        <View>
+          {recommend ? <Recommendations /> : null}
+
           <View style={styles.addUserView}>
             <View style={styles.addUserImgView}>
-              <Pressable onPress={()=>setRecommend(!recommend)}>
+              <Pressable onPress={() => setRecommend(!recommend)}>
                 <Image
                   style={styles.calenderImg}
                   source={require('../assets/images/adduser.png')}
@@ -162,12 +177,19 @@ const CreateTrip2 = () => {
             </View>
             <Text style={styles.text}>Invite other riders</Text>
           </View>
-          <View style={styles.inviteRidersView}>
+          {mileStone ? (
+            <View style={styles.mileStone}>
+              <Milestone />
+            </View>
+          ) : null}
+          <View style={styles.addMileStoneView}>
             <View style={styles.addUserImgView}>
-              <Image
-                style={styles.calenderImg}
-                source={require('../assets/images/mileStone.png')}
-              />
+              <Pressable onPress={() => setMileStone(!mileStone)}>
+                <Image
+                  style={styles.calenderImg}
+                  source={require('../assets/images/mileStone.png')}
+                />
+              </Pressable>
             </View>
             <Text style={styles.text}>Add a milestone</Text>
           </View>
@@ -180,7 +202,7 @@ const CreateTrip2 = () => {
   );
 };
 
-export default CreateTrip2;
+export default CreateTrip;
 
 const styles = StyleSheet.create({
   main: {flex: 1, backgroundColor: '#ffffff'},
@@ -209,7 +231,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Medium',
   },
   textInputView: {
-    width: '90%',
+    width: '85%',
     height: 70,
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',
@@ -217,26 +239,26 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
   },
   inputText: {
-    // borderWidth:1,
-    marginTop: 30,
+    marginTop: 38,
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
     height: 40,
+    width: 195,
   },
   calenderView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-
-    // alignSelf: 'center',
+    width: '85%',
+    alignSelf: 'center',
+    flexWrap: 'wrap',
     marginVertical: 50,
     marginHorizontal: 30,
-    // backgroundColor: 'cyan',
+    height: '10%',
   },
   startDateView: {
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',
     flexDirection: 'row',
-    // backgroundColor: 'grey',
     width: '40%',
     justifyContent: 'space-between',
     paddingBottom: Platform.OS === 'ios' ? 3 : 0,
@@ -246,11 +268,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',
     flexDirection: 'row',
-    // backgroundColor: 'grey',
-    width: '33%',
+    width: '40%',
     justifyContent: 'space-between',
     paddingBottom: Platform.OS === 'ios' ? 3 : 0,
-    marginHorizontal: 30,
+    marginTop: 50,
     alignItems: 'center',
   },
 
@@ -258,30 +279,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
     color: 'black',
-
-    // paddingBottom: 3,
-    // backgroundColor: 'red',
-    //width: '50%',
   },
   calenderImg: {
     width: 22,
     height: 22,
-    // paddingRight: 10,
     resizeMode: 'contain',
   },
   addUserView: {
     flexDirection: 'row',
-    //backgroundColor: 'grey',
     alignItems: 'center',
-    //marginTop: 50,
     height: 100,
     borderBottomColor: '#B4B3B3',
     borderBottomWidth: 1,
     paddingHorizontal: 28,
   },
-  inviteRidersView: {
+  addMileStoneView: {
     flexDirection: 'row',
-   // backgroundColor: 'grey',
     alignItems: 'center',
     height: 100,
     borderBottomColor: '#B4B3B3',
@@ -313,7 +326,10 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   btn: {
-    marginVertical: 20,
+    marginVertical: 40,
     alignItems: 'center',
+  },
+  mileStone: {
+    marginTop: 10,
   },
 });
