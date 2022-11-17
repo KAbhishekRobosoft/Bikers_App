@@ -4,10 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const ButtonLarge = props => {
   return (
-    <Pressable
-      style={styles.btn}
-      onPress={props.onPress}
-      disabled={props.disabled}>
+    <Pressable onPress={props.onPress} disabled={props.disabled}>
       <View style={styles.container}>
         <LinearGradient
           start={{x: 0, y: 0}}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -14,10 +14,12 @@ import {Input} from '../components/InputFields';
 import {Password} from '../components/InputFields';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
+import {register} from '../services/Auth';
+import axios from 'axios';
 
 const registerValidationSchema = yup.object().shape({
-  name: yup.string().required('Name is required'),
-  mobileNumber: yup
+  userName: yup.string().required('Name is required'),
+  mobile: yup
     .string()
     .matches(/(\d){10}\b/, 'Enter a valid mobile number')
     .required(''),
@@ -44,15 +46,16 @@ const Register = ({navigation}) => {
     <View>
       <SafeAreaView>
         <View style={[styles.header, styles.shadow]}>
-          <Pressable onPress= {()=>{
-              navigation.goBack()
-          }}>
-          <Icon
-            name="arrow-left"
-            color={'white'}
-            size={16}
-            style={styles.icon}
-          />
+          <Pressable
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Icon
+              name="arrow-left"
+              color={'white'}
+              size={16}
+              style={styles.icon}
+            />
           </Pressable>
           <Text style={styles.headerText}>Register</Text>
         </View>
@@ -60,27 +63,34 @@ const Register = ({navigation}) => {
           <Formik
             validationSchema={registerValidationSchema}
             initialValues={{
-              name: '',
+              userName: '',
               password: '',
-              mobileNumber: '',
+              mobile: '',
               email: '',
+            }}
+            onSubmit={async values => {
+              const response = await register(values);
+              alert(response.data.message);
             }}>
-            {({isValid}) => (
+            {({isValid, handleSubmit, values}) => (
               <>
                 <Field
                   component={Input}
-                  name="name"
+                  name="userName"
                   placeholder="Name"
+                  value={values.userName}
                   source={require('../assets/images/user.png')}
                   styleUser={styles.name}
                   keyboardType="default"
                   secureTextEntry={false}
                   returnKey="next"
+                  
                 />
                 <Field
                   component={Input}
-                  name="mobileNumber"
+                  name="mobile"
                   placeholder="Registerted mobile number"
+                  value={values.mobile}
                   source={require('../assets/images/phone-call.png')}
                   styleUser={styles.call}
                   keyboardType="numeric"
@@ -91,6 +101,7 @@ const Register = ({navigation}) => {
                   component={Input}
                   name="email"
                   placeholder="Email"
+                  value={values.email}
                   source={require('../assets/images/new-email-outline.png')}
                   styleUser={styles.email}
                   keyboardType="email-address"
@@ -100,6 +111,7 @@ const Register = ({navigation}) => {
                   component={Password}
                   name="password"
                   placeholder="Password"
+                  value={values.password}
                   source={require('../assets/images/locked.png')}
                   styleUser={styles.lock}
                   keyboardType="default"
@@ -107,7 +119,11 @@ const Register = ({navigation}) => {
                   onPress={() => setSecureText(!secureText)}
                 />
                 <View style={styles.btnView}>
-                  <ButtonLarge title="REGISTER" disabled={!isValid} onPress={() => console.log('button submitted')} />
+                  <ButtonLarge
+                    title="REGISTER"
+                    disabled={!isValid}
+                    onPress={handleSubmit}
+                  />
                 </View>
               </>
             )}
@@ -183,5 +199,21 @@ const styles = StyleSheet.create({
   },
   scrollview: {
     height: '90%',
+  },
+  form1: {
+    marginTop: Platform.OS == 'ios' ? 14 : 15,
+  },
+
+  form: {
+    marginTop: Platform.OS == 'ios' ? 40 : 30,
+  },
+  text: {
+    height: 17,
+    marginBottom: Platform.OS == 'ios' ? 10 : -2,
+    color: Platform.OS == 'ios' ? '#7A7A7A' : '#7A7A7A',
+    // fontFamily: 'Proxima Nova
+    fontSize: 14,
+    letterSpacing: 0.29,
+    lineHeight: 17,
   },
 });

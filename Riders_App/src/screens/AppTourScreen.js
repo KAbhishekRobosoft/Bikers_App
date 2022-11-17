@@ -13,6 +13,7 @@ import Swiper from 'react-native-swiper';
 import SmallButton from '../components/SmallButton';
 import ButtonLarge from '../components/Buttons';
 
+
 function AppTourScreen({navigation}) {
   const {width, height} = useWindowDimensions();
   const marginRight = width > height ? (Platform.OS === 'ios' ? 80 : 80) : 10;
@@ -32,7 +33,9 @@ function AppTourScreen({navigation}) {
       loop={false}>
       <SafeAreaView style={styles.slide1}>
         <View style={[styles.appIntroBut1, {marginRight: marginRight}]}>
-          <SmallButton onPress= {()=>navigation.navigate('Login')} name="Skip" />
+          <SmallButton onPress= {()=>{navigation.navigate('AuthPage')
+
+          }} name="Skip" />
         </View>
         <View>
           <Image
