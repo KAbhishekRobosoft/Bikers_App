@@ -54,6 +54,8 @@ const LoginScreen = ({navigation}) => {
   
   return (
     <SafeAreaView style={styles.main}>
+    <ScrollView horizontal={false}>
+    <View style={styles.main}>
       <View style={styles.logoView}>
         <Image
           source={require('../assets/images/appicon.png')}
@@ -135,7 +137,10 @@ const LoginScreen = ({navigation}) => {
           </View>
         </ImageBackground>
       </View>
+      </View>
+      </ScrollView>
     </SafeAreaView>
+
   );
 };
 
@@ -144,7 +149,6 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    alignItems: 'center',
     backgroundColor: '#fff',
   },
   logoView: {
@@ -198,7 +202,6 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     marginTop: 30,
-    position: 'absolute',
     bottom: 0,
   },
   bottomView: {

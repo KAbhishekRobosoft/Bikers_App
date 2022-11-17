@@ -12,6 +12,10 @@ import {Milestone} from './src/components/AddMilestones'
 import {TripSummary} from './src/screens/TripSummaryScreen'
 import SuccessPasswordScreen from './src/screens/SuccessPasswordScreen'
 import {CreateTripSuccess} from './src/screens/CreateTripSuccessScreen'
+import NavigationFunctionality from './src/utils/NavigationFunctionality'
+import { NavigationContainer } from '@react-navigation/native';
+import RegisterUserIntro from './src/screens/RegisterUserIntro'
+import ImageSuccessPage from './src/screens/ImageSuccessPage'
 import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import BottomTabNavigation from './src/utils/BottomTabNavigation';
 import WelcomeAboardScreen from './src/screens/WelcomeAboardScreen';

@@ -58,6 +58,23 @@ export const searchCity = async string => {
     },
   };
   const response = await axios.request(options);
+  return response.data.results
+}
 
-  return response.data.results;
-};
+export const uploadImage= async (image)=>{
+
+  const payload= new FormData()
+  payload.append('image',image)
+  console.log(payload)
+
+  const config= {
+    body:payload,
+    method:'POST',
+    headers:{
+      "Content-Type":'multipart/form-data',
+      "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTQ4MTY3NjM0OCIsImlhdCI6MTY2ODY3NDYyNSwiZXhwIjoxNjY4Njc4MjI1fQ.0fksV3cB8WOgJw8HAGq6ZKeANbb87zjAs1EHGaoYFCo`
+    },
+  }
+  const response= await axios.request('https://riding-application.herokuapp.com/api/v1/profileImageUpload',config)
+  return response.data
+}
