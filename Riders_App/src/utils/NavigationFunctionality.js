@@ -2,10 +2,9 @@ import React,{useEffect} from 'react'
 import {View,ActivityIndicator,Button} from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setToken } from '../redux/RidersSlice';
+import { setToken } from '../redux/AuthSlice';
 import AppTourStack from './AppTourStack';
 import StackNavigation from './StackNavigation';
-import { logout } from '../redux/RidersSlice';
 import PracScreen from '../screens/PracScreen';
 
 function NavigationFunctionality() {
@@ -44,7 +43,7 @@ function NavigationFunctionality() {
   return (
     
         authData.infoPage !== false ?<AppTourStack /> :(
-            authData.userToken === null ? <StackNavigation /> :<PracScreen />
+            (authData.userToken === null) ? <StackNavigation /> :authData.userToken !== null && authData.otpVerified === true && <PracScreen />
         ))
 }
 

@@ -1,10 +1,12 @@
 import * as React from 'react';
-import Register from './src/screens/RegisterScreen';
-import { SearchCity } from './src/screens/SearchCity';
 import store from './src/redux/store';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
+import NavigationFunctionality from './src/utils/NavigationFunctionality'
+import { NavigationContainer } from '@react-navigation/native';
+import RegisterUserIntro from './src/screens/RegisterUserIntro'
+import ImageSuccessPage from './src/screens/ImageSuccessPage'
 
 let persistor = persistStore(store);
 
@@ -12,7 +14,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-          <Register />
+      <NavigationContainer>
+          <NavigationFunctionality />
+      </NavigationContainer>
       </PersistGate>
     </Provider>
   );

@@ -6,7 +6,9 @@ const authenticateSlice = createSlice({
     userData: {},
     isLoading: true,
     infoPage:true,
-    userToken:null
+    userToken:null,
+    otpVerified:false,
+    registered:false
   },
   reducers: {
     login: (state, action) => {
@@ -16,15 +18,24 @@ const authenticateSlice = createSlice({
     },
 
     logOut: state => {
-      state.userData = null;
-      state.isLoading = false;
+      state.userData = null
+      state.isLoading = false
       state.userToken= null
+      state.otpVerified= false
     },
 
     setToken:(state,action)=>{
       state.userToken= action.payload
       state.isLoading= false
-    }
+    },
+
+    setOtpVerfied:(state)=>{
+      state.otpVerified= true
+    },
+
+    setRegistered:(state)=>{
+      state.registered= true
+    },
   },
 });
 

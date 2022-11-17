@@ -17,8 +17,9 @@ import { useDispatch } from 'react-redux';
 import { checkIn } from '../services/Auth';
 import Toast from 'react-native-simple-toast'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { login } from '../redux/RidersSlice';
-import { setToken } from '../redux/RidersSlice';
+import { login } from '../redux/AuthSlice';
+import { setToken } from '../redux/AuthSlice';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),
@@ -54,6 +55,8 @@ const LoginScreen = ({navigation}) => {
   
   return (
     <SafeAreaView style={styles.main}>
+    <ScrollView horizontal={false}>
+    <View style={styles.main}>
       <View style={styles.logoView}>
         <Image
           source={require('../assets/images/appicon.png')}
@@ -96,7 +99,7 @@ const LoginScreen = ({navigation}) => {
                   onPress={() => setSecureText(!secureText)}
                 />
               </View>
-              <Pressable onPress= {()=>navigation.navigate('Otp')}>
+              <Pressable style={{alignSelf:"flex-end",marginRight:17}} onPress= {()=>navigation.navigate('Otp')}>
                 <Text style={styles.forgetText}>Forgot Password</Text>
               </Pressable>
               <View style={styles.buttonView}>
@@ -132,7 +135,10 @@ const LoginScreen = ({navigation}) => {
           </View>
         </ImageBackground>
       </View>
+      </View>
+      </ScrollView>
     </SafeAreaView>
+
   );
 };
 
@@ -141,7 +147,6 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    alignItems: 'center',
     backgroundColor: '#fff',
   },
   logoView: {
@@ -195,7 +200,6 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     marginTop: 30,
-    position: 'absolute',
     bottom: 0,
   },
   bottomView: {
