@@ -11,16 +11,16 @@ import {persistStore} from 'redux-persist';
 import {Milestone} from './src/components/AddMilestones'
 import {TripSummary} from './src/screens/TripSummaryScreen'
 import SuccessPasswordScreen from './src/screens/SuccessPasswordScreen'
-
+import {CreateTripSuccess} from './src/screens/CreateTripSuccessScreen'
 let persistor = persistStore(store);
 
 const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-          <SuccessPasswordScreen />
+          {/* <CreateTripSuccess /> */}
           {/* <Register /> */}
-          {/* <CreateTrip /> */}
+          <CreateTrip />
       </PersistGate>
     </Provider>
   );

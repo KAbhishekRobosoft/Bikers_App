@@ -9,9 +9,9 @@ import {
   } from 'react-native';
   import React from 'react';
   import Icon from 'react-native-vector-icons/FontAwesome5';
-  import ButtonLarge from '../components/Buttons';
+  import ButtonLarge from './Buttons';
 
-  export const Success = () => {
+  export const Success = (props) => {
     return (
         <SafeAreaView style={styles.main}>
           <View style={styles.header}>
@@ -29,11 +29,13 @@ import {
               source={require('../assets/images/greenTick.png')}
             />
             <View style={styles.textView1}>
-              <Text style={styles.successText}>Success!!</Text>
+              <Text style={styles.successText}>{props.greet}</Text>
             </View>
             <View style={styles.textView2}>
-              <Text style={styles.text}>Your Password has been successfully changed.</Text>
+              <Text style={styles.text}>{props.text2}</Text>
+              <Text style={styles.text}>{props.text3}</Text>
             </View>
+    
             <View style={styles.btn}>
               <ButtonLarge title="Done" />
             </View>
@@ -77,10 +79,7 @@ import {
     },
     textView2: {
       marginTop: 20,
-      justifyContent: 'space-evenly',
-      borderWidth: 1,
-      width: 170,
-
+      alignItems: 'center',
     },
     successText: {
       fontSize: 20,
