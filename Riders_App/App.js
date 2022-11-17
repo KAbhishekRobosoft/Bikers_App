@@ -1,12 +1,9 @@
 import * as React from 'react';
-<<<<<<< HEAD
-=======
 import Recommendations from './src/components/Recommendations';
 import CreateTrip from './src/screens/CreateTripScreen';
 import StackNavigation from './src/utils/StackNavigation';
 import Register from './src/screens/RegisterScreen';
 import { SearchCity } from './src/screens/SearchCityScreen';
->>>>>>> ee0e7d3a408e7bc955a95a79a77082825934724d
 import store from './src/redux/store';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';

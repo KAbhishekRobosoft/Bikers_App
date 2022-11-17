@@ -304,11 +304,9 @@ PODS:
   - React-jsinspector (0.70.5)
   - React-logger (0.70.5):
     - glog
-<<<<<<< HEAD
-  - react-native-image-picker (4.10.1):
-=======
   - react-native-date-picker (4.2.6):
->>>>>>> ee0e7d3a408e7bc955a95a79a77082825934724d
+    - React-Core
+  - react-native-image-picker (4.10.1):
     - React-Core
   - react-native-pager-view (6.1.0):
     - React-Core
@@ -491,11 +489,8 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
-<<<<<<< HEAD
-  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
-=======
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
->>>>>>> ee0e7d3a408e7bc955a95a79a77082825934724d
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
@@ -586,13 +581,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   React-logger:
     :path: "../node_modules/react-native/ReactCommon/logger"
-<<<<<<< HEAD
-  react-native-image-picker:
-    :path: "../node_modules/react-native-image-picker"
-=======
   react-native-date-picker:
     :path: "../node_modules/react-native-date-picker"
->>>>>>> ee0e7d3a408e7bc955a95a79a77082825934724d
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-pager-view:
     :path: "../node_modules/react-native-pager-view"
   react-native-safe-area-context:
@@ -678,8 +670,8 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 31564fa6912459921568e8b0e49024285a4d584b
   React-jsinspector: badd81696361249893a80477983e697aab3c1a34
   React-logger: fdda34dd285bdb0232e059b19d9606fa0ec3bb9c
-  react-native-image-picker: f2ab1215d17bcfe27b0eb6417cc236fd1f4775e7
   react-native-date-picker: 93e43b3084cea595b4d68b1405d6d99849663bd6
+  react-native-image-picker: f2ab1215d17bcfe27b0eb6417cc236fd1f4775e7
   react-native-pager-view: 7abf89f9834d9a4021b2fb6a5ef2abff570b46fb
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
   react-native-simple-toast: 8ee5d23f0b92b935ab7434cdb65159ce12dfb4b7
