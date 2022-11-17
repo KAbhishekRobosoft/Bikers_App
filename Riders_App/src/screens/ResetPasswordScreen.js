@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   Image,
   TextInput,
+  Pressable,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
@@ -14,7 +15,9 @@ const ResetPasswordScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
-        <Icon name="arrow-left" size={24} color="grey" />
+        <Pressable onPress={() => navigation.goBack()}>
+          <Icon name="arrow-left" size={24} color="grey" />
+        </Pressable>
       </View>
       <View style={styles.imgContainer}>
         <Image
@@ -41,7 +44,10 @@ const ResetPasswordScreen = ({navigation}) => {
           />
         </View>
         <View style={styles.btn}>
-          <ButtonLarge onPress= {()=>navigation.navigate('ResetSuccess')} title="RESET" />
+          <ButtonLarge
+            onPress={() => navigation.navigate('Login')}
+            title="RESET"
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -82,7 +88,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#575656',
     fontFamily: 'Roboto-Regular',
-
   },
   bottomView: {
     height: '52%',
@@ -107,7 +112,7 @@ const styles = StyleSheet.create({
     borderColor: '#B4B3B3',
     height: 50,
     marginTop: 15,
-    paddingTop:"5%"
+    paddingTop: '5%',
   },
   btn: {
     marginTop: 40,
