@@ -7,6 +7,7 @@ import ResetPasswordScreen from '../screens/ResetPasswordScreen'
 import SuccessPasswordScreen from '../screens/SuccessPasswordScreen'
 import Register from '../screens/RegisterScreen';
 
+
 const Stack = createNativeStackNavigator();
 
 function StackNavigation() {
@@ -18,6 +19,7 @@ function StackNavigation() {
         <Stack.Screen options={{headerShown: false}} name="Confirm" component={BikeConfirmationScreen} />
         <Stack.Screen options={{headerShown: false}} name="ResetPassword" component={ResetPasswordScreen} />
         <Stack.Screen options={{headerShown: false}} name="ResetSuccess" component={SuccessPasswordScreen} />
+
       </Stack.Navigator>
   );
 }

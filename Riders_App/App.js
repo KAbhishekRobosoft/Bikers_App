@@ -8,6 +8,10 @@ import store from './src/redux/store';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
+import { BottomTabBar } from '@react-navigation/bottom-tabs';
+import BottomTabNavigation from './src/utils/BottomTabNavigation';
+import WelcomeAboardScreen from './src/screens/WelcomeAboardScreen';
+import NewUserSubStack from './src/utils/NewUserSubStack';
 
 let persistor = persistStore(store);
 
@@ -15,7 +19,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-          <CreateTrip />
+          <NewUserSubStack />
       </PersistGate>
     </Provider>
   );
