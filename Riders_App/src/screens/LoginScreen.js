@@ -17,8 +17,8 @@ import { useDispatch } from 'react-redux';
 import { checkIn } from '../services/Auth';
 import Toast from 'react-native-simple-toast'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { login } from '../redux/RidersSlice';
-import { setToken } from '../redux/RidersSlice';
+import { login } from '../redux/AuthSlice';
+import { setToken } from '../redux/AuthSlice';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),
@@ -96,9 +96,12 @@ const LoginScreen = ({navigation}) => {
                   onPress={() => setSecureText(!secureText)}
                 />
               </View>
-              <Pressable onPress= {()=>navigation.navigate('Otp')}>
-                <Text style={styles.forgetText}>Forgot Password</Text>
-              </Pressable>
+              <View style={styles.forgetTextView}>
+                <Pressable onPress={() => navigation.navigate('Otp')}>
+                  <Text style={styles.forgetText}>Forgot Password</Text>
+                </Pressable>
+              </View>
+
               <View style={styles.buttonView}>
                 <ButtonLarge
                   disabled={!isValid}
@@ -185,11 +188,11 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontFamily: 'Roboto-Regular',
   },
+  forgetTextView:{width:"85%"},
   forgetText: {
     color: '#EF8B40',
     fontSize: 16,
     marginTop: 20,
-    width: '88%',
     textAlign: 'right',
     fontFamily: 'Roboto-Regular',
   },

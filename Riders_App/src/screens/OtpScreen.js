@@ -10,13 +10,13 @@ import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 
-const OtpScreen = () => {
+const OtpScreen = ({navigation}) => {
   const [code, setCode] = useState('');
   const [clear, setClear] = useState(false);
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
-        <Pressable onPress={() => console.log('back')}>
+        <Pressable onPress={() =>navigation.navigate('Login')}>
           <Icon name="arrow-left" size={24} color="grey" />
         </Pressable>
       </View>
@@ -47,6 +47,7 @@ const OtpScreen = () => {
             onCodeFilled={code => {
               console.log(`Code is ${code}, you are good to go!`);
               setClear(!clear);
+              navigation.navigate('ResetPassword')
             }}
           />
         </View>

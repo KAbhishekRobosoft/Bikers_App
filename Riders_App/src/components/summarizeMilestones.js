@@ -19,9 +19,20 @@ export const TripSummaryList = () => {
       {summaryData !== 0
         ? summaryData.map(item => {
             return (
-              <View style={styles.mainView}>
+              <View
+                style={styles.mainView}
+                key={Math.floor(Math.random() * 100)}>
                 <View style={styles.dotView}>
-                  <Image source={require('../assets/images/Oval.png')} />
+                  <View>
+                    <Image source={require('../assets/images/Oval.png')} />
+                  </View>
+                  {/* <View
+                    style={{
+                      height: 110,
+                      backgroundColor: 'orange',
+                      // borderWidth: 2,
+                      width: 1
+                    }}></View> */}
                 </View>
                 <View style={styles.milestoneView}>
                   <LinearGradient
@@ -29,18 +40,22 @@ export const TripSummaryList = () => {
                     end={{x: 0, y: 0.45}}
                     colors={['#fbe5d4', 'rgba(255,255,255,0)']}
                     style={styles.gradient}>
-                        <Text style={styles.numbers}>Milestone {item.milestone}</Text>
-                        <View style={styles.lineView1}></View>
-                        <View style={styles.fromToView}>
-                            <Text style={styles.textUdupi}>{item.from}</Text>
-                            <View style={{flexDirection: 'column',paddingHorizontal: 6}}>
-                                <Text style={styles.descriptionOverLine}>{item.distance} - {item.duration}</Text>
-                                <View style={styles.lineView2}></View>
-                            </View>
-                            <Text style={styles.textUdupi}>{item.to}</Text>
-                        </View>
-                    </LinearGradient>
-                    
+                    <Text style={styles.numbers}>
+                      Milestone {item.milestone}
+                    </Text>
+                    <View style={styles.lineView1}></View>
+                    <View style={styles.fromToView}>
+                      <Text style={styles.textUdupi}>{item.from}</Text>
+                      <View
+                        style={{flexDirection: 'column', paddingHorizontal: 6}}>
+                        <Text style={styles.descriptionOverLine}>
+                          {item.distance} - {item.duration}
+                        </Text>
+                        <View style={styles.lineView2}></View>
+                      </View>
+                      <Text style={styles.textUdupi}>{item.to}</Text>
+                    </View>
+                  </LinearGradient>
                 </View>
               </View>
             );
@@ -58,6 +73,8 @@ const styles = StyleSheet.create({
   dotView: {
     width: '15%',
     alignItems: 'center',
+    height: 30,
+    marginTop: -15,
   },
   gradient: {
     borderRadius: 13,
@@ -79,13 +96,13 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 13,
     elevation: 2,
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   numbers: {
     fontFamily: 'Roboto-Regular',
     fontSize: 18,
     lineHeight: 24,
-    color: '#ED7E2B'
+    color: '#ED7E2B',
   },
   lineView1: {
     borderWidth: 0.5,
@@ -95,21 +112,22 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   lineView2: {
-    borderWidth: 0.5,
+    borderWidth: 0.1,
     height: 1,
     width: '100%',
     borderColor: 'rgba(151,151,151,0.4)',
+    backgroundColor: 'rgba(151,151,151,0.4)',
   },
   fromToView: {
     flexDirection: 'row',
     marginTop: 20,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   textUdupi: {
     fontFamily: 'Roboto-Regular',
     fontSize: 16,
     lineHeight: 21,
-    color: 'rgba(58,57,57,0.87)'
+    color: 'rgba(58,57,57,0.87)',
   },
   descriptionOverLine: {
     fontFamily: 'Roboto-Regular',

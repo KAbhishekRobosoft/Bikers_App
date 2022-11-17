@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {TripSummaryList} from '../components/summarizeMilestones';
+import { RecommendationTripSummary } from '../components/Recommendations';
+import { CreateButton } from '../components/Buttons';
 
 export const TripSummary = () => {
   return (
@@ -55,6 +57,23 @@ export const TripSummary = () => {
           </View>
           <View style={styles.listView}>
             <TripSummaryList />
+            <View style={styles.recommendationsView}>
+              <RecommendationTripSummary />
+            </View>
+            <View style={styles.addUserView}>
+              <View style={styles.addUserImgView}>
+                <Pressable>
+                  <Image
+                    style={styles.calenderImg}
+                    source={require('../assets/images/adduser.png')}
+                  />
+                </Pressable>
+              </View>
+              <Text style={styles.text}>Invite other riders</Text>
+            </View>
+            <View style={styles.buttonView}>
+              <CreateButton title="CREATE" />
+            </View>
           </View>
         </ScrollView>
       </View>
@@ -65,11 +84,11 @@ export const TripSummary = () => {
 const styles = StyleSheet.create({
   mainView: {
     backgroundColor: 'white',
+    // height: '100%',
+  },
+  scrollView: {
     height: '100%',
   },
-//   scrollView: {
-//     height: '90%',
-//   },
   header: {
     flexDirection: 'row',
     width: '100%',
@@ -84,7 +103,8 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.9,
     elevation: 5,
-    justifyContent: 'space-between',opacity: 0.9
+    justifyContent: 'space-between',
+    opacity: 0.9,
   },
   subHeader: {
     flexDirection: 'row',
@@ -104,15 +124,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 25,
   },
   mapView: {
-    height: 325,
+    height: 270,
     width: '100%',
-    borderWidth: 1,
+    // borderWidth: 1,
     backgroundColor: 'grey',
   },
   summaryView: {
     height: 186,
     marginHorizontal: 20,
-    marginTop: 260,
+    marginTop: 210,
     shadowColor: 'rgba(179,172,172,0.5)',
     shadowOffset: {
       width: 2,
@@ -161,8 +181,51 @@ const styles = StyleSheet.create({
     height: 1,
     width: 61,
     borderColor: 'rgba(151,151,151,0.4)',
+    backgroundColor: 'rgba(151,151,151,0.4)',
   },
   listView: {
-    marginVertical: 150,
+    marginVertical: 155,
+  },
+  recommendationsView: {
+    paddingTop: 20,
+  },
+  buttonView: {
+    paddingTop: 40,
+    alignItems: 'center'
+  },
+  calenderImg: {
+    width: 22,
+    height: 22,
+    resizeMode: 'contain',
+  },
+  addUserView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 70,
+    paddingHorizontal: 28,
+  },
+  addUserImgView: {
+    backgroundColor: 'white',
+    width: 46,
+    height: 46,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: 'grey',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 3,
+    shadowOpacity: 0.6,
+    elevation: 5,
+  },
+  text: {
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
+    color: '#4F504F',
+    width: '70%',
+    textAlign: 'left',
+    marginLeft: 10,
   },
 });
