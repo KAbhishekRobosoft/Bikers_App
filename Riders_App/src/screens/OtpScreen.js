@@ -11,8 +11,10 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import {useDispatch, useSelector} from 'react-redux';
 import {setOtpVerfied} from '../redux/AuthSlice';
+import { register } from '../services/Auth';
 
 const OtpScreen = ({navigation}) => {
+  const data= useSelector(state=>state.auth)
   const [code, setCode] = useState('');
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
@@ -40,7 +42,6 @@ const OtpScreen = ({navigation}) => {
             style={{width: '70%', height: 200, color: '#fff000'}}
             pinCount={4}
             clearInputs={clear}
-            // code={this.state.code} //You can supply this prop or not. The component will be used as a controlled / uncontrolled component respectively.
             onCodeChanged={code => {
               setCode(code);
             }}
@@ -48,13 +49,15 @@ const OtpScreen = ({navigation}) => {
             keyboardType="numeric"
             codeInputFieldStyle={styles.underlineStyleBase}
             codeInputHighlightStyle={styles.underlineStyleHighLighted}
-            onCodeFilled={code => {
-              console.log(`Code is ${code}, you are good to go!`);
+            onCodeFilled={async code => {
               setClear(!clear);
-              if (authDetails.forgotPassword === true) {
+              if (authData.forgotPassword === true) {
                 navigation.navigate('ResetPassword');
               } else {
                 dispatch(setOtpVerfied());
+                const response= await register(authData.userData)
+                alert(response.message)
+                navigation.navigate('Login')
               }
             }}
           />

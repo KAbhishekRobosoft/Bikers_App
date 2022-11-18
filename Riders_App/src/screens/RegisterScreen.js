@@ -14,10 +14,10 @@ import {Input} from '../components/InputFields';
 import {Password} from '../components/InputFields';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
-import {register} from '../services/Auth';
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { setRegistered } from '../redux/AuthSlice';
+// import {register} from '../services/Auth';
+import {useDispatch} from 'react-redux';
+import {setRegistered} from '../redux/AuthSlice';
+import { setUserData } from '../redux/AuthSlice';
 
 const registerValidationSchema = yup.object().shape({
   userName: yup.string().required('Name is required'),
@@ -43,10 +43,10 @@ const registerValidationSchema = yup.object().shape({
 
 const Register = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
-  const dispatch= useDispatch()
+  const dispatch = useDispatch();
 
   return (
-    <View >
+    <View>
       <SafeAreaView>
         <View style={[styles.header, styles.shadow]}>
           <Pressable
@@ -72,10 +72,10 @@ const Register = ({navigation}) => {
               email: '',
             }}
             onSubmit={async values => {
-              const response = await register(values);
-              alert(response.data.message);
-              dispatch(setRegistered())
-              navigation.navigate("Otp")
+                console.log(values)
+                dispatch(setUserData(values))
+                dispatch(setRegistered());
+                navigation.navigate('Otp');
             }}>
             {({isValid, handleSubmit, values}) => (
               <>
@@ -89,7 +89,6 @@ const Register = ({navigation}) => {
                   keyboardType="default"
                   secureTextEntry={false}
                   returnKey="next"
-                  
                 />
                 <Field
                   component={Input}

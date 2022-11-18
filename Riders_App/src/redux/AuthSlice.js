@@ -9,7 +9,8 @@ const authenticateSlice = createSlice({
     userToken:null,
     otpVerified:false,
     registered:false,
-    forgotPassword:false
+    forgotPassword:false,
+    image:''
   },
 
   reducers: {
@@ -26,6 +27,10 @@ const authenticateSlice = createSlice({
       state.userToken= null
     },
 
+    setImage:(state,action)=>{
+        state.image= action.payload
+    },
+
     setToken:(state,action)=>{
       state.userToken= action.payload
       state.isLoading= false
@@ -33,6 +38,10 @@ const authenticateSlice = createSlice({
 
     setOtpVerfied:(state)=>{
       state.otpVerified= true
+    },
+
+    setUserData:(state,action)=>{
+      state.userData= action.payload
     },
 
     setForgotPassword:(state)=>{
@@ -53,5 +62,5 @@ const authenticateSlice = createSlice({
   },
 });
 
-export const {login,logOut,setToken,setOtpVerfied,setRegistered,deSetRegistered,setForgotPassword,deSetForgotPassword} = authenticateSlice.actions;
+export const {login,logOut,setToken,setOtpVerfied,setRegistered,deSetRegistered,setForgotPassword,deSetForgotPassword,setUserData,setImage} = authenticateSlice.actions;
 export default authenticateSlice.reducer;
