@@ -19,8 +19,13 @@ import DatePicker from 'react-native-date-picker';
 import {onChange} from 'react-native-reanimated';
 import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
+import {useDispatch, useSelector} from 'react-redux';
+import {setMileStone} from '../redux/AuthSlice';
 
 const CreateTrip = ({navigation}) => {
+  const mileStone = useSelector(state => state.auth.mileStone);
+  const dispatch = useDispatch();
+
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
@@ -28,7 +33,7 @@ const CreateTrip = ({navigation}) => {
   const [endDate, setEndDate] = useState(new Date());
   const [time, setTimer] = useState(new Date());
   const [recommend, setRecommend] = useState(false);
-  const [mileStone, setMileStone] = useState(false);
+  // const [mileStone, setMileStone] = useState(false);
 
   return (
     <SafeAreaView style={styles.main}>
@@ -182,7 +187,7 @@ const CreateTrip = ({navigation}) => {
           ) : null}
           <View style={styles.addMileStoneView}>
             <View style={styles.addUserImgView}>
-              <Pressable onPress={() => setMileStone(!mileStone)}>
+              <Pressable onPress={() => dispatch(setMileStone(true))}>
                 <Image
                   style={styles.calenderImg}
                   source={require('../assets/images/mileStone.png')}
@@ -242,6 +247,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     height: 40,
     width: 195,
+    color: '#4F504F',
   },
   calenderView: {
     flexDirection: 'row',
@@ -276,7 +282,8 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
-    color: 'black',
+    color: '#4F504F',
+    height: Platform.OS === 'ios' ? 0 : 37,
   },
   calenderImg: {
     width: 22,

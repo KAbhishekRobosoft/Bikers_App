@@ -6,7 +6,9 @@ const authenticateSlice = createSlice({
     userData: {},
     isLoading: true,
     infoPage:true,
-    userToken:null
+    userToken:null,
+    mileStone:false,
+    mileStoneData:[]
   },
   reducers: {
     login: (state, action) => {
@@ -24,9 +26,16 @@ const authenticateSlice = createSlice({
     setToken:(state,action)=>{
       state.userToken= action.payload
       state.isLoading= false
-    }
+    },
+    setMileStone:(state,action)=>{
+      state.mileStone=action.payload
+    },
+    setMileStoneData:(state,action)=>{
+      state.mileStoneData.push(action.payload)
+      console.log(state.mileStoneData);
+    },
   },
 });
 
-export const {login,logOut,setToken} = authenticateSlice.actions;
+export const {login,logOut,setToken,setMileStone,setMileStoneData} = authenticateSlice.actions;
 export default authenticateSlice.reducer;

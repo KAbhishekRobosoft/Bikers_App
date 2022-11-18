@@ -12,6 +12,9 @@ import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import BottomTabNavigation from './src/utils/BottomTabNavigation';
 import WelcomeAboardScreen from './src/screens/WelcomeAboardScreen';
 import NewUserSubStack from './src/utils/NewUserSubStack';
+import OtpDemo from './src/screens/OtpDemo';
+import OtpScreen from './src/screens/OtpScreen';
+import { TripSummary } from './src/screens/TripSummaryScreen';
 
 let persistor = persistStore(store);
 
@@ -19,7 +22,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-          <NewUserSubStack />
+          <CreateTrip />
       </PersistGate>
     </Provider>
   );

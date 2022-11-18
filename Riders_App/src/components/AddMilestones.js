@@ -1,9 +1,28 @@
-import React from 'react';
-import {Text, SafeAreaView, View, StyleSheet, TextInput} from 'react-native';
+import {set} from 'immer/dist/internal';
+import React, {useState} from 'react';
+import {
+  Text,
+  SafeAreaView,
+  View,
+  StyleSheet,
+  TextInput,
+  Pressable,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {useDispatch} from 'react-redux';
+import {setMileStone} from '../redux/AuthSlice';
+import {setMileStoneData} from '../redux/AuthSlice';
+import {useSelector} from 'react-redux';
 
 export const Milestone = () => {
+  const mileStoneData = useSelector(state => state.auth.mileStoneData);
+  console.log(mileStoneData);
+
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const dispatch = useDispatch();
+
   return (
     <SafeAreaView>
       <View style={styles.milestoneView}>
@@ -13,8 +32,26 @@ export const Milestone = () => {
           colors={['#fbe5d4', 'rgba(255,255,255,0)']}
           style={styles.gradient}>
           <View style={styles.textView}>
-            <Text style={styles.milestoneText}>Milestone 1</Text>
-            <Icon name='times' size={20} color={'#A4A4A4'} style={styles.times}/>
+            <Text style={styles.milestoneText}>
+              Milestone {mileStoneData.length + 1}
+            </Text>
+            <Pressable
+              onPress={() => {
+                const obj = {from: from, to: to};
+                if ((from, to !== '')) {
+                  dispatch(setMileStoneData(obj));
+                  dispatch(setMileStone(false));
+                } else {
+                  dispatch(setMileStone(false));
+                }
+              }}>
+              <Icon
+                name="times"
+                size={20}
+                color={'#A4A4A4'}
+                style={styles.times}
+              />
+            </Pressable>
           </View>
           <Text style={styles.description}>
             This is to make a break journey inbetween your trip
@@ -24,6 +61,7 @@ export const Milestone = () => {
               placeholder="From"
               placeholderTextColor={'rgba(79,80,79,0.92)'}
               style={styles.textFrom}
+              onChangeText={value => setFrom(value)}
             />
           </View>
           <View style={styles.locationView}>
@@ -43,6 +81,7 @@ export const Milestone = () => {
               placeholder="To"
               placeholderTextColor={'rgba(79,80,79,0.92)'}
               style={styles.textFrom}
+              onChangeText={value => setTo(value)}
             />
           </View>
         </LinearGradient>
@@ -76,7 +115,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginVertical: 17,
     marginHorizontal: 19,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   milestoneText: {
     color: 'rgba(79,80,79,0.92)',
