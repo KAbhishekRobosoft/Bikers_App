@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView
 } from 'react-native';
 import React, {useState} from 'react';
 import ButtonLarge from '../components/Buttons';
@@ -19,6 +20,7 @@ import Toast from 'react-native-simple-toast'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { login } from '../redux/AuthSlice';
 import { setToken } from '../redux/AuthSlice';
+import { setForgotPassword } from '../redux/AuthSlice';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),
@@ -54,6 +56,8 @@ const LoginScreen = ({navigation}) => {
   
   return (
     <SafeAreaView style={styles.main}>
+    <ScrollView horizontal={false}>
+    <View style={styles.main}>
       <View style={styles.logoView}>
         <Image
           source={require('../assets/images/appicon.png')}
@@ -97,7 +101,9 @@ const LoginScreen = ({navigation}) => {
                 />
               </View>
               <View style={styles.forgetTextView}>
-                <Pressable onPress={() => navigation.navigate('Otp')}>
+                <Pressable onPress={() => {
+                  dispatch(setForgotPassword())
+                  navigation.navigate('Otp')}}>
                   <Text style={styles.forgetText}>Forgot Password</Text>
                 </Pressable>
               </View>
@@ -135,7 +141,10 @@ const LoginScreen = ({navigation}) => {
           </View>
         </ImageBackground>
       </View>
+      </View>
+      </ScrollView>
     </SafeAreaView>
+
   );
 };
 
@@ -144,7 +153,6 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    alignItems: 'center',
     backgroundColor: '#fff',
   },
   logoView: {
@@ -198,7 +206,6 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     marginTop: 30,
-    position: 'absolute',
     bottom: 0,
   },
   bottomView: {

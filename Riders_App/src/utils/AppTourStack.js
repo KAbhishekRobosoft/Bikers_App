@@ -2,6 +2,7 @@ import React from 'react'
 import AppTourScreen from '../screens/AppTourScreen'
 import StackNavigation from './StackNavigation'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { create } from 'react-test-renderer'
 
 const Stack= createNativeStackNavigator()
 

@@ -45,7 +45,7 @@ const ResetPasswordScreen = ({navigation}) => {
         </View>
         <View style={styles.btn}>
           <ButtonLarge
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.navigate('ResetSuccess')}
             title="RESET"
           />
         </View>

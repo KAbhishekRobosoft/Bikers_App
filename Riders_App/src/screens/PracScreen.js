@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import {View, Text, Button} from 'react-native';
 import { useSelector,useDispatch } from 'react-redux';
 import { refreshToken } from '../services/Auth';
-import { setToken } from '../redux/RidersSlice';
-import { logOut } from '../redux/RidersSlice';
+import { setToken } from '../redux/AuthSlice';
+import { logOut } from '../redux/AuthSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function PracScreen() {

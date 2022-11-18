@@ -21,6 +21,7 @@ import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
 import {useDispatch, useSelector} from 'react-redux';
 import {setMileStone} from '../redux/AuthSlice';
+import { deSetRegistered } from '../redux/AuthSlice';
 
 const CreateTrip = ({navigation}) => {
   const mileStone = useSelector(state => state.auth.mileStone);
@@ -33,7 +34,7 @@ const CreateTrip = ({navigation}) => {
   const [endDate, setEndDate] = useState(new Date());
   const [time, setTimer] = useState(new Date());
   const [recommend, setRecommend] = useState(false);
-  // const [mileStone, setMileStone] = useState(false);
+
 
   return (
     <SafeAreaView style={styles.main}>
@@ -48,6 +49,7 @@ const CreateTrip = ({navigation}) => {
       </View>
       <ScrollView style={{height: '80%'}} showsVerticalScrollIndicator={false}>
         <View style={styles.textInputView}>
+
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('SearchCity');
@@ -197,7 +199,9 @@ const CreateTrip = ({navigation}) => {
             <Text style={styles.text}>Add a milestone</Text>
           </View>
           <View style={styles.btn}>
-            <ButtonLarge title="Done" />
+            <ButtonLarge onPress={()=>{
+                  dispatch(deSetRegistered())
+            }} title="Done" />
           </View>
         </View>
       </ScrollView>
