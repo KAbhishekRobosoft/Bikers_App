@@ -19,8 +19,8 @@ import DatePicker from 'react-native-date-picker';
 import {onChange} from 'react-native-reanimated';
 import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
-import { useDispatch } from 'react-redux';
-import { deSetRegistered } from '../redux/AuthSlice';
+import {useDispatch} from 'react-redux';
+import {deSetRegistered} from '../redux/AuthSlice';
 
 const CreateTrip = ({navigation}) => {
   const [open1, setOpen1] = useState(false);
@@ -31,7 +31,13 @@ const CreateTrip = ({navigation}) => {
   const [time, setTimer] = useState(new Date());
   const [recommend, setRecommend] = useState(false);
   const [mileStone, setMileStone] = useState(false);
-  const dispatch= useDispatch()
+  const [go, setGo] = useState();
+  const [from, setFrom] = useState();
+  const [tripName, settripName] = useState();
+  const [placeholder1, setPlaceholder1] = useState('Where do you want to go?');
+  const [placeholder2, setPlaceholder2] = useState('From');
+  const [placeholder3, setPlaceholder3] = useState('Name of the trip');
+  const dispatch = useDispatch();
 
   return (
     <SafeAreaView style={styles.main}>
@@ -46,38 +52,64 @@ const CreateTrip = ({navigation}) => {
       </View>
       <ScrollView style={{height: '80%'}} showsVerticalScrollIndicator={false}>
         <View style={styles.textInputView}>
-
+          {go ? (
+            <View style={styles.placeholder}>
+              <Text style={styles.placeholderText}>{placeholder1}</Text>
+            </View>
+          ) : (
+            <View style={styles.placeholderText}></View>
+          )}
           <TouchableOpacity
             onPress={() => {
               navigation.navigate('SearchCity');
             }}>
             <TextInput
               name="Go"
+              value={go}
               placeholderTextColor={'#4F504F'}
               placeholder="Where do you want to go?"
               style={styles.inputText}
+              onChangeText={value => setGo(value)}
             />
           </TouchableOpacity>
         </View>
 
         <View style={styles.textInputView}>
+          {from ? (
+            <View style={styles.placeholder}>
+              <Text style={styles.placeholderText}>{placeholder2}</Text>
+            </View>
+          ) : (
+            <View style={styles.placeholderText}></View>
+          )}
           <TextInput
             name="From"
+            value={from}
             placeholderTextColor={'#4F504F'}
             placeholder="From"
             style={styles.inputText}
+            onChangeText={value => setFrom(value)}
           />
         </View>
         <View style={styles.textInputView}>
+          {tripName ? (
+            <View style={styles.placeholder}>
+              <Text style={styles.placeholderText}>{placeholder3}</Text>
+            </View>
+          ) : (
+            <View style={styles.placeholderText}></View>
+          )}
           <TextInput
             name="TripName"
+            value={tripName}
             placeholderTextColor={'#4F504F'}
             placeholder="Name of the trip"
             style={styles.inputText}
+            onChangeText={value => settripName(value)}
           />
         </View>
         <View style={styles.calenderView}>
-          <View style={styles.startDateView}>
+          <View style={styles.startDateView}>  
             <TextInput
               style={styles.dateText}
               placeholderTextColor={'#4F504F'}
@@ -196,9 +228,12 @@ const CreateTrip = ({navigation}) => {
             <Text style={styles.text}>Add a milestone</Text>
           </View>
           <View style={styles.btn}>
-            <ButtonLarge onPress={()=>{
-                  dispatch(deSetRegistered())
-            }} title="Done" />
+            <ButtonLarge
+              onPress={() => {
+                dispatch(deSetRegistered());
+              }}
+              title="Done"
+            />
           </View>
         </View>
       </ScrollView>
@@ -240,14 +275,16 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',
     alignSelf: 'center',
-    marginHorizontal: 30,
+    justifyContent: 'space-around',
   },
   inputText: {
-    marginTop: 38,
+    marginTop: 28,
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
-    height: 40,
-    width: 195,
+    width: 220,
+    paddingBottom: 14,
+    color: 'black',
+    height: Platform.OS === 'android' ? 64 : 33
   },
   calenderView: {
     flexDirection: 'row',
@@ -335,5 +372,14 @@ const styles = StyleSheet.create({
   },
   mileStone: {
     marginTop: 10,
+  },
+  placeholderText: {
+    color: '#9F9F9F',
+    fontSize: 14,
+    letterSpacing: 0.29,
+    marginTop: Platform.OS === 'ios' ? 40 : 35,
+  },
+  placeholder: {
+    paddingBottom: 5,
   },
 });

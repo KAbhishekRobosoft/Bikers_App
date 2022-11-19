@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -104,6 +104,33 @@ export const Password = props => {
   );
 };
 
+export const PlaceholderTextField = (props) => {
+
+  return (
+    <View>
+      <View style={styles.inputTextView}>
+        <View style={styles.placeholderView}>
+          {props.value ? (
+            <View style={styles.commonPlaceholder}>
+              <Text style={styles.text}>{props.placeholder}</Text>
+            </View>
+          ) : (
+            <></>
+          )}
+          <TextInput
+          name={props.name}
+            placeholder={props.placeholder}
+            placeholderTextColor={'#4F504F'}
+            style={styles.typedText}
+            keyboardType={props.keyboardType}
+            value={props.value}
+            onChangeText={props.onChangeText}
+          />
+        </View>
+      </View>
+    </View>
+  );
+}
 const styles = StyleSheet.create({
   inputTextView: {
     width: '80%',
@@ -135,6 +162,13 @@ const styles = StyleSheet.create({
     marginVertical: Platform.OS === 'android' ? -17 : -3,
     fontSize: 16,
     marginLeft: 10,
+    fontFamily: 'Roboto-Regular',
+    color: '#4F504F',
+  },
+  typedText: {
+    width: '90%',
+    marginVertical: Platform.OS === 'android' ? -17 : -3,
+    fontSize: 16,
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
   },
@@ -175,5 +209,8 @@ const styles = StyleSheet.create({
   placeholderView: {
     flexDirection: 'column',
     width: '85%'
+  },
+  commonPlaceholder: {
+    paddingBottom: 5,
   },
 });
