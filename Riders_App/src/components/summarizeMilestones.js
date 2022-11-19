@@ -31,7 +31,7 @@ export const TripSummaryList = () => {
                       height: 110,
                       backgroundColor: 'orange',
                       // borderWidth: 2,
-                      width: 1
+                      width: 1,
                     }}></View> */}
                 </View>
                 <View style={styles.milestoneView}>
