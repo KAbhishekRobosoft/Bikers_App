@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -16,8 +16,17 @@ import SmallButton from '../components/SmallButton';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { setImage } from '../redux/AuthSlice';
+import { refreshToken } from '../services/Auth';
+import { setUserData } from '../redux/AuthSlice';
 
 function RegisterUserIntro({navigation}) {
+  useEffect(()=>{
+      setTimeout(()=>{
+          const resp= refreshToken(authData.userData.userToken)
+          dispatch(setUserData(resp.token))
+      },1000)
+  },[])
+
   const dispatch= useDispatch()
   const authData= useSelector(state=>state.auth)
   console.log(authData.userData)

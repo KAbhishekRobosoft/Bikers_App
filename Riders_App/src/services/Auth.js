@@ -1,3 +1,4 @@
+import { useDrawerStatus } from '@react-navigation/drawer';
 import axios from 'axios';
 
 export const register = async (values) => {
@@ -72,7 +73,7 @@ export const uploadImage= async (payload,token)=>{
         body:payload,
         headers:{
           'Content-Type':'multipart/form-data',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiODE5Nzc1MDQ1NyIsImlhdCI6MTY2ODgzNTUwMCwiZXhwIjoxNjY4ODM5MTAwfQ.efNZtLXPTm2IRGbk61XeNytcMFnHSIgUrIayAJFfHc0`
+          'Authorization': `Bearer ${token}`
         }
       })
       let data= await res.json()
@@ -84,12 +85,24 @@ export const sendOtp = async mobileNumber => {
   const options = {
     method: 'POST',
     url: 'https://riding-application.herokuapp.com/api/v1/sendOtp',
-    headers:{
-      'Content-Type':'application/json',
-    },
     body:{
       "destination":mobileNumber
     }
+  };
+  const response= await axios.request(options)
+  return response.data
+};
+
+export const resetPassword = async(userData) => {
+
+  const options = {
+    method: 'POST',
+    url: 'https://riding-application.herokuapp.com/api/v1/forgotPassword',
+    body:{
+          mobile:userData.mobile,
+          password:userData.password
+    }
+    
   };
   const response= await axios.request(options)
   return response.data

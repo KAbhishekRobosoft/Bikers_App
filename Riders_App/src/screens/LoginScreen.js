@@ -106,7 +106,7 @@ const LoginScreen = ({navigation}) => {
               <View style={styles.forgetTextView}>
                 <Pressable onPress={() => {
                   dispatch(setForgotPassword())
-                  navigation.navigate('Otp')}}>
+                  navigation.navigate('NumberEntry')}}>
                   <Text style={styles.forgetText}>Forgot Password</Text>
                 </Pressable>
               </View>

@@ -7,6 +7,7 @@ import ResetPasswordScreen from '../screens/ResetPasswordScreen'
 import SuccessPasswordScreen from '../screens/SuccessPasswordScreen'
 import Register from '../screens/RegisterScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import NumberEntryScreen from '../screens/NumberEntryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -48,6 +49,8 @@ function AppTourStack() {
         name="ResetSuccess"
         component={SuccessPasswordScreen}
       />
+
+<Stack.Screen options={{headerShown: false}} name="NumberEntry" component={NumberEntryScreen} />
     </Stack.Navigator>
   );
 }

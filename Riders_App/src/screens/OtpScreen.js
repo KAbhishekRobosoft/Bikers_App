@@ -11,16 +11,15 @@ import {
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useDispatch, useSelector} from 'react-redux';
-import { register } from '../services/Auth';
-import { setOtpVerfied } from '../redux/AuthSlice';
-import Toast from 'react-native-simple-toast'
+import {register} from '../services/Auth';
+import {setOtpVerfied} from '../redux/AuthSlice';
+import Toast from 'react-native-simple-toast';
 
 const OtpScreen = ({navigation}) => {
-  const data= useSelector(state=>state.auth)
+  const data = useSelector(state => state.auth);
   const [code, setCode] = useState('');
-  const dispatch= useDispatch()
+  const dispatch = useDispatch();
   return (
-    
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
         <Pressable onPress={() => navigation.navigate('Login')}>
@@ -41,19 +40,33 @@ const OtpScreen = ({navigation}) => {
         <View style={styles.bottomView}>
           <View style={styles.optView}>
             <TextInput
-            cursorColor={'white'}
+              cursorColor={'white'}
               name="otp"
               style={styles.otpText}
               onChangeText={async value => {
                 if (value.length === 4) {
-                  setCode(value)
-                  const response= await register(data.userData)
-                  if(response !== undefined){
-                        dispatch(setOtpVerfied())
-                        navigation.navigate('Login') 
-                  }
-                  else{
-                      Toast.show('User already exists')
+                  setCode(value);
+                  if (
+                    data.registered === true &&
+                    data.forgotPassword === true
+                  ) {
+                    navigation.navigate('ResetPassword');
+                  } else if (
+                    data.registered === false &&
+                    data.forgotPassword === true
+                  ) {
+                    navigation.navigate('ResetPassword');
+                  } else if (
+                    data.registered === true &&
+                    data.forgotPassword === false
+                  ) {
+                    const response = await register(data.userData);
+                    if (response !== undefined) {
+                      dispatch(setOtpVerfied());
+                      navigation.navigate('Login');
+                    } else {
+                      Toast.show('User already exists');
+                    }
                   }
                 }
               }}
@@ -145,7 +158,7 @@ const styles = StyleSheet.create({
     color: '#4EB5F4',
     fontSize: 36,
     fontFamily: 'Roboto-Regular',
-    top: Platform.OS === 'ios' ? 0 : 17, 
+    top: Platform.OS === 'ios' ? 0 : 17,
   },
   otpBorderView: {
     flexDirection: 'row',
