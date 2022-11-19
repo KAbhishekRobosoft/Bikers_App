@@ -33,7 +33,7 @@ function AppTourScreen({navigation}) {
       loop={false}>
       <SafeAreaView style={styles.slide1}>
         <View style={[styles.appIntroBut1, {marginRight: marginRight}]}>
-          <SmallButton onPress= {()=>{navigation.navigate('AuthPage')
+          <SmallButton onPress= {()=>{navigation.navigate('Login')
 
           }} name="Skip" />
         </View>

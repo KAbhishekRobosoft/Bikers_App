@@ -40,7 +40,6 @@ const LoginScreen = ({navigation}) => {
 
   async function signIn(values){
       const response= await checkIn(values)
-
       if (response.hasOwnProperty('token')) {
         try {
           await AsyncStorage.setItem('token', response.token);

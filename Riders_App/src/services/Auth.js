@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export const register = async (values) => {
+
     try {
         const response = await axios.post(
           'https://riding-application.herokuapp.com/api/v1/register',
@@ -9,16 +10,17 @@ export const register = async (values) => {
             password: values.password,
             mobile:values.mobile,
             email:values.email,
-            haveBike: 'yes'
+            haveBike: true
           },
-        );
+        )
         return response.data;
       } catch (error) {
-        console.log('An error as occurred');
+        console.log('An error has occurred');
       }
 }
 
 export const checkIn = async values => {
+  console.log(values)
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/loginPhone',
@@ -61,20 +63,18 @@ export const searchCity = async string => {
   return response.data.results
 }
 
-export const uploadImage= async (image)=>{
-
-  const payload= new FormData()
-  payload.append('image',image)
-  console.log(payload)
-
-  const config= {
-    body:payload,
-    method:'POST',
-    headers:{
-      "Content-Type":'multipart/form-data',
-      "Authorization": `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTQ4MTY3NjM0OCIsImlhdCI6MTY2ODY3NDYyNSwiZXhwIjoxNjY4Njc4MjI1fQ.0fksV3cB8WOgJw8HAGq6ZKeANbb87zjAs1EHGaoYFCo`
-    },
-  }
-  const response= await axios.request('https://riding-application.herokuapp.com/api/v1/profileImageUpload',config)
-  return response.data
+export const uploadImage= async (payload)=>{
+  
+  let res= await fetch(
+      'https://riding-application.herokuapp.com/api/v1/profileImageUpload',
+      {
+        method:'post',
+        body:payload,
+        headers:{
+          'Content-Type':'multipart/form-data',
+          'Authorization': 'Bearer '+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNTQzMjE2Nzg5MCIsImlhdCI6MTY2ODc2MDg2MCwiZXhwIjoxNjY4NzY0NDYwfQ.sff6Jh3-Oh5vS3OA1UbC9tXmZROq3PDXRtGS6vLQeM8'
+        }
+      })
+      let data= await res.json()
+      return data
 }

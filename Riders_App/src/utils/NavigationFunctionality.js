@@ -10,6 +10,8 @@ import NewUserStack from './NewUserStack';
 
 function NavigationFunctionality() {
     const authData= useSelector(state=>state.auth)
+    console.log(authData.otpVerified)
+    console.log(authData.userToken)
     const dispatch= useDispatch()
 
     async function checkOut(){
@@ -44,7 +46,7 @@ function NavigationFunctionality() {
   return (
     
         authData.infoPage !== false ?<AppTourStack /> :(
-            (authData.userToken === null) ? <StackNavigation /> :(authData.userToken !== null && authData.otpVerified) && <NewUserStack />
+            (authData.userToken === null) ? <StackNavigation /> :((authData.userToken !== null && authData.otpVerified) ? <NewUserStack /> : null)
         ))
 }
 
