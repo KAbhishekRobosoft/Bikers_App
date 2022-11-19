@@ -5,7 +5,8 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
 import { NavigationContainer } from '@react-navigation/native';
 import NavigationFunctionality from './src/utils/NavigationFunctionality'
-import RegisterUserIntro from './src/screens/RegisterUserIntro';
+import ResetPasswordScreen from './src/screens/ResetPasswordScreen'
+import NumberEntryScreen from './src/screens/NumberEntryScreen'
 
 let persistor = persistStore(store);
 
@@ -13,9 +14,10 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <NavigationContainer>
+        {/* <NavigationContainer>
           <NavigationFunctionality />
-        </NavigationContainer>
+        </NavigationContainer> */}
+       <NumberEntryScreen />
       </PersistGate>
     </Provider>
   );

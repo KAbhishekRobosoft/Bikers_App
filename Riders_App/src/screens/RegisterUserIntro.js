@@ -20,6 +20,7 @@ import { setImage } from '../redux/AuthSlice';
 function RegisterUserIntro({navigation}) {
   const dispatch= useDispatch()
   const authData= useSelector(state=>state.auth)
+  console.log(authData.userData)
 
   const pickImage = () => {
     ImagePicker.openPicker({
@@ -27,6 +28,7 @@ function RegisterUserIntro({navigation}) {
       height: 200,
       cropping: true,
     }).then(async image => {
+      console.log(image)
       const payload = new FormData();
       payload.append('image', {
         uri: image.path,
@@ -35,7 +37,8 @@ function RegisterUserIntro({navigation}) {
           image.mime.indexOf('/') + 1,
         )}`,
       })
-      const resp = await uploadImage(payload);
+
+      const resp = await uploadImage(payload,authData.userToken)
       if(resp.hasOwnProperty('message')){
           dispatch(setImage('https'+resp.url.substring(4)))
           navigation.navigate('ImageSuccess')

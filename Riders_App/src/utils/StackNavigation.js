@@ -6,7 +6,6 @@ import OtpScreen from '../screens/OtpScreen'
 import ResetPasswordScreen from '../screens/ResetPasswordScreen'
 import SuccessPasswordScreen from '../screens/SuccessPasswordScreen'
 import Register from '../screens/RegisterScreen';
-import PracScreen from '../screens/PracScreen';
 
 
 const Stack = createNativeStackNavigator();

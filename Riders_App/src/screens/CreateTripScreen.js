@@ -16,7 +16,6 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
 import DateTimePickerAndroid from '@react-native-community/datetimepicker';
 import DatePicker from 'react-native-date-picker';
-import {onChange} from 'react-native-reanimated';
 import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
 import {useDispatch, useSelector} from 'react-redux';

@@ -72,7 +72,6 @@ const Register = ({navigation}) => {
               email: '',
             }}
             onSubmit={async values => {
-                console.log(values)
                 dispatch(setUserData(values))
                 dispatch(setRegistered());
                 navigation.navigate('Otp');
