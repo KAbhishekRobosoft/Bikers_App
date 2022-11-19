@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   View,
@@ -7,22 +7,27 @@ import {
   Text,
   useWindowDimensions,
   Pressable,
+  ScrollView
 } from 'react-native';
+
 import {useSelector} from 'react-redux';
 import ButtonLarge from '../components/Buttons';
 
 function ImageSuccessPage({navigation}) {
   const authData = useSelector(state => state.auth);
   const {width, height} = useWindowDimensions();
-  const marginRight = width > height ? (Platform.OS === 'ios' ? 160 : 0) : 50;
-
+  const marginRight = width > height ? (Platform.OS === 'ios' ? 60 : 0) : 10;
+  const marginTop= width > height ? (Platform.OS === "ios" ? 15 : 0) : 39
+  
   return (
     <SafeAreaView style={styles.success_con}>
       <View style={styles.success_subcon}>
         <Pressable style={styles.backArrow} onPress={() => navigation.goBack()}>
           <Image source={require('../assets/images/back_arrow.png')} />
         </Pressable>
-
+     
+        <ScrollView style={{flexGrow:1}} showsVerticalScrollIndicator={false}>
+        <View style={styles.content_con}>
         {authData.image === '' && (
           <Image
             style={styles.rUserImg}
@@ -59,11 +64,13 @@ function ImageSuccessPage({navigation}) {
         <Text style={styles.sucText1}>Awesome</Text>
         <Text style={styles.sucText2}>Lets move on and make some</Text>
         <Text style={styles.sucText3}>crazy trips</Text>
-        <View style={styles.butView}>
+        <View style={{marginTop:marginTop}}>
           <ButtonLarge onPress={()=>{
             navigation.navigate('subStack')
           }} title="LETS GET STARTED" />
         </View>
+        </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -76,12 +83,9 @@ const styles = StyleSheet.create({
     marginTop: 13,
   },
 
-  butView: {
-    marginTop: 39,
-  },
-
   success_con: {
     flex: 1,
+    width:"100%"
   },
 
   sucText1: {
@@ -113,6 +117,14 @@ const styles = StyleSheet.create({
   success_subcon: {
     flex: 1,
     alignItems: 'center',
+    width:"100%"
+  },
+
+  content_con: {
+    flex: 4,
+    alignItems: 'center',
+    width:"100%",
+    flexGrow:1
   },
 
   rUserImg1: {

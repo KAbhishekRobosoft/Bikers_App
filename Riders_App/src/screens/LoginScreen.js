@@ -40,13 +40,17 @@ const LoginScreen = ({navigation}) => {
 
   async function signIn(values){
       const response= await checkIn(values)
-      if (response.hasOwnProperty('token')) {
+      if (response !== undefined) {
         try {
           await AsyncStorage.setItem('token', response.token);
         } catch (e) {
           console.log(e);
         }
-        dispatch(login(values));
+        let obj= {
+          userName:response.userName,
+          
+        }
+        dispatch(login(response));
         dispatch(setToken(response.token))
       } else {
         Toast.show('User Does not exist');
@@ -102,7 +106,7 @@ const LoginScreen = ({navigation}) => {
               <View style={styles.forgetTextView}>
                 <Pressable onPress={() => {
                   dispatch(setForgotPassword())
-                  navigation.navigate('Otp')}}>
+                  navigation.navigate('NumberEntry')}}>
                   <Text style={styles.forgetText}>Forgot Password</Text>
                 </Pressable>
               </View>

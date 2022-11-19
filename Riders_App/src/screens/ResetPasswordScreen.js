@@ -7,11 +7,15 @@ import {
   TextInput,
   Pressable,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
+import {resetPassword} from '../services/Auth';
+import { useSelector } from 'react-redux';
 
 const ResetPasswordScreen = ({navigation}) => {
+  const [password,setPassword]= useState('')
+  const authData= useSelector(state=>state.auth)
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
@@ -45,7 +49,10 @@ const ResetPasswordScreen = ({navigation}) => {
         </View>
         <View style={styles.btn}>
           <ButtonLarge
-            onPress={() => navigation.navigate('ResetSuccess')}
+            onPress={() => {
+              const resp= resetPassword({mobile:authData.mobile,password:password})
+              navigation.navigate('ResetSuccess');
+            }}
             title="RESET"
           />
         </View>

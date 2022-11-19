@@ -8,17 +8,16 @@ import {MyGarage} from './src/screens/MyGarageScreen'
 import {BookService} from './src/screens/BookServiceScreen'
 import Register from './src/screens/RegisterScreen'
 let persistor = persistStore(store);
+import NavigationFunctionality from './src/utils/NavigationFunctionality'
 
 const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <BookService />
-        {/* <NavigationContainer>
+         {/* <NavigationContainer>
           <NavigationFunctionality />
         </NavigationContainer> */}
-        {/* <SearchCity /> */}
-        {/* <NewUserSubStack /> */}
       </PersistGate>
     </Provider>
   );

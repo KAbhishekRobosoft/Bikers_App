@@ -8,19 +8,18 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import OTPInputView from '@twotalltotems/react-native-otp-input';
 import {useDispatch, useSelector} from 'react-redux';
+import {register} from '../services/Auth';
 import {setOtpVerfied} from '../redux/AuthSlice';
-import { register } from '../services/Auth';
+import Toast from 'react-native-simple-toast';
 
 const OtpScreen = ({navigation}) => {
-  const data= useSelector(state=>state.auth)
+  const data = useSelector(state => state.auth);
   const [code, setCode] = useState('');
-  console.log(code);
+  const dispatch = useDispatch();
   return (
-    
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
         <Pressable onPress={() => navigation.navigate('Login')}>
@@ -35,23 +34,44 @@ const OtpScreen = ({navigation}) => {
           />
           <View style={styles.textView}>
             <Text style={styles.text}>We have sent an OTP to</Text>
-            <Text style={styles.text}>+91-1234567890</Text>
+            <Text style={styles.text}>+91-{data.userData.mobile}</Text>
           </View>
         </View>
         <View style={styles.bottomView}>
           <View style={styles.optView}>
             <TextInput
-            cursorColor={'white'}
+              cursorColor={'white'}
               name="otp"
               style={styles.otpText}
-              onChangeText={value => {
+              onChangeText={async value => {
                 if (value.length === 4) {
                   setCode(value);
+                  if (
+                    data.registered === true &&
+                    data.forgotPassword === true
+                  ) {
+                    navigation.navigate('ResetPassword');
+                  } else if (
+                    data.registered === false &&
+                    data.forgotPassword === true
+                  ) {
+                    navigation.navigate('ResetPassword');
+                  } else if (
+                    data.registered === true &&
+                    data.forgotPassword === false
+                  ) {
+                    const response = await register(data.userData);
+                    if (response !== undefined) {
+                      dispatch(setOtpVerfied());
+                      navigation.navigate('Login');
+                    } else {
+                      Toast.show('User already exists');
+                    }
+                  }
                 }
               }}
               keyboardType="numeric"
               maxLength={4}
-              ref={ref}
             />
             <View style={styles.otpBorderView}>
               <View style={styles.otpBorderView1} />
@@ -138,7 +158,7 @@ const styles = StyleSheet.create({
     color: '#4EB5F4',
     fontSize: 36,
     fontFamily: 'Roboto-Regular',
-    top: Platform.OS === 'ios' ? 0 : 17, 
+    top: Platform.OS === 'ios' ? 0 : 17,
   },
   otpBorderView: {
     flexDirection: 'row',
