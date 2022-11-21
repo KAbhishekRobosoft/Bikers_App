@@ -7,6 +7,7 @@ let persistor = persistStore(store);
 import NavigationFunctionality from './src/utils/NavigationFunctionality'
 import { NavigationContainer } from '@react-navigation/native';
 
+
 const App = () => {
   return (
     <Provider store={store}>

@@ -6,24 +6,29 @@ import {
   Image,
   Pressable,
   TouchableOpacity,
-  KeyboardAvoidingView,
   Platform,
   ScrollView,
   TextInput,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
-import DateTimePickerAndroid from '@react-native-community/datetimepicker';
+import { BikeComponent1 } from '../components/StarComponent';
+import { BikeComponent2 } from '../components/StarComponent';
+import { BikeComponent3 } from '../components/StarComponent';
+import { BikeComponent4 } from '../components/StarComponent';
+import { BikeComponent5 } from '../components/StarComponent';
 import DatePicker from 'react-native-date-picker';
 import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
 import {deSetRegistered} from '../redux/AuthSlice';
 import {useDispatch, useSelector} from 'react-redux';
-import {setMileStone} from '../redux/AuthSlice';
+import { setMileStone } from '../redux/MileStoneSlice';
+import { setMileStoneData } from '../redux/MileStoneSlice';
+
 
 const CreateTrip = ({navigation}) => {
-  const mileStones = useSelector(state => state.auth.mileStone);
+  const mileStones = useSelector(state => state.milestone.mileStone);
   const dispatch = useDispatch();
 
   const [open1, setOpen1] = useState(false);
@@ -33,14 +38,13 @@ const CreateTrip = ({navigation}) => {
   const [endDate, setEndDate] = useState(new Date());
   const [time, setTimer] = useState(new Date());
   const [recommend, setRecommend] = useState(false);
-  const [mileStone, setMileStone] = useState(false);
   const [go, setGo] = useState();
   const [from, setFrom] = useState();
   const [tripName, settripName] = useState();
   const [placeholder1, setPlaceholder1] = useState('Where do you want to go?');
   const [placeholder2, setPlaceholder2] = useState('From');
   const [placeholder3, setPlaceholder3] = useState('Name of the trip');
-
+  const contactsData = useSelector(state => state.contact);
 
   return (
     <SafeAreaView style={styles.main}>
@@ -112,7 +116,7 @@ const CreateTrip = ({navigation}) => {
           />
         </View>
         <View style={styles.calenderView}>
-          <View style={styles.startDateView}>  
+          <View style={styles.startDateView}>
             <TextInput
               style={styles.dateText}
               placeholderTextColor={'#4F504F'}
@@ -205,16 +209,38 @@ const CreateTrip = ({navigation}) => {
 
           <View style={styles.addUserView}>
             <View style={styles.addUserImgView}>
-              <Pressable onPress={() => {setRecommend(!recommend)
-                navigation.navigate("Contacts")
-              }}>
+              <Pressable
+                onPress={() => {
+                  setRecommend(!recommend);
+                  navigation.navigate('Contacts');
+                }}>
                 <Image
                   style={styles.calenderImg}
                   source={require('../assets/images/adduser.png')}
                 />
+                
               </Pressable>
             </View>
-            <Text style={styles.text}>Invite other riders</Text>
+            {contactsData.addTripContacts.length === 0 && (
+              <Text style={styles.text}>Invite other riders</Text>
+            )}
+
+              {contactsData.addTripContacts.length === 1 ?
+                <BikeComponent1 /> : null}
+             
+              {contactsData.addTripContacts.length === 2 ? (
+                <BikeComponent2 />
+              ) : null}
+              {contactsData.addTripContacts.length === 3 ? (
+                <BikeComponent3 />
+              ):null}
+              {contactsData.addTripContacts.length === 4 ? (
+                <BikeComponent4 />
+              ):null}
+              {contactsData.addTripContacts.length === 5 ? (
+                <BikeComponent5 />
+              ):null}
+
           </View>
           {mileStones ? (
             <View style={styles.mileStone}>

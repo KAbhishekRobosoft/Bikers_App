@@ -4,6 +4,7 @@ import {persistReducer} from 'redux-persist';
 import {combineReducers} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ContactSliceReducer from '../redux/ContactSlice'
+import MileStoneSlice from './MileStoneSlice';
 
 const persistConfig = {
   key: 'root',
@@ -13,7 +14,8 @@ const persistConfig = {
 
 const reducer = combineReducers({
     auth : Reducer,
-    contact: ContactSliceReducer
+    contact: ContactSliceReducer,
+    milestone:MileStoneSlice
 })
 
 const persistRed = persistReducer(persistConfig, reducer);

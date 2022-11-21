@@ -1,7 +1,7 @@
 import { useDrawerStatus } from '@react-navigation/drawer';
 import axios from 'axios';
 
-export const register = async (values) => {
+export const register = async (values,haveBike) => {
 
     try {
         const response = await axios.post(
@@ -11,7 +11,7 @@ export const register = async (values) => {
             password: values.password,
             mobile:values.mobile,
             email:values.email,
-            haveBike: true
+            haveBike: haveBike
           },
         )
         return response.data;
@@ -37,6 +37,7 @@ export const checkIn = async values => {
 };
 
 export const refreshToken = async token => {
+
   const options = {
     method: 'POST',
     url: 'https://riding-application.herokuapp.com/api/v1/getAccessToken',
@@ -88,7 +89,6 @@ export const uploadImage= async (payload,token)=>{
         method:'post',
         body:payload,
         headers:{
-          'Content-Type':'multipart/form-data',
           'Authorization': `Bearer ${token}`
         }
       })

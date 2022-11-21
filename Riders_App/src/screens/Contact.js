@@ -19,7 +19,6 @@ import {selectContacts} from '../redux/ContactSlice';
 import {selectUnMarked} from '../redux/ContactSlice';
 import {filterContacts} from '../redux/ContactSlice';
 import {ContactFlatList} from '../components/ContactsFlatList';
-import { PlaceholderTextField } from '../components/InputFields';
 
 export const ContactDisplay = ({navigation}) => {
   const dispatch = useDispatch();
@@ -106,9 +105,6 @@ export const ContactDisplay = ({navigation}) => {
           </Pressable>
           <Text style={styles.headerText}>Invite People</Text>
         </View>
-        {/* <View>
-          <PlaceholderTextField name = 'sample' placeholder='From' keyboardType='default' value={text} onChangeText={value => setText(value)}/>
-        </View> */}
         <View style={styles.searchView}>
           <Image
             source={require('../assets/images/search.png')}
