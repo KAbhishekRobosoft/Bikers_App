@@ -23,7 +23,7 @@ export const BookService = () => {
   const [number, setNumber] = useState();
   const [vehicleType, setvehicleType] = useState();
   const [vehicleNumber, setvehicleNumber] = useState();
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState();
   const data = [
     {
       key: 'Free service',
@@ -96,23 +96,23 @@ export const BookService = () => {
               />
               <DropDownInputField
                 data={data}
-                setSelected={setSelected}
                 values={selected}
+                setSelected={(value) => setSelected(value)}
                 placeholder="Service Type"
               />
               <Text style={styles.commentText}>Comments</Text>
               <View style={styles.commentTextInputView}>
-                <InsetShadow >
-                  <TextInput multiline={true}/>
+                <InsetShadow>
+                  <TextInput multiline={true} />
                 </InsetShadow>
               </View>
               <View style={styles.btnView}>
-                  <ButtonLarge
-                    title="FIND A DEALER"
-                    disabled={!isValid}
-                    onPress={handleSubmit}
-                  />
-                </View>
+                <ButtonLarge
+                  title="FIND A DEALER"
+                  disabled={!isValid}
+                  onPress={handleSubmit}
+                />
+              </View>
             </>
           )}
         </Formik>
