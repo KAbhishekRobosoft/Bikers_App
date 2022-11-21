@@ -17,7 +17,7 @@ import * as yup from 'yup';
 // import {register} from '../services/Auth';
 import {useDispatch} from 'react-redux';
 import {setRegistered} from '../redux/AuthSlice';
-import { setUserData } from '../redux/AuthSlice';
+import {setUserData} from '../redux/AuthSlice';
 
 const registerValidationSchema = yup.object().shape({
   userName: yup.string().required('Name is required'),
@@ -62,7 +62,10 @@ const Register = ({navigation}) => {
           </Pressable>
           <Text style={styles.headerText}>Register</Text>
         </View>
-        <ScrollView style={styles.scrollview}>
+        <ScrollView
+          style={styles.scrollview}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}>
           <Formik
             validationSchema={registerValidationSchema}
             initialValues={{
@@ -72,9 +75,9 @@ const Register = ({navigation}) => {
               email: '',
             }}
             onSubmit={async values => {
-                dispatch(setUserData(values))
-                dispatch(setRegistered());
-                navigation.navigate('Otp');
+              dispatch(setUserData(values));
+              dispatch(setRegistered());
+              navigation.navigate('Otp');
             }}>
             {({isValid, handleSubmit, values}) => (
               <>
