@@ -15,6 +15,10 @@ import { useSelector } from 'react-redux';
 
 const ResetPasswordScreen = ({navigation}) => {
   const [password,setPassword]= useState('')
+  function addText(value){
+    setPassword(value)
+  }
+
   const authData= useSelector(state=>state.auth)
   return (
     <SafeAreaView style={styles.main}>
@@ -37,6 +41,7 @@ const ResetPasswordScreen = ({navigation}) => {
           <TextInput
             placeholderTextColor="grey"
             placeholder="New Password"
+            onChangeText={addText}
             style={styles.textInput}
           />
         </View>
@@ -49,8 +54,9 @@ const ResetPasswordScreen = ({navigation}) => {
         </View>
         <View style={styles.btn}>
           <ButtonLarge
-            onPress={() => {
-              const resp= resetPassword({mobile:authData.mobile,password:password})
+            onPress={async () => {
+              const resp= await resetPassword({mobile:authData.userData.mobile,password:password})
+              console.log(resp)
               navigation.navigate('ResetSuccess');
             }}
             title="RESET"

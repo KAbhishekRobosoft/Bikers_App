@@ -60,7 +60,7 @@ const OtpScreen = ({navigation}) => {
                     data.registered === true &&
                     data.forgotPassword === false
                   ) {
-                    const response = await register(data.userData);
+                    const response = await register(data.userData,data.haveBike);
                     if (response !== undefined) {
                       dispatch(setOtpVerfied());
                       navigation.navigate('Login');

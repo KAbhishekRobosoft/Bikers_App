@@ -37,7 +37,7 @@ import {
             </View>
     
             <View style={styles.btn}>
-              <ButtonLarge title="Done" />
+              <ButtonLarge onPress={props.onPress} title="Done" />
             </View>
           </View>
         </SafeAreaView>

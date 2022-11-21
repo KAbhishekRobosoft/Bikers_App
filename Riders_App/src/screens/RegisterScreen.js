@@ -15,7 +15,7 @@ import {Password} from '../components/InputFields';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
 // import {register} from '../services/Auth';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {setRegistered} from '../redux/AuthSlice';
 import { setUserData } from '../redux/AuthSlice';
 
@@ -44,6 +44,7 @@ const registerValidationSchema = yup.object().shape({
 const Register = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
   const dispatch = useDispatch();
+  const authData= useSelector(state=>state.auth)
 
   return (
     <View>

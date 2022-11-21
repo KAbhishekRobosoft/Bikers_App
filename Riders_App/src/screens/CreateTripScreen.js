@@ -204,7 +204,9 @@ const CreateTrip = ({navigation}) => {
 
           <View style={styles.addUserView}>
             <View style={styles.addUserImgView}>
-              <Pressable onPress={() => setRecommend(!recommend)}>
+              <Pressable onPress={() => {setRecommend(!recommend)
+                navigation.navigate("Contacts")
+              }}>
                 <Image
                   style={styles.calenderImg}
                   source={require('../assets/images/adduser.png')}

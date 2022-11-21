@@ -15,15 +15,16 @@ import {PermissionsAndroid} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectMarked} from '../redux/ContactSlice';
-import {selectContacts} from '../redux/ContactSlice';
 import {selectUnMarked} from '../redux/ContactSlice';
-import {filterContacts} from '../redux/ContactSlice';
+import { addTripContacts } from '../redux/ContactSlice';
+
 export const ContactFlatList = () => {
   const dispatch = useDispatch();
   const data = useSelector(state => state.contact.contactsData);
-
+  console.log(data.addTripContacts)
   const handleTick = contacts => {
     dispatch(selectMarked(contacts));
+    dispatch(addTripContacts(contacts))
   };
 
   const handleUnTick = contacts => {
@@ -38,7 +39,7 @@ export const ContactFlatList = () => {
           <View style={styles.circleView}></View>
           <Text style={styles.contactName}>{item.givenName}</Text>
           {!item.marked ? (
-            <Pressable onPress={() => handleTick(item)}>
+            <Pressable onPress={() => {handleTick(item)}}>
               <Image
                 source={require('../assets/images/untick.png')}
                 style={styles.tickImage}

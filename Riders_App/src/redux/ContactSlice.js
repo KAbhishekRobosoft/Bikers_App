@@ -5,6 +5,7 @@ const contactSlice = createSlice({
   initialState: {
     contactsData: [],
     filterData: [],
+    addTripContacts:[]
 
   },
 
@@ -68,9 +69,17 @@ const contactSlice = createSlice({
         site.givenName.toLowerCase().includes(action.payload.toLowerCase()),
       );
     },
+
+    addTripContacts:(state,action)=>{
+        state.addTripContacts.push(action.payload)
+    },
+
+    deleteTripContacts:(state,action)=>{
+        state.addTripContacts= state.addTripContacts.filter(ele=> ele.recordID !== action.payload.recordID)
+  }
   },
 });
 
-export const {selectContacts, selectMarked, selectUnMarked, filterContacts} = contactSlice.actions;
+export const {selectContacts, selectMarked, selectUnMarked, filterContacts,addTripContacts} = contactSlice.actions;
 
 export default contactSlice.reducer;
