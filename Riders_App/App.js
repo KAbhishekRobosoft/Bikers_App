@@ -9,7 +9,8 @@ import ResetPassword from "./src/screens/ResetPasswordScreen"
 import {BookService} from  "./src/screens/BookServiceScreen"
 import {ToolKit} from "./src/screens/ToolKitScreen"
 import Register from "./src/screens/RegisterScreen"
-
+import CreateTrip from "./src/screens/CreateTripScreen"
+import { OwnerManualEdit } from "./src/screens/OwnerManualEditableScreen"
 let persistor = persistStore(store);
 // import NavigationFunctionality from './src/utils/NavigationFunctionality'
 
@@ -17,7 +18,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-          <BookService/>
+          <OwnerManualEdit/>
       </PersistGate>
     </Provider>
   );

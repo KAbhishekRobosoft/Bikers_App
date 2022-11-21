@@ -33,14 +33,12 @@ const CreateTrip = ({navigation}) => {
   const [endDate, setEndDate] = useState(new Date());
   const [time, setTimer] = useState(new Date());
   const [recommend, setRecommend] = useState(false);
-  const [mileStone, setMileStone] = useState(false);
   const [go, setGo] = useState();
   const [from, setFrom] = useState();
   const [tripName, settripName] = useState();
   const [placeholder1, setPlaceholder1] = useState('Where do you want to go?');
   const [placeholder2, setPlaceholder2] = useState('From');
   const [placeholder3, setPlaceholder3] = useState('Name of the trip');
-
 
   return (
     <SafeAreaView style={styles.main}>
@@ -112,7 +110,7 @@ const CreateTrip = ({navigation}) => {
           />
         </View>
         <View style={styles.calenderView}>
-          <View style={styles.startDateView}>  
+          <View style={styles.startDateView}>
             <TextInput
               style={styles.dateText}
               placeholderTextColor={'#4F504F'}
@@ -205,9 +203,11 @@ const CreateTrip = ({navigation}) => {
 
           <View style={styles.addUserView}>
             <View style={styles.addUserImgView}>
-              <Pressable onPress={() => {setRecommend(!recommend)
-                navigation.navigate("Contacts")
-              }}>
+              <Pressable
+                onPress={() => {
+                  setRecommend(!recommend);
+                  navigation.navigate('Contacts');
+                }}>
                 <Image
                   style={styles.calenderImg}
                   source={require('../assets/images/adduser.png')}
@@ -223,7 +223,7 @@ const CreateTrip = ({navigation}) => {
           ) : null}
           <View style={styles.addMileStoneView}>
             <View style={styles.addUserImgView}>
-              <Pressable onPress={() => dispatch(setMileStone(true))}>
+              <Pressable>
                 <Image
                   style={styles.calenderImg}
                   source={require('../assets/images/mileStone.png')}
