@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   Pressable,
 } from 'react-native';
-import { SelectList } from 'react-native-dropdown-select-list';
+import {SelectList} from 'react-native-dropdown-select-list';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const Input = props => {
   const {
@@ -146,9 +147,21 @@ export const GarageInputField = props => {
 export const DropDownInputField = props => {
   return (
     <View>
-      <View style={styles.container}>
-        <SelectList data={props.data} setSelected={props.setSelected} boxStyles={styles.dropDownBox} inputStyles={styles.dropDropInput} dropdownStyles={styles.dropDown} values={props.selected} placeholder={props.placeholder}/>
-      </View>
+
+        <SelectList
+          data={props.data}
+          setSelected={props.setSelected}
+          boxStyles={styles.dropDownBox}
+          inputStyles={styles.dropDropInput}
+          dropdownStyles={styles.dropDown}
+          values={props.selected}
+          placeholder={props.placeholder}
+          dropdownTextStyles={styles.dropDownText}
+          arrowicon={<Icon name='sort-down' color='rgba(0,0,0,0.54)' size={16}/>}
+          closeicon={<Icon name='sort-up' color='rgba(0,0,0,0.54)' size={16}/>}
+          search={false}
+        />
+
     </View>
   );
 };
@@ -172,7 +185,6 @@ const styles = StyleSheet.create({
     borderColor: '#B4B3B3',
     borderBottomWidth: 1,
     paddingBottom: 10,
-    marginLeft: 40,
     alignItems: 'flex-end',
   },
   inputView: {
@@ -198,7 +210,7 @@ const styles = StyleSheet.create({
     color: '#4F504F',
   },
   typedText: {
-    width: '90%',
+    width: '100%',
     marginVertical: Platform.OS === 'android' ? -17 : -3,
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
@@ -240,7 +252,7 @@ const styles = StyleSheet.create({
   },
   placeholderView: {
     flexDirection: 'column',
-    width: '85%',
+    width: '100%',
   },
   commonPlaceholder: {
     paddingBottom: 5,
@@ -267,36 +279,41 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
   },
-  title: {
-    color: '#949CA5',
-    fontSize: 18,
-    marginHorizontal: 20,
-  },
   dropDownBox: {
     height: 41,
-    width: '89%',
-    borderColor: '#FFFFFF',
+    width: '100%',
     backgroundColor: '#FFFFFF',
     borderRadius: 4,
-    marginHorizontal: 39,
     marginVertical: 35,
-    borderWidth: 1
+    borderBottomWidth: 1,
+    borderTopColor: '#FFFFFF',
+    borderEndColor: '#FFFFFF',
+    borderStartColor: '#FFFFFF',
+    borderBottomColor: '#B4B3B3',
   },
   dropDropInput: {
-    height: 41,
-    width: '85%',
+    height: Platform.OS === 'ios' ? 20 : 24,
     fontSize: 16,
-    color: '#3C4858',
+    fontFamily: 'Roboto-Regular',
+    color: '#4F504F',
     alignSelf: 'center',
-    marginHorizontal: -19.5,
-    marginTop: 25,
+    marginLeft: -16.5,
   },
   dropDown: {
-    width: '85%',
+    width: '100%',
     backgroundColor: '#FFFFFF',
     borderColor: '#FFFFFF',
     borderRadius: 4,
-    marginHorizontal: 39,
-    marginVertical: 35
+    marginTop: -35,
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
+    color: '#4F504F',
+  },
+  dropDownText: {
+    height: 20,
+    fontSize: 15,
+    fontFamily: 'Roboto-Regular',
+    color: '#4F504F',
+    marginLeft: -15,
   },
 });

@@ -23,6 +23,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setMileStone} from '../redux/AuthSlice';
 
 const CreateTrip = ({navigation}) => {
+  const mileStones = useSelector(state => state.auth.mileStone);
+  const dispatch = useDispatch();
 
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -38,7 +40,6 @@ const CreateTrip = ({navigation}) => {
   const [placeholder1, setPlaceholder1] = useState('Where do you want to go?');
   const [placeholder2, setPlaceholder2] = useState('From');
   const [placeholder3, setPlaceholder3] = useState('Name of the trip');
-  const dispatch = useDispatch();
 
 
   return (
@@ -215,7 +216,7 @@ const CreateTrip = ({navigation}) => {
             </View>
             <Text style={styles.text}>Invite other riders</Text>
           </View>
-          {mileStone ? (
+          {mileStones ? (
             <View style={styles.mileStone}>
               <Milestone />
             </View>

@@ -37,18 +37,16 @@ export const checkIn = async values => {
 };
 
 export const refreshToken = async token => {
-
   const options = {
     method: 'POST',
     url: 'https://riding-application.herokuapp.com/api/v1/getAccessToken',
     headers: {
-       Authorization: `Bearer ${token}` 
-    }
+      Authorization: `Bearer ${token}`,
+    },
   };
-  const response= await axios.request(options)
-  return response.data
+  const response = await axios.request(options);
+  return response.data;
 };
-
 
 export const searchCity = async string => {
   const options = {
@@ -61,9 +59,27 @@ export const searchCity = async string => {
     },
   };
   const response = await axios.request(options);
-  return response.data.results
-}
+  return response.data.results;
+};
 
+
+export const searchServiceCenter = async value => {
+  let res = await fetch(
+    'https://riding-application.herokuapp.com/api/v1/dealer/searchDealers',
+    {
+      method: 'post',
+      body: JSON.stringify({
+        text:value
+      }),
+      headers: {
+        'Content-Type':'application/json',
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMjMxNDU2Nzg0NSIsImlhdCI6MTY2ODg1MjcwOSwiZXhwIjoxNjY4ODU2MzA5fQ.QwY9IMuAeqL6osE1zfY2Vb4C3C95SPOMjC_H4gwFXs4`,
+      },
+    },
+  );
+  let data = await res.json();
+  return data;
+};
 export const uploadImage= async (payload,token)=>{
   
   let res= await fetch(
@@ -94,7 +110,6 @@ export const sendOtp = async mobileNumber => {
 };
 
 export const resetPassword = async(userData) => {
-
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/forgotPassword',
