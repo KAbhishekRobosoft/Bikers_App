@@ -30,3 +30,27 @@ export const summaryData = [
     
     
 ]
+
+export const ToolkitData = [
+    {
+        title: 'Onsite Minor Repairs',
+        icon: require('../assets/images/Onsite.png'),
+    },
+    {
+        title: 'Vehicle Accident',
+        icon: require('../assets/images/Accident.png'),
+    },
+    {
+        title: 'Battery Drain',
+        icon: require('../assets/images/Battery.png'),
+    },
+    {
+        title: 'Breakdown',
+        icon: require('../assets/images/Break.png'),
+    },
+    {
+        title: 'Loose Chain',
+        icon: require('../assets/images/Chain.png'),
+    },
+    
+]

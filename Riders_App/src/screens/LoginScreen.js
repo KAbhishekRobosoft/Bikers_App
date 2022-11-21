@@ -24,7 +24,6 @@ import { setForgotPassword } from '../redux/AuthSlice';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),
-
   password: yup
     .string()
     .matches(/\w*[a-z]\w*/, 'Password must have a small letter')
@@ -40,15 +39,12 @@ const LoginScreen = ({navigation}) => {
 
   async function signIn(values){
       const response= await checkIn(values)
+      console.log(response)
       if (response !== undefined) {
         try {
           await AsyncStorage.setItem('token', response.token);
         } catch (e) {
           console.log(e);
-        }
-        let obj= {
-          userName:response.userName,
-          
         }
         dispatch(login(response));
         dispatch(setToken(response.token))

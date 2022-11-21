@@ -76,6 +76,24 @@ export const uploadImage = async (payload, token) => {
   return data;
 };
 
+export const searchServiceCenter = async value => {
+  let res = await fetch(
+    'https://riding-application.herokuapp.com/api/v1/dealer/searchDealers',
+    {
+      method: 'post',
+      body: JSON.stringify({
+        text: value,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMjMxNDU2Nzg0NSIsImlhdCI6MTY2ODg1MjcwOSwiZXhwIjoxNjY4ODU2MzA5fQ.QwY9IMuAeqL6osE1zfY2Vb4C3C95SPOMjC_H4gwFXs4`,
+      },
+    },
+  );
+  let data = await res.json();
+  return data;
+};
+
 export const sendOtp = async mobileNumber => {
   const options = {
     method: 'POST',

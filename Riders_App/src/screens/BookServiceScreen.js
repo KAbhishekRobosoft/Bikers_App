@@ -13,13 +13,17 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {PlaceholderTextField} from '../components/InputFields';
-import { DropDownInputField } from '../components/InputFields';
+import {DropDownInputField} from '../components/InputFields';
+import {Dropdown} from 'react-native-material-dropdown';
+import SelectDropdown from 'react-native-select-dropdown';
+import InsetShadow from 'react-native-inset-shadow';
+import ButtonLarge from '../components/Buttons';
 
 export const BookService = () => {
   const [number, setNumber] = useState();
   const [vehicleType, setvehicleType] = useState();
   const [vehicleNumber, setvehicleNumber] = useState();
-  const [selectDropDown, setSelectDropDown] = useState("");
+  const [selected, setSelected] = useState();
   const data = [
     {
       key: 'Free service',
@@ -36,7 +40,7 @@ export const BookService = () => {
   ];
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: '#FFFFFF', flex: 1}}>
       <View style={[styles.header, styles.shadow]}>
         <Pressable
           onPress={() => {
@@ -51,9 +55,17 @@ export const BookService = () => {
         </Pressable>
         <Text style={styles.headerText}>Book a Service</Text>
       </View>
-      <ScrollView style={{width: '90%'}}>
+      <ScrollView
+        style={{
+          width: '80%',
+          // height: '80%',
+          // borderWidth: 1,
+          alignSelf: 'center',
+        }}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}>
         <Formik>
-          {() => (
+          {({isValid, handleSubmit}) => (
             <>
               <View style={styles.firstInputField}>
                 <PlaceholderTextField
@@ -84,9 +96,23 @@ export const BookService = () => {
               />
               <DropDownInputField
                 data={data}
-                setSelectDropDown={(val) => setSelectDropDown(val)}
-                values={selectDropDown}
+                values={selected}
+                setSelected={(value) => setSelected(value)}
+                placeholder="Service Type"
               />
+              <Text style={styles.commentText}>Comments</Text>
+              <View style={styles.commentTextInputView}>
+                <InsetShadow>
+                  <TextInput multiline={true} />
+                </InsetShadow>
+              </View>
+              <View style={styles.btnView}>
+                <ButtonLarge
+                  title="FIND A DEALER"
+                  disabled={!isValid}
+                  onPress={handleSubmit}
+                />
+              </View>
             </>
           )}
         </Formik>
@@ -140,7 +166,24 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     height: 18,
     width: 18,
-    marginLeft: -20,
+    marginLeft: -30,
     marginTop: 57,
+  },
+  dropDown: {
+    backgroundColor: '#FFFFFF',
+    width: '100%',
+  },
+  commentText: {
+    color: '#4F504F',
+    fontFamily: 'Roboto-Regular',
+    fontSize: 16,
+  },
+  commentTextInputView: {
+    height: 71,
+    marginTop: 8,
+  },
+  btnView: {
+    alignItems: 'center',
+    marginVertical: Platform.OS === 'android' ? 60 : 60,
   },
 });

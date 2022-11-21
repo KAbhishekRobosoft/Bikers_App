@@ -21,7 +21,7 @@ import {filterContacts} from '../redux/ContactSlice';
 import {ContactFlatList} from '../components/ContactsFlatList';
 import { PlaceholderTextField } from '../components/InputFields';
 
-export const ContactDisplay = () => {
+export const ContactDisplay = ({navigation}) => {
   const dispatch = useDispatch();
   const data = useSelector(state => state.contact.contactsData);
   const [text, setText] = useState();
