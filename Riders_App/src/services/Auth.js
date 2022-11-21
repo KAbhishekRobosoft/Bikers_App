@@ -73,7 +73,7 @@ export const searchServiceCenter = async value => {
       }),
       headers: {
         'Content-Type':'application/json',
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMjMxNDU2Nzg0NSIsImlhdCI6MTY2ODg1MjcwOSwiZXhwIjoxNjY4ODU2MzA5fQ.QwY9IMuAeqL6osE1zfY2Vb4C3C95SPOMjC_H4gwFXs4`,
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMjMxNDU2Nzg0NSIsImlhdCI6MTY2OTAxMjg2NCwiZXhwIjoxNjY5MDE2NDY0fQ.t6pvXebwvv8rF2Yr_qEIRcaL9veZCe8DzWLtgCWnGc0`,
       },
     },
   );
