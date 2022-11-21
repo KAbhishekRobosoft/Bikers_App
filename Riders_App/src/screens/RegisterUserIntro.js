@@ -18,18 +18,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setImage } from '../redux/AuthSlice';
 import { refreshToken } from '../services/Auth';
 import { setUserData } from '../redux/AuthSlice';
+import { setToken } from '../redux/AuthSlice';
 
 function RegisterUserIntro({navigation}) {
+  const dispatch= useDispatch()
+  const authData= useSelector(state=>state.auth)
+
   useEffect(()=>{
-      setTimeout(()=>{
-          const resp= refreshToken(authData.userData.userToken)
-          dispatch(setUserData(resp.token))
+      setTimeout(async ()=>{
+          const resp= await refreshToken(authData.userToken)
+          dispatch(setToken(resp.access_token))
+      
       },1000)
   },[])
 
-  const dispatch= useDispatch()
-  const authData= useSelector(state=>state.auth)
-  console.log(authData.userData)
 
   const pickImage = () => {
     ImagePicker.openPicker({

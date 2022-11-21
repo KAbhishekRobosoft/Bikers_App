@@ -8,26 +8,32 @@ import {
   Platform,
   TextInput,
   FlatList,
+  ToastAndroid,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import Contacts from 'react-native-contacts';
-import {PermissionsAndroid} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectMarked} from '../redux/ContactSlice';
-import {selectContacts} from '../redux/ContactSlice';
 import {selectUnMarked} from '../redux/ContactSlice';
-import {filterContacts} from '../redux/ContactSlice';
+import {addTripContacts} from '../redux/ContactSlice';
+import {deleteTripContacts} from '../redux/ContactSlice';
+import Toast from 'react-native-simple-toast';
+
 export const ContactFlatList = () => {
   const dispatch = useDispatch();
   const data = useSelector(state => state.contact.contactsData);
+  const contactData = useSelector(state => state.contact.addTripContacts);
 
   const handleTick = contacts => {
-    dispatch(selectMarked(contacts));
+    if (contactData.length > 5) Toast.show('Only 5 members in a trip');
+    else {
+      dispatch(selectMarked(contacts));
+      dispatch(addTripContacts(contacts));
+    }
   };
 
   const handleUnTick = contacts => {
     dispatch(selectUnMarked(contacts));
+    dispatch(deleteTripContacts(contacts));
   };
 
   return (
@@ -38,7 +44,10 @@ export const ContactFlatList = () => {
           <View style={styles.circleView}></View>
           <Text style={styles.contactName}>{item.givenName}</Text>
           {!item.marked ? (
-            <Pressable onPress={() => handleTick(item)}>
+            <Pressable
+              onPress={() => {
+                handleTick(item);
+              }}>
               <Image
                 source={require('../assets/images/untick.png')}
                 style={styles.tickImage}

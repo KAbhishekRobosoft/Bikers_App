@@ -158,6 +158,193 @@ export const StarComponent5 = () => {
   );
 };
 
+export const BikeComponent1 = () => {
+  return (
+    <View style={{flexDirection: 'row'}}>
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 50}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 11, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+    </View>
+  );
+};
+export const BikeComponent2 = () => {
+  return (
+    <View style={{flexDirection: 'row'}}>
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 50}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 11, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 90}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 51, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+    </View>
+  );
+};
+export const BikeComponent3 = () => {
+  return (
+    <View style={{flexDirection: 'row'}}>
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 50}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 11, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 90}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 51, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 90}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 51, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+    </View>
+  );
+};
+export const BikeComponent4 = () => {
+  return (
+    <View style={{flexDirection: 'row'}}>
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 50}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 11, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 90}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 51, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 90}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 51, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 90}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 51, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+    </View>
+  );
+};
+export const BikeComponent5 = () => {
+  return (
+    <View style={{flexDirection: 'row'}}>
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 50}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 11, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 90}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 51, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 90}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 51, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 90}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 51, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+
+      <View style={{bottom: 13}}>
+        <Image
+          style={{left: 90}}
+          source={require('../assets/images/red_wrong.png')}
+        />
+        <Image
+          style={{left: 51, height: 46, width: 46, position: 'absolute'}}
+          source={require('../assets/images/contactsUser.png')}
+        />
+      </View>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   ratingImg: {
     width: 16,

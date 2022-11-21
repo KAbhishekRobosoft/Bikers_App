@@ -10,7 +10,8 @@ const authenticateSlice = createSlice({
     otpVerified:false,
     registered:false,
     forgotPassword:false,
-    image:''
+    image:'',
+    haveBike:false
   },
 
   reducers: {
@@ -40,7 +41,6 @@ const authenticateSlice = createSlice({
     },
     setMileStoneData: (state, action) => {
       state.mileStoneData.push(action.payload);
-      console.log(state.mileStoneData);
     },
     setOtpVerfied: state => {
       state.otpVerified = true;
@@ -58,6 +58,10 @@ const authenticateSlice = createSlice({
       state.forgotPassword = false;
     },
 
+    setHaveBike:(state)=>{
+        state.haveBike= true
+    },
+
     setRegistered: state => {
       state.registered = true;
     },
@@ -68,5 +72,5 @@ const authenticateSlice = createSlice({
   },
 });
 
-export const {login,logOut,setToken,setOtpVerfied,setRegistered,deSetRegistered,setForgotPassword,deSetForgotPassword,setUserData,setImage} = authenticateSlice.actions;
+export const {login,logOut,setToken,setOtpVerfied,setRegistered,setHaveBike,deSetRegistered,setForgotPassword,deSetForgotPassword,setUserData,setImage} = authenticateSlice.actions;
 export default authenticateSlice.reducer;

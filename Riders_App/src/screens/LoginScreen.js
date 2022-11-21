@@ -45,10 +45,6 @@ const LoginScreen = ({navigation}) => {
         } catch (e) {
           console.log(e);
         }
-        let obj= {
-          userName:response.userName,
-          
-        }
         dispatch(login(response));
         dispatch(setToken(response.token))
       } else {

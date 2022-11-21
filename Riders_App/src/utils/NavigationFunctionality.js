@@ -40,7 +40,6 @@ function NavigationFunctionality() {
           </View>
         );
       }
-
   return (
     
         authData.infoPage !== false ?<AppTourStack /> :(
