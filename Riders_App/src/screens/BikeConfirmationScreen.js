@@ -2,6 +2,8 @@ import React from 'react';
 import {View, Text, StyleSheet, Image,useWindowDimensions,ScrollView,SafeAreaView} from 'react-native';
 import SmallButton from '../components/SmallButton';
 import LinearGradient from 'react-native-linear-gradient';
+import { setHaveBike } from '../redux/AuthSlice';
+import { useDispatch } from 'react-redux';
 
 
 function BikeConfirmationScreen({navigation}) {
@@ -9,6 +11,7 @@ function BikeConfirmationScreen({navigation}) {
   const imgHeight1 = width > height ? (Platform.OS === 'ios' ? 150 : 160) : 200;
   const imgWidth1 = width > height ? (Platform.OS === 'ios' ? 200 : 180) : 220;
   const marginTop1 = width > height ? (Platform.OS === 'ios' ? 20 : 20) : 20;
+  const dispatch= useDispatch()
 
   return (
     <SafeAreaView>
@@ -28,7 +31,9 @@ function BikeConfirmationScreen({navigation}) {
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
           colors={['#ED7E2B', '#F4A264']}>
-          <SmallButton onPress={()=>navigation.navigate('Register')} styleName="confirmStyle" name="YES" />
+          <SmallButton onPress={()=>{navigation.navigate('Register')
+              dispatch(setHaveBike())
+          }} styleName="confirmStyle" name="YES" />
         </LinearGradient>
         <View style={styles.confirmBut2}>
           <SmallButton  onPress={()=>navigation.navigate('Register')} styleName="confirmStyle" name="NO" />
