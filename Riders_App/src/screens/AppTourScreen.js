@@ -5,14 +5,12 @@ import {
   View,
   Image,
   SafeAreaView,
-  ScrollView,
   useWindowDimensions,
   Platform,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import SmallButton from '../components/SmallButton';
 import ButtonLarge from '../components/Buttons';
-
 
 function AppTourScreen({navigation}) {
   const {width, height} = useWindowDimensions();
@@ -23,7 +21,7 @@ function AppTourScreen({navigation}) {
   const imgHeight1 = width > height ? (Platform.OS === 'ios' ? 130 : 105) : 250;
   const imgWidth1 = width > height ? (Platform.OS === 'ios' ? 200 : 165) : 300;
   const marginTop1 = width > height ? (Platform.OS === 'ios' ? 20 : 20) : 20;
-  
+
   return (
     <Swiper
       dotStyle={{width: 10, height: 10, borderRadius: 10}}
@@ -33,9 +31,12 @@ function AppTourScreen({navigation}) {
       loop={false}>
       <SafeAreaView style={styles.slide1}>
         <View style={[styles.appIntroBut1, {marginRight: marginRight}]}>
-          <SmallButton onPress= {()=>{navigation.navigate('AuthPage')
-
-          }} name="Skip" />
+          <SmallButton
+            onPress={() => {
+              navigation.navigate('Login');
+            }}
+            name="Skip"
+          />
         </View>
         <View>
           <Image
@@ -50,7 +51,10 @@ function AppTourScreen({navigation}) {
       </SafeAreaView>
       <SafeAreaView style={styles.slide2}>
         <View style={[styles.appIntroBut1, {marginRight: marginRight}]}>
-          <SmallButton onPress= {()=>navigation.navigate('Login')} name="Skip" />
+          <SmallButton
+            onPress={() => navigation.navigate('Login')}
+            name="Skip"
+          />
         </View>
         <Image
           style={{marginTop: marginTop, height: imgHeight, width: imgWidth}}
@@ -69,7 +73,10 @@ function AppTourScreen({navigation}) {
           Book bike online and shop{'\n'}accessories
         </Text>
         <View style={styles.registerButton}>
-          <ButtonLarge onPress= {()=>navigation.navigate('Confirm')} title="REGISTER" />
+          <ButtonLarge
+            onPress={() => navigation.navigate('Confirm')}
+            title="REGISTER"
+          />
         </View>
       </SafeAreaView>
     </Swiper>

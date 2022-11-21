@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -7,7 +7,9 @@ import {
   Platform,
   Text,
   TouchableOpacity,
+  Pressable,
 } from 'react-native';
+import { SelectList } from 'react-native-dropdown-select-list';
 
 export const Input = props => {
   const {
@@ -104,9 +106,66 @@ export const Password = props => {
   );
 };
 
+export const PlaceholderTextField = props => {
+  return (
+    <View>
+      <View style={styles.inputTextView2}>
+        <View style={styles.placeholderView}>
+          {props.value ? (
+            <View style={styles.commonPlaceholder}>
+              <Text style={styles.text}>{props.placeholder}</Text>
+            </View>
+          ) : (
+            <></>
+          )}
+          <TextInput
+            name={props.name}
+            placeholder={props.placeholder}
+            placeholderTextColor={'#4F504F'}
+            style={styles.typedText}
+            keyboardType={props.keyboardType}
+            value={props.value}
+            onChangeText={props.onChangeText}
+          />
+        </View>
+      </View>
+    </View>
+  );
+};
+export const GarageInputField = props => {
+  return (
+    <Pressable onPress={props.onPress}>
+      <View style={styles.garageView}>
+        <Image source={props.source} style={styles.imageIcons} />
+        <Text style={styles.optionsText}>{props.text}</Text>
+      </View>
+    </Pressable>
+  );
+};
+
+export const DropDownInputField = props => {
+  return (
+    <View>
+      <View style={styles.container}>
+        <SelectList data={props.data} setSelected={props.setSelected} boxStyles={styles.dropDownBox} inputStyles={styles.dropDropInput} dropdownStyles={styles.dropDown} values={props.selected} placeholder={props.placeholder}/>
+      </View>
+    </View>
+  );
+};
 const styles = StyleSheet.create({
   inputTextView: {
     width: '80%',
+    height: 60,
+    flexDirection: 'row',
+    marginTop: 25,
+    borderColor: '#B4B3B3',
+    borderBottomWidth: 1,
+    paddingBottom: 10,
+    marginLeft: 40,
+    alignItems: 'flex-end',
+  },
+  inputTextView2: {
+    width: '100%',
     height: 60,
     flexDirection: 'row',
     marginTop: 25,
@@ -135,6 +194,13 @@ const styles = StyleSheet.create({
     marginVertical: Platform.OS === 'android' ? -17 : -3,
     fontSize: 16,
     marginLeft: 10,
+    fontFamily: 'Roboto-Regular',
+    color: '#4F504F',
+  },
+  typedText: {
+    width: '90%',
+    marginVertical: Platform.OS === 'android' ? -17 : -3,
+    fontSize: 16,
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
   },
@@ -174,6 +240,63 @@ const styles = StyleSheet.create({
   },
   placeholderView: {
     flexDirection: 'column',
-    width: '85%'
+    width: '85%',
+  },
+  commonPlaceholder: {
+    paddingBottom: 5,
+  },
+  garageView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 70,
+    borderBottomColor: 'rgba(151,151,151,0.85)',
+    borderBottomWidth: 1,
+    paddingLeft: 20,
+  },
+  imageIcons: {
+    height: 32,
+    width: 31,
+    resizeMode: 'contain',
+  },
+  optionsText: {
+    color: '#515251',
+    fontSize: 14,
+    fontFamily: 'Roboto-Medium',
+    marginLeft: 10,
+  },
+  container: {
+    flexDirection: 'column',
+  },
+  title: {
+    color: '#949CA5',
+    fontSize: 18,
+    marginHorizontal: 20,
+  },
+  dropDownBox: {
+    height: 41,
+    width: '89%',
+    borderColor: '#FFFFFF',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 4,
+    marginHorizontal: 39,
+    marginVertical: 35,
+    borderWidth: 1
+  },
+  dropDropInput: {
+    height: 41,
+    width: '85%',
+    fontSize: 16,
+    color: '#3C4858',
+    alignSelf: 'center',
+    marginHorizontal: -19.5,
+    marginTop: 25,
+  },
+  dropDown: {
+    width: '85%',
+    backgroundColor: '#FFFFFF',
+    borderColor: '#FFFFFF',
+    borderRadius: 4,
+    marginHorizontal: 39,
+    marginVertical: 35
   },
 });

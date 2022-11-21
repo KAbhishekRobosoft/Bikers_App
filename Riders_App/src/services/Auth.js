@@ -1,24 +1,27 @@
+import { useDrawerStatus } from '@react-navigation/drawer';
 import axios from 'axios';
 
-export const register = async values => {
-  try {
-    const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/register',
-      {
-        userName: values.userName,
-        password: values.password,
-        mobile: values.mobile,
-        email: values.email,
-        haveBike: 'yes',
-      },
-    );
-    return response.data;
-  } catch (error) {
-    console.log('An error as occurred');
-  }
-};
+export const register = async (values) => {
+
+    try {
+        const response = await axios.post(
+          'https://riding-application.herokuapp.com/api/v1/register',
+          {
+            userName: values.userName,
+            password: values.password,
+            mobile:values.mobile,
+            email:values.email,
+            haveBike: true
+          },
+        )
+        return response.data;
+      } catch (error) {
+        console.log('An error has occurred');
+      }
+}
 
 export const checkIn = async values => {
+
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/loginPhone',
@@ -27,9 +30,9 @@ export const checkIn = async values => {
         password: values.password,
       },
     );
-    return response.data;
+    return response.data
   } catch (error) {
-    console.log('An error as occurred');
+    console.log('An error has occurred');
   }
 };
 
@@ -59,25 +62,6 @@ export const searchCity = async string => {
   return response.data.results;
 };
 
-export const uploadImage = async image => {
-  const payload = new FormData();
-  payload.append('image', image);
-  console.log(payload);
-
-  const config = {
-    body: payload,
-    method: 'POST',
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMjMxNDU2Nzg0NSIsImlhdCI6MTY2ODgzOTQ4NywiZXhwIjoxNjY4ODQzMDg3fQ.oQb_CueCeOnLGmBafktIdC-KrdBHs2SJTWozwL6eE1A`,
-    },
-  };
-  const response = await axios.request(
-    'https://riding-application.herokuapp.com/api/v1/profileImageUpload',
-    config,
-  );
-  return response.data;
-};
 
 export const searchServiceCenter = async value => {
   let res = await fetch(
@@ -95,4 +79,47 @@ export const searchServiceCenter = async value => {
   );
   let data = await res.json();
   return data;
+};
+export const uploadImage= async (payload,token)=>{
+  
+  let res= await fetch(
+      'https://riding-application.herokuapp.com/api/v1/profileImageUpload',
+      {
+        method:'post',
+        body:payload,
+        headers:{
+          'Content-Type':'multipart/form-data',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      let data= await res.json()
+      return data
+}
+
+export const sendOtp = async mobileNumber => {
+
+  const options = {
+    method: 'POST',
+    url: 'https://riding-application.herokuapp.com/api/v1/sendOtp',
+    body:{
+      "destination":mobileNumber
+    }
+  };
+  const response= await axios.request(options)
+  return response.data
+};
+
+export const resetPassword = async(userData) => {
+
+  const options = {
+    method: 'POST',
+    url: 'https://riding-application.herokuapp.com/api/v1/forgotPassword',
+    body:{
+          mobile:userData.mobile,
+          password:userData.password
+    }
+    
+  };
+  const response= await axios.request(options)
+  return response.data
 };

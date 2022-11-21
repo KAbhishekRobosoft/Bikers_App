@@ -38,7 +38,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Rider App requires camera access for picture access.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>to list the contacts</string>
+	<string>to list all the contacts</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>

@@ -8,6 +8,7 @@ import ServiceCenterScreen from './src/screens/ServiceCenterScreen';
 import ResetPassword from "./src/screens/ResetPasswordScreen"
 
 let persistor = persistStore(store);
+import NavigationFunctionality from './src/utils/NavigationFunctionality'
 
 const App = () => {
   return (
@@ -20,4 +21,3 @@ const App = () => {
 };
 
 export default App;
-

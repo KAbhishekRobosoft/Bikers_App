@@ -3,6 +3,7 @@ import {configureStore} from '@reduxjs/toolkit';
 import {persistReducer} from 'redux-persist';
 import {combineReducers} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ContactSliceReducer from '../redux/ContactSlice'
 
 const persistConfig = {
   key: 'root',
@@ -12,6 +13,7 @@ const persistConfig = {
 
 const reducer = combineReducers({
     auth : Reducer,
+    contact: ContactSliceReducer
 })
 
 const persistRed = persistReducer(persistConfig, reducer);

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -13,103 +13,72 @@ import {
 
 import {uploadImage} from '../services/Auth';
 import SmallButton from '../components/SmallButton';
-import {launchImageLibrary} from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
+import { useDispatch, useSelector } from 'react-redux';
+import { setImage } from '../redux/AuthSlice';
+import { refreshToken } from '../services/Auth';
+import { setUserData } from '../redux/AuthSlice';
 
-function RegisterUserIntro() {
-  const [image, setImage] = useState('');
+function RegisterUserIntro({navigation}) {
+  useEffect(()=>{
+      setTimeout(()=>{
+          const resp= refreshToken(authData.userData.userToken)
+          dispatch(setUserData(resp.token))
+      },1000)
+  },[])
 
-  const requestCameraPermission = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.CAMERA,
-          {
-            title: 'Camera Permission',
-            message: 'App needs camera permission',
-          },
-        );
-        // If CAMERA Permission is granted
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
-      } catch (err) {
-        console.warn(err);
-        return false;
+  const dispatch= useDispatch()
+  const authData= useSelector(state=>state.auth)
+  console.log(authData.userData)
+
+  const pickImage = () => {
+    ImagePicker.openPicker({
+      width: 200,
+      height: 200,
+      cropping: true,
+    }).then(async image => {
+      console.log(image)
+      const payload = new FormData();
+      payload.append('image', {
+        uri: image.path,
+        type: image.mime,
+        name: `${image.filename}.${image.mime.substring(
+          image.mime.indexOf('/') + 1,
+        )}`,
+      })
+
+      const resp = await uploadImage(payload,authData.userToken)
+      if(resp.hasOwnProperty('message')){
+          dispatch(setImage('https'+resp.url.substring(4)))
+          navigation.navigate('ImageSuccess')
       }
-    } else return true;
+    })
   };
-
-  const requestExternalWritePermission = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          {
-            title: 'External Storage Write Permission',
-            message: 'App needs write permission',
-          },
-        );
-        // If WRITE_EXTERNAL_STORAGE Permission is granted
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
-      } catch (err) {
-        console.warn(err);
-        alert('Write permission err', err);
-      }
-      return false;
-    } else return true;
-  };
-
-  const chooseFile = type => {
-    let options = {
-      mediaType: type,
-      maxWidth: 300,
-      maxHeight: 550,
-      quality: 1,
-    };
-    launchImageLibrary(options, async response => {
-      console.log('Response = ', response);
-
-      if (response.didCancel) {
-        alert('User cancelled camera picker');
-        return;
-      } else if (response.errorCode == 'camera_unavailable') {
-        alert('Camera not available on device');
-        return;
-      } else if (response.errorCode == 'permission') {
-        alert('Permission not satisfied');
-        return;
-      } else if (response.errorCode == 'others') {
-        alert(response.errorMessage);
-        return;
-      }
-      setImage(response.assets[0].uri);
-      const resp = await uploadImage(response.assets[0].uri);
-      console.log(resp);
-    });
-  };
-
+  console.log(authData.userData)
   const {width, height} = useWindowDimensions();
-  const marginTop = height > width ? (Platform.OS === 'ios' ? 220 : 200) : 118
-  const marginRight= width > height ? (Platform.OS === "ios" ? 160 : 0) : 50
-
+  const marginTop = height > width ? (Platform.OS === 'ios' ? 220 : 200) : 118;
   return (
     <SafeAreaView style={styles.rUserCon}>
       <View style={styles.rUserBut}>
-        <SmallButton name="Skip" />
+        <SmallButton onPress= {()=>{
+          navigation.navigate('ImageSuccess')
+        }} name="Skip" />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.rUserSubCon}>
           <View style={styles.rUserSubCon}>
-        <Image
-          style={styles.rUserImg}
-          source={require('../assets/images/photoless.png')}
-        />
-            <Text style={styles.rUserName}>Hey Ashley!!</Text>
+            <Image
+              style={styles.rUserImg}
+              source={require('../assets/images/photoless.png')}
+            />
+            <Text style={styles.rUserName}>Hey {authData.userData.userName}!!</Text>
             <Text style={styles.rUserSug1}>to make it more cool select</Text>
             <Text style={styles.rUserSug2}>your avatar.</Text>
           </View>
           <View style={[styles.rUserPicOptions, {marginTop: marginTop}]}>
             <View style={styles.rUserOptions1}>
               <TouchableOpacity
-                onPress={() => chooseFile('photo')}
+                onPress={() => pickImage()}
                 style={{alignItems: 'center'}}>
                 <Image
                   style={styles.galleryImg}
@@ -145,13 +114,6 @@ const styles = StyleSheet.create({
   galleryImg: {
     width: 35,
     height: 28,
-  },
-
-  rUserImg1: {
-    borderRadius: 80,
-    height: 133,
-    width: 133,
-    position:"absolute"
   },
 
   rUserOptions1: {

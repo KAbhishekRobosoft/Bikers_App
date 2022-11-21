@@ -11,7 +11,7 @@ const Stack = createNativeStackNavigator();
 
 const NewUserSubStack = () => {
   return (
-    <NavigationContainer>
+ 
       <Stack.Navigator initialRouteName="WelcomeAboardScreen">
         <Stack.Screen
           options={{headerShown: false}}
@@ -24,7 +24,7 @@ const NewUserSubStack = () => {
           component={CreateTrip}
         />
       </Stack.Navigator>
-    </NavigationContainer>
+ 
   );
 };
 

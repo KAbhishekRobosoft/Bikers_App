@@ -49,12 +49,10 @@ const styles = StyleSheet.create({
     height: 30,
     justifyContent: 'flex-end',
     paddingHorizontal: 20,
-    // backgroundColor: 'red',
   },
   scrollView: {
     width: '100%',
     height: '91%',
-    //backgroundColor: 'red',
   },
   img: {
     width: '100%',
@@ -65,7 +63,6 @@ const styles = StyleSheet.create({
   textView: {
     alignSelf: 'center',
     marginTop: 50,
-    // backgroundColor: 'grey',
     height: 80,
     justifyContent: 'center',
   },
