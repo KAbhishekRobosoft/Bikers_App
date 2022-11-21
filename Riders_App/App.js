@@ -11,8 +11,12 @@ import {ToolKit} from "./src/screens/ToolKitScreen"
 import Register from "./src/screens/RegisterScreen"
 import CreateTrip from "./src/screens/CreateTripScreen"
 import { OwnerManualEdit } from "./src/screens/OwnerManualEditableScreen"
+
+// import NavigationFunctionality from './src/utils/NavigationFunctionality';
+import UpcomingTrips from './src/screens/AllTripList';
+import Profile from './src/screens/Profile';
+
 let persistor = persistStore(store);
-// import NavigationFunctionality from './src/utils/NavigationFunctionality'
 
 const App = () => {
   return (

@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     width: '90%',
     marginVertical: Platform.OS === 'android' ? -17 : -3,
     fontSize: 16,
-    marginLeft: 10,
+    marginLeft: 5,
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
   },
@@ -271,10 +271,12 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
+
   eye: {
     width: 24,
     height: 14,
   },
+
   iconView: {
     paddingTop: 45,
   },

@@ -7,12 +7,16 @@ import {
   TextInput,
   Pressable,
   ScrollView,
+  ToastAndroid,
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
+import Toast from 'react-native-simple-toast'
+import { useSelector } from 'react-redux';
+import { resetPassword } from '../services/Auth';
 
 const passwordValidationSchema = yup.object().shape({
   password: yup
@@ -30,6 +34,8 @@ const passwordValidationSchema = yup.object().shape({
 
 const ResetPasswordScreen = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
+  const authData= useSelector(state=>state.auth)
+
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
@@ -55,8 +61,12 @@ const ResetPasswordScreen = ({navigation}) => {
               confirmPassword: '',
             }}
             onSubmit={async values => {
-              console.log('hi');
-              console.log(values);
+              const resp= await resetPassword({mobile:authData.userData.mobile,password:values.password})
+              if(resp !== undefined)
+                  navigation.navigate('ResetSuccess');
+
+              else  
+                Toast.show('Request Could not be fullfilled')
             }}>
             {({
               values,
@@ -164,7 +174,7 @@ const styles = StyleSheet.create({
 
   textInput: {
     width: '80%',
-    height: 30,
+    height: 40,
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
     color: 'black',

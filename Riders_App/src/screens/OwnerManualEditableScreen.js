@@ -48,71 +48,77 @@ export const OwnerManualEdit = () => {
             />
           </Pressable>
         </View>
-        <View style={styles.personalDetailView}>
-          <View
-            style={{flexDirection: 'row', marginTop: 20, marginHorizontal: 15}}>
-            <Text style={styles.personaldetailText}>Personal Details</Text>
-            <Image source={require('../assets/images/save.png')} />
+        <ScrollView style={{borderWidth: 1, height: '85%',}}>
+          <View style={styles.personalDetailView}>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: 20,
+                marginHorizontal: 15,
+              }}>
+              <Text style={styles.personaldetailText}>Personal Details</Text>
+              <Image source={require('../assets/images/save.png')} />
+            </View>
+            <View style={{width: '90%', alignSelf: 'center', marginTop: 20}}>
+              <PlaceholderTextFieldOwnerManual
+                name="licence"
+                placeholder="Licence No."
+                keyboardType="default"
+                value={licence}
+                onChangeText={value => setLicence(value)}
+              />
+              <PlaceholderTextFieldOwnerManual
+                name="name"
+                placeholder="Name"
+                keyboardType="default"
+                value={name}
+                onChangeText={value => setName(value)}
+              />
+              <PlaceholderTextFieldOwnerManual
+                name="doorNumber"
+                placeholder="Door No."
+                keyboardType="default"
+                value={DoorNo}
+                onChangeText={value => setDoorNo(value)}
+              />
+              <PlaceholderTextFieldOwnerManual
+                name="city"
+                placeholder="City"
+                keyboardType="default"
+                value={city}
+                onChangeText={value => setCity(value)}
+              />
+              <PlaceholderTextFieldOwnerManual
+                name="state"
+                placeholder="State"
+                keyboardType="default"
+                value={state}
+                onChangeText={value => setState(value)}
+              />
+              <PlaceholderTextFieldOwnerManual
+                name="pincode"
+                placeholder="Pincode"
+                keyboardType="default"
+                value={pincode}
+                onChangeText={value => setPincode(value)}
+              />
+              <PlaceholderTextFieldOwnerManual
+                name="mobile"
+                placeholder="Mobile"
+                keyboardType="default"
+                value={mobile}
+                onChangeText={value => setMobile(value)}
+              />
+              <PlaceholderTextFieldOwnerManual
+                name="email"
+                placeholder="Email"
+                keyboardType="default"
+                value={email}
+                onChangeText={value => setEmail(value)}
+              />
+            </View>
           </View>
-          <View style={{width: '90%', alignSelf: 'center', marginTop: 20}}>
-            <PlaceholderTextFieldOwnerManual
-              name="licence"
-              placeholder="Licence No."
-              keyboardType="default"
-              value={licence}
-              onChangeText={value => setLicence(value)}
-            />
-            <PlaceholderTextFieldOwnerManual
-              name="name"
-              placeholder="Name"
-              keyboardType="default"
-              value={name}
-              onChangeText={value => setName(value)}
-            />
-            <PlaceholderTextFieldOwnerManual
-              name="doorNumber"
-              placeholder="Door No."
-              keyboardType="default"
-              value={DoorNo}
-              onChangeText={value => setDoorNo(value)}
-            />
-            <PlaceholderTextFieldOwnerManual
-              name="city"
-              placeholder="City"
-              keyboardType="default"
-              value={city}
-              onChangeText={value => setCity(value)}
-            />
-            <PlaceholderTextFieldOwnerManual
-              name="state"
-              placeholder="State"
-              keyboardType="default"
-              value={state}
-              onChangeText={value => setState(value)}
-            />
-            <PlaceholderTextFieldOwnerManual
-              name="pincode"
-              placeholder="Pincode"
-              keyboardType="default"
-              value={pincode}
-              onChangeText={value => setPincode(value)}
-            />
-            <PlaceholderTextFieldOwnerManual
-              name="mobile"
-              placeholder="Mobile"
-              keyboardType="default"
-              value={mobile}
-              onChangeText={value => setMobile(value)}
-            />
-            <PlaceholderTextFieldOwnerManual
-              name="email"
-              placeholder="Email"
-              keyboardType="default"
-              value={email}
-              onChangeText={value => setEmail(value)}
-            />
-          </View>
-        </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
