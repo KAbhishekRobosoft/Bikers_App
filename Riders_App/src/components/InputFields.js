@@ -111,7 +111,7 @@ export const PlaceholderTextField = props => {
   return (
     <View>
       <View style={styles.inputTextView2}>
-        <View style={styles.placeholderView}>
+        <View style={styles.placeholderView2}>
           {props.value ? (
             <View style={styles.commonPlaceholder}>
               <Text style={styles.text}>{props.placeholder}</Text>
@@ -147,21 +147,32 @@ export const GarageInputField = props => {
 export const DropDownInputField = props => {
   return (
     <View>
-
+      <View style={{height: 25, marginTop: 15, paddingLeft: 5, paddingTop: 6}}>
+        {props.values ? (
+          <View>
+            <Text style={styles.text}>{props.placeholder}</Text>
+          </View>
+        ) : (
+          <></>
+        )}
+      </View>
+      <View style={{marginTop: -38}}>
         <SelectList
           data={props.data}
           setSelected={props.setSelected}
           boxStyles={styles.dropDownBox}
           inputStyles={styles.dropDropInput}
           dropdownStyles={styles.dropDown}
-          values={props.selected}
+          values={props.values}
           placeholder={props.placeholder}
           dropdownTextStyles={styles.dropDownText}
-          arrowicon={<Icon name='sort-down' color='rgba(0,0,0,0.54)' size={16}/>}
-          closeicon={<Icon name='sort-up' color='rgba(0,0,0,0.54)' size={16}/>}
+          arrowicon={
+            <Icon name="sort-down" color="rgba(0,0,0,0.54)" size={16} />
+          }
+          closeicon={<Icon name="sort-up" color="rgba(0,0,0,0.54)" size={16} />}
           search={false}
         />
-
+      </View>
     </View>
   );
 };
@@ -186,6 +197,17 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingBottom: 10,
     alignItems: 'flex-end',
+  },
+  inputTextView3: {
+    width: '100%',
+    height: 60,
+    flexDirection: 'row',
+    // marginTop: 25,
+    borderColor: '#B4B3B3',
+    borderBottomWidth: 1,
+    paddingBottom: 10,
+    alignItems: 'flex-end',
+    borderWidth: 1,
   },
   inputView: {
     width: '90%',
@@ -256,6 +278,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '85%',
   },
+  placeholderView2: {
+    flexDirection: 'column',
+    width: '100%',
+  },
   commonPlaceholder: {
     paddingBottom: 5,
   },
@@ -292,6 +318,7 @@ const styles = StyleSheet.create({
     borderEndColor: '#FFFFFF',
     borderStartColor: '#FFFFFF',
     borderBottomColor: '#B4B3B3',
+
   },
   dropDropInput: {
     height: Platform.OS === 'ios' ? 20 : 24,

@@ -1,4 +1,4 @@
-import { useDrawerStatus } from '@react-navigation/drawer';
+import {useDrawerStatus} from '@react-navigation/drawer';
 import axios from 'axios';
 
 export const register = async (values,haveBike) => {
@@ -21,7 +21,6 @@ export const register = async (values,haveBike) => {
 }
 
 export const checkIn = async values => {
-
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/loginPhone',
@@ -30,7 +29,7 @@ export const checkIn = async values => {
         password: values.password,
       },
     );
-    return response.data
+    return response.data;
   } catch (error) {
     console.log('An error has occurred');
   }
@@ -63,17 +62,16 @@ export const searchCity = async string => {
   return response.data.results;
 };
 
-
 export const searchServiceCenter = async value => {
   let res = await fetch(
     'https://riding-application.herokuapp.com/api/v1/dealer/searchDealers',
     {
       method: 'post',
       body: JSON.stringify({
-        text:value
+        text: value,
       }),
       headers: {
-        'Content-Type':'application/json',
+        'Content-Type': 'application/json',
         Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMjMxNDU2Nzg0NSIsImlhdCI6MTY2ODg1MjcwOSwiZXhwIjoxNjY4ODU2MzA5fQ.QwY9IMuAeqL6osE1zfY2Vb4C3C95SPOMjC_H4gwFXs4`,
       },
     },
@@ -97,29 +95,42 @@ export const uploadImage= async (payload,token)=>{
 }
 
 export const sendOtp = async mobileNumber => {
-
   const options = {
     method: 'POST',
     url: 'https://riding-application.herokuapp.com/api/v1/sendOtp',
-    body:{
-      "destination":mobileNumber
-    }
+    body: {
+      destination: mobileNumber,
+    },
   };
-  const response= await axios.request(options)
-  return response.data
+  const response = await axios.request(options);
+  return response.data;
 };
 
-export const resetPassword = async(userData) => {
+export const resetPassword = async userData => {
+  const options = {
+    method: 'POST',
+    url: 'https://riding-application.herokuapp.com/api/v1/forgotPassword',
+    body: {
+      mobile: userData.mobile,
+      password: userData.password,
+    },
+  };
+  const response = await axios.request(options);
+  return response.data;
+};
+
+export const allTripDetails = async token => {
   try {
-    const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/forgotPassword',
+    const response = await axios.get(
+      'https://riding-application.herokuapp.com/api/v1/trip/getTrip',
       {
-        mobile:userData.mobile,
-        password:userData.password
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    )
-    return response.data;
-  } catch (error) {
-    console.log('An error has occurred');
+    );
+    console.log(response.data);
+  } catch (err) {
+    console.log(err);
   }
 };
