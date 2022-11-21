@@ -24,7 +24,6 @@ import { setForgotPassword } from '../redux/AuthSlice';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),
-
   password: yup
     .string()
     .matches(/\w*[a-z]\w*/, 'Password must have a small letter')
