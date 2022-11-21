@@ -24,7 +24,7 @@ import {setMileStone} from '../redux/AuthSlice';
 import { deSetRegistered } from '../redux/AuthSlice';
 
 const CreateTrip = ({navigation}) => {
-  const mileStone = useSelector(state => state.auth.mileStone);
+  const mileStones = useSelector(state => state.auth.mileStone);
   const dispatch = useDispatch();
 
   const [open1, setOpen1] = useState(false);
@@ -182,7 +182,7 @@ const CreateTrip = ({navigation}) => {
             </View>
             <Text style={styles.text}>Invite other riders</Text>
           </View>
-          {mileStone ? (
+          {mileStones ? (
             <View style={styles.mileStone}>
               <Milestone />
             </View>

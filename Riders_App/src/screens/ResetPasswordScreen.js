@@ -6,12 +6,30 @@ import {
   Image,
   TextInput,
   Pressable,
+  ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
+import {Formik, Field} from 'formik';
+import * as yup from 'yup';
+
+const passwordValidationSchema = yup.object().shape({
+  password: yup
+    .string()
+    .matches(/\w*[a-z]\w*/, 'Password must have a small letter')
+    .matches(/\w*[A-Z]\w*/, 'Password must have a capital letter')
+    .matches(/\d/, 'Password must have a number')
+    .min(6, ({min}) => `Password must be at least ${min} characters`)
+    .required('Password is required'),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Password do not match')
+    .required('Confirm Password is required'),
+});
 
 const ResetPasswordScreen = ({navigation}) => {
+  const [secureText, setSecureText] = useState(true);
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
@@ -19,37 +37,89 @@ const ResetPasswordScreen = ({navigation}) => {
           <Icon name="arrow-left" size={24} color="grey" />
         </Pressable>
       </View>
-      <View style={styles.imgContainer}>
-        <Image
-          style={styles.resetImg}
-          source={require('../assets/images/resetImg.png')}
-        />
-        <View style={styles.textView}>
-          <Text style={styles.resetText}>Reset Password</Text>
-        </View>
-      </View>
-      <View style={styles.bottomView}>
-        <View style={styles.inputTextView}>
-          <TextInput
-            placeholderTextColor="grey"
-            placeholder="New Password"
-            style={styles.textInput}
+      <ScrollView bounces={false}>
+        <View style={styles.imgContainer}>
+          <Image
+            style={styles.resetImg}
+            source={require('../assets/images/resetImg.png')}
           />
+          <View style={styles.textView}>
+            <Text style={styles.resetText}>Reset Password</Text>
+          </View>
         </View>
-        <View style={styles.inputTextView}>
-          <TextInput
-            placeholderTextColor="grey"
-            placeholder="Confirm Password"
-            style={styles.textInput}
-          />
+        <View style={styles.bottomView}>
+          <Formik
+            validationSchema={passwordValidationSchema}
+            initialValues={{
+              password: '',
+              confirmPassword: '',
+            }}
+            onSubmit={async values => {
+              console.log('hi');
+              console.log(values);
+            }}>
+            {({
+              values,
+              handleSubmit,
+              isValid,
+              handleBlur,
+              handleChange,
+              errors,
+              touched,
+            }) => (
+              <>
+                <View style={styles.inputTextView}>
+                  <TextInput
+                    placeholderTextColor="grey"
+                    placeholder="New Password"
+                    style={styles.textInput}
+                    name="password"
+                    value={values.password}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    secureTextEntry={secureText}
+                  />
+                  {errors.password && touched.password && (
+                    <Text style={styles.errorText}>{errors.password}</Text>
+                  )}
+                  <View>
+                    <Pressable onPress={() => setSecureText(!secureText)}>
+                      <Image
+                        style={styles.eyeImg}
+                        source={require('../assets/images/eye.png')}
+                      />
+                    </Pressable>
+                  </View>
+                </View>
+                <View style={styles.inputTextView}>
+                  <TextInput
+                    placeholderTextColor="grey"
+                    placeholder="Confirm Password"
+                    style={styles.textInput}
+                    name="confirmPassword"
+                    value={values.confirmPassword}
+                    onChangeText={handleChange('confirmPassword')}
+                    onBlur={handleBlur('confirmPassword')}
+                    secureTextEntry={secureText}
+                  />
+                  {errors.confirmPassword && touched.confirmPassword && (
+                    <Text style={styles.errorText}>
+                      {errors.confirmPassword}
+                    </Text>
+                  )}
+                </View>
+                <View style={styles.btn}>
+                  <ButtonLarge
+                    onPress={handleSubmit}
+                    title="RESET"
+                    disabled={!isValid}
+                  />
+                </View>
+              </>
+            )}
+          </Formik>
         </View>
-        <View style={styles.btn}>
-          <ButtonLarge
-            onPress={() => navigation.navigate('ResetSuccess')}
-            title="RESET"
-          />
-        </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -69,7 +139,6 @@ const styles = StyleSheet.create({
   },
   imgContainer: {
     width: '100%',
-    height: '38%',
     alignItems: 'center',
     position: 'relative',
   },
@@ -80,41 +149,59 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   textView: {
-    position: 'absolute',
-    bottom: 0,
     alignItems: 'center',
   },
   resetText: {
     fontSize: 20,
     color: '#575656',
     fontFamily: 'Roboto-Regular',
+    marginTop: 30,
   },
   bottomView: {
-    height: '52%',
     alignItems: 'center',
     paddingTop: 40,
   },
 
   textInput: {
-    width: '100%',
-    height: 50,
-    marginVertical: 7,
+    width: '80%',
+    height: 30,
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
     color: 'black',
+    position: 'absolute',
+    bottom: 0,
   },
   inputTextView: {
     width: '85%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 5,
     borderBottomWidth: 1,
     borderColor: '#B4B3B3',
     height: 50,
     marginTop: 15,
     paddingTop: '5%',
+    flexDirection: 'row',
   },
   btn: {
     marginTop: 40,
+  },
+  errorText: {
+    fontSize: 10,
+    color: 'red',
+    alignSelf: 'center',
+    position: 'absolute',
+    bottom: -14,
+    marginHorizontal: "30%",
+    width: '87%',
+    textAlign: 'center',
+  },
+  eyeImg: {
+    width: 24,
+    height: 14,
+    resizeMode: 'contain',
+    // position:'absolute',
+    // alignSelf:'center',
+    left: 300,
   },
 });
