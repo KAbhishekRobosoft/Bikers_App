@@ -7,6 +7,9 @@ import ServiceCenterScreen from './src/screens/ServiceCenterScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import DemoStack from './src/utils/DemoStack'
 import { BookService } from './src/screens/BookServiceScreen';
+import OwnersManualScreen from './src/screens/OwnersManualScreen';
+import OwnersManualDetailScreen from './src/screens/OwnersManualDetailScreen';
+import TopNavigation from './src/utils/TopNavigation';
 
 let persistor = persistStore(store);
 

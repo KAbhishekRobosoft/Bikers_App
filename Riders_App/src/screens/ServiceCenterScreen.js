@@ -57,7 +57,7 @@ const ServiceCenterScreen = ({navigation}) => {
           </View>
           <Text style={styles.text3}> {route.params.ele.dealerAddress}</Text>
           <Text style={styles.text3}>
-            {' '}
+   
             {route.params.ele.dealerCity},Karnataka
           </Text>
           <Text style={styles.text4}>{route.params.ele.dealerDescription}</Text>
