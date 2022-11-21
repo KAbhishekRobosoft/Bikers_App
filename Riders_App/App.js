@@ -3,7 +3,10 @@ import store from './src/redux/store';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
-import {NavigationContainer} from '@react-navigation/native';
+import {ContactDisplay} from './src/screens/Contact'
+import {MyGarage} from './src/screens/MyGarageScreen'
+import {BookService} from './src/screens/BookServiceScreen'
+import Register from './src/screens/RegisterScreen'
 let persistor = persistStore(store);
 import NavigationFunctionality from './src/utils/NavigationFunctionality'
 
@@ -11,9 +14,10 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <NavigationContainer>
+        <BookService />
+         {/* <NavigationContainer>
           <NavigationFunctionality />
-        </NavigationContainer>
+        </NavigationContainer> */}
       </PersistGate>
     </Provider>
   );
