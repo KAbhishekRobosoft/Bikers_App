@@ -153,6 +153,8 @@ export const PlaceholderTextFieldOwnerManual = props => {
             keyboardType={props.keyboardType}
             value={props.value}
             onChangeText={props.onChangeText}
+            editable={props.editable}
+            defaultValue={props.defaultValue}
           />
         </View>
       </View>
@@ -358,10 +360,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderColor: '#FFFFFF',
     borderRadius: 4,
-    marginTop: -35,
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
+    bottom: 35
   },
   dropDownText: {
     height: 20,

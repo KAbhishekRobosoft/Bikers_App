@@ -12,7 +12,7 @@ import {
 import React, {useEffect, useState} from 'react';
 import Contacts from 'react-native-contacts';
 import {PermissionsAndroid} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectMarked} from '../redux/ContactSlice';
 import {selectContacts} from '../redux/ContactSlice';
@@ -101,9 +101,9 @@ export const ContactDisplay = ({navigation}) => {
               navigation.goBack();
             }}>
             <Icon
-              name="arrow-left"
+              name="md-arrow-back"
               color={'white'}
-              size={16}
+              size={25}
               style={styles.icon}
             />
           </Pressable>

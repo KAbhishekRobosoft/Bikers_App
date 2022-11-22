@@ -8,7 +8,7 @@ import {
     Pressable,
   } from 'react-native';
   import React from 'react';
-  import Icon from 'react-native-vector-icons/FontAwesome5';
+  import Icon from 'react-native-vector-icons/Ionicons';
   import ButtonLarge from './Buttons';
 
   export const Success = (props) => {
@@ -16,7 +16,7 @@ import {
         <SafeAreaView style={styles.main}>
           <View style={styles.header}>
             <Pressable onPress={() => console.log('back')}>
-              <Icon name="arrow-left" size={24} color="grey" />
+              <Icon name="md-arrow-back" size={25} color="grey" />
             </Pressable>
           </View>
           <View style={styles.imgContainer}>

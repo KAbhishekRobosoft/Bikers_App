@@ -1,24 +1,23 @@
 import {useDrawerStatus} from '@react-navigation/drawer';
 import axios from 'axios';
 
-export const register = async (values,haveBike) => {
-
-    try {
-        const response = await axios.post(
-          'https://riding-application.herokuapp.com/api/v1/register',
-          {
-            userName: values.userName,
-            password: values.password,
-            mobile:values.mobile,
-            email:values.email,
-            haveBike: haveBike
-          },
-        )
-        return response.data;
-      } catch (error) {
-        console.log('An error has occurred');
-      }
-}
+export const register = async (values, haveBike) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/register',
+      {
+        userName: values.userName,
+        password: values.password,
+        mobile: values.mobile,
+        email: values.email,
+        haveBike: haveBike,
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.log('An error has occurred');
+  }
+};
 
 export const checkIn = async values => {
   try {
@@ -36,7 +35,6 @@ export const checkIn = async values => {
 };
 
 export const refreshToken = async token => {
-
   const options = {
     method: 'POST',
     url: 'https://riding-application.herokuapp.com/api/v1/getAccessToken',
@@ -71,28 +69,28 @@ export const searchServiceCenter = async value => {
         text: value,
       }),
       headers: {
-        'Content-Type':'application/json',
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMjMxNDU2Nzg0NSIsImlhdCI6MTY2OTAxMjg2NCwiZXhwIjoxNjY5MDE2NDY0fQ.t6pvXebwvv8rF2Yr_qEIRcaL9veZCe8DzWLtgCWnGc0`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMjMxNDU2Nzg0NSIsImlhdCI6MTY2OTA5Mzk5NSwiZXhwIjoxNjY5MDk3NTk1fQ.qW_8bIj0HROjJ9SULT1nD7JTGpjV4gT84FvF8_PBx6I`,
       },
     },
   );
   let data = await res.json();
   return data;
 };
-export const uploadImage= async (payload,token)=>{
-  
-  let res= await fetch(
-      'https://riding-application.herokuapp.com/api/v1/profileImageUpload',
-      {
-        method:'post',
-        body:payload,
-        headers:{
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      let data= await res.json()
-      return data
-}
+export const uploadImage = async (payload, token) => {
+  let res = await fetch(
+    'https://riding-application.herokuapp.com/api/v1/profileImageUpload',
+    {
+      method: 'post',
+      body: payload,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  let data = await res.json();
+  return data;
+};
 
 export const sendOtp = async mobileNumber => {
   const options = {
@@ -135,5 +133,43 @@ export const allTripDetails = async token => {
     console.log(response.data);
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const addOwnerDetails = async values => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/owner/addOwnerDetails',
+      {
+        lisenceNumber: values.lisenceNumber,
+        city: values.city,
+        state: values.state,
+        doorNumber: values.doorNumber,
+        pincode: values.pincode,
+      },
+      {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzg5MDEyMzQ1NiIsImlhdCI6MTY2OTExMDM4OSwiZXhwIjoxNjY5MTEzOTg5fQ.WneV_4LS_S28QbCKg-eSGEZ97gITDZm7W_3VkrMnhkk`,
+        },
+      },
+    );
+    console.log(response.data);
+  } catch (error) {
+    console.log('Error Occured');
+  }
+};
+export const getOwnerDetails = async () => {
+  try {
+    const response = await axios.get(
+      'https://riding-application.herokuapp.com/api/v1/owner/getOwnerDetails',
+      {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzg5MDEyMzQ1NiIsImlhdCI6MTY2OTExMDM4OSwiZXhwIjoxNjY5MTEzOTg5fQ.WneV_4LS_S28QbCKg-eSGEZ97gITDZm7W_3VkrMnhkk`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.log('Error Occured');
   }
 };
