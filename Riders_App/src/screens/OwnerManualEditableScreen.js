@@ -11,7 +11,7 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
 import {BikeDetails} from '../utils/TopNavigation';
 
@@ -34,9 +34,9 @@ export const OwnerManualEdit = ({navigation}) => {
                 navigation.goBack();
               }}>
               <Icon
-                name="arrow-left"
+                name="md-arrow-back"
                 color={'white'}
-                size={16}
+                size={25}
                 style={styles.icon}
               />
             </Pressable>

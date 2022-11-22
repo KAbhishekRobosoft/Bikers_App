@@ -11,7 +11,7 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextField} from '../components/InputFields';
 import {DropDownInputField} from '../components/InputFields';
 import {Dropdown} from 'react-native-material-dropdown';
@@ -47,9 +47,9 @@ export const BookService = () => {
             navigation.goBack();
           }}>
           <Icon
-            name="arrow-left"
+            name="md-arrow-back"
             color={'white'}
-            size={16}
+            size={25}
             style={styles.icon}
           />
         </Pressable>
@@ -94,12 +94,14 @@ export const BookService = () => {
                 value={vehicleNumber}
                 onChangeText={value => setvehicleNumber(value)}
               />
+
               <DropDownInputField
                 data={data}
                 values={selected}
-                setSelected={(value) => setSelected(value)}
+                setSelected={value => setSelected(value)}
                 placeholder="Service Type"
               />
+
               <Text style={styles.commentText}>Comments</Text>
               <View style={styles.commentTextInputView}>
                 <InsetShadow>

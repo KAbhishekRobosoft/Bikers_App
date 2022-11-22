@@ -10,7 +10,7 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
 import { RecommendationTripSummary } from '../components/Recommendations';
 import { CreateButton } from '../components/Buttons';
@@ -26,9 +26,9 @@ export const TripSummary = () => {
                 navigation.goBack();
               }}>
               <Icon
-                name="arrow-left"
+                name="md-arrow-back"
                 color={'white'}
-                size={16}
+                size={25}
                 style={styles.icon}
               />
             </Pressable>
