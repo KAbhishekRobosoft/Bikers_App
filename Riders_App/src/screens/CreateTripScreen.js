@@ -249,7 +249,7 @@ const CreateTrip = ({navigation}) => {
           ) : null}
           <View style={styles.addMileStoneView}>
             <View style={styles.addUserImgView}>
-              <Pressable onPress={() => dispatch(setMileStone(true))}>
+              <Pressable>
                 <Image
                   style={styles.calenderImg}
                   source={require('../assets/images/mileStone.png')}
