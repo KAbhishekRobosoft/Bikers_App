@@ -153,6 +153,8 @@ export const PlaceholderTextFieldOwnerManual = props => {
             keyboardType={props.keyboardType}
             value={props.value}
             onChangeText={props.onChangeText}
+            editable={props.editable}
+            defaultValue={props.defaultValue}
           />
         </View>
       </View>

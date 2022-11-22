@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {useState} from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
 import {DropDownInputField} from '../components/InputFields';
 
@@ -36,9 +36,9 @@ const OwnersManualScreen = ({navigation}) => {
             navigation.goBack();
           }}>
           <Icon
-            name="arrow-left"
-            color={'white'}
-            size={16}
+            name="md-arrow-back"
+            color="white"
+            size={25}
             style={styles.icon}
           />
         </Pressable>
