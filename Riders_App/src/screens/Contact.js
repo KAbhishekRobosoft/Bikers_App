@@ -12,13 +12,14 @@ import {
 import React, {useEffect, useState} from 'react';
 import Contacts from 'react-native-contacts';
 import {PermissionsAndroid} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectMarked} from '../redux/ContactSlice';
 import {selectContacts} from '../redux/ContactSlice';
 import {selectUnMarked} from '../redux/ContactSlice';
 import {filterContacts} from '../redux/ContactSlice';
 import {ContactFlatList} from '../components/ContactsFlatList';
+import { images } from '../components/StarComponent';
 
 export const ContactDisplay = ({navigation}) => {
   const dispatch = useDispatch();
@@ -43,11 +44,13 @@ export const ContactDisplay = ({navigation}) => {
                 recordID: c.recordID,
                 phoneNumbers: c.phoneNumbers,
                 marked: false,
+                image1:""
               };
             });
           if (data.length === 0) {
             dispatch(selectContacts(trimmedContacts));
           }
+          console.log(data)
         })
         .catch(err => {
           console.log(err);
@@ -68,6 +71,7 @@ export const ContactDisplay = ({navigation}) => {
                 recordID: c.recordID,
                 phoneNumbers: c.phoneNumbers,
                 marked: false,
+
               };
             });
           if (data.length === 0) {
@@ -97,9 +101,9 @@ export const ContactDisplay = ({navigation}) => {
               navigation.goBack();
             }}>
             <Icon
-              name="arrow-left"
+              name="md-arrow-back"
               color={'white'}
-              size={16}
+              size={25}
               style={styles.icon}
             />
           </Pressable>

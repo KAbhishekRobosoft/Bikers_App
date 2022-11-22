@@ -105,16 +105,19 @@ export const sendOtp = async mobileNumber => {
 };
 
 export const resetPassword = async userData => {
-  const options = {
-    method: 'POST',
-    url: 'https://riding-application.herokuapp.com/api/v1/forgotPassword',
-    body: {
-      mobile: userData.mobile,
-      password: userData.password,
-    },
-  };
-  const response = await axios.request(options);
-  return response.data;
+
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/forgotPassword',
+     {
+        mobile: userData.mobile,
+        password: userData.password,
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.log('An error has occurred');
+  }
 };
 
 export const allTripDetails = async token => {
