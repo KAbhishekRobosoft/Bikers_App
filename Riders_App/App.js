@@ -25,44 +25,56 @@
 // https://aboutreact.com/react-native-map-example/
  
 // Import React
-import React from 'react';
+import React, { useEffect,useRef } from 'react';
 // Import required components
 import {SafeAreaView, StyleSheet, View} from 'react-native';
- 
+import {Polyline} from 'react-native-maps';
 // Import Map and Marker
 import MapView, {Marker} from 'react-native-maps';
- 
+
 const App = () => {
+
+  const mapRef = useRef(null);
+  useEffect(()=>{
+    setTimeout(()=>{
+      mapRef.current.animateToRegion(tokyoRegion, 3 * 1000);
+    },500)
+  },[])
+  const tokyoRegion = {
+    latitude: 35.6762,
+    longitude: 139.6503,
+    latitudeDelta: 0.03,
+    longitudeDelta: 0.01
+  };
+  const chibaRegion = {
+    latitude: 35.6074,
+    longitude: 140.1065,
+ 
+  };
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
-        <MapView
-          style={styles.mapStyle}
-          initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          customMapStyle={mapStyle}>
+        <MapView ref= {mapRef} style={styles.mapStyle} customMapStyle={mapStyle}>
+          <Polyline
+            coordinates={[tokyoRegion, chibaRegion]} //specify our coordinates
+            strokeColor={'blue'}
+            strokeWidth={5}
+            lineDashPattern={[1]}
+          />
+
           <Marker
-            draggable
-            coordinate={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-            }}
-            onDragEnd={
-              (e) => alert(JSON.stringify(e.nativeEvent.coordinate))
-            }
-            title={'Test Marker'}
-            description={'This is a description of the marker'}
+            coordinate={tokyoRegion}
+          />
+
+          <Marker
+            coordinate={chibaRegion}
           />
         </MapView>
       </View>
     </SafeAreaView>
   );
 };
- 
+
 export default App;
  
 const mapStyle = [
