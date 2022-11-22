@@ -6,11 +6,28 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
+import {DropDownInputField} from '../components/InputFields';
 
 const OwnersManualScreen = ({navigation}) => {
+  const [selected, setSelected] = useState();
+
+  const data = [
+    {
+      key: 'Classic 350-Black',
+      value: 'Classic 350-Black',
+    },
+    {
+      key: 'Splender',
+      value: 'Splender',
+    },
+    {
+      key: 'KTM DUKE-200',
+      value: 'KTM DUKE-200',
+    },
+  ];
   return (
     <SafeAreaView>
       <View style={[styles.header, styles.shadow]}>
@@ -28,10 +45,20 @@ const OwnersManualScreen = ({navigation}) => {
         <Text style={styles.headerText}>Owners Manual</Text>
       </View>
       <ScrollView style={styles.scrollView}>
-        <View style={styles.btn}>
-          <ButtonLarge title="Go" onPress={()=>navigation.navigate('OwnersManualDetailScreen')}/>
+        <View style={styles.dropDrowView}>
+          <DropDownInputField
+            data={data}
+            values={selected}
+            setSelected={value => setSelected(value)}
+            placeholder="Vehicle Type"
+          />
         </View>
-      
+        <View style={styles.btn}>
+          <ButtonLarge
+            title="Go"
+            onPress={() => navigation.navigate('OwnersManualDetailScreen')}
+          />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -78,10 +105,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   scrollView: {
-    height:'90%'
+    height: '90%',
   },
   btn: {
-    alignItems: 'center',
-    marginVertical:30
+    alignSelf: 'center',
+    marginVertical: 20,
+  },
+  dropDrowView: {
+    width: '80%',
+    alignSelf: 'center',
   },
 });

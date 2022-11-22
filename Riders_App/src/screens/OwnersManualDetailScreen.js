@@ -31,7 +31,7 @@ const OwnersManualDetailScreen = ({navigation}) => {
         <View style={styles.headerIcons}>
           <Pressable
             onPress={() => {
-              navigation.navigate('');
+              navigation.navigate('OwnerManualEditScreen');
             }}>
             <Icon name="pencil" color={'white'} size={24} style={styles.icon} />
           </Pressable>
@@ -43,9 +43,7 @@ const OwnersManualDetailScreen = ({navigation}) => {
           </Pressable>
         </View>
       </View>
-      {/* <ScrollView style={styles.scrollView}> */}
         <TopNavigation/>
-      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };

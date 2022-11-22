@@ -5,7 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 
 const Tab = createMaterialTopTabNavigator();
 
-export const HomeScreen = () => {
+export const PersonalDetails = () => {
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
@@ -74,7 +74,7 @@ export const HomeScreen = () => {
     </ScrollView>
   );
 };
-export const SettingsScreen = () => {
+export const BikeDetails = () => {
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
@@ -142,46 +142,45 @@ export const SettingsScreen = () => {
 
 const TopNavigation = () => {
   return (
-      <Tab.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          tabBarLabelStyle: {
-            fontSize: 16,
-            color: '#ED7F2C',
-            fontFamily: 'Roboto-Regular',
-            lineHeight: 21,
-            marginTop: 10,
-            textAlign: 'left',
-            width: '130%',
-            textTransform: 'none',
-          },
-          tabBarItemStyle: {
-            // height: 50,
-            // backgroundColor:'grey',
-            //width:'100%'
-          },
-          tabBarStyle: {
-            // backgroundColor: 'white',
-            // width:'100%'
-          },
-          tabBarIndicatorStyle: {
-            backgroundColor: '#ED7F2C',
-            marginLeft: '5%',
-            width: 43,
-            height: 2,
-          },
-        }}>
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{title: 'Personal Details', upperCaseLabel: false}}
-        />
-        <Tab.Screen
-          name="Settings"
-          component={SettingsScreen}
-          options={{title: 'Bike Details'}}
-        />
-      </Tab.Navigator>
+    <Tab.Navigator
+      initialRouteName="PersonalDetails"
+      screenOptions={{
+        tabBarLabelStyle: {
+          fontSize: 16,
+          color: '#ED7F2C',
+          fontFamily: 'Roboto-Regular',
+          lineHeight: 21,
+          marginTop: 10,
+          textAlign: 'left',
+          width: '130%',
+          textTransform: 'none',
+        },
+        tabBarStyle: {
+          width: '100%',
+          paddingHorizontal: '5%',
+        },
+        tabBarItemStyle: {
+          alignSelf: 'flex-start',
+        },
+        tabBarIndicatorStyle: {
+          backgroundColor: '#ED7F2C',
+          marginLeft: '8%',
+          width: 12,
+          height: 2,
+          alignSelf: 'flex-start',
+        },
+      }}>
+      <Tab.Screen
+        name="Home"
+        component={PersonalDetails}
+        options={{title: 'Personal Details', upperCaseLabel: false}}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={BikeDetails}
+        options={{title: 'Bike Details'}}
+      />
+    </Tab.Navigator>
   );
 };
 

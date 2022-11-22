@@ -13,8 +13,9 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
+import {BikeDetails} from '../utils/TopNavigation';
 
-export const OwnerManualEdit = () => {
+export const OwnerManualEdit = ({navigation}) => {
   const [licence, setLicence] = useState();
   const [name, setName] = useState();
   const [DoorNo, setDoorNo] = useState();
@@ -24,7 +25,7 @@ export const OwnerManualEdit = () => {
   const [mobile, setMobile] = useState();
   const [email, setEmail] = useState();
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <View style={styles.mainView}>
         <View style={[styles.header]}>
           <View style={styles.subHeader}>
@@ -48,7 +49,7 @@ export const OwnerManualEdit = () => {
             />
           </Pressable>
         </View>
-        <ScrollView style={{borderWidth: 1, height: '85%',}}>
+        <ScrollView style={{ height: '88%'}}>
           <View style={styles.personalDetailView}>
             <View
               style={{
@@ -118,6 +119,9 @@ export const OwnerManualEdit = () => {
               />
             </View>
           </View>
+          <View style={{marginTop: 10}}>
+            <BikeDetails />
+          </View>
         </ScrollView>
       </View>
     </SafeAreaView>
@@ -169,7 +173,7 @@ const styles = StyleSheet.create({
     height: 584,
     alignSelf: 'center',
     backgroundColor: '#FFFFFF',
-    width: '80%',
+    width: '90%',
     marginTop: 30,
     shadowColor: 'rgba(175,170,170,0.5)',
     shadowOffset: {

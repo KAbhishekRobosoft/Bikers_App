@@ -6,6 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import SearchServiceComponent from '../components/SearchServiceComponent';
 import OwnersManualScreen from '../screens/OwnersManualScreen';
 import OwnersManualDetailScreen from '../screens/OwnersManualDetailScreen';
+import { OwnerManualEdit } from '../screens/OwnerManualEditableScreen';
 const Stack = createNativeStackNavigator();
 
 function DemoStack() {
@@ -22,11 +23,11 @@ function DemoStack() {
           name="OwnersManualDetailScreen"
           component={OwnersManualDetailScreen}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           options={{headerShown: false}}
-          name="ServiceCenterScreen"
-          component={OwnersManualDetailScreen}
-        /> */}
+          name="OwnerManualEditScreen"
+          component={OwnerManualEdit}
+        />
       
       </Stack.Navigator>
     </NavigationContainer>
