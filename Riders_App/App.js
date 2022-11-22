@@ -11,6 +11,7 @@ let persistor = persistStore(store);
 import NavigationFunctionality from './src/utils/NavigationFunctionality';
 import UpcomingTrips from './src/screens/AllTripList';
 import Profile from './src/screens/Profile';
+import Invoice from './src/screens/Invoice';
 
 const App = () => {
   return (
@@ -21,7 +22,8 @@ const App = () => {
           <NavigationFunctionality />
         </NavigationContainer> */}
         {/* <UpcomingTrips /> */}
-        <Profile />
+        {/* <Profile /> */}
+        <Invoice />
       </PersistGate>
     </Provider>
   );
