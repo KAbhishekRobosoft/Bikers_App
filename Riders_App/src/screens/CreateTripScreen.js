@@ -262,6 +262,7 @@ const CreateTrip = ({navigation}) => {
             <ButtonLarge
               onPress={() => {
                 dispatch(deSetRegistered());
+                
               }}
               title="Done"
             />

@@ -7,25 +7,24 @@ import AppTourStack from './AppTourStack'
 import StackNavigation from './StackNavigation';
 import PracScreen from '../screens/PracScreen';
 import NewUserStack from './NewUserStack';
+import { getVerifiedKeys } from './Functions';
 
 function NavigationFunctionality() {
     const authData= useSelector(state=>state.auth)
     const dispatch= useDispatch()
 
-    async function checkOut(){
-      try {
-        await AsyncStorage.removeItem('token');
-      } catch (e) {
-        console.log(e);
-      }
-    }
 
     useEffect(() => {
         setTimeout(async () => {
-          let userToken;
+          let userToken,cred;
           userToken = null;
+          cred= null
           try {
              userToken = await AsyncStorage.getItem('token');
+             console.log(userToken)
+             cred = await getVerifiedKeys(userToken)
+             console.log("hello")
+             console.log(cred)
           } catch (e) {
             console.log(e);
           }
