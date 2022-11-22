@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -8,10 +8,51 @@ import {
   ImageBackground,
   Text,
   ScrollView,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
 import InvoiceItem from '../components/InvoiceItemPrice';
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
 
 const Invoice = () => {
+  const [filePath, setFilePath] = useState('');
+
+  const isPermitted = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'External Storage Write Permission',
+            message: 'App needs access to Storage data',
+          },
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        alert('Write permission err', err);
+        return false;
+      }
+    } else {
+      return true;
+    }
+  };
+
+  const createPDF = async () => {
+    if (await isPermitted()) {
+      let options = {
+        //Content to print
+        html: '<h1 style="text-align: center;"><strong>Hello Guys</strong></h1><p style="text-align: center;">Here is an example of pdf Print in React Native</p><p style="text-align: center;"><strong>Team About React</strong></p>',
+        //File Name
+        fileName: 'Invoice',
+        //File directory
+        directory: 'Download',
+      };
+      let file = await RNHTMLtoPDF.convert(options);
+      console.log(file.filePath);
+      setFilePath(file.filePath);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView>
@@ -22,14 +63,14 @@ const Invoice = () => {
               style={styles.backicon}
             />
           </Pressable>
-          <Pressable>
+          <Pressable onPress={createPDF}>
             <Image
               source={require('../assets/images/download.png')}
               style={styles.icon}
             />
           </Pressable>
         </View>
-        <View style={{}}>
+        <View>
           <ImageBackground
             source={require('../assets/images/whitesheet.png')}
             style={styles.backgroundImage}>
@@ -50,7 +91,7 @@ const Invoice = () => {
             </View>
             <Text style={styles.designtext}>
               {' '}
-              ————————————————————————————————{' '}
+              ————————————————————————————————————————————————————————————————{' '}
             </Text>
             <View style={styles.ProducttextContainer}>
               <Text style={styles.productText}>PRODUCT</Text>
@@ -63,14 +104,13 @@ const Invoice = () => {
             <InvoiceItem />
             <InvoiceItem />
             <InvoiceItem />
-
             <View style={styles.totalPriceContainer}>
               <Text style={styles.totalText}>TOTAL</Text>
               <Text style={styles.totalText}>4000/-</Text>
             </View>
             <Text style={styles.designtext}>
               {' '}
-              ————————————————————————————————{' '}
+              ————————————————————————————————————————————————————————————————{' '}
             </Text>
           </ImageBackground>
         </View>
