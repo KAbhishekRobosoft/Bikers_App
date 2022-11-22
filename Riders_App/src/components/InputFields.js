@@ -133,6 +133,32 @@ export const PlaceholderTextField = props => {
     </View>
   );
 };
+export const PlaceholderTextFieldOwnerManual = props => {
+  return (
+    <View>
+      <View style={styles.inputTextView3}>
+        <View style={styles.placeholderView2}>
+          {props.value ? (
+            <View style={styles.commonPlaceholder}>
+              <Text style={styles.text}>{props.placeholder}</Text>
+            </View>
+          ) : (
+            <></>
+          )}
+          <TextInput
+            name={props.name}
+            placeholder={props.placeholder}
+            placeholderTextColor={'#4F504F'}
+            style={styles.typedText}
+            keyboardType={props.keyboardType}
+            value={props.value}
+            onChangeText={props.onChangeText}
+          />
+        </View>
+      </View>
+    </View>
+  );
+};
 export const GarageInputField = props => {
   return (
     <Pressable onPress={props.onPress}>
@@ -200,14 +226,13 @@ const styles = StyleSheet.create({
   },
   inputTextView3: {
     width: '100%',
-    height: 60,
+    height: 35,
     flexDirection: 'row',
-    // marginTop: 25,
+    marginTop: 25,
     borderColor: '#B4B3B3',
     borderBottomWidth: 1,
     paddingBottom: 10,
     alignItems: 'flex-end',
-    borderWidth: 1,
   },
   inputView: {
     width: '90%',
@@ -227,7 +252,7 @@ const styles = StyleSheet.create({
     width: '90%',
     marginVertical: Platform.OS === 'android' ? -17 : -3,
     fontSize: 16,
-    marginLeft: 10,
+    marginLeft: 5,
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
   },
@@ -246,10 +271,12 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
+
   eye: {
     width: 24,
     height: 14,
   },
+
   iconView: {
     paddingTop: 45,
   },

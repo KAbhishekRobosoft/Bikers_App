@@ -6,27 +6,40 @@ import {
   View,
   Pressable,
   ScrollView,
-  Dimensions
+  Dimensions,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {StarComponent0} from '../components/StarComponent';
 import ButtonLarge from '../components/Buttons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import { useRoute } from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
+import DatePicker from 'react-native-date-picker';
 
-const windowWidth=Dimensions.get('screen').width
+const windowWidth = Dimensions.get('screen').width;
+
 const ServiceCenterScreen = ({navigation}) => {
+  const [date, setDate] = useState(new Date());
+  const [time, setTimer] = useState(new Date());
 
-  const route=useRoute()
+  const [open1, setOpen1] = useState(false);
+  const [open2, setOpen2] = useState(false);
+
+  const route = useRoute();
+  console.log(route.params.ele);
   return (
     <SafeAreaView style={styles.main}>
       <Image
         style={styles.img}
-        source={{uri:'https'+route.params.ele.dealerImage.substring(4)}}
+        source={{uri: 'https' + route.params.ele.dealerImage.substring(4)}}
       />
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon style={styles.backBtn} name="arrow-left" size={24} color="#ED7E2B" />
+        <Icon
+          style={styles.backBtn}
+          name="arrow-left"
+          size={24}
+          color="#ED7E2B"
+        />
       </TouchableOpacity>
       <ScrollView style={styles.scrollView}>
         <View style={styles.ratingComponent}>
@@ -36,15 +49,54 @@ const ServiceCenterScreen = ({navigation}) => {
         <View style={styles.textContainer}>
           <View style={styles.textView1}>
             <Text style={styles.text1}>{route.params.ele.dealerName}</Text>
-            <Text style={styles.text2}>{route.params.ele.dealerDistance?route.params.ele.dealerDistance:0+'km'}</Text>
+            <Text style={styles.text2}>
+              {route.params.ele.dealerDistance
+                ? route.params.ele.dealerDistance
+                : 0 + 'km'}
+            </Text>
           </View>
-          <Text style={styles.text3}> Tune Motors</Text>
-          <Text style={styles.text3}> +91 Tune Motors</Text>
-          <Text style={styles.text4}> Tune Motors</Text>
-          <Text style={styles.text4}> +91 Tune Motors</Text>
+          <Text style={styles.text3}> {route.params.ele.dealerAddress}</Text>
+          <Text style={styles.text3}>
+   
+            {route.params.ele.dealerCity},Karnataka
+          </Text>
+          <Text style={styles.text4}>{route.params.ele.dealerDescription}</Text>
+          <Text style={styles.text4}>
+            {' '}
+            +91 {route.params.ele.dealerPhoneNumber}
+          </Text>
         </View>
         <View style={styles.btn}>
-          <ButtonLarge title="CHECK SLOT" />
+          <ButtonLarge title="CHECK SLOT" onPress={() => setOpen1(true)} />
+          <DatePicker
+            mode="date"
+            modal
+            minimumDate={new Date()}
+            open={open1}
+            date={date}
+            onConfirm={value => {
+              setDate(value);
+              setOpen1(false);
+              setOpen2(true);
+            }}
+            onCancel={() => {
+              setOpen1(false);
+            }}
+          />
+          <DatePicker
+            mode="time"
+            modal
+            minimumDate={new Date()}
+            open={open2}
+            date={date}
+            onConfirm={value => {
+              setDate(value);
+              setOpen2(false);
+            }}
+            onCancel={() => {
+              setOpen2(false);
+            }}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -61,7 +113,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   img: {
-    width: "100%",
+    width: '100%',
     height: 250,
     position: 'absolute',
     top: '4%',
@@ -71,11 +123,10 @@ const styles = StyleSheet.create({
   backBtn: {
     paddingLeft: 20,
     marginTop: 5,
-    bottom:1
-    
+    bottom: 1,
   },
   scrollView: {
-    marginTop: 230,
+    marginTop: 220,
     width: '100%',
   },
   textContainer: {

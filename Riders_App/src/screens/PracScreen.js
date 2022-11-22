@@ -9,8 +9,6 @@ import {
   Button,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {refreshToken} from '../services/Auth';
-import {setToken} from '../redux/AuthSlice';
 import ButtonLarge from '../components/Buttons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { logOut } from '../redux/AuthSlice';
@@ -26,14 +24,6 @@ function PracScreen() {
       console.log(e);
     }
   }
-
-  useEffect(() => {
-    authData.userToken !== null &&
-      setTimeout(async () => {
-        const resp = await refreshToken(authData.userToken);
-        dispatch(setToken(resp.access_token));
-      }, 1000);
-  }, []);
 
   return (
     <SafeAreaView style={styles.success_con}>
@@ -66,7 +56,6 @@ function PracScreen() {
                 style={{
                   width: 40,
                   height: 40,
-                  marginRight: marginRight,
                   alignSelf: 'flex-end',
                   marginBottom: 10,
                 }}

@@ -41,7 +41,6 @@ const authenticateSlice = createSlice({
     },
     setMileStoneData: (state, action) => {
       state.mileStoneData.push(action.payload);
-      console.log(state.mileStoneData);
     },
     setOtpVerfied: state => {
       state.otpVerified = true;

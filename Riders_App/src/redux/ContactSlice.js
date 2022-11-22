@@ -80,6 +80,6 @@ const contactSlice = createSlice({
   },
 });
 
-export const {selectContacts, selectMarked, selectUnMarked, filterContacts,addTripContacts} = contactSlice.actions;
+export const {selectContacts, selectMarked, selectUnMarked, filterContacts,addTripContacts,deleteTripContacts} = contactSlice.actions;
 
 export default contactSlice.reducer;

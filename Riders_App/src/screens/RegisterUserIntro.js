@@ -25,11 +25,10 @@ function RegisterUserIntro({navigation}) {
   const authData= useSelector(state=>state.auth)
 
   useEffect(()=>{
-      setTimeout(()=>{
-        setTimeout(async ()=>{
+      setTimeout(async ()=>{
           const resp= await refreshToken(authData.userToken)
           dispatch(setToken(resp.access_token))
-        },1000)
+      
       },1000)
   },[])
 

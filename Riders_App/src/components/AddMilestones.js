@@ -11,12 +11,12 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch} from 'react-redux';
-import {setMileStone} from '../redux/AuthSlice';
-import {setMileStoneData} from '../redux/AuthSlice';
+import { setMileStone } from '../redux/MileStoneSlice';
+import { setMileStoneData } from '../redux/MileStoneSlice';
 import {useSelector} from 'react-redux';
 
 export const Milestone = () => {
-  const mileStoneData = useSelector(state => state.auth.mileStoneData);
+  const mileStoneData = useSelector(state => state.milestone.milestoneData);
   console.log(mileStoneData);
 
   const [from, setFrom] = useState('');

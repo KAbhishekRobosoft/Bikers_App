@@ -39,7 +39,6 @@ const LoginScreen = ({navigation}) => {
 
   async function signIn(values){
       const response= await checkIn(values)
-      console.log(response)
       if (response !== undefined) {
         try {
           await AsyncStorage.setItem('token', response.token);
