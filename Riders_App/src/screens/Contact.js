@@ -19,6 +19,7 @@ import {selectContacts} from '../redux/ContactSlice';
 import {selectUnMarked} from '../redux/ContactSlice';
 import {filterContacts} from '../redux/ContactSlice';
 import {ContactFlatList} from '../components/ContactsFlatList';
+import { images } from '../components/StarComponent';
 
 export const ContactDisplay = ({navigation}) => {
   const dispatch = useDispatch();
@@ -43,11 +44,13 @@ export const ContactDisplay = ({navigation}) => {
                 recordID: c.recordID,
                 phoneNumbers: c.phoneNumbers,
                 marked: false,
+                image1:""
               };
             });
           if (data.length === 0) {
             dispatch(selectContacts(trimmedContacts));
           }
+          console.log(data)
         })
         .catch(err => {
           console.log(err);
@@ -68,6 +71,7 @@ export const ContactDisplay = ({navigation}) => {
                 recordID: c.recordID,
                 phoneNumbers: c.phoneNumbers,
                 marked: false,
+
               };
             });
           if (data.length === 0) {
