@@ -12,10 +12,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        {/* <NavigationContainer>
+        <NavigationContainer>
           <NavigationFunctionality />
-        </NavigationContainer> */}
-        <ContactDisplay />
+        </NavigationContainer>
       </PersistGate>
     </Provider>
   );

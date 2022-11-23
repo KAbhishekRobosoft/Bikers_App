@@ -35,15 +35,20 @@ export const checkIn = async values => {
 };
 
 export const refreshToken = async token => {
-  const options = {
-    method: 'POST',
-    url: 'https://riding-application.herokuapp.com/api/v1/getAccessToken',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const response = await axios.request(options);
-  return response.data;
+
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/getAccessToken',
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        } 
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.log('An error has occurred');
+  }
 };
 
 export const searchCity = async string => {
@@ -174,6 +179,7 @@ export const addOwnerDetails = async (values, token) => {
     console.log('Error Occured');
   }
 };
+
 export const getOwnerDetails = async token => {
   try {
     const response = await axios.get(
@@ -185,6 +191,29 @@ export const getOwnerDetails = async token => {
       },
     );
     return response.data;
+  } catch (error) {
+    console.log('Error Occured');
+  }
+};
+
+export const createTrip = async (values,token,milestoneData) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/owner/addOwnerDetails',
+      {
+        lisenceNumber: values.lisenceNumber,
+        city: values.city,
+        state: values.state,
+        doorNumber: values.doorNumber,
+        pincode: values.pincode,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    console.log(response.data);
   } catch (error) {
     console.log('Error Occured');
   }

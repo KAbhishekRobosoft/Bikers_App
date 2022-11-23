@@ -13,11 +13,7 @@ import {
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
-import {BikeComponent1} from '../components/StarComponent';
-import {BikeComponent2} from '../components/StarComponent';
-import {BikeComponent3} from '../components/StarComponent';
-import {BikeComponent4} from '../components/StarComponent';
-import {BikeComponent5} from '../components/StarComponent';
+import BikeImageComponent from '../components/BikeImageComponent';
 import DatePicker from 'react-native-date-picker';
 import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
@@ -155,7 +151,7 @@ const CreateTrip = ({navigation}) => {
                 open={open1}
                 date={date}
                 onConfirm={value => {
-                  setDate(value);
+                  setDate(value.substring(0,10));
                   setOpen1(false);
                 }}
                 onCancel={() => setOpen1(false)}
@@ -181,6 +177,7 @@ const CreateTrip = ({navigation}) => {
                 open={open2}
                 date={endDate}
                 onConfirm={value => {
+                  console.log(substring(0,10))
                   setEndDate(value);
                   setOpen2(false);
                 }}
@@ -240,23 +237,9 @@ const CreateTrip = ({navigation}) => {
             {contactsData.addTripContacts.length === 0 && (
               <Text style={styles.text}>Invite other riders</Text>
             )}
-
-            {contactsData.addTripContacts.length === 1 ? (
-              <BikeComponent1 />
-            ) : null}
-
-            {contactsData.addTripContacts.length === 2 ? (
-              <BikeComponent2 />
-            ) : null}
-            {contactsData.addTripContacts.length === 3 ? (
-              <BikeComponent3 />
-            ) : null}
-            {contactsData.addTripContacts.length === 4 ? (
-              <BikeComponent4 />
-            ) : null}
-            {contactsData.addTripContacts.length === 5 ? (
-              <BikeComponent5 />
-            ) : null}
+              {
+                contactsData.addTripContacts.length > 0 && <BikeImageComponent />
+              }
           </View>
           {mileStones ? (
             <View style={styles.mileStone}>
@@ -265,7 +248,9 @@ const CreateTrip = ({navigation}) => {
           ) : null}
           <View style={styles.addMileStoneView}>
             <View style={styles.addUserImgView}>
-              <Pressable>
+              <Pressable onPress={()=>{
+                dispatch(setMileStone(true))
+              }}>
                 <Image
                   style={styles.calenderImg}
                   source={require('../assets/images/mileStone.png')}
@@ -277,7 +262,13 @@ const CreateTrip = ({navigation}) => {
           <View style={styles.btn}>
             <ButtonLarge
               onPress={() => {
-                dispatch(deSetRegistered());
+                console.log(go)
+                console.log(from)
+                console.log(date)
+                console.log(endDate)
+                console.log(time)
+                console.log(tripName)
+                // dispatch(deSetRegistered());
               }}
               title="Done"
             />
