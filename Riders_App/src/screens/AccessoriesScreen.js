@@ -38,7 +38,7 @@ export const Accessories = () => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <View style={[styles.header, styles.shadow]}>
         <Pressable
           onPress={() => {
@@ -87,7 +87,7 @@ export const Accessories = () => {
       <ScrollView
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        style={{height: '85%', marginTop: 20}}>
+        style={{ marginTop: 20}}>
         <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
           {data.map(item => {
             return (
