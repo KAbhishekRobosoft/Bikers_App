@@ -91,7 +91,7 @@ const ServiceCenterScreen = ({navigation}) => {
             onConfirm={value => {
               setTimer(value);
               setOpen2(false);
-              navigation.navigate('BookingSuccess')
+              navigation.navigate('BookingDetails')
 
             }}
             onCancel={() => {

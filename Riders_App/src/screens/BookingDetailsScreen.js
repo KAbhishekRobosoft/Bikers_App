@@ -16,6 +16,11 @@ import ButtonLarge from '../components/Buttons';
 const BookingDetails = ({navigation}) => {
   const [editable, setEditable] = useState(false);
 
+  const book=()=>{
+
+    navigation.navigate("BookingSuccess")
+  }
+
   const handleEditable = () => {
     setEditable(!editable);
   };
@@ -103,7 +108,7 @@ const BookingDetails = ({navigation}) => {
           </TextInput>
         </View>
         <View style={styles.buttonView}>
-          <ButtonLarge title="BOOK" onPress={handleEditable} />
+          <ButtonLarge title="BOOK" onPress={book} />
         </View>
       </ScrollView>
     </SafeAreaView>

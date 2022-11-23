@@ -4,6 +4,7 @@ import { BookService } from '../screens/BookServiceScreen';
 import SearchServiceScreen from '../screens/SearchServiceScreen';
 import { BookingSuccess } from '../screens/BookingSuccessScreen';
 import ServiceCenterScreen from '../screens/ServiceCenterScreen';
+import BookingDetails from '../screens/BookingDetailsScreen'
 
 
 const Stack = createNativeStackNavigator();
@@ -26,11 +27,11 @@ function BookServiceStack() {
           name="ServiceCenter"
           component={ServiceCenterScreen}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           options={{headerShown: false}}
-          name="ToolKit"
-          component={ToolKit}
-        /> */}
+          name="BookingDetails"
+          component={BookingDetails}
+        />
         <Stack.Screen
           options={{headerShown: false}}
           name="BookingSuccess"
