@@ -14,6 +14,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
 
 const BookingDetails = ({navigation}) => {
+  const [editable, setEditable] = useState(false);
+
+  const handleEditable = () => {
+    setEditable(!editable);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={[styles.header]}>
@@ -31,7 +36,7 @@ const BookingDetails = ({navigation}) => {
           </Pressable>
           <Text style={styles.headerText}>Booking Details</Text>
         </View>
-        <Pressable>
+        <Pressable onPress={handleEditable}>
           <Image
             source={require('../assets/images/ic_mode_edit_black.png')}
             style={styles.editImage}
@@ -45,54 +50,60 @@ const BookingDetails = ({navigation}) => {
         <View style={styles.textInputView}>
           <Text style={styles.titleText}>Mobile Number</Text>
           <Text>:</Text>
-          <TextInput style={styles.textInputText}>123456789</TextInput>
+          <TextInput style={styles.textInputText} editable={editable}>
+            123456789
+          </TextInput>
         </View>
         <View style={styles.textInputView}>
           <Text style={styles.titleText}>Vehicle Number</Text>
           <Text>:</Text>
-          <TextInput style={styles.textInputText}>123456789</TextInput>
+          <TextInput style={styles.textInputText} editable={editable}>
+            <Text>123456789</Text>
+          </TextInput>
         </View>
         <View style={styles.textInputView}>
           <Text style={styles.titleText}>Service Type</Text>
           <Text>:</Text>
-          <TextInput style={styles.textInputText}>123456789</TextInput>
+          <TextInput style={styles.textInputText} editable={editable}>
+            <Text>123456789</Text>
+          </TextInput>
         </View>
         <View style={styles.textInputView}>
           <Text style={styles.titleText}>Slot date</Text>
           <Text>:</Text>
-          <TextInput style={styles.textInputText}>
+          <TextInput style={styles.textInputText} editable={editable}>
             <Text>123456789</Text>
           </TextInput>
         </View>
         <View style={styles.textInputView}>
           <Text style={styles.titleText}>Time</Text>
           <Text>:</Text>
-          <TextInput style={styles.textInputText}>
+          <TextInput style={styles.textInputText} editable={editable}>
             <Text>123456789</Text>
           </TextInput>
         </View>
         <View style={styles.textInputView}>
           <Text style={styles.titleText}>Dealer</Text>
           <Text>:</Text>
-          <TextInput style={styles.textInputText}>
+          <TextInput style={styles.textInputText} editable={editable}>
             <Text>123456789</Text>
           </TextInput>
         </View>
         <View style={styles.textInputView}>
           <Text style={styles.titleText}>City</Text>
           <Text>:</Text>
-          <TextInput style={styles.textInputText}>
+          <TextInput style={styles.textInputText} editable={editable}>
             <Text>123456789</Text>
           </TextInput>
         </View>
         <View style={styles.textInputCommentView}>
           <Text style={styles.titleTextComment}>Comment</Text>
-          <TextInput style={styles.textInputCommentText}>
+          <TextInput style={styles.textInputCommentText} editable={editable}>
             <Text>Brake Oil, handle tight and chain lose</Text>
           </TextInput>
         </View>
         <View style={styles.buttonView}>
-          <ButtonLarge title="BOOK" />
+          <ButtonLarge title="BOOK" onPress={handleEditable} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -177,7 +188,6 @@ const styles = StyleSheet.create({
   },
   textInputCommentView: {
     marginHorizontal: 25,
-    // borderWidth: 1,
     paddingTop: 28,
     paddingEnd: 3,
     marginTop: 5,
