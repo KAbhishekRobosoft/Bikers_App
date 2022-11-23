@@ -17,11 +17,12 @@ let persistor = persistStore(store);
 import NavigationFunctionality from './src/utils/NavigationFunctionality';
 import {NavigationContainer} from '@react-navigation/native';
 import {Accessories} from './src/screens/AccessoriesScreen';
+import MapDisplayScreen from './src/screens/MapDisplayScreen';
 const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <AddBikeAndPersonalDetails />
+        <MapDisplayScreen />
       </PersistGate>
     </Provider>
   );
