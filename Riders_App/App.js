@@ -22,7 +22,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-          <BookingDetails/>
+          <BookService/>
       </PersistGate>
     </Provider>
   );
