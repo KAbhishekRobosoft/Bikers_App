@@ -29,7 +29,6 @@ import {setMileStoneData} from '../redux/MileStoneSlice';
 const CreateTrip = ({navigation}) => {
   const mileStones = useSelector(state => state.milestone.mileStone);
   const dispatch = useDispatch();
-
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
@@ -44,6 +43,7 @@ const CreateTrip = ({navigation}) => {
   const [placeholder2, setPlaceholder2] = useState('From');
   const [placeholder3, setPlaceholder3] = useState('Name of the trip');
   const contactsData = useSelector(state => state.contact);
+  const [open, setOpen] = useState(true);
 
   return (
     <SafeAreaView style={styles.main}>
@@ -76,7 +76,6 @@ const CreateTrip = ({navigation}) => {
               onTouchStart={()=>navigation.navigate('SearchCity')}
             />
         </View>
-
         <View style={styles.textInputView}>
           {from ? (
             <View style={styles.placeholder}>
@@ -85,6 +84,7 @@ const CreateTrip = ({navigation}) => {
           ) : (
             <View style={styles.placeholderText}></View>
           )}
+
           <TextInput
             name="From"
             value={from}
@@ -94,6 +94,23 @@ const CreateTrip = ({navigation}) => {
             onChangeText={value => setFrom(value)}
           />
         </View>
+        {open && <Pressable
+          onPress={() => {
+            setOpen(false)
+            console.log('hello');
+          }}>
+          <View style={styles.locationNamesView}>
+            <Image
+              style={{height: 20, width: 20, marginLeft: 10}}
+              source={require('../assets/images/pin.png')}
+            />
+            <View>
+              <Text style={styles.textUdupi}>Udupi</Text>
+              <Text style={styles.textCurrentLocation}>current location</Text>
+            </View>
+          </View>
+        </Pressable>}
+
         <View style={styles.textInputView}>
           {tripName ? (
             <View style={styles.placeholder}>
@@ -267,7 +284,7 @@ const CreateTrip = ({navigation}) => {
   );
 };
 
-export default CreateTrip;
+export default CreateTrip
 
 const styles = StyleSheet.create({
   main: {flex: 1, backgroundColor: '#ffffff'},
@@ -295,6 +312,23 @@ const styles = StyleSheet.create({
     marginLeft: 38,
     fontFamily: 'Roboto-Medium',
   },
+
+  textUdupi: {
+    fontFamily: 'Roboto-Regular',
+    color: '#717171',
+    fontSize: 14,
+    lineHeight: 19,
+    marginLeft: 20,
+  },
+
+  textCurrentLocation: {
+    fontFamily: 'Roboto-Regular',
+    color: 'rgba(182,182,182,0.8)',
+    fontSize: 12,
+    lineHeight: 16,
+    marginLeft: 20,
+  },
+
   textInputView: {
     width: '85%',
     height: 70,
@@ -303,6 +337,25 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'space-around',
   },
+
+  locationNamesView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 2,
+    margin: 25,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
+
   inputText: {
     marginTop: 28,
     fontSize: 16,
@@ -310,7 +363,11 @@ const styles = StyleSheet.create({
     height: 40,
     width: 195,
     color: '#4F504F',
+<<<<<<< HEAD
     bottom:5
+=======
+    bottom: 5,
+>>>>>>> 18308d8971ac8eac116d00eee4c6c649cb6b4ba9
   },
   calenderView: {
     flexDirection: 'row',

@@ -3,8 +3,6 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 import CreateTrip from '../screens/CreateTripScreen';
-import {NavigationContainer} from '@react-navigation/native';
-import LoginScreen from '../screens/LoginScreen';
 import BottomTabNavigation from './BottomTabNavigation';
 import { ContactDisplay } from '../screens/Contact';
 

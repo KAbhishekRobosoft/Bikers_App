@@ -60,7 +60,7 @@ export const searchCity = async string => {
   return response.data.results;
 };
 
-export const searchServiceCenter = async value => {
+export const searchServiceCenter = async (value, token) => {
   let res = await fetch(
     'https://riding-application.herokuapp.com/api/v1/dealer/searchDealers',
     {
@@ -70,13 +70,14 @@ export const searchServiceCenter = async value => {
       }),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTE4NDgyNywiZXhwIjoxNjY5MTg4NDI3fQ.SeplOOwevy_MGyG3wTGVv-C7nv0jzyxfnW8Ryxw2Dzw`,
+        Authorization: `Bearer ${token}`,
       },
     },
   );
   let data = await res.json();
   return data;
 };
+
 export const uploadImage = async (payload, token) => {
   let res = await fetch(
     'https://riding-application.herokuapp.com/api/v1/profileImageUpload',
@@ -93,23 +94,38 @@ export const uploadImage = async (payload, token) => {
 };
 
 export const sendOtp = async mobileNumber => {
-  const options = {
-    method: 'POST',
-    url: 'https://riding-application.herokuapp.com/api/v1/sendOtp',
-    body: {
-      destination: mobileNumber,
-    },
-  };
-  const response = await axios.request(options);
-  return response.data;
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/sendOtp',
+      {
+        destination: mobileNumber,
+      },
+    );
+    console.log(response.data);
+  } catch (error) {
+    console.log('Error Occured');
+  }
+};
+
+export const verifyOtp = async otp => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/verifyOtp',
+      {
+        otp: otp,
+      },
+    );
+    return response.data.message;
+  } catch (error) {
+    console.log('Error Occured');
+  }
 };
 
 export const resetPassword = async userData => {
-
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/forgotPassword',
-     {
+      {
         mobile: userData.mobile,
         password: userData.password,
       },
@@ -136,7 +152,7 @@ export const allTripDetails = async token => {
   }
 };
 
-export const addOwnerDetails = async values => {
+export const addOwnerDetails = async (values, token) => {
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/owner/addOwnerDetails',
@@ -149,7 +165,7 @@ export const addOwnerDetails = async values => {
       },
       {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzg5MDEyMzQ1NiIsImlhdCI6MTY2OTExMDM4OSwiZXhwIjoxNjY5MTEzOTg5fQ.WneV_4LS_S28QbCKg-eSGEZ97gITDZm7W_3VkrMnhkk`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -158,13 +174,13 @@ export const addOwnerDetails = async values => {
     console.log('Error Occured');
   }
 };
-export const getOwnerDetails = async () => {
+export const getOwnerDetails = async token => {
   try {
     const response = await axios.get(
       'https://riding-application.herokuapp.com/api/v1/owner/getOwnerDetails',
       {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzg5MDEyMzQ1NiIsImlhdCI6MTY2OTExMDM4OSwiZXhwIjoxNjY5MTEzOTg5fQ.WneV_4LS_S28QbCKg-eSGEZ97gITDZm7W_3VkrMnhkk`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
