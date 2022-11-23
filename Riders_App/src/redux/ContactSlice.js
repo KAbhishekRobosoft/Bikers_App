@@ -14,6 +14,7 @@ const contactSlice = createSlice({
       state.contactsData = action.payload;
       state.filterData = action.payload;
     },
+
     selectMarked: (state, action) => {
       state.contactsData = state.contactsData.map(ele => {
         if (ele.recordID === action.payload.recordID) {
@@ -38,6 +39,7 @@ const contactSlice = createSlice({
         return ele;
       });
     },
+    
     selectUnMarked: (state, action) => {
       state.contactsData = state.contactsData.map(ele => {
         if (ele.recordID === action.payload.recordID) {

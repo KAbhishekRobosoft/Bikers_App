@@ -18,7 +18,7 @@ import {selectMarked} from '../redux/ContactSlice';
 import {selectContacts} from '../redux/ContactSlice';
 import {selectUnMarked} from '../redux/ContactSlice';
 import {filterContacts} from '../redux/ContactSlice';
-import {ContactFlatList} from '../components/ContactsFlatList';
+import {ContactFlatList} from '../components/ContactsFlatList'
 import { images } from '../components/StarComponent';
 
 export const ContactDisplay = ({navigation}) => {
@@ -50,7 +50,6 @@ export const ContactDisplay = ({navigation}) => {
           if (data.length === 0) {
             dispatch(selectContacts(trimmedContacts));
           }
-          console.log(data)
         })
         .catch(err => {
           console.log(err);
@@ -71,7 +70,6 @@ export const ContactDisplay = ({navigation}) => {
                 recordID: c.recordID,
                 phoneNumbers: c.phoneNumbers,
                 marked: false,
-
               };
             });
           if (data.length === 0) {
@@ -84,13 +82,6 @@ export const ContactDisplay = ({navigation}) => {
     }
   };
 
-  const handleTick = contacts => {
-    dispatch(selectMarked(contacts));
-  };
-
-  const handleUnTick = contacts => {
-    dispatch(selectUnMarked(contacts));
-  };
 
   return (
     <SafeAreaView>
