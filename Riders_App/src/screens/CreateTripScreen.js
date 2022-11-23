@@ -13,24 +13,22 @@ import {
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
-import { BikeComponent1 } from '../components/StarComponent';
-import { BikeComponent2 } from '../components/StarComponent';
-import { BikeComponent3 } from '../components/StarComponent';
-import { BikeComponent4 } from '../components/StarComponent';
-import { BikeComponent5 } from '../components/StarComponent';
+import {BikeComponent1} from '../components/StarComponent';
+import {BikeComponent2} from '../components/StarComponent';
+import {BikeComponent3} from '../components/StarComponent';
+import {BikeComponent4} from '../components/StarComponent';
+import {BikeComponent5} from '../components/StarComponent';
 import DatePicker from 'react-native-date-picker';
 import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
 import {deSetRegistered} from '../redux/AuthSlice';
 import {useDispatch, useSelector} from 'react-redux';
-import { setMileStone } from '../redux/MileStoneSlice';
-import { setMileStoneData } from '../redux/MileStoneSlice';
-
+import {setMileStone} from '../redux/MileStoneSlice';
+import {setMileStoneData} from '../redux/MileStoneSlice';
 
 const CreateTrip = ({navigation}) => {
   const mileStones = useSelector(state => state.milestone.mileStone);
   const dispatch = useDispatch();
-
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
@@ -45,6 +43,7 @@ const CreateTrip = ({navigation}) => {
   const [placeholder2, setPlaceholder2] = useState('From');
   const [placeholder3, setPlaceholder3] = useState('Name of the trip');
   const contactsData = useSelector(state => state.contact);
+  const [open, setOpen] = useState(true);
 
   return (
     <SafeAreaView style={styles.main}>
@@ -70,6 +69,7 @@ const CreateTrip = ({navigation}) => {
             onPress={() => {
               navigation.navigate('SearchCity');
             }}>
+
             <TextInput
               name="Go"
               value={go}
@@ -80,7 +80,6 @@ const CreateTrip = ({navigation}) => {
             />
           </TouchableOpacity>
         </View>
-
         <View style={styles.textInputView}>
           {from ? (
             <View style={styles.placeholder}>
@@ -89,6 +88,7 @@ const CreateTrip = ({navigation}) => {
           ) : (
             <View style={styles.placeholderText}></View>
           )}
+
           <TextInput
             name="From"
             value={from}
@@ -98,6 +98,23 @@ const CreateTrip = ({navigation}) => {
             onChangeText={value => setFrom(value)}
           />
         </View>
+        {open && <Pressable
+          onPress={() => {
+            setOpen(false)
+            console.log('hello');
+          }}>
+          <View style={styles.locationNamesView}>
+            <Image
+              style={{height: 20, width: 20, marginLeft: 10}}
+              source={require('../assets/images/pin.png')}
+            />
+            <View>
+              <Text style={styles.textUdupi}>Udupi</Text>
+              <Text style={styles.textCurrentLocation}>current location</Text>
+            </View>
+          </View>
+        </Pressable>}
+
         <View style={styles.textInputView}>
           {tripName ? (
             <View style={styles.placeholder}>
@@ -218,29 +235,28 @@ const CreateTrip = ({navigation}) => {
                   style={styles.calenderImg}
                   source={require('../assets/images/adduser.png')}
                 />
-                
               </Pressable>
             </View>
             {contactsData.addTripContacts.length === 0 && (
               <Text style={styles.text}>Invite other riders</Text>
             )}
 
-              {contactsData.addTripContacts.length === 1 ?
-                <BikeComponent1 /> : null}
-             
-              {contactsData.addTripContacts.length === 2 ? (
-                <BikeComponent2 />
-              ) : null}
-              {contactsData.addTripContacts.length === 3 ? (
-                <BikeComponent3 />
-              ):null}
-              {contactsData.addTripContacts.length === 4 ? (
-                <BikeComponent4 />
-              ):null}
-              {contactsData.addTripContacts.length === 5 ? (
-                <BikeComponent5 />
-              ):null}
+            {contactsData.addTripContacts.length === 1 ? (
+              <BikeComponent1 />
+            ) : null}
 
+            {contactsData.addTripContacts.length === 2 ? (
+              <BikeComponent2 />
+            ) : null}
+            {contactsData.addTripContacts.length === 3 ? (
+              <BikeComponent3 />
+            ) : null}
+            {contactsData.addTripContacts.length === 4 ? (
+              <BikeComponent4 />
+            ) : null}
+            {contactsData.addTripContacts.length === 5 ? (
+              <BikeComponent5 />
+            ) : null}
           </View>
           {mileStones ? (
             <View style={styles.mileStone}>
@@ -262,7 +278,6 @@ const CreateTrip = ({navigation}) => {
             <ButtonLarge
               onPress={() => {
                 dispatch(deSetRegistered());
-                
               }}
               title="Done"
             />
@@ -273,7 +288,7 @@ const CreateTrip = ({navigation}) => {
   );
 };
 
-export default CreateTrip;
+export default CreateTrip
 
 const styles = StyleSheet.create({
   main: {flex: 1, backgroundColor: '#ffffff'},
@@ -301,6 +316,23 @@ const styles = StyleSheet.create({
     marginLeft: 38,
     fontFamily: 'Roboto-Medium',
   },
+
+  textUdupi: {
+    fontFamily: 'Roboto-Regular',
+    color: '#717171',
+    fontSize: 14,
+    lineHeight: 19,
+    marginLeft: 20,
+  },
+
+  textCurrentLocation: {
+    fontFamily: 'Roboto-Regular',
+    color: 'rgba(182,182,182,0.8)',
+    fontSize: 12,
+    lineHeight: 16,
+    marginLeft: 20,
+  },
+
   textInputView: {
     width: '85%',
     height: 70,
@@ -309,6 +341,25 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'space-around',
   },
+
+  locationNamesView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 2,
+    margin: 25,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
+  },
+
   inputText: {
     marginTop: 28,
     fontSize: 16,
