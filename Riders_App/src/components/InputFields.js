@@ -343,7 +343,6 @@ const styles = StyleSheet.create({
     borderEndColor: '#FFFFFF',
     borderStartColor: '#FFFFFF',
     borderBottomColor: '#B4B3B3',
-
   },
   dropDropInput: {
     height: Platform.OS === 'ios' ? 20 : 24,
@@ -358,7 +357,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderColor: '#FFFFFF',
     borderRadius: 4,
-    marginTop: -35,
+    bottom: 35,
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',

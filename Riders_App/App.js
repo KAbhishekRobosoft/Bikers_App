@@ -16,6 +16,8 @@ import NavigationFunctionality from './src/utils/NavigationFunctionality';
 import UpcomingTrips from './src/screens/AllTripList';
 import Profile from './src/screens/Profile';
 import Invoice from './src/screens/Invoice';
+import ServiceRecord from './src/screens/ServiceRecordScreen';
+import ChatScreen from './src/screens/ChatScreen';
 
 const App = () => {
   return (
@@ -27,7 +29,10 @@ const App = () => {
         </NavigationContainer> */}
         {/* <UpcomingTrips /> */}
         {/* <Profile /> */}
-        <Invoice />
+        {/* <Invoice /> */}
+        {/* <ServiceRecord />
+         */}
+        <ChatScreen />
       </PersistGate>
     </Provider>
   );
