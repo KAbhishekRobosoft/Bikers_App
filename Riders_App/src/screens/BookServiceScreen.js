@@ -1,4 +1,4 @@
-import {Formik} from 'formik';
+import {Field, Formik} from 'formik';
 import React, {useState} from 'react';
 import {
   FlatList,
@@ -18,8 +18,9 @@ import {Dropdown} from 'react-native-material-dropdown';
 import SelectDropdown from 'react-native-select-dropdown';
 import InsetShadow from 'react-native-inset-shadow';
 import ButtonLarge from '../components/Buttons';
+import * as yup from 'yup';
 
-export const BookService = () => {
+export const BookService = ({navigation}) => {
   const [number, setNumber] = useState();
   const [vehicleType, setvehicleType] = useState();
   const [vehicleNumber, setvehicleNumber] = useState();
@@ -38,6 +39,13 @@ export const BookService = () => {
       value: 'Breakdown assistance',
     },
   ];
+
+  const BookServiceValidation = yup.object().shape({
+    mobileNumber: yup
+      .string()
+      .matches(/(\d){10}\b/, 'Enter a valid mobile number')
+      .required(''),
+  });
 
   return (
     <SafeAreaView style={{backgroundColor: '#FFFFFF', flex: 1}}>
@@ -64,44 +72,48 @@ export const BookService = () => {
         }}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
-        <Formik>
-          {({isValid, handleSubmit}) => (
+        <Formik
+        validationSchema={BookServiceValidation}
+          initialValues={{
+            mobileNumber: '',
+            vehicleType: '',
+            vehicleNumber: '',
+          }}>
+          {({isValid, handleSubmit, values}) => (
             <>
               <View style={styles.firstInputField}>
-                <PlaceholderTextField
+                <Field
+                  component={PlaceholderTextField}
                   name="mobileNumber"
                   placeholder="Mobile number"
                   keyboardType="number-pad"
-                  value={number}
-                  onChangeText={value => setNumber(value)}
+                  value={values.mobileNumber}
                 />
                 <Image
                   source={require('../assets/images/edit.png')}
                   style={styles.editImage}
                 />
               </View>
-              <PlaceholderTextField
+              <Field
+                component={PlaceholderTextField}
                 name="vehicleType"
                 placeholder="Vehicle type"
                 keyboardType="default"
-                value={vehicleType}
-                onChangeText={value => setvehicleType(value)}
+                value={values.vehicleType}
               />
-              <PlaceholderTextField
+              <Field
+                component={PlaceholderTextField}
                 name="vehicleNumber"
                 placeholder="Vehicle number"
                 keyboardType="default"
-                value={vehicleNumber}
-                onChangeText={value => setvehicleNumber(value)}
+                value={values.vehicleNumber}
               />
-
               <DropDownInputField
                 data={data}
                 values={selected}
                 setSelected={value => setSelected(value)}
                 placeholder="Service Type"
               />
-
               <Text style={styles.commentText}>Comments</Text>
               <View style={styles.commentTextInputView}>
                 <InsetShadow>
@@ -111,8 +123,8 @@ export const BookService = () => {
               <View style={styles.btnView}>
                 <ButtonLarge
                   title="FIND A DEALER"
-                  disabled={!isValid}
-                  onPress={handleSubmit}
+                  //disabled={!isValid}
+                  onPress={() => navigation.navigate('SearchService')}
                 />
               </View>
             </>

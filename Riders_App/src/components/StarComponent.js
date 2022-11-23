@@ -28,7 +28,7 @@ export const Star = ({rating}) => {
           />
         </View>
       ) : null}
-      {rating === 1? (
+      {rating === 1 ? (
         <View style={styles.rating}>
           <Image
             style={styles.ratingImg}
@@ -52,7 +52,7 @@ export const Star = ({rating}) => {
           />
         </View>
       ) : null}
-      {rating === 2? (
+      {rating === 2 ? (
         <View style={styles.rating}>
           <Image
             style={styles.ratingImg}
@@ -76,19 +76,11 @@ export const Star = ({rating}) => {
           />
         </View>
       ) : null}
-      {rating === 3? (
+      {rating === 3 ? (
         <View style={styles.rating}>
           <Image
             style={styles.ratingImg}
-            source={require('../assets/images/Star2.png')}
-          />
-          <Image
-            style={styles.ratingImg}
-            source={require('../assets/images/Star2.png')}
-          />
-          <Image
-            style={styles.ratingImg}
-            source={require('../assets/images/Star2.png')}
+            source={require('../assets/images/Star1.png')}
           />
           <Image
             style={styles.ratingImg}
@@ -97,54 +89,62 @@ export const Star = ({rating}) => {
           <Image
             style={styles.ratingImg}
             source={require('../assets/images/Star1.png')}
+          />
+          <Image
+            style={styles.ratingImg}
+            source={require('../assets/images/Star2.png')}
+          />
+          <Image
+            style={styles.ratingImg}
+            source={require('../assets/images/Star2.png')}
           />
         </View>
       ) : null}
-      {rating === 4? (
+      {rating === 4 ? (
         <View style={styles.rating}>
           <Image
             style={styles.ratingImg}
-            source={require('../assets/images/Star2.png')}
-          />
-          <Image
-            style={styles.ratingImg}
-            source={require('../assets/images/Star2.png')}
-          />
-          <Image
-            style={styles.ratingImg}
-            source={require('../assets/images/Star2.png')}
-          />
-          <Image
-            style={styles.ratingImg}
-            source={require('../assets/images/Star2.png')}
+            source={require('../assets/images/Star1.png')}
           />
           <Image
             style={styles.ratingImg}
             source={require('../assets/images/Star1.png')}
           />
+          <Image
+            style={styles.ratingImg}
+            source={require('../assets/images/Star1.png')}
+          />
+          <Image
+            style={styles.ratingImg}
+            source={require('../assets/images/Star1.png')}
+          />
+          <Image
+            style={styles.ratingImg}
+            source={require('../assets/images/Star2.png')}
+          />
         </View>
       ) : null}
-      {rating === 5? (
+      {rating === 5 ? (
         <View style={styles.rating}>
           <Image
             style={styles.ratingImg}
-            source={require('../assets/images/Star2.png')}
+            source={require('../assets/images/Star1.png')}
           />
           <Image
             style={styles.ratingImg}
-            source={require('../assets/images/Star2.png')}
+            source={require('../assets/images/Star1.png')}
           />
           <Image
             style={styles.ratingImg}
-            source={require('../assets/images/Star2.png')}
+            source={require('../assets/images/Star1.png')}
           />
           <Image
             style={styles.ratingImg}
-            source={require('../assets/images/Star2.png')}
+            source={require('../assets/images/Star1.png')}
           />
           <Image
             style={styles.ratingImg}
-            source={require('../assets/images/Star2.png')}
+            source={require('../assets/images/Star1.png')}
           />
         </View>
       ) : null}
@@ -161,7 +161,6 @@ const styles = StyleSheet.create({
   },
   rating: {
     flexDirection: 'row',
-    marginLeft: '5.5%',
     height: 20,
     width: '30%',
     justifyContent: 'space-between',

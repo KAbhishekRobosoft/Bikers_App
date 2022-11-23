@@ -16,8 +16,13 @@ import ButtonLarge from '../components/Buttons';
 const BookingDetails = ({navigation}) => {
   const [editable, setEditable] = useState(false);
 
+  const book=()=>{
+
+    navigation.navigate("BookingSuccess")
+  }
+
   const handleEditable = () => {
-    setEditable(!editable);
+    setEditable(true);
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -103,7 +108,7 @@ const BookingDetails = ({navigation}) => {
           </TextInput>
         </View>
         <View style={styles.buttonView}>
-          <ButtonLarge title="BOOK" onPress={handleEditable} />
+          <ButtonLarge title="BOOK" onPress={book} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -179,6 +184,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 14,
     color: '#4F504F',
+    width: '50%',
+    textAlign: 'right'
   },
   textInputCommentText: {
     fontFamily: 'Roboto-Regular',

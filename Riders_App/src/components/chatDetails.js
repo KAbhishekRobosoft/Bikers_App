@@ -4,7 +4,25 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 export const SenderChatDetails = () => {
   return (
     <View>
-      <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          marginLeft: '35%',
+        }}>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            top: '2%',
+          }}>
+          <Image
+            source={require('../assets/images/checkmark.png')}
+            style={{height: 13, width: 13}}
+          />
+          <Text style={styles.timeText}>10:00</Text>
+        </View>
         <View style={styles.senderContainer}>
           <Text style={styles.senderText}>Hi</Text>
         </View>
@@ -17,7 +35,7 @@ export const ReceiverContainer = () => {
   return (
     <View>
       <View style={styles.container}>
-        <View style={{top: 20, amarginRight: 20}}>
+        <View style={{top: 20}}>
           <Image
             source={require('../assets/images/smile.png')}
             style={styles.profile}
@@ -26,6 +44,18 @@ export const ReceiverContainer = () => {
         </View>
         <View style={styles.recivercontainer}>
           <Text style={styles.senderText}>Hello</Text>
+        </View>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginLeft: '3%',
+          }}>
+          <Image
+            source={require('../assets/images/checkmark.png')}
+            style={{height: 13, width: 13}}
+          />
+          <Text style={styles.timeText}>10:00</Text>
         </View>
       </View>
     </View>
@@ -37,6 +67,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     marginLeft: '5%',
+    marginRight: '30%',
+    marginTop: '5%',
   },
   recivercontainer: {
     alignItems: 'center',
@@ -48,7 +80,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 45,
     borderTopLeftRadius: 37,
     paddingHorizontal: '5%',
-    marginRight: '30%',
+
     marginLeft: 20,
   },
   profile: {
@@ -72,7 +104,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginRight: '8%',
     padding: 18,
-    marginLeft: '30%',
+    marginLeft: '3%',
     backgroundColor: '#4EB5F4',
     borderTopRightRadius: 40,
     borderBottomLeftRadius: 45,
@@ -86,5 +118,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     color: '#FFFFFF',
     letterSpacing: 0.8,
+  },
+
+  timeText: {
+    color: '#7F7F7F',
+    fontSize: 12,
+    fontFamily: 'Roboto',
   },
 });
