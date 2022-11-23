@@ -8,7 +8,7 @@ import {
   Image,
 } from 'react-native';
 import React from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
 import TopNavigation from '../utils/TopNavigation';
 
@@ -21,9 +21,9 @@ const OwnersManualDetailScreen = ({navigation}) => {
             navigation.goBack();
           }}>
           <Icon
-            name="arrow-left"
+            name="md-arrow-back"
             color={'white'}
-            size={20}
+            size={25}
             style={styles.icon}
           />
         </Pressable>
@@ -43,7 +43,7 @@ const OwnersManualDetailScreen = ({navigation}) => {
           </Pressable>
         </View>
       </View>
-        <TopNavigation/>
+      <TopNavigation editable={false} />
     </SafeAreaView>
   );
 };
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
 
   scrollView: {
     height: '90%',
-    paddingVertical:10
+    paddingVertical: 10,
   },
   shareImg: {
     width: 24,
