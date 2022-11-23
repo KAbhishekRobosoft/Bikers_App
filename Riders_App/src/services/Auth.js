@@ -196,25 +196,23 @@ export const getOwnerDetails = async token => {
   }
 };
 
-export const createTrip = async (values,token,milestoneData) => {
+export const createTrip = async (obj) => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/owner/addOwnerDetails',
-      {
-        lisenceNumber: values.lisenceNumber,
-        city: values.city,
-        state: values.state,
-        doorNumber: values.doorNumber,
-        pincode: values.pincode,
-      },
+      'https://riding-application.herokuapp.com/api/v1/trip/createTrip',obj,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       },
     );
-    console.log(response.data);
+    return response.data
   } catch (error) {
     console.log('Error Occured');
   }
+};
+
+export const getCoordinates = async (place) => {
+  const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=2dff1a0f7576b6388c89a15bc5a40171`);
+  return response.data.coord;
 };

@@ -264,6 +264,7 @@ const CreateTrip = ({navigation}) => {
                 console.log(endDate)
                 console.log(time)
                 console.log(tripName)
+                
                 // dispatch(deSetRegistered());
               }}
               title="Done"
