@@ -12,7 +12,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
 import {BikeDetails} from '../components/BikeDetailsComponent';
 import {useDispatch, useSelector} from 'react-redux';
@@ -20,7 +20,7 @@ import {addOwnerDetails} from '../services/Auth';
 import {setUserData} from '../redux/AuthSlice';
 import ButtonLarge from '../components/Buttons';
 
-export const AddBikeAndPersonalDetails = ({navigation}) => {
+export const AddPersonalDetails = ({navigation}) => {
   const useDetails = useSelector(state => state.auth.userData);
   const dispatch = useDispatch();
 
@@ -66,24 +66,17 @@ export const AddBikeAndPersonalDetails = ({navigation}) => {
                 navigation.goBack();
               }}>
               <Icon
-                name="arrow-left"
-                color={'white'}
-                size={16}
+                name="md-arrow-back"
+                color='white'
+                size={25}
                 style={styles.icon}
               />
             </Pressable>
             <Text style={styles.headerText}>Add Details</Text>
           </View>
-          <Pressable>
-            <Image
-              source={require('../assets/images/share.png')}
-              style={styles.editImage}
-            />
-          </Pressable>
         </View>
         <ScrollView
           style={{height: '88%'}}
-          bounces={false}
           showsVerticalScrollIndicator={false}>
           <View style={styles.personalDetailView}>
             <View
@@ -159,14 +152,7 @@ export const AddBikeAndPersonalDetails = ({navigation}) => {
               />
             </View>
           </View>
-          <View style={{marginTop: 10}}>
-            <BikeDetails
-              header="Add Bike Details"
-              editable={true}
-              vehicleType={true}
-              vehicleNumber={true}
-            />
-          </View>
+         
           <View style={styles.btn}>
             <ButtonLarge title="Submit" onPress={submitForm} />
           </View>
@@ -222,7 +208,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#FFFFFF',
     width: '90%',
-    marginTop: 30,
+    marginTop: 15,
     shadowColor: 'rgba(175,170,170,0.5)',
     shadowOffset: {
       width: 0,
@@ -242,6 +228,6 @@ const styles = StyleSheet.create({
   },
   btn: {
     alignSelf: 'center',
-    marginVertical: 30,
+    marginVertical: 15,
   },
 });

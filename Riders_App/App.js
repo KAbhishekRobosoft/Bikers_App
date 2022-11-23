@@ -5,23 +5,28 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
 import ServiceCenterScreen from './src/screens/ServiceCenterScreen';
 import LoginScreen from './src/screens/LoginScreen';
-import DemoStack from './src/utils/DemoStack'
-import { BookService } from './src/screens/BookServiceScreen';
+import DemoStack from './src/utils/DemoStack';
+import {BookService} from './src/screens/BookServiceScreen';
 import OwnersManualScreen from './src/screens/OwnersManualScreen';
 import OwnersManualDetailScreen from './src/screens/OwnersManualDetailScreen';
 import TopNavigation from './src/utils/TopNavigation';
-import { AddBikeAndPersonalDetails } from './src/screens/AddBike&PersonalDetailsScreen';
+import {AddPersonalDetails} from './src/screens/AddPersonalDetailsScreen';
 import CreateTrip from './src/screens/CreateTripScreen';
+import AddBikeDetailsScreen from './src/screens/AddBikeDetailsScreen';
+import {MyGarage} from './src/screens/MyGarageScreen';
+import MyGarageStack from './src/utils/MyGarageStack';
+import BottomTabNavigation from './src/utils/BottomTabNavigation';
+import {NavigationContainer} from '@react-navigation/native';
 
 let persistor = persistStore(store);
-import NavigationFunctionality from './src/utils/NavigationFunctionality';
-import {NavigationContainer} from '@react-navigation/native';
-import { Accessories } from './src/screens/AccessoriesScreen'
+
 const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-          <AddBikeAndPersonalDetails/>
+        <NavigationContainer>
+          <BottomTabNavigation />
+        </NavigationContainer>
       </PersistGate>
     </Provider>
   );
@@ -31,7 +36,7 @@ export default App;
 
 // Integration of Google map in React Native using react-native-maps
 // https://aboutreact.com/react-native-map-example/
- 
+
 // // Import React
 // import React, { useEffect,useRef } from 'react';
 // // Import required components
@@ -57,7 +62,7 @@ export default App;
 //   const chibaRegion = {
 //     latitude: 35.6074,
 //     longitude: 140.1065,
- 
+
 //   };
 //   return (
 //     <SafeAreaView style={{flex: 1}}>
@@ -84,7 +89,7 @@ export default App;
 // };
 
 // export default App;
- 
+
 // const mapStyle = [
 //   {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
 //   {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
@@ -165,7 +170,7 @@ export default App;
 //     stylers: [{color: '#17263c'}],
 //   },
 // ];
- 
+
 // const styles = StyleSheet.create({
 //   container: {
 //     position: 'absolute',
@@ -184,4 +189,3 @@ export default App;
 //     bottom: 0,
 //   },
 // });
-

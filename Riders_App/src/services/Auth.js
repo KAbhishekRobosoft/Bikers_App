@@ -70,7 +70,7 @@ export const searchServiceCenter = async value => {
       }),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMjMxNDU2Nzg0NSIsImlhdCI6MTY2OTA5Mzk5NSwiZXhwIjoxNjY5MDk3NTk1fQ.qW_8bIj0HROjJ9SULT1nD7JTGpjV4gT84FvF8_PBx6I`,
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTE4NDgyNywiZXhwIjoxNjY5MTg4NDI3fQ.SeplOOwevy_MGyG3wTGVv-C7nv0jzyxfnW8Ryxw2Dzw`,
       },
     },
   );

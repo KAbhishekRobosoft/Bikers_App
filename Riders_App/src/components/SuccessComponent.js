@@ -11,7 +11,7 @@ import {
   import Icon from 'react-native-vector-icons/Ionicons';
   import ButtonLarge from './Buttons';
 
-  export const Success = (props) => {
+  export const Success = (props,{navigation}) => {
     return (
         <SafeAreaView style={styles.main}>
           <View style={styles.header}>

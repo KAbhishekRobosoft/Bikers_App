@@ -19,7 +19,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import InsetShadow from 'react-native-inset-shadow';
 import ButtonLarge from '../components/Buttons';
 
-export const BookService = () => {
+export const BookService = ({navigation}) => {
   const [number, setNumber] = useState();
   const [vehicleType, setvehicleType] = useState();
   const [vehicleNumber, setvehicleNumber] = useState();
@@ -111,8 +111,8 @@ export const BookService = () => {
               <View style={styles.btnView}>
                 <ButtonLarge
                   title="FIND A DEALER"
-                  disabled={!isValid}
-                  onPress={handleSubmit}
+                  //disabled={!isValid}
+                  onPress={() => navigation.navigate('SearchService')}
                 />
               </View>
             </>

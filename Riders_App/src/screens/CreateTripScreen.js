@@ -13,19 +13,18 @@ import {
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
-import { BikeComponent1 } from '../components/StarComponent';
-import { BikeComponent2 } from '../components/StarComponent';
-import { BikeComponent3 } from '../components/StarComponent';
-import { BikeComponent4 } from '../components/StarComponent';
-import { BikeComponent5 } from '../components/StarComponent';
+import {BikeComponent1} from '../components/StarComponent';
+import {BikeComponent2} from '../components/StarComponent';
+import {BikeComponent3} from '../components/StarComponent';
+import {BikeComponent4} from '../components/StarComponent';
+import {BikeComponent5} from '../components/StarComponent';
 import DatePicker from 'react-native-date-picker';
 import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
 import {deSetRegistered} from '../redux/AuthSlice';
 import {useDispatch, useSelector} from 'react-redux';
-import { setMileStone } from '../redux/MileStoneSlice';
-import { setMileStoneData } from '../redux/MileStoneSlice';
-
+import {setMileStone} from '../redux/MileStoneSlice';
+import {setMileStoneData} from '../redux/MileStoneSlice';
 
 const CreateTrip = ({navigation}) => {
   const mileStones = useSelector(state => state.milestone.mileStone);
@@ -66,10 +65,7 @@ const CreateTrip = ({navigation}) => {
           ) : (
             <View style={styles.placeholderText}></View>
           )}
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('SearchCity');
-            }}>
+         
             <TextInput
               name="Go"
               value={go}
@@ -77,8 +73,8 @@ const CreateTrip = ({navigation}) => {
               placeholder="Where do you want to go?"
               style={styles.inputText}
               onChangeText={value => setGo(value)}
+              onTouchStart={()=>navigation.navigate('SearchCity')}
             />
-          </TouchableOpacity>
         </View>
 
         <View style={styles.textInputView}>
@@ -218,29 +214,28 @@ const CreateTrip = ({navigation}) => {
                   style={styles.calenderImg}
                   source={require('../assets/images/adduser.png')}
                 />
-                
               </Pressable>
             </View>
             {contactsData.addTripContacts.length === 0 && (
               <Text style={styles.text}>Invite other riders</Text>
             )}
 
-              {contactsData.addTripContacts.length === 1 ?
-                <BikeComponent1 /> : null}
-             
-              {contactsData.addTripContacts.length === 2 ? (
-                <BikeComponent2 />
-              ) : null}
-              {contactsData.addTripContacts.length === 3 ? (
-                <BikeComponent3 />
-              ):null}
-              {contactsData.addTripContacts.length === 4 ? (
-                <BikeComponent4 />
-              ):null}
-              {contactsData.addTripContacts.length === 5 ? (
-                <BikeComponent5 />
-              ):null}
+            {contactsData.addTripContacts.length === 1 ? (
+              <BikeComponent1 />
+            ) : null}
 
+            {contactsData.addTripContacts.length === 2 ? (
+              <BikeComponent2 />
+            ) : null}
+            {contactsData.addTripContacts.length === 3 ? (
+              <BikeComponent3 />
+            ) : null}
+            {contactsData.addTripContacts.length === 4 ? (
+              <BikeComponent4 />
+            ) : null}
+            {contactsData.addTripContacts.length === 5 ? (
+              <BikeComponent5 />
+            ) : null}
           </View>
           {mileStones ? (
             <View style={styles.mileStone}>
@@ -262,7 +257,6 @@ const CreateTrip = ({navigation}) => {
             <ButtonLarge
               onPress={() => {
                 dispatch(deSetRegistered());
-                
               }}
               title="Done"
             />
@@ -316,6 +310,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: 195,
     color: '#4F504F',
+    bottom:5
   },
   calenderView: {
     flexDirection: 'row',

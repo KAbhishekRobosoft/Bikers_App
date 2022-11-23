@@ -17,7 +17,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {selectLiked} from '../redux/AccessoriesSlice';
 import {selectUnLiked} from '../redux/AccessoriesSlice';
 import { filterAccessories } from '../redux/AccessoriesSlice';
-export const Accessories = () => {
+export const Accessories = ({navigation}) => {
   const [text, setText] = useState('');
   const [like, setLike] = useState(false);
   const data = useSelector(state => state.shop.accessoriesData);
