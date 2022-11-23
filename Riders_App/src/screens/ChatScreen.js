@@ -8,6 +8,8 @@ import {
   Image,
   TextInput,
   ImageBackground,
+  useWindowDimensions,
+  ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ReceiverContainer, SenderChatDetails} from '../components/chatDetails';
@@ -15,6 +17,8 @@ import PopUpMenu from '../components/PopUpMenu';
 
 const ChatScreen = () => {
   const [inputChat, setInputChat] = React.useState('');
+  const {height, width} = useWindowDimensions();
+  const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -37,14 +41,17 @@ const ChatScreen = () => {
       <ImageBackground
         source={require('../assets/images/chat.png')}
         style={styles.image}></ImageBackground>
-
-      <SenderChatDetails />
-      <ReceiverContainer />
-      <SenderChatDetails />
-      <ReceiverContainer />
-      <SenderChatDetails />
-      <ReceiverContainer />
-      <View style={[styles.bottomContainer, styles.bottomshadow]}>
+      <ScrollView style={{marginBottom: '15%', flex: 1}}>
+        <SenderChatDetails />
+        <ReceiverContainer />
+        <SenderChatDetails />
+        <ReceiverContainer />
+        <SenderChatDetails />
+        <ReceiverContainer />
+        <SenderChatDetails />
+        <ReceiverContainer />
+      </ScrollView>
+      <View style={[styles.bottomContainer, styles.bottomshadow, {top}]}>
         <View style={styles.iconContainer}>
           <Pressable>
             <Image
@@ -134,9 +141,9 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     position: 'absolute',
     width: '90%',
-    top: '95%',
     flexDirection: 'row',
     alignItems: 'center',
+    alignSelf: 'center',
   },
   bottomshadow: {
     backgroundColor: '#FFFFFF',

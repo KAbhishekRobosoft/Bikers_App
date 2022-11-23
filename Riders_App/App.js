@@ -7,6 +7,7 @@ let persistor = persistStore(store);
 import NavigationFunctionality from './src/utils/NavigationFunctionality';
 import {NavigationContainer} from '@react-navigation/native';
 import {ContactDisplay} from './src/screens/Contact';
+import ChatScreen from './src/screens/ChatScreen';
 
 const App = () => {
   return (
@@ -15,7 +16,7 @@ const App = () => {
         {/* <NavigationContainer>
           <NavigationFunctionality />
         </NavigationContainer> */}
-        <ContactDisplay />
+        <ChatScreen />
       </PersistGate>
     </Provider>
   );
