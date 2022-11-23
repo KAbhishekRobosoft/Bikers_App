@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {StarComponent0} from '../components/StarComponent';
+import { Star } from '../components/StarComponent';
 import ButtonLarge from '../components/Buttons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useRoute} from '@react-navigation/native';
@@ -26,7 +26,6 @@ const ServiceCenterScreen = ({navigation}) => {
   const [open2, setOpen2] = useState(false);
 
   const route = useRoute();
-  console.log(route.params.ele);
   return (
     <SafeAreaView style={styles.main}>
       <Image
@@ -38,12 +37,12 @@ const ServiceCenterScreen = ({navigation}) => {
           style={styles.backBtn}
           name="arrow-left"
           size={24}
-          color="#ED7E2B"
+          color="white"
         />
       </TouchableOpacity>
       <ScrollView style={styles.scrollView}>
         <View style={styles.ratingComponent}>
-          <StarComponent0 />
+          <Star rating={Math.floor(route.params.ele.dealerRating)} />
         </View>
 
         <View style={styles.textContainer}>
@@ -62,7 +61,7 @@ const ServiceCenterScreen = ({navigation}) => {
           </Text>
           <Text style={styles.text4}>{route.params.ele.dealerDescription}</Text>
           <Text style={styles.text4}>
-            {' '}
+   
             +91 {route.params.ele.dealerPhoneNumber}
           </Text>
         </View>
@@ -88,10 +87,12 @@ const ServiceCenterScreen = ({navigation}) => {
             modal
             minimumDate={new Date()}
             open={open2}
-            date={date}
+            date={time}
             onConfirm={value => {
-              setDate(value);
+              setTimer(value);
               setOpen2(false);
+              navigation.navigate('BookingDetails')
+
             }}
             onCancel={() => {
               setOpen2(false);
@@ -109,14 +110,13 @@ const styles = StyleSheet.create({
   main: {
     flex: 1,
     position: 'relative',
-    //backgroundColor: 'grey',
     justifyContent: 'center',
   },
   img: {
     width: '100%',
     height: 250,
     position: 'absolute',
-    top: '4%',
+    top: '5%',
     alignSelf: 'center',
     backgroundColor: 'grey',
   },
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     bottom: 1,
   },
   scrollView: {
-    marginTop: 220,
+    marginTop: 260,
     width: '100%',
   },
   textContainer: {
@@ -135,9 +135,9 @@ const styles = StyleSheet.create({
     height: 130,
     justifyContent: 'center',
     paddingHorizontal: 20,
+
   },
   ratingComponent: {
-    marginTop: 20,
     paddingHorizontal: 22,
   },
   textView1: {

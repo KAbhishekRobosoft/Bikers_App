@@ -65,11 +65,7 @@ const CreateTrip = ({navigation}) => {
           ) : (
             <View style={styles.placeholderText}></View>
           )}
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('SearchCity');
-            }}>
-
+         
             <TextInput
               name="Go"
               value={go}
@@ -77,8 +73,8 @@ const CreateTrip = ({navigation}) => {
               placeholder="Where do you want to go?"
               style={styles.inputText}
               onChangeText={value => setGo(value)}
+              onTouchStart={()=>navigation.navigate('SearchCity')}
             />
-          </TouchableOpacity>
         </View>
         <View style={styles.textInputView}>
           {from ? (
@@ -367,7 +363,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: 195,
     color: '#4F504F',
-    bottom: 5,
+    bottom:5
   },
   calenderView: {
     flexDirection: 'row',

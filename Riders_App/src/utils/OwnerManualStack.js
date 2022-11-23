@@ -1,30 +1,35 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import ServiceCenterScreen from '../screens/ServiceCenterScreen';
-import SearchServiceScreen from '../screens/SearchServiceScreen';
 import {NavigationContainer} from '@react-navigation/native';
-import SearchServiceComponent from '../components/SearchServiceComponent';
 import OwnersManualScreen from '../screens/OwnersManualScreen';
 import OwnersManualDetailScreen from '../screens/OwnersManualDetailScreen';
 import { OwnerManualEdit } from '../screens/OwnerManualEditableScreen';
+
+
+
 const Stack = createNativeStackNavigator();
 
-function DemoStack() {
+function OwnerManualStack() {
   return (
-      <Stack.Navigator initialRouteName="SearchServiceScreen">
+      <Stack.Navigator initialRouteName="OwnersManual">
         <Stack.Screen
           options={{headerShown: false}}
-          name="SearchServiceScreen"
-          component={SearchServiceScreen}
+          name="OwnersManual"
+          component={OwnersManualScreen}
         />
         <Stack.Screen
           options={{headerShown: false}}
-          name="ServiceCenter"
-          component={ServiceCenterScreen}
+          name="OwnersManualDetail"
+          component={OwnersManualDetailScreen}
         />
-      
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="OwnerManualEdit"
+          component={OwnerManualEdit}
+        />
+        
       </Stack.Navigator>
   );
 }
 
-export default DemoStack;
+export default OwnerManualStack;

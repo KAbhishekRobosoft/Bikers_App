@@ -108,6 +108,15 @@ export const Password = props => {
 };
 
 export const PlaceholderTextField = props => {
+
+  const {
+    field: {name, onBlur, onChange, value},
+    form: {errors, touched, setFieldTouched},
+    ...inputProps
+  } = props;
+
+  const hasError = errors[name] && touched[name];
+
   return (
     <View>
       <View style={styles.inputTextView2}>
@@ -120,16 +129,21 @@ export const PlaceholderTextField = props => {
             <></>
           )}
           <TextInput
-            name={props.name}
             placeholder={props.placeholder}
             placeholderTextColor={'#4F504F'}
             style={styles.typedText}
             keyboardType={props.keyboardType}
-            value={props.value}
-            onChangeText={props.onChangeText}
+            value={value}
+            onChangeText={text => onChange(name)(text)}
+            onBlur={() => {
+              setFieldTouched(name);
+              onBlur(name);
+            }}
+            {...inputProps}
           />
         </View>
       </View>
+      {hasError && <Text style={styles.errorText}>{errors[name]}</Text>}
     </View>
   );
 };

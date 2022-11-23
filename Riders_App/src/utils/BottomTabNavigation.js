@@ -3,6 +3,7 @@ import React from 'react';
 import CreateTrip from '../screens/CreateTripScreen';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
+import MyGarageStack from './MyGarageStack';
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomTabNavigation = () => {
@@ -26,6 +27,7 @@ const BottomTabNavigation = () => {
                   width: 35,
                   height: 22,
                   resizeMode: 'contain',
+
                 }}
               />
             );
@@ -33,14 +35,15 @@ const BottomTabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Trip2"
-        component={CreateTrip}
-        listeners={{
-          tabPress: e => {
-            e.preventDefault();
-          },
-        }}
-        options={{
+        name="Tab2"
+        component={MyGarageStack}
+        // listeners={{
+        //   tabPress: e => {
+        //     e.preventDefault();
+        //   },
+        // }}
+        
+        options={{title:"My Garage",
           tabBarIcon: ({focused}) => {
             return (
               <Image
