@@ -12,6 +12,7 @@ import OwnersManualDetailScreen from './src/screens/OwnersManualDetailScreen';
 import TopNavigation from './src/utils/TopNavigation';
 import { AddBikeAndPersonalDetails } from './src/screens/AddBike&PersonalDetailsScreen';
 import CreateTrip from './src/screens/CreateTripScreen';
+import BookingDetails from './src/screens/BookingDetailsScreen'
 
 let persistor = persistStore(store);
 import NavigationFunctionality from './src/utils/NavigationFunctionality';
@@ -21,7 +22,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-          <AddBikeAndPersonalDetails/>
+          <BookingDetails/>
       </PersistGate>
     </Provider>
   );

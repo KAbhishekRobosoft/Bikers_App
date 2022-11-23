@@ -316,6 +316,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: 195,
     color: '#4F504F',
+    bottom: 5,
   },
   calenderView: {
     flexDirection: 'row',
