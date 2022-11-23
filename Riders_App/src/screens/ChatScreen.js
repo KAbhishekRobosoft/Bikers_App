@@ -66,7 +66,12 @@ const ChatScreen = () => {
             placeholder="Type a Message"
           />
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginRight: '2%',
+          }}>
           <Pressable>
             <Image
               source={require('../assets/images/document.png')}
@@ -144,6 +149,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
+    justifyContent: 'space-between',
   },
   bottomshadow: {
     backgroundColor: '#FFFFFF',
