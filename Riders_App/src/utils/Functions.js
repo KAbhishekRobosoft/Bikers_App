@@ -18,7 +18,7 @@ export async function getVerifiedKeys(key) {
       return key;
     } else {
       const response = await refreshToken(key);
-      await AsyncStorage.setItem('token', JSON.stringify(response.token));
+      await AsyncStorage.setItem('token', JSON.stringify(response.access_token));
       return response;
     }
   } else {

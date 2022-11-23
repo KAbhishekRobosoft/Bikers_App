@@ -35,15 +35,20 @@ export const checkIn = async values => {
 };
 
 export const refreshToken = async token => {
-  const options = {
-    method: 'POST',
-    url: 'https://riding-application.herokuapp.com/api/v1/getAccessToken',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const response = await axios.request(options);
-  return response.data;
+
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/getAccessToken',
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        } 
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.log('An error has occurred');
+  }
 };
 
 export const searchCity = async string => {
@@ -174,6 +179,7 @@ export const addOwnerDetails = async (values, token) => {
     console.log('Error Occured');
   }
 };
+
 export const getOwnerDetails = async token => {
   try {
     const response = await axios.get(
@@ -188,4 +194,25 @@ export const getOwnerDetails = async token => {
   } catch (error) {
     console.log('Error Occured');
   }
+};
+
+export const createTrip = async (obj) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/trip/createTrip',obj,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data
+  } catch (error) {
+    console.log('Error Occured');
+  }
+};
+
+export const getCoordinates = async (place) => {
+  const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=2dff1a0f7576b6388c89a15bc5a40171`);
+  return response.data.coord;
 };

@@ -5,6 +5,7 @@ import {
   Image,
   Pressable,
   FlatList,
+  ToastAndroid,
 } from 'react-native';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -12,6 +13,7 @@ import {selectMarked} from '../redux/ContactSlice';
 import {selectUnMarked} from '../redux/ContactSlice';
 import {addTripContacts} from '../redux/ContactSlice';
 import {deleteTripContacts} from '../redux/ContactSlice';
+import Toast from 'react-native-simple-toast'
 
 export const ContactFlatList = () => {
   const dispatch = useDispatch();
@@ -39,7 +41,10 @@ export const ContactFlatList = () => {
           {!item.marked ? (
             <Pressable
               onPress={() => {
-                handleTick(item);
+                if(contactData.length === 5)
+                  Toast.show('Maximum of 5 Riders can be added')
+                  else
+                    handleTick(item);
               }}>
               <Image
                 source={require('../assets/images/untick.png')}
