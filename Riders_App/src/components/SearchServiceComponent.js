@@ -1,14 +1,6 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
-import {useEffect} from 'react';
-import {
-  StarComponent0,
-  StarComponent1,
-  StarComponent2,
-  StarComponent3,
-  StarComponent4,
-  StarComponent5,
-} from './StarComponent';
+import { Star } from './StarComponent';
 
 const SearchServiceComponent = ({data, text,navigation}) => {
   return (
@@ -17,7 +9,7 @@ const SearchServiceComponent = ({data, text,navigation}) => {
         ? data.map(ele => {
             return (
               <TouchableOpacity  key={ele._id} onPress={()=>{
-                navigation.navigate('ServiceCenterScreen',{ele})
+                navigation.navigate('ServiceCenter',{ele})
               }}>
                 <View style={styles.serviceCenterView}>
                   <View style={styles.textView1}>
@@ -31,24 +23,7 @@ const SearchServiceComponent = ({data, text,navigation}) => {
                   <Text style={styles.text3}>{ele.dealerDescription}</Text>
                   <Text style={styles.text3}>+91 {ele.dealerPhoneNumber}</Text>
                   <View style={styles.rating}>
-                    {Math.floor(ele.dealerRating) === 0 ? (
-                      <StarComponent0 rating={Math.floor(ele.dealerRating)}/>
-                    ) : null}
-                    {Math.floor(ele.dealerRating) === 1 ? (
-                      <StarComponent1 />
-                    ) : null}
-                    {Math.floor(ele.dealerRating) === 2 ? (
-                      <StarComponent2 />
-                    ) : null}
-                    {Math.floor(ele.dealerRating) === 3 ? (
-                      <StarComponent3 />
-                    ) : null}
-                    {Math.floor(ele.dealerRating) === 4 ? (
-                      <StarComponent4 />
-                    ) : null}
-                    {Math.floor(ele.dealerRating) === 5 ? (
-                      <StarComponent5 />
-                    ) : null}
+                    <Star rating={Math.floor(ele.dealerRating)}/>
                   </View>
                 </View>
               </TouchableOpacity>

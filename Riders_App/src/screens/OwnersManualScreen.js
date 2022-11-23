@@ -56,7 +56,7 @@ const OwnersManualScreen = ({navigation}) => {
         <View style={styles.btn}>
           <ButtonLarge
             title="Go"
-            onPress={() => navigation.navigate('OwnersManualDetailScreen')}
+            onPress={() => navigation.navigate('OwnersManualDetail')}
           />
         </View>
       </ScrollView>

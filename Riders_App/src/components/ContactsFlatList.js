@@ -1,14 +1,10 @@
 import {
-  SafeAreaView,
   StyleSheet,
   Text,
   View,
   Image,
   Pressable,
-  Platform,
-  TextInput,
   FlatList,
-  ToastAndroid,
 } from 'react-native';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
@@ -16,19 +12,16 @@ import {selectMarked} from '../redux/ContactSlice';
 import {selectUnMarked} from '../redux/ContactSlice';
 import {addTripContacts} from '../redux/ContactSlice';
 import {deleteTripContacts} from '../redux/ContactSlice';
-import Toast from 'react-native-simple-toast';
 
 export const ContactFlatList = () => {
   const dispatch = useDispatch();
   const data = useSelector(state => state.contact.contactsData);
   const contactData = useSelector(state => state.contact.addTripContacts);
 
+
   const handleTick = contacts => {
-    if (contactData.length > 5) Toast.show('Only 5 members in a trip');
-    else {
       dispatch(selectMarked(contacts));
       dispatch(addTripContacts(contacts));
-    }
   };
 
   const handleUnTick = contacts => {

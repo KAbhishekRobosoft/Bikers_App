@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import {GarageInputField} from '../components/InputFields';
 
-export const MyGarage = () => {
+export const MyGarage = ({navigation}) => {
   return (
     <SafeAreaView>
       <ScrollView
@@ -30,7 +30,7 @@ export const MyGarage = () => {
           <GarageInputField
             text="Book a Service"
             source={require('../assets/images/telemarketer.png')}
-            onPress={() => console.log('Book a Service')}
+            onPress={() => navigation.navigate('BookServiceStack')}
           />
           <GarageInputField
             text="Service Records"
@@ -40,17 +40,17 @@ export const MyGarage = () => {
           <GarageInputField
             text="Owners Manual"
             source={require('../assets/images/notebook-of-spring-with-lines-page.png')}
-            onPress={() => console.log('Owners Manual')}
+            onPress={() => navigation.navigate('OwnersManualStack')}
           />
           <GarageInputField
             text="Tool Kit"
             source={require('../assets/images/tOLS.png')}
-            onPress={() => console.log('Tool Kit')}
+            onPress={() => navigation.navigate('ToolKit')}
           />
           <GarageInputField
             text="Accessories"
             source={require('../assets/images/helmet.png')}
-            onPress={() => console.log('Accessories')}
+            onPress={() => navigation.navigate('Accessories')}
           />
         </View>
       </ScrollView>

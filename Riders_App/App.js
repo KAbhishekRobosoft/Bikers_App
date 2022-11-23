@@ -10,14 +10,16 @@ import {BookService} from './src/screens/BookServiceScreen';
 import OwnersManualScreen from './src/screens/OwnersManualScreen';
 import OwnersManualDetailScreen from './src/screens/OwnersManualDetailScreen';
 import TopNavigation from './src/utils/TopNavigation';
-import {AddBikeAndPersonalDetails} from './src/screens/AddBike&PersonalDetailsScreen';
+import {AddPersonalDetails} from './src/screens/AddPersonalDetailsScreen';
 import CreateTrip from './src/screens/CreateTripScreen';
-import BookingDetails from './src/screens/BookingDetailsScreen'
+import AddBikeDetailsScreen from './src/screens/AddBikeDetailsScreen';
+import {MyGarage} from './src/screens/MyGarageScreen';
+import MyGarageStack from './src/utils/MyGarageStack';
+import BottomTabNavigation from './src/utils/BottomTabNavigation';
+import {NavigationContainer} from '@react-navigation/native';
 
 let persistor = persistStore(store);
-import NavigationFunctionality from './src/utils/NavigationFunctionality';
-import {NavigationContainer} from '@react-navigation/native';
-import {Accessories} from './src/screens/AccessoriesScreen';
+
 const App = () => {
   return (
     <Provider store={store}>

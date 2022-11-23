@@ -31,7 +31,7 @@ const OwnersManualDetailScreen = ({navigation}) => {
         <View style={styles.headerIcons}>
           <Pressable
             onPress={() => {
-              navigation.navigate('OwnerManualEditScreen');
+              navigation.navigate('OwnerManualEdit');
             }}>
             <Icon name="pencil" color={'white'} size={24} style={styles.icon} />
           </Pressable>

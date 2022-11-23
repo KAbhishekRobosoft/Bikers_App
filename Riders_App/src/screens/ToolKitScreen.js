@@ -12,10 +12,11 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Icon2 from 'react-native-vector-icons/FontAwesome5';
 import {ToolkitData} from '../assets/data';
 import Modal from 'react-native-modal';
 
-export const ToolKit = () => {
+export const ToolKit = ({navigation}) => {
   const [text, setText] = useState('');
   const [isModalVisible, setModalVisible] = useState(false);
 
@@ -101,7 +102,7 @@ export const ToolKit = () => {
             borderRadius: 17,
           }}>
           <Pressable onPress={handleToggle}>
-            <Icon
+            <Icon2
               name="times"
               size={20}
               color={'#A4A4A4'}

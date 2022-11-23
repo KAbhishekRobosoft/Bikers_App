@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useRef} from 'react';
 import SearchServiceComponent from '../components/SearchServiceComponent';
 import {searchServiceCenter} from '../services/Auth';
+
 const SearchServiceScreen = ({navigation}) => {
   const [text, setText] = useState('');
   const [data, setData] = useState([]);
