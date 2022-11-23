@@ -14,16 +14,12 @@ import { setMileStone } from '../redux/MileStoneSlice';
 import { setMileStoneData } from '../redux/MileStoneSlice';
 import {useSelector} from 'react-redux';
 
-export const Milestone = () => {
+const MilestoneList = ({ele}) => {
   const mileStoneData = useSelector(state => state.milestone.milestoneData);
-  console.log(mileStoneData)
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
   const dispatch = useDispatch();
 
   return (
-    <SafeAreaView>
-      <View style={styles.milestoneView}>
+     
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 0, y: 0.45}}
@@ -31,78 +27,31 @@ export const Milestone = () => {
           style={styles.gradient}>
           <View style={styles.textView}>
             <Text style={styles.milestoneText}>
-              Milestone {mileStoneData.length + 1}
+              Milestone {ele.id}
             </Text>
-            <Pressable
-              onPress={() => {
-                const obj = {from: from, to: to};
-                if ((from, to !== '')) {
-                  dispatch(setMileStoneData(obj));
-                  dispatch(setMileStone(false));
-                } else {
-                  dispatch(setMileStone(false));
-                }
-              }}>
-              <Icon
-                name="times"
-                size={20}
-                color={'#A4A4A4'}
-                style={styles.times}
-              />
-            </Pressable>
           </View>
           <Text style={styles.description}>
             This is to make a break journey inbetween your trip
           </Text>
           <View style={styles.fromView}>
             <TextInput
-              placeholder="From"
-              placeholderTextColor={'rgba(79,80,79,0.92)'}
+              defaultValue={ele.from}
               style={styles.textFrom}
-              onChangeText={value => setFrom(value)}
             />
-          </View>
-          <View style={styles.locationView}>
-            <Icon
-              name="map-marker"
-              color="#A4A4A4"
-              style={styles.locationImage}
-              size={16}
-            />
-            <View style={styles.locationNamesView}>
-              <Text style={styles.textUdupi}>Udupi</Text>
-              <Text style={styles.textCurrentLocation}>current location</Text>
-            </View>
           </View>
           <View style={styles.toView}>
             <TextInput
-              placeholder="To"
-              placeholderTextColor={'rgba(79,80,79,0.92)'}
+            defaultValue={ele.to}
               style={styles.textFrom}
-              onChangeText={value => setTo(value)}
             />
           </View>
         </LinearGradient>
-      </View>
-    </SafeAreaView>
   );
 };
 
+export default MilestoneList
+
 const styles = StyleSheet.create({
-  milestoneView: {
-    shadowColor: 'grey',
-    shadowOffset: {
-      width: 3,
-      height: 3,
-    },
-    shadowOpacity: 0.1,
-    elevation: 5,
-    // backgroundColor: 'white',
-    height: 230,
-    width: 321,
-    alignSelf: 'center',
-    borderRadius: 13,
-  },
   gradient: {
     height: 230,
     width: 321,
