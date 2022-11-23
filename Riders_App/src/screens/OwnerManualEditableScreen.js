@@ -11,11 +11,13 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
-import {BikeDetails} from '../utils/TopNavigation';
-
+import {BikeDetails} from '../components/BikeDetailsComponent';
+import {useSelector} from 'react-redux';
 export const OwnerManualEdit = ({navigation}) => {
+  const userDetails = useSelector(state => state.auth.userData);
+
   const [licence, setLicence] = useState();
   const [name, setName] = useState();
   const [DoorNo, setDoorNo] = useState();
@@ -34,9 +36,9 @@ export const OwnerManualEdit = ({navigation}) => {
                 navigation.goBack();
               }}>
               <Icon
-                name="arrow-left"
+                name="md-arrow-back"
                 color={'white'}
-                size={16}
+                size={25}
                 style={styles.icon}
               />
             </Pressable>
@@ -49,13 +51,14 @@ export const OwnerManualEdit = ({navigation}) => {
             />
           </Pressable>
         </View>
-        <ScrollView style={{ height: '88%'}}>
+        <ScrollView style={{height: '88%'}}>
           <View style={styles.personalDetailView}>
             <View
               style={{
                 flexDirection: 'row',
                 marginTop: 20,
-                marginHorizontal: 15,
+                marginHorizontal: '5%',
+                justifyContent: 'space-between',
               }}>
               <Text style={styles.personaldetailText}>Personal Details</Text>
               <Image source={require('../assets/images/save.png')} />
@@ -65,7 +68,7 @@ export const OwnerManualEdit = ({navigation}) => {
                 name="licence"
                 placeholder="Licence No."
                 keyboardType="default"
-                value={licence}
+                defaultValue={userDetails.lisenceNumber}
                 onChangeText={value => setLicence(value)}
               />
               <PlaceholderTextFieldOwnerManual
@@ -74,6 +77,7 @@ export const OwnerManualEdit = ({navigation}) => {
                 keyboardType="default"
                 value={name}
                 onChangeText={value => setName(value)}
+                defaultValue={userDetails.name}
               />
               <PlaceholderTextFieldOwnerManual
                 name="doorNumber"
@@ -81,6 +85,7 @@ export const OwnerManualEdit = ({navigation}) => {
                 keyboardType="default"
                 value={DoorNo}
                 onChangeText={value => setDoorNo(value)}
+                defaultValue={userDetails.doorNumber}
               />
               <PlaceholderTextFieldOwnerManual
                 name="city"
@@ -88,6 +93,7 @@ export const OwnerManualEdit = ({navigation}) => {
                 keyboardType="default"
                 value={city}
                 onChangeText={value => setCity(value)}
+                defaultValue={userDetails.city}
               />
               <PlaceholderTextFieldOwnerManual
                 name="state"
@@ -95,6 +101,7 @@ export const OwnerManualEdit = ({navigation}) => {
                 keyboardType="default"
                 value={state}
                 onChangeText={value => setState(value)}
+                defaultValue={userDetails.state}
               />
               <PlaceholderTextFieldOwnerManual
                 name="pincode"
@@ -102,6 +109,8 @@ export const OwnerManualEdit = ({navigation}) => {
                 keyboardType="default"
                 value={pincode}
                 onChangeText={value => setPincode(value)}
+                defaultValue={userDetails.pincode}
+
               />
               <PlaceholderTextFieldOwnerManual
                 name="mobile"
@@ -109,6 +118,8 @@ export const OwnerManualEdit = ({navigation}) => {
                 keyboardType="default"
                 value={mobile}
                 onChangeText={value => setMobile(value)}
+                defaultValue={userDetails.lisenceNumber}
+
               />
               <PlaceholderTextFieldOwnerManual
                 name="email"
@@ -116,11 +127,12 @@ export const OwnerManualEdit = ({navigation}) => {
                 keyboardType="default"
                 value={email}
                 onChangeText={value => setEmail(value)}
+                defaultValue={userDetails.email}
               />
             </View>
           </View>
           <View style={{marginTop: 10}}>
-            <BikeDetails />
+            <BikeDetails header="Bike Details" />
           </View>
         </ScrollView>
       </View>
@@ -178,11 +190,11 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(175,170,170,0.5)',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 0,
     },
-    shadowRadius: 3,
-    shadowOpacity: 0.9,
-    elevation: 5,
+    shadowRadius: 5,
+    shadowOpacity: 1,
+    elevation: 10,
     borderRadius: 8,
   },
   personaldetailText: {

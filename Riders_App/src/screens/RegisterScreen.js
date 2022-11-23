@@ -9,7 +9,7 @@ import {
   Pressable,
 } from 'react-native';
 import ButtonLarge from '../components/Buttons';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {Input} from '../components/InputFields';
 import {Password} from '../components/InputFields';
 import {Formik, Field} from 'formik';
@@ -55,9 +55,9 @@ const Register = ({navigation}) => {
               navigation.goBack();
             }}>
             <Icon
-              name="arrow-left"
+              name="md-arrow-back"
               color={'white'}
-              size={16}
+              size={25}
               style={styles.icon}
             />
           </Pressable>

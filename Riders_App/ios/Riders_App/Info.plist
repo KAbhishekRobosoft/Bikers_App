@@ -40,7 +40,7 @@
 	<key>NSContactsUsageDescription</key>
 	<string>to list all the contacts</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Rider app needs to get your location...</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Rider App requires quite access for all.</string>
 	<key>NSPhotoLibraryUsageDescription</key>

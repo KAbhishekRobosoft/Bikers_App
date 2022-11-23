@@ -11,7 +11,7 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {ToolkitData} from '../assets/data';
 import Modal from 'react-native-modal';
 
@@ -39,9 +39,9 @@ export const ToolKit = () => {
             navigation.goBack();
           }}>
           <Icon
-            name="arrow-left"
+            name="md-arrow-back"
             color={'white'}
-            size={16}
+            size={25}
             style={styles.icon}
           />
         </Pressable>
