@@ -4,6 +4,7 @@ const milestoneSlice = createSlice({
   name: 'contact',
   initialState: {
     mileStone: false,
+    otherMilestone: false,
     milestoneData: [],
   },
 
