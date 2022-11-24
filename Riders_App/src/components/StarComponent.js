@@ -36,19 +36,19 @@ export const Star = ({rating}) => {
           />
           <Image
             style={styles.ratingImg}
-            source={require('../assets/images/Star1.png')}
+            source={require('../assets/images/Star2.png')}
           />
           <Image
             style={styles.ratingImg}
-            source={require('../assets/images/Star1.png')}
+            source={require('../assets/images/Star2.png')}
           />
           <Image
             style={styles.ratingImg}
-            source={require('../assets/images/Star1.png')}
+            source={require('../assets/images/Star2.png')}
           />
           <Image
             style={styles.ratingImg}
-            source={require('../assets/images/Star1.png')}
+            source={require('../assets/images/Star2.png')}
           />
         </View>
       ) : null}
@@ -56,6 +56,14 @@ export const Star = ({rating}) => {
         <View style={styles.rating}>
           <Image
             style={styles.ratingImg}
+            source={require('../assets/images/Star1.png')}
+          />
+          <Image
+            style={styles.ratingImg}
+            source={require('../assets/images/Star1.png')}
+          />
+          <Image
+            style={styles.ratingImg}
             source={require('../assets/images/Star2.png')}
           />
           <Image
@@ -64,15 +72,7 @@ export const Star = ({rating}) => {
           />
           <Image
             style={styles.ratingImg}
-            source={require('../assets/images/Star1.png')}
-          />
-          <Image
-            style={styles.ratingImg}
-            source={require('../assets/images/Star1.png')}
-          />
-          <Image
-            style={styles.ratingImg}
-            source={require('../assets/images/Star1.png')}
+            source={require('../assets/images/Star2.png')}
           />
         </View>
       ) : null}

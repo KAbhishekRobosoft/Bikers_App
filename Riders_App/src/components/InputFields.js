@@ -107,10 +107,10 @@ export const Password = props => {
   );
 };
 
-export const PlaceholderTextField = props => {
+export const PlaceholderTextField = (props) => {
 
   const {
-    field: {name, onBlur, onChange, value},
+    field: {name,onBlur,onChange,value},
     form: {errors, touched, setFieldTouched},
     ...inputProps
   } = props;
@@ -177,7 +177,7 @@ export const PlaceholderTextFieldOwnerManual = props => {
 };
 export const GarageInputField = props => {
   return (
-    <Pressable onPress={props.onPress}>
+    <Pressable onPress={props.onPress} disabled={props.disabled}>
       <View style={styles.garageView}>
         <Image source={props.source} style={styles.imageIcons} />
         <Text style={styles.optionsText}>{props.text}</Text>

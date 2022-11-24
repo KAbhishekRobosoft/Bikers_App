@@ -20,15 +20,16 @@ export const ContactFlatList = () => {
   const data = useSelector(state => state.contact.contactsData);
   const contactData = useSelector(state => state.contact.addTripContacts);
 
-
   const handleTick = contacts => {
       dispatch(selectMarked(contacts));
-      dispatch(addTripContacts(contacts));
+      const obj= {id:contacts.recordID,riderName:contacts.givenName,riderPhoneNumber:contacts.phoneNumbers[0].number}
+      dispatch(addTripContacts(obj));
   };
 
   const handleUnTick = contacts => {
     dispatch(selectUnMarked(contacts));
-    dispatch(deleteTripContacts(contacts));
+    const obj= {id:contacts.recordID,riderName:contacts.givenName,riderPhoneNumber:contacts.phoneNumbers[0].number}
+    dispatch(deleteTripContacts(obj));
   };
 
   return (

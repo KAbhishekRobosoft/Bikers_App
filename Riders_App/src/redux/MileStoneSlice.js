@@ -15,6 +15,7 @@ const milestoneSlice = createSlice({
     },
     setMileStoneData: (state, action) => {
       state.milestoneData.push(action.payload);
+      state.mileStone= true
     },
 
     setLoading:(state)=>{
