@@ -1,5 +1,6 @@
 import {useDrawerStatus} from '@react-navigation/drawer';
 import axios from 'axios';
+const BASE_URL = 'https://riding-application.herokuapp.com/api/v1';
 
 export const register = async (values, haveBike) => {
   try {
@@ -74,7 +75,7 @@ export const searchServiceCenter = async (value, token) => {
       }),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTIwMDgxNSwiZXhwIjoxNjY5MjA0NDE1fQ.tLJO0CNXbmoxiic-zWRFO8Xhpl_3dlUrLzx_I3daQHg'}`,
+        Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTE5NzAwNCwiZXhwIjoxNjY5MjAwNjA0fQ.-wJhsRsUFo5fh0Okp0BdeqUR3OE8vJKcPiQz-T8Ds1E'}`,
       },
     },
   );
