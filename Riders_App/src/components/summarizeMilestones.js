@@ -11,13 +11,15 @@ import {
   ScrollView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useSelector } from 'react-redux';
 import {summaryData} from '../assets/data';
 
-export const TripSummaryList = () => {
+export const TripSummaryList = ({data}) => {
+  
   return (
     <View>
-      {summaryData !== 0
-        ? summaryData.map(item => {
+      {data !== 0
+        ? data.map(item => {
             return (
               <View
                 style={styles.mainView}
@@ -45,15 +47,15 @@ export const TripSummaryList = () => {
                     </Text>
                     <View style={styles.lineView1}></View>
                     <View style={styles.fromToView}>
-                      <Text style={styles.textUdupi}>{item.from}</Text>
+                      <Text style={styles.textUdupi}>{item.source[0].place}</Text>
                       <View
                         style={{flexDirection: 'column', paddingHorizontal: 6}}>
                         <Text style={styles.descriptionOverLine}>
-                          {item.distance} - {item.duration}
+                          300 - 6h 50 min
                         </Text>
                         <View style={styles.lineView2}></View>
                       </View>
-                      <Text style={styles.textUdupi}>{item.to}</Text>
+                      <Text style={styles.textUdupi}>{item.destination[0].place}</Text>
                     </View>
                   </LinearGradient>
                 </View>

@@ -107,9 +107,10 @@ export const Password = props => {
   );
 };
 
-export const PlaceholderTextField = props => {
+export const PlaceholderTextField = (props) => {
+
   const {
-    field: {name, onBlur, onChange, value},
+    field: {name,onBlur,onChange,value},
     form: {errors, touched, setFieldTouched},
     ...inputProps
   } = props;

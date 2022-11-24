@@ -14,9 +14,17 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
 import { RecommendationTripSummary } from '../components/Recommendations';
 import { CreateButton } from '../components/Buttons';
+import { useSelector } from 'react-redux';
+import { month } from '../utils/Functions';
+import BikeImageComponent from '../components/BikeImageComponent';
 
-export const TripSummary = () => {
-  return (
+export const TripSummary = ({navigation}) => {
+  const milestonedata = useSelector(state => state.milestone.milestoneData)
+  const tripDetails = useSelector(state => state.milestone.storeTrip)
+  const contactsData = useSelector(state => state.contact);
+  console.log('tripdetailssss',tripDetails)
+  console.log('dfdgd',milestonedata)
+    return (
     <SafeAreaView>
       <View style={styles.mainView}>
         <View style={[styles.header]}>
@@ -45,18 +53,18 @@ export const TripSummary = () => {
           <View style={styles.mapView}>
             <View style={styles.summaryView}>
               <Image source={require('../assets/images/motorcycle.png')} />
-              <Text style={styles.tripName}>Reunion Manali</Text>
-              <Text style={styles.dateText}>5 -15 Nov, 2017</Text>
-              <Text style={styles.timeText}> 08:00 am</Text>
+              <Text style={styles.tripName}>{tripDetails.tripName}</Text>
+              <Text style={styles.dateText}>{tripDetails.startDate.substring(8,10)} {tripDetails.startDate.substring(4,7)} - {tripDetails.endDate.substring(8,10)} {tripDetails.endDate.substring(4,7)} {tripDetails.endDate.substring(11, 15)}</Text>
+              <Text style={styles.timeText}> {tripDetails.startTime.substring(15,21)}</Text>
               <View style={styles.fromToView}>
-                <Text style={styles.fromToText}>Udupi</Text>
+                <Text style={styles.fromToText}>{tripDetails.source[0].place}</Text>
                 <View style={styles.lineView}></View>
-                <Text style={styles.fromToText}>Manali</Text>
+                <Text style={styles.fromToText}>{tripDetails.destination[0].place}</Text>
               </View>
             </View>
           </View>
           <View style={styles.listView}>
-            <TripSummaryList />
+            <TripSummaryList data={milestonedata}/>
             <View style={styles.recommendationsView}>
               <RecommendationTripSummary />
             </View>
@@ -69,7 +77,10 @@ export const TripSummary = () => {
                   />
                 </Pressable>
               </View>
+              {contactsData.addTripContacts.length === 0 && (
               <Text style={styles.text}>Invite other riders</Text>
+            )}
+            {contactsData.addTripContacts.length > 0 && <BikeImageComponent />}
             </View>
             <View style={styles.buttonView}>
               <CreateButton title="CREATE" />

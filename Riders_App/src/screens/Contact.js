@@ -75,6 +75,7 @@ export const ContactDisplay = ({navigation}) => {
           if (data.length === 0) {
             dispatch(selectContacts(trimmedContacts));
           }
+          console.log(trimmedContacts)
         })
         .catch(err => {
           console.log(err);

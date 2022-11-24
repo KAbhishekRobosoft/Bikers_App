@@ -5,7 +5,7 @@ const contactSlice = createSlice({
   initialState: {
     contactsData: [],
     filterData: [],
-    addTripContacts:[]
+    addTripContacts:[],
 
   },
 
@@ -77,7 +77,7 @@ const contactSlice = createSlice({
     },
 
     deleteTripContacts:(state,action)=>{
-        state.addTripContacts= state.addTripContacts.filter(ele=> ele.recordID !== action.payload.recordID)
+        state.addTripContacts= state.addTripContacts.filter(ele=> ele.id !== action.payload.id)
   }
   },
 });
