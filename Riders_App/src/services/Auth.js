@@ -195,14 +195,14 @@ export const getOwnerDetails = async token => {
   }
 };
 
-export const createTrip = async obj => {
+export const createTrip = async (obj) => {
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/trip/createTrip',
       obj,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiODE5Nzc1MDQ1NyIsImlhdCI6MTY2OTI4NzYwNiwiZXhwIjoxNjY5MjkxMjA2fQ.QD8DdKWVlnnMK-Q_vAjcgcnVrnVy-w-OVMpw5xv7UZI`,
         },
       },
     );
@@ -256,9 +256,12 @@ export const LikeProducts = async (value) => {
     console.log('Error Occured');
   }
 };
+
 export const getLocationName = async (lat,lon) => {
   const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=2dff1a0f7576b6388c89a15bc5a40171`);
   return response.data
 };
+
+
 
 

@@ -27,6 +27,7 @@ import GetLocation from 'react-native-get-location';
 import { getLocationName } from '../services/Auth';
 import { setLoading } from '../redux/MileStoneSlice';
 import { deSetLoading } from '../redux/MileStoneSlice';
+import { createTrip } from '../services/Auth';
 
 const CreateTrip = ({navigation}) => {
   useEffect(() => {
@@ -50,6 +51,7 @@ const CreateTrip = ({navigation}) => {
   }, []);
 
   const mileStones = useSelector(state => state.milestone.mileStone)
+  const authData= useSelector(state=>state.auth.userData)
   const milesonesData= useSelector(state=>state.milestone.milestoneData)
   const loading= useSelector(state=>state.milestone.isLoading)
   const dispatch = useDispatch();
@@ -318,16 +320,8 @@ const CreateTrip = ({navigation}) => {
                     riders:contactsData.addTripContacts,
                     milestones:milesonesData
                 }
-
-                console.log(obj)
-                // console.log(go)
-                // console.log(from)
-                // console.log(date)
-                // console.log(endDate)
-                // console.log(time)
-                // console.log(tripName)
-                
-                // dispatch(deSetRegistered());
+                  const ans= await createTrip(obj)
+                  // dispatch(deSetRegistered())
               }}
               title="Done"
             />
