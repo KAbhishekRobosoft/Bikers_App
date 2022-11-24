@@ -5,6 +5,7 @@ import NewUserSubStack from './NewUserSubStack';
 import { useSelector } from 'react-redux';
 import PracScreen from '../screens/PracScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import BottomTabLoginNavigation from './BottomTabLoginNavigation';
 const Stack= createNativeStackNavigator()
 
 function NewUserStack() {
@@ -29,7 +30,7 @@ function NewUserStack() {
         name="subStack"
         component={NewUserSubStack}
       />
-    </Stack.Navigator>) : <PracScreen />
+    </Stack.Navigator>) : <BottomTabLoginNavigation />
   )
 }
 

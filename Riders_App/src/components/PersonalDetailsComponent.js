@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux';
 
 export const PersonalDetails = () => {
   const userDetails=useSelector(state=>state.auth.userData)
-  console.log(userDetails);
   const [userData, setUserData] = useState([]);
+  
   useEffect(() => {
     setTimeout(async () => {
       const response = await getOwnerDetails();

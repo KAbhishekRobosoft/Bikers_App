@@ -17,6 +17,7 @@ import {MyGarage} from './src/screens/MyGarageScreen';
 import MyGarageStack from './src/utils/MyGarageStack';
 import BottomTabNavigation from './src/utils/BottomTabNavigation';
 import {NavigationContainer} from '@react-navigation/native';
+import BottomTabLoginNavigation from './src/utils/BottomTabLoginNavigation'
 
 let persistor = persistStore(store);
 
@@ -24,7 +25,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-          <BookService/>
+          <NavigationContainer>
+            <OwnersManualDetailScreen />
+          </NavigationContainer>
       </PersistGate>
     </Provider>
   );

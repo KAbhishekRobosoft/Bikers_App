@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
 import {BikeDetails} from '../components/BikeDetailsComponent';
 import {useDispatch, useSelector} from 'react-redux';
-import {addOwnerDetails} from '../services/Auth';
+import {addOwnerDetails, getOwnerDetails} from '../services/Auth';
 import {setUserData} from '../redux/AuthSlice';
 import ButtonLarge from '../components/Buttons';
 
@@ -48,12 +48,15 @@ export const AddPersonalDetails = ({navigation}) => {
       state: state,
       doorNumber: DoorNo,
       pincode: pincode,
-      name: useDetails.name,
-      mobile: useDetails.mobile,
-      email: useDetails.email,
+      name: 'gowri',
+      // useDetails.name,
+      mobile: '0987654321',
+      // useDetails.mobile,
+      email: 'gowri@gmail.com',
+      // useDetails.email,
     };
     dispatch(setUserData(userData));
-    console.log(response);
+    console.log(response)
   };
 
   return (
