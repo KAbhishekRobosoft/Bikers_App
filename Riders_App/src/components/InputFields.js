@@ -108,7 +108,6 @@ export const Password = props => {
 };
 
 export const PlaceholderTextField = props => {
-
   const {
     field: {name, onBlur, onChange, value},
     form: {errors, touched, setFieldTouched},
@@ -177,12 +176,23 @@ export const PlaceholderTextFieldOwnerManual = props => {
 };
 export const GarageInputField = props => {
   return (
-    <Pressable onPress={props.onPress} disabled={props.disabled}>
-      <View style={styles.garageView}>
-        <Image source={props.source} style={styles.imageIcons} />
-        <Text style={styles.optionsText}>{props.text}</Text>
-      </View>
-    </Pressable>
+    <>
+      {props.disabled ? (
+        <Pressable onPress={props.onPress} disabled={props.disabled}>
+          <View style={styles.garageView2}>
+            <Image source={props.source} style={styles.imageIcons} />
+            <Text style={styles.optionsText}>{props.text}</Text>
+          </View>
+        </Pressable>
+      ) : (
+        <Pressable onPress={props.onPress} disabled={props.disabled}>
+          <View style={styles.garageView}>
+            <Image source={props.source} style={styles.imageIcons} />
+            <Text style={styles.optionsText}>{props.text}</Text>
+          </View>
+        </Pressable>
+      )}
+    </>
   );
 };
 
@@ -333,6 +343,15 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(151,151,151,0.85)',
     borderBottomWidth: 1,
     paddingLeft: 20,
+  },
+  garageView2: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 70,
+    borderBottomColor: 'rgba(151,151,151,0.85)',
+    borderBottomWidth: 1,
+    paddingLeft: 20,
+    opacity: 0.5
   },
   imageIcons: {
     height: 32,

@@ -35,26 +35,31 @@ export const MyGarage = ({navigation}) => {
               text="Book a Service"
               source={require('../assets/images/telemarketer.png')}
               onPress={() => navigation.navigate('BookServiceStack')}
+              disabled = {false}
             />
             <GarageInputField
               text="Service Records"
               source={require('../assets/images/folder.png')}
               onPress={() => navigation.navigate('ServiceRecordStack')}
+              disabled = {false}
             />
             <GarageInputField
               text="Owners Manual"
               source={require('../assets/images/notebook-of-spring-with-lines-page.png')}
               onPress={() => navigation.navigate('OwnersManualStack')}
+              disabled = {false}
             />
             <GarageInputField
               text="Tool Kit"
               source={require('../assets/images/tOLS.png')}
               onPress={() => navigation.navigate('ToolKit')}
+              disabled = {false}
             />
             <GarageInputField
               text="Accessories"
               source={require('../assets/images/helmet.png')}
               onPress={() => navigation.navigate('Accessories')}
+              disabled = {false}
             />
           </View>
         ) : (
