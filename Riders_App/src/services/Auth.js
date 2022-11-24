@@ -219,3 +219,37 @@ export const getCoordinates = async place => {
   );
   return response.data.coord;
 };
+
+export const profileData = async (token, mobile) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/getProfile',
+      {
+        mobile: '9963865628', //mobile number from userData
+      },
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk2Mzg2NTYyOCIsImlhdCI6MTY2OTI5MDc4NSwiZXhwIjoxNjY5Mjk0Mzg1fQ.KZFlHVbYr7P1d-WBEBqcjWYP3KfR_jQxJAlosEyDghc`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getSortedTripDetails = async token => {
+  try {
+    const response = await axios.get(BASE_URL + '/trip/getTrip', {
+      headers: {
+        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk2Mzg2NTYyOCIsImlhdCI6MTY2OTI5MDc4NSwiZXhwIjoxNjY5Mjk0Mzg1fQ.KZFlHVbYr7P1d-WBEBqcjWYP3KfR_jQxJAlosEyDghc`,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};

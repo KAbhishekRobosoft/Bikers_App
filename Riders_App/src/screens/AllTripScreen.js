@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   TextInput,
@@ -6,11 +6,31 @@ import {
   StyleSheet,
   Image,
   Pressable,
+  FlatList,
 } from 'react-native';
-import {exp} from 'react-native/Libraries/Animated/Easing';
-import UpcomingList from '../components/AllTripList';
+import AllTripList from '../components/AllTripList';
 
-const UpcomingTrips = () => {
+const AllTrips = () => {
+  const [tripDetails, setTripDetails] = useState([]);
+
+  // useEffect(() => {
+  //   setTimeout(async () => {
+  //     const tripdata = await getSortedTripDetails();
+  //     setTripDetails(tripdata);
+  //   }, 500);
+  // }, []);
+
+  const renderItem = details => {
+    return (
+      <AllTripList
+        image={'hii'}
+        placeName={'place'}
+        dateText={'date'}
+        statusText={'upcoming'}
+      />
+    );
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.searchView}>
@@ -30,7 +50,10 @@ const UpcomingTrips = () => {
           style={styles.inputText}
         />
       </View>
-      <UpcomingList />
+      {/* <FlatList
+        data={tripDetails}
+        keyExtractor={details => details._id}
+        renderItem={renderItem}></FlatList> */}
 
       <Pressable style={styles.addButton}>
         <Image source={require('../assets/images/addtrip.png')} />
@@ -80,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UpcomingTrips;
+export default AllTrips;
