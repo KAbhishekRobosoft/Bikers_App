@@ -1,5 +1,6 @@
 import {useDrawerStatus} from '@react-navigation/drawer';
 import axios from 'axios';
+const BASE_URL = 'https://riding-application.herokuapp.com/api/v1';
 
 export const register = async (values, haveBike) => {
   try {
@@ -35,14 +36,13 @@ export const checkIn = async values => {
 };
 
 export const refreshToken = async token => {
-
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/getAccessToken',
       {
         headers: {
           Authorization: `Bearer ${token}`,
-        } 
+        },
       },
     );
     return response.data;
@@ -75,7 +75,7 @@ export const searchServiceCenter = async (value, token) => {
       }),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTE5NzAwNCwiZXhwIjoxNjY5MjAwNjA0fQ.-wJhsRsUFo5fh0Okp0BdeqUR3OE8vJKcPiQz-T8Ds1E"}`,
+        Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTE5NzAwNCwiZXhwIjoxNjY5MjAwNjA0fQ.-wJhsRsUFo5fh0Okp0BdeqUR3OE8vJKcPiQz-T8Ds1E'}`,
       },
     },
   );
@@ -196,23 +196,60 @@ export const getOwnerDetails = async token => {
   }
 };
 
-export const createTrip = async (obj) => {
+export const createTrip = async obj => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/trip/createTrip',obj,
+      'https://riding-application.herokuapp.com/api/v1/trip/createTrip',
+      obj,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       },
     );
-    return response.data
+    return response.data;
   } catch (error) {
     console.log('Error Occured');
   }
 };
 
-export const getCoordinates = async (place) => {
-  const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=2dff1a0f7576b6388c89a15bc5a40171`);
+export const getCoordinates = async place => {
+  const response = await axios.get(
+    `https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=2dff1a0f7576b6388c89a15bc5a40171`,
+  );
   return response.data.coord;
+};
+
+export const profileData = async token => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/getProfile',
+      {
+        mobile: '9963865628',
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getSortedTripDetails = async token => {
+  try {
+    const response = await axios.get(BASE_URL + '/trip/getTrip', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
 };

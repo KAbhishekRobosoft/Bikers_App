@@ -1,25 +1,34 @@
 import React from 'react';
 import {View, Text, StyleSheet, ImageBackground} from 'react-native';
 
-const ActivityList = ({image}) => {
+const ActivityList = ({
+  image,
+  placeName,
+  tripYear,
+  startDate,
+  endDate,
+  startMonth,
+  endMonth,
+}) => {
   return (
     <View>
-      <View style={styles.container}>
+      <View style={[styles.container, styles.shadow]}>
         <ImageBackground
           source={{uri: image}}
           resizeMode="cover"
           style={styles.image}>
           <View style={styles.listContainer}>
             <View style={styles.textContainer}>
-              <Text style={styles.placeName}>Reunion Manali</Text>
-              <Text style={styles.dateText}>9-15 October</Text>
+              <Text style={styles.placeName}>{placeName}</Text>
+              <Text style={styles.dateText}>
+                {startDate} {startMonth}- {endDate} {endMonth}
+              </Text>
             </View>
           </View>
         </ImageBackground>
       </View>
       <View style={styles.point}></View>
-      <Text style={styles.yearText}>2017</Text>
-      <View style={styles.yearLine}></View>
+      <Text style={styles.yearText}>{tripYear}</Text>
     </View>
   );
 };
@@ -30,15 +39,38 @@ const styles = StyleSheet.create({
     width: '75%',
     alignSelf: 'center',
     marginTop: 20,
-    backgroundColor: 'red',
     bottom: 20,
     left: 35,
+    backgroundColor: 'grey',
+    borderRadius: 40,
+    shadowColor: 'grey',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 3,
+    shadowOpacity: 0.9,
+    elevation: 5,
+    justifyContent: 'space-between',
+    opacity: 0.9,
   },
-
+  shadow: {
+    backgroundColor: '#FFFFFF',
+    shadowColor: 'grey',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 3,
+    shadowOpacity: 0.9,
+    elevation: 5,
+    borderRadius: 10,
+  },
   listContainer: {flexDirection: 'row', justifyContent: 'space-between'},
   image: {
-    height: 140,
-    borderRadius: 5,
+    height: 110,
+    borderRadius: 40,
+    backgroundColor: 'grey',
   },
 
   placeName: {
