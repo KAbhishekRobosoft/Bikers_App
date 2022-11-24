@@ -2,11 +2,10 @@ import React, {useState} from 'react';
 import {SafeAreaView, View, Text, Pressable, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {DropDownInputField} from '../components/InputFields';
-import NewServiceRecordDetails, {
-  PastServiceRecordDetails,
-} from '../components/ServiceRecordDetails';
+import { NewServiceRecordDetails } from '../components/ServiceRecordDetails';
+import { PastServiceRecordDetails } from '../components/ServiceRecordDetails';
 
-const ServiceRecord = () => {
+const ServiceRecord = ({navigation}) => {
   const [bikeSelected, setBikeSelected] = useState('');
   const [serviceSelected, setServiceSelected] = useState('');
 
@@ -55,8 +54,8 @@ const ServiceRecord = () => {
         />
         {!bikeSelected == '' && !serviceSelected == '' ? (
           <View>
-            <NewServiceRecordDetails />
-            <PastServiceRecordDetails />
+            <NewServiceRecordDetails navigation={navigation}/>
+            <PastServiceRecordDetails navigation={navigation}/>
           </View>
         ) : (
           <></>

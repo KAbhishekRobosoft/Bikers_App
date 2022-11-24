@@ -177,7 +177,7 @@ export const PlaceholderTextFieldOwnerManual = props => {
 };
 export const GarageInputField = props => {
   return (
-    <Pressable onPress={props.onPress}>
+    <Pressable onPress={props.onPress} disabled={props.disabled}>
       <View style={styles.garageView}>
         <Image source={props.source} style={styles.imageIcons} />
         <Text style={styles.optionsText}>{props.text}</Text>

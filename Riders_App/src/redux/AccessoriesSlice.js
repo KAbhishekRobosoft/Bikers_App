@@ -4,77 +4,54 @@ import {AccessoriesData} from '../assets/data';
 const asseccoriesSlice = createSlice({
   name: 'shop',
   initialState: {
-    accessoriesData: AccessoriesData,
-    filterAccessoriesData: AccessoriesData,
+    accessoriesData: [],
+    filterAccessoriesData: [],
   },
 
   reducers: {
-    selectLiked: (state, action) => {
+    addAccessoriesData: (state, action) => {
+      state.accessoriesData = action.payload;
+      state.filterAccessoriesData = action.payload;
+    },
+    addLiked: (state, action) => {
       state.accessoriesData = state.accessoriesData.map(ele => {
-        if (ele.id === action.payload.id) {
+        if (ele._id === action.payload._id) {
           return {
             ...ele,
-            id: action.payload.id,
-            photo: action.payload.photo,
-            title: action.payload.title,
-            cost: action.payload.cost,
+            _id: ele._id,
+            productImage: ele.productImage,
+            productName: ele.productName,
+            productPrice: ele.productPrice,
+            likedBy: ele.likedBy,
             liked: true,
-            date: action.payload.date,
-          };
-        }
-        return ele;
-      });
-      state.filterAccessoriesData = state.filterAccessoriesData.map(ele => {
-        if (ele.id === action.payload.id) {
-          return {
-            ...ele,
-            id: action.payload.id,
-            photo: action.payload.photo,
-            title: action.payload.title,
-            cost: action.payload.cost,
-            liked: true,
-            date: action.payload.date,
           };
         }
         return ele;
       });
     },
-    selectUnLiked: (state, action) => {
-        state.accessoriesData = state.accessoriesData.map(ele => {
-          if (ele.id === action.payload.id) {
-            return {
-              ...ele,
-              id: action.payload.id,
-              photo: action.payload.photo,
-              title: action.payload.title,
-              cost: action.payload.cost,
-              liked: false,
-              date: action.payload.date,
-            };
-          }
-          return ele;
-        });
-        state.filterAccessoriesData = state.filterAccessoriesData.map(ele => {
-            if (ele.id === action.payload.id) {
-              return {
-                ...ele,
-                id: action.payload.id,
-                photo: action.payload.photo,
-                title: action.payload.title,
-                cost: action.payload.cost,
-                liked: false,
-                date: action.payload.date,
-              };
-            }
-            return ele;
-          });
-      },
-      filterAccessories: (state, action) => {
-        state.accessoriesData = state.filterAccessoriesData.filter(site =>
-          site.title.toLowerCase().includes(action.payload.toLowerCase()),
-        );
-      },
+    disLiked: (state, action) => {
+      state.accessoriesData = state.accessoriesData.map(ele => {
+        if (ele._id === action.payload._id) {
+          return {
+            ...ele,
+            _id: ele._id,
+            productImage: ele.productImage,
+            productName: ele.productName,
+            productPrice: ele.productPrice,
+            likedBy: ele.likedBy,
+            liked: false,
+          };
+        }
+        return ele;
+      });
+    },
+    filterAccessories: (state, action) => {
+      state.accessoriesData = state.filterAccessoriesData.filter(site =>
+        site.title.toLowerCase().includes(action.payload.toLowerCase()),
+      );
+    },
   },
 });
-export const {selectLiked, selectUnLiked, filterAccessories} = asseccoriesSlice.actions;
+export const {addAccessoriesData, filterAccessories, addLiked, disLiked} =
+  asseccoriesSlice.actions;
 export default asseccoriesSlice.reducer;

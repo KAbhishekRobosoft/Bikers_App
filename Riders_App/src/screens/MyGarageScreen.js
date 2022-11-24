@@ -10,9 +10,12 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
+import {useSelector} from 'react-redux';
 import {GarageInputField} from '../components/InputFields';
 
 export const MyGarage = ({navigation}) => {
+  const hadBike = useSelector(state => state.auth.userData);
+  console.log('hadbike', hadBike);
   return (
     <SafeAreaView>
       <ScrollView
@@ -26,33 +29,69 @@ export const MyGarage = ({navigation}) => {
           source={require('../assets/images/meter.png')}
           style={styles.meterImage}
         />
-        <View style={{marginTop: 30}}>
-          <GarageInputField
-            text="Book a Service"
-            source={require('../assets/images/telemarketer.png')}
-            onPress={() => navigation.navigate('BookServiceStack')}
-          />
-          <GarageInputField
-            text="Service Records"
-            source={require('../assets/images/folder.png')}
-            onPress={() => console.log('Service Records')}
-          />
-          <GarageInputField
-            text="Owners Manual"
-            source={require('../assets/images/notebook-of-spring-with-lines-page.png')}
-            onPress={() => navigation.navigate('OwnersManualStack')}
-          />
-          <GarageInputField
-            text="Tool Kit"
-            source={require('../assets/images/tOLS.png')}
-            onPress={() => navigation.navigate('ToolKit')}
-          />
-          <GarageInputField
-            text="Accessories"
-            source={require('../assets/images/helmet.png')}
-            onPress={() => navigation.navigate('Accessories')}
-          />
-        </View>
+        {hadBike.haveBike ? (
+          <View style={{marginTop: 30}}>
+            <GarageInputField
+              text="Book a Service"
+              source={require('../assets/images/telemarketer.png')}
+              onPress={() => navigation.navigate('BookServiceStack')}
+            />
+            <GarageInputField
+              text="Service Records"
+              source={require('../assets/images/folder.png')}
+              onPress={() => navigation.navigate('ServiceRecordStack')}
+            />
+            <GarageInputField
+              text="Owners Manual"
+              source={require('../assets/images/notebook-of-spring-with-lines-page.png')}
+              onPress={() => navigation.navigate('OwnersManualStack')}
+            />
+            <GarageInputField
+              text="Tool Kit"
+              source={require('../assets/images/tOLS.png')}
+              onPress={() => navigation.navigate('ToolKit')}
+            />
+            <GarageInputField
+              text="Accessories"
+              source={require('../assets/images/helmet.png')}
+              onPress={() => navigation.navigate('Accessories')}
+            />
+          </View>
+        ) : (
+          <View style={{marginTop: 30}}>
+            <GarageInputField
+              text="Book a Service"
+              source={require('../assets/images/telemarketer.png')}
+              onPress={() => navigation.navigate('BookServiceStack')}
+              disabled = {true}
+            />
+            <GarageInputField
+              text="Service Records"
+              source={require('../assets/images/folder.png')}
+              onPress={() => navigation.navigate('ServiceRecordStack')}
+              disabled = {true}
+            />
+            <GarageInputField
+              text="Owners Manual"
+              source={require('../assets/images/notebook-of-spring-with-lines-page.png')}
+              onPress={() => navigation.navigate('OwnersManualStack')}
+              disabled = {true}
+            />
+            <GarageInputField
+              text="Tool Kit"
+              source={require('../assets/images/tOLS.png')}
+              onPress={() => navigation.navigate('ToolKit')}
+              disabled = {false}
+            />
+            <GarageInputField
+              text="Accessories"
+              source={require('../assets/images/helmet.png')}
+              onPress={() => navigation.navigate('Accessories')}
+              disabled = {false}
+
+            />
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

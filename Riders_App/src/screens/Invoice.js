@@ -11,12 +11,15 @@ import {
 } from 'react-native';
 import InvoiceItem from '../components/InvoiceItemPrice';
 
-const Invoice = () => {
+const Invoice = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView>
         <View style={styles.topContainer}>
-          <Pressable>
+          <Pressable
+            onPress={() => {
+              navigation.goBack();
+            }}>
             <Image
               source={require('../assets/images/back_arrow.png')}
               style={styles.backicon}
