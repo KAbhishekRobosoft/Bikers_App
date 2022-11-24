@@ -18,7 +18,7 @@ import MyGarageStack from './src/utils/MyGarageStack';
 import BottomTabNavigation from './src/utils/BottomTabNavigation';
 import {NavigationContainer} from '@react-navigation/native';
 import BottomTabLoginNavigation from './src/utils/BottomTabLoginNavigation'
-
+import { Accessories } from './src/screens/AccessoriesScreen'
 let persistor = persistStore(store);
 
 const App = () => {
@@ -26,7 +26,7 @@ const App = () => {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
           <NavigationContainer>
-            <OwnersManualDetailScreen />
+            <BottomTabNavigation />
           </NavigationContainer>
       </PersistGate>
     </Provider>

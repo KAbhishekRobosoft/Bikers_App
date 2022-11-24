@@ -35,14 +35,13 @@ export const checkIn = async values => {
 };
 
 export const refreshToken = async token => {
-
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/getAccessToken',
       {
         headers: {
           Authorization: `Bearer ${token}`,
-        } 
+        },
       },
     );
     return response.data;
@@ -75,7 +74,7 @@ export const searchServiceCenter = async (value, token) => {
       }),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTIwMDgxNSwiZXhwIjoxNjY5MjA0NDE1fQ.tLJO0CNXbmoxiic-zWRFO8Xhpl_3dlUrLzx_I3daQHg"}`,
+        Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTIwMDgxNSwiZXhwIjoxNjY5MjA0NDE1fQ.tLJO0CNXbmoxiic-zWRFO8Xhpl_3dlUrLzx_I3daQHg'}`,
       },
     },
   );
@@ -170,7 +169,7 @@ export const addOwnerDetails = async (values, token) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTI1OTg3NiwiZXhwIjoxNjY5MjYzNDc2fQ.IZEX9bIJ26qvFaqtvfizAw0y5-ecMwXseXen69eMJfs"}`,
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTI1OTg3NiwiZXhwIjoxNjY5MjYzNDc2fQ.IZEX9bIJ26qvFaqtvfizAw0y5-ecMwXseXen69eMJfs'}`,
         },
       },
     );
@@ -196,23 +195,65 @@ export const getOwnerDetails = async token => {
   }
 };
 
-export const createTrip = async (obj) => {
+export const createTrip = async obj => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/trip/createTrip',obj,
+      'https://riding-application.herokuapp.com/api/v1/trip/createTrip',
+      obj,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       },
     );
-    return response.data
+    return response.data;
   } catch (error) {
     console.log('Error Occured');
   }
 };
 
-export const getCoordinates = async (place) => {
-  const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=2dff1a0f7576b6388c89a15bc5a40171`);
+export const getCoordinates = async place => {
+  const response = await axios.get(
+    `https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=2dff1a0f7576b6388c89a15bc5a40171`,
+  );
   return response.data.coord;
 };
+
+export const searchProducts = async (value) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/product/searchProducts',
+      {
+        text: value,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTI3ODQyNiwiZXhwIjoxNjY5MjgyMDI2fQ.LVX-MoyfFVT-rJBDnbAov-AG5IO4taPPXfgK5KVf_Z4'}`,
+        },
+      },
+    );
+    return response.data.products;
+  } catch (error) {
+    console.log('Error Occured');
+  }
+};
+
+export const LikeProducts = async (value) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/product/addLike',
+      {
+        "_id": value,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTI3ODQyNiwiZXhwIjoxNjY5MjgyMDI2fQ.LVX-MoyfFVT-rJBDnbAov-AG5IO4taPPXfgK5KVf_Z4'}`,
+        },
+      },
+    );
+   return response.data;
+  } catch (error) {
+    console.log('Error Occured');
+  }
+};
+
