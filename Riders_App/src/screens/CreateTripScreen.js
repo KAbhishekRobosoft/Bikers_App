@@ -5,7 +5,6 @@ import {
   View,
   Image,
   Pressable,
-  TouchableOpacity,
   Platform,
   ScrollView,
   TextInput,
@@ -21,7 +20,6 @@ import {Milestone} from '../components/AddMilestones';
 import {deSetRegistered} from '../redux/AuthSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
-import {setMileStoneData} from '../redux/MileStoneSlice';
 import { getCoordinates } from '../services/Auth';
 import GetLocation from 'react-native-get-location';
 import { getLocationName } from '../services/Auth';

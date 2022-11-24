@@ -17,7 +17,6 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { setImage } from '../redux/AuthSlice';
 import { refreshToken } from '../services/Auth';
-import { setUserData } from '../redux/AuthSlice';
 import { setToken } from '../redux/AuthSlice';
 
 function RegisterUserIntro({navigation}) {
@@ -39,7 +38,7 @@ function RegisterUserIntro({navigation}) {
       height: 200,
       cropping: true,
     }).then(async image => {
-      console.log(image)
+      
       const payload = new FormData();
       payload.append('image', {
         uri: image.path,
