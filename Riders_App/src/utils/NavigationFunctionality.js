@@ -21,10 +21,7 @@ function NavigationFunctionality() {
           cred= null
           try {
              userToken = await AsyncStorage.getItem('token');
-             console.log(userToken)
              cred = await getVerifiedKeys(userToken)
-             console.log("hello")
-             console.log(cred)
           } catch (e) {
             console.log(e);
           }

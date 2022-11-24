@@ -9,8 +9,9 @@ import {
   Platform,
   ScrollView,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
 import BikeImageComponent from '../components/BikeImageComponent';
@@ -21,14 +22,46 @@ import {deSetRegistered} from '../redux/AuthSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
 import {setMileStoneData} from '../redux/MileStoneSlice';
+import { getCoordinates } from '../services/Auth';
+import GetLocation from 'react-native-get-location';
+import { getLocationName } from '../services/Auth';
+import { setLoading } from '../redux/MileStoneSlice';
+import { deSetLoading } from '../redux/MileStoneSlice';
 
 const CreateTrip = ({navigation}) => {
+  useEffect(() => {
+    setTimeout(async () => {
+      GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+    })
+    .then(async location => {
+      const resp= await getLocationName(location.latitude,location.longitude)
+      setcurLoc(resp.name)
+      setLat1(location.latitude)
+      setLon1(location.longitude)
+      dispatch(setLoading())
+    })
+    .catch(error => {
+        const { code, message } = error;
+        console.warn(code, message);
+    })
+    }, 500);
+  }, []);
+
   const mileStones = useSelector(state => state.milestone.mileStone);
+  const loading= useSelector(state=>state.milestone.isLoading)
+  console.log(loading)
   const dispatch = useDispatch();
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [date, setDate] = useState(new Date());
+  const [lat1, setLat1] = useState(0);
+  const [lon1, setLon1] = useState(0);
+  const [lat2, setLat2] = useState(0);
+  const [lon2, setLon2] = useState(0);
+  const [currLoc,setcurLoc]= useState('')
   const [endDate, setEndDate] = useState(new Date());
   const [time, setTimer] = useState(new Date());
   const [recommend, setRecommend] = useState(false);
@@ -41,12 +74,20 @@ const CreateTrip = ({navigation}) => {
   const contactsData = useSelector(state => state.contact);
   const [open, setOpen] = useState(true);
 
+  if(loading){
+    return(
+      <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+        <ActivityIndicator />
+      </View>
+    )
+  }
   return (
     <SafeAreaView style={styles.main}>
       <View style={[styles.header]}>
         <Pressable
           onPress={() => {
             navigation.goBack();
+            dispatch(deSetLoading())
           }}>
           <Icon name="arrow-left" color={'white'} size={16} />
         </Pressable>
@@ -93,7 +134,6 @@ const CreateTrip = ({navigation}) => {
         {open && <Pressable
           onPress={() => {
             setOpen(false)
-            console.log('hello');
           }}>
           <View style={styles.locationNamesView}>
             <Image
@@ -101,7 +141,7 @@ const CreateTrip = ({navigation}) => {
               source={require('../assets/images/pin.png')}
             />
             <View>
-              <Text style={styles.textUdupi}>Udupi</Text>
+              <Text style={styles.textUdupi}>{currLoc}</Text>
               <Text style={styles.textCurrentLocation}>current location</Text>
             </View>
           </View>

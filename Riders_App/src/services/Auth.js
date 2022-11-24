@@ -216,3 +216,10 @@ export const getCoordinates = async (place) => {
   const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=2dff1a0f7576b6388c89a15bc5a40171`);
   return response.data.coord;
 };
+
+export const getLocationName = async (lat,lon) => {
+  const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=2dff1a0f7576b6388c89a15bc5a40171`);
+  return response.data
+};
+
+
