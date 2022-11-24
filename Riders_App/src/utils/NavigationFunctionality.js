@@ -16,12 +16,11 @@ function NavigationFunctionality() {
 
     useEffect(() => {
         setTimeout(async () => {
-          let userToken,cred;
+          let userToken
           userToken = null;
-          cred= null
           try {
              userToken = await AsyncStorage.getItem('token');
-             cred = await getVerifiedKeys(userToken)
+             await getVerifiedKeys(userToken)
           } catch (e) {
             console.log(e);
           }

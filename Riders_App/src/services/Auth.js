@@ -203,7 +203,7 @@ export const createTrip = async obj => {
       obj,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiODE5Nzc1MDQ1NyIsImlhdCI6MTY2OTI4NzYwNiwiZXhwIjoxNjY5MjkxMjA2fQ.QD8DdKWVlnnMK-Q_vAjcgcnVrnVy-w-OVMpw5xv7UZI`,
         },
       },
     );
@@ -252,4 +252,48 @@ export const getSortedTripDetails = async token => {
   } catch (err) {
     console.log(err);
   }
+};
+export const searchProducts = async value => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/product/searchProducts',
+      {
+        text: value,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTI3ODQyNiwiZXhwIjoxNjY5MjgyMDI2fQ.LVX-MoyfFVT-rJBDnbAov-AG5IO4taPPXfgK5KVf_Z4'}`,
+        },
+      },
+    );
+    return response.data.products;
+  } catch (error) {
+    console.log('Error Occured');
+  }
+};
+
+export const LikeProducts = async value => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/product/addLike',
+      {
+        _id: value,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTI3ODQyNiwiZXhwIjoxNjY5MjgyMDI2fQ.LVX-MoyfFVT-rJBDnbAov-AG5IO4taPPXfgK5KVf_Z4'}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.log('Error Occured');
+  }
+};
+
+export const getLocationName = async (lat, lon) => {
+  const response = await axios.get(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=2dff1a0f7576b6388c89a15bc5a40171`,
+  );
+  return response.data;
 };
