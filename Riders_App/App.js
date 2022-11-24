@@ -13,9 +13,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <NavigationContainer>
-          <NavigationFunctionality />
-        </NavigationContainer>
+          <NavigationContainer>
+      <NavigationFunctionality />
+          </NavigationContainer>
       </PersistGate>
     </Provider>
   );

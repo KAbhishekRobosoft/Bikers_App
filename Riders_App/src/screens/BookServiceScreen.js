@@ -117,7 +117,7 @@ export const BookService = ({navigation}) => {
               <Text style={styles.commentText}>Comments</Text>
               <View style={styles.commentTextInputView}>
                 <InsetShadow>
-                  <TextInput multiline={true} />
+                  <TextInput multiline={true} style={{padding: 10}} />
                 </InsetShadow>
               </View>
               <View style={styles.btnView}>
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     height: 18,
     width: 18,
     marginLeft: -30,
-    marginTop: 57,
+    marginTop: 50,
   },
   dropDown: {
     backgroundColor: '#FFFFFF',

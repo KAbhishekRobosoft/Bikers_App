@@ -75,7 +75,7 @@ export const searchServiceCenter = async (value, token) => {
       }),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTE5NzAwNCwiZXhwIjoxNjY5MjAwNjA0fQ.-wJhsRsUFo5fh0Okp0BdeqUR3OE8vJKcPiQz-T8Ds1E"}`,
+        Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTIwMDgxNSwiZXhwIjoxNjY5MjA0NDE1fQ.tLJO0CNXbmoxiic-zWRFO8Xhpl_3dlUrLzx_I3daQHg"}`,
       },
     },
   );
@@ -170,7 +170,7 @@ export const addOwnerDetails = async (values, token) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTI1OTg3NiwiZXhwIjoxNjY5MjYzNDc2fQ.IZEX9bIJ26qvFaqtvfizAw0y5-ecMwXseXen69eMJfs"}`,
         },
       },
     );
