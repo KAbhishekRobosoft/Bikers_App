@@ -6,6 +6,7 @@ const milestoneSlice = createSlice({
     mileStone: false,
     otherMilestone: false,
     milestoneData: [],
+    isLoading:true
   },
 
   reducers: {
@@ -15,8 +16,16 @@ const milestoneSlice = createSlice({
     setMileStoneData: (state, action) => {
       state.milestoneData.push(action.payload);
     },
+
+    setLoading:(state)=>{
+      state.isLoading= false
+    },
+
+    deSetLoading:(state)=>{
+      state.isLoading= true
+    }
   },
 });
 
-export const {setMileStone,setMileStoneData} = milestoneSlice.actions;
+export const {setMileStone,setMileStoneData,setLoading,deSetLoading} = milestoneSlice.actions;
 export default milestoneSlice.reducer;

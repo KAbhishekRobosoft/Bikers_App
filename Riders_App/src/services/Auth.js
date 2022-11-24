@@ -170,7 +170,7 @@ export const addOwnerDetails = async (values, token) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTI1OTg3NiwiZXhwIjoxNjY5MjYzNDc2fQ.IZEX9bIJ26qvFaqtvfizAw0y5-ecMwXseXen69eMJfs'}`,
         },
       },
     );
@@ -218,38 +218,4 @@ export const getCoordinates = async place => {
     `https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=2dff1a0f7576b6388c89a15bc5a40171`,
   );
   return response.data.coord;
-};
-
-export const profileData = async token => {
-  try {
-    const response = await axios.post(
-      BASE_URL + '/getProfile',
-      {
-        mobile: '9963865628',
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    console.log(response.data);
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-export const getSortedTripDetails = async token => {
-  try {
-    const response = await axios.get(BASE_URL + '/trip/getTrip', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(response.data);
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
 };

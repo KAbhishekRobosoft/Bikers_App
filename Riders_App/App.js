@@ -3,30 +3,20 @@ import store from './src/redux/store';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
-import ServiceCenterScreen from './src/screens/ServiceCenterScreen';
-import LoginScreen from './src/screens/LoginScreen';
-import DemoStack from './src/utils/DemoStack';
-import {BookService} from './src/screens/BookServiceScreen';
-import OwnersManualScreen from './src/screens/OwnersManualScreen';
-import OwnersManualDetailScreen from './src/screens/OwnersManualDetailScreen';
-import TopNavigation from './src/utils/TopNavigation';
-import {AddPersonalDetails} from './src/screens/AddPersonalDetailsScreen';
-import CreateTrip from './src/screens/CreateTripScreen';
-import AddBikeDetailsScreen from './src/screens/AddBikeDetailsScreen';
-import {MyGarage} from './src/screens/MyGarageScreen';
-import MyGarageStack from './src/utils/MyGarageStack';
-import BottomTabNavigation from './src/utils/BottomTabNavigation';
 import {NavigationContainer} from '@react-navigation/native';
-
+import BottomTabLoginNavigation from './src/utils/BottomTabLoginNavigation'
+import { Accessories } from './src/screens/AccessoriesScreen'
+import BottomTabNavigation from './src/utils/BottomTabNavigation'
 let persistor = persistStore(store);
 
 const App = () => {
+  
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <NavigationContainer>
-          <NavigationFunctionality />
-        </NavigationContainer>
+          <NavigationContainer>
+            <BottomTabNavigation />
+          </NavigationContainer>
       </PersistGate>
     </Provider>
   );

@@ -9,8 +9,9 @@ import {
   Platform,
   ScrollView,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
 import BikeImageComponent from '../components/BikeImageComponent';
@@ -21,14 +22,47 @@ import {deSetRegistered} from '../redux/AuthSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
 import {setMileStoneData} from '../redux/MileStoneSlice';
+import { getCoordinates } from '../services/Auth';
+import GetLocation from 'react-native-get-location';
+import { getLocationName } from '../services/Auth';
+import { setLoading } from '../redux/MileStoneSlice';
+import { deSetLoading } from '../redux/MileStoneSlice';
+import MilestoneList from '../components/MilestoneList';
 
 const CreateTrip = ({navigation}) => {
+  useEffect(() => {
+    setTimeout(async () => {
+      GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+    })
+    .then(async location => {
+      const resp= await getLocationName(location.latitude,location.longitude)
+      setcurLoc(resp.name)
+      setLat1(location.latitude)
+      setLon1(location.longitude)
+      dispatch(setLoading())
+    })
+    .catch(error => {
+        const { code, message } = error;
+        console.warn(code, message);
+    })
+    }, 500);
+  }, []);
+
   const mileStones = useSelector(state => state.milestone.mileStone);
+  const loading= useSelector(state=>state.milestone.isLoading)
+  const milestoneData= useSelector(state=>state.milestone.milestoneData)
   const dispatch = useDispatch();
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [date, setDate] = useState(new Date());
+  const [lat1, setLat1] = useState(0);
+  const [lon1, setLon1] = useState(0);
+  const [lat2, setLat2] = useState(0);
+  const [lon2, setLon2] = useState(0);
+  const [currLoc,setcurLoc]= useState('')
   const [endDate, setEndDate] = useState(new Date());
   const [time, setTimer] = useState(new Date());
   const [recommend, setRecommend] = useState(false);
@@ -41,12 +75,20 @@ const CreateTrip = ({navigation}) => {
   const contactsData = useSelector(state => state.contact);
   const [open, setOpen] = useState(true);
 
+  if(loading){
+    return(
+      <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+        <ActivityIndicator />
+      </View>
+    )
+  }
   return (
     <SafeAreaView style={styles.main}>
       <View style={[styles.header]}>
         <Pressable
           onPress={() => {
             navigation.goBack();
+            dispatch(deSetLoading())
           }}>
           <Icon name="arrow-left" color={'white'} size={16} />
         </Pressable>
@@ -61,16 +103,16 @@ const CreateTrip = ({navigation}) => {
           ) : (
             <View style={styles.placeholderText}></View>
           )}
-         
-            <TextInput
-              name="Go"
-              value={go}
-              placeholderTextColor={'#4F504F'}
-              placeholder="Where do you want to go?"
-              style={styles.inputText}
-              onChangeText={value => setGo(value)}
-              onTouchStart={()=>navigation.navigate('SearchCity')}
-            />
+
+          <TextInput
+            name="Go"
+            value={go}
+            placeholderTextColor={'#4F504F'}
+            placeholder="Where do you want to go?"
+            style={styles.inputText}
+            onChangeText={value => setGo(value)}
+            onTouchStart={() => navigation.navigate('SearchCity')}
+          />
         </View>
         <View style={styles.textInputView}>
           {from ? (
@@ -93,7 +135,6 @@ const CreateTrip = ({navigation}) => {
         {open && <Pressable
           onPress={() => {
             setOpen(false)
-            console.log('hello');
           }}>
           <View style={styles.locationNamesView}>
             <Image
@@ -101,11 +142,12 @@ const CreateTrip = ({navigation}) => {
               source={require('../assets/images/pin.png')}
             />
             <View>
-              <Text style={styles.textUdupi}>Udupi</Text>
+              <Text style={styles.textUdupi}>{currLoc}</Text>
               <Text style={styles.textCurrentLocation}>current location</Text>
             </View>
-          </View>
-        </Pressable>}
+            </View>
+          </Pressable>
+        }
 
         <View style={styles.textInputView}>
           {tripName ? (
@@ -147,7 +189,7 @@ const CreateTrip = ({navigation}) => {
                 open={open1}
                 date={date}
                 onConfirm={value => {
-                  setDate(value.substring(0,10));
+                  setDate(value.substring(0, 10));
                   setOpen1(false);
                 }}
                 onCancel={() => setOpen1(false)}
@@ -173,7 +215,7 @@ const CreateTrip = ({navigation}) => {
                 open={open2}
                 date={endDate}
                 onConfirm={value => {
-                  console.log(substring(0,10))
+                  console.log(substring(0, 10));
                   setEndDate(value);
                   setOpen2(false);
                 }}
@@ -233,9 +275,15 @@ const CreateTrip = ({navigation}) => {
             {contactsData.addTripContacts.length === 0 && (
               <Text style={styles.text}>Invite other riders</Text>
             )}
-              {
-                contactsData.addTripContacts.length > 0 && <BikeImageComponent />
-              }
+            {contactsData.addTripContacts.length > 0 && <BikeImageComponent />}
+          </View>
+
+          <View style={styles.milestoneView}>
+                {milestoneData > 0 ? (
+                  milestoneData.map(ele=>{
+                      <MilestoneList ele= {ele} />
+                  })
+                ):null}
           </View>
           {mileStones ? (
             <View style={styles.mileStone}>
@@ -244,9 +292,10 @@ const CreateTrip = ({navigation}) => {
           ) : null}
           <View style={styles.addMileStoneView}>
             <View style={styles.addUserImgView}>
-              <Pressable onPress={()=>{
-                dispatch(setMileStone(true))
-              }}>
+              <Pressable
+                onPress={() => {
+                  dispatch(setMileStone(true));
+                }}>
                 <Image
                   style={styles.calenderImg}
                   source={require('../assets/images/mileStone.png')}
@@ -258,13 +307,13 @@ const CreateTrip = ({navigation}) => {
           <View style={styles.btn}>
             <ButtonLarge
               onPress={() => {
-                console.log(go)
-                console.log(from)
-                console.log(date)
-                console.log(endDate)
-                console.log(time)
-                console.log(tripName)
-                
+                console.log(go);
+                console.log(from);
+                console.log(date);
+                console.log(endDate);
+                console.log(time);
+                console.log(tripName);
+
                 // dispatch(deSetRegistered());
               }}
               title="Done"
@@ -276,7 +325,7 @@ const CreateTrip = ({navigation}) => {
   );
 };
 
-export default CreateTrip
+export default CreateTrip;
 
 const styles = StyleSheet.create({
   main: {flex: 1, backgroundColor: '#ffffff'},
@@ -355,7 +404,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: 195,
     color: '#4F504F',
-    bottom:5
+    bottom: 5,
   },
   calenderView: {
     flexDirection: 'row',
@@ -376,6 +425,22 @@ const styles = StyleSheet.create({
     paddingBottom: Platform.OS === 'ios' ? 3 : 0,
     alignItems: 'center',
   },
+
+  milestoneView: {
+    shadowColor: 'grey',
+    shadowOffset: {
+      width: 3,
+      height: 3,
+    },
+    shadowOpacity: 0.1,
+    elevation: 5,
+    // backgroundColor: 'white',
+    height: 230,
+    width: 321,
+    alignSelf: 'center',
+    borderRadius: 13,
+  },
+
   timeView: {
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',

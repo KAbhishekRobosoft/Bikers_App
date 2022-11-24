@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
   },
   inputTextView2: {
     width: '100%',
-    height: 60,
+    height: 50,
     flexDirection: 'row',
     marginTop: 25,
     borderColor: '#B4B3B3',
