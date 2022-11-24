@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import {Star} from '../components/StarComponent';
 
-const BookingSummary = () => {
+const BookingSummary = ({navigation}) => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={[styles.header]}>
@@ -32,7 +32,7 @@ const BookingSummary = () => {
           </Pressable>
           <Text style={styles.headerText}>Booking Details</Text>
         </View>
-        <Pressable>
+        <Pressable onPress={() => navigation.navigate('Invoice')}>
           <Image
             source={require('../assets/images/invoice.png')}
             style={styles.invoiceImage}
