@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -19,8 +19,18 @@ import { setImage } from '../redux/AuthSlice';
 import { refreshToken } from '../services/Auth';
 import { setToken } from '../redux/AuthSlice'; 
 import { getVerifiedKeys } from '../utils/Functions';
+import { profileData } from '../services/Auth';
 
 function RegisterUserIntro({navigation}) {
+  const [personData,setPersonData]= useState({})
+  useEffect(() => {
+    setTimeout(async () => {
+      const cred= await getVerifiedKeys(authData.userToken)
+      const data = await profileData(cred,authData.userData.mobile);
+      setPersonData(data);
+    }, 500);
+  }, []);
+
   const dispatch= useDispatch()
   const authData= useSelector(state=>state.auth)
 
@@ -65,7 +75,7 @@ function RegisterUserIntro({navigation}) {
               style={styles.rUserImg}
               source={require('../assets/images/photoless.png')}
             />
-            <Text style={styles.rUserName}>Hey {authData.userData.userName}!!</Text>
+            <Text style={styles.rUserName}>Hey {personData?.userDetails?.userName}!!</Text>
             <Text style={styles.rUserSug1}>to make it more cool select</Text>
             <Text style={styles.rUserSug2}>your avatar.</Text>
           </View>

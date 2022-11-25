@@ -15,7 +15,7 @@ import {GarageInputField} from '../components/InputFields';
 
 export const MyGarage = ({navigation}) => {
   const hadBike = useSelector(state => state.auth.userData);
-  console.log('hadbike', hadBike);
+  console.log(hadBike.haveBike)
   return (
     <SafeAreaView>
       <ScrollView

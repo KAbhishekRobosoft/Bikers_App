@@ -70,7 +70,7 @@ const LoginScreen = ({navigation}) => {
           </View>
           <View style={styles.loginContainer}>
             <Formik
-              // validationSchema={registerValidationSchema}
+              validationSchema={registerValidationSchema}
               initialValues={{
                 number: '',
                 password: '',
