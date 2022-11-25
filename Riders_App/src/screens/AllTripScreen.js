@@ -27,7 +27,6 @@ const AllTrips = ({navigation}) => {
   }, [state]);
 
   const renderItem = details => {
-    console.log('detailsss', details)
     return (
       <AllTripList
         image={details.item.tripImage}

@@ -24,6 +24,7 @@ export const BookService = ({navigation}) => {
   const [number, setNumber] = useState();
   const [vehicleType, setvehicleType] = useState();
   const [vehicleNumber, setvehicleNumber] = useState();
+  const [comment, setComment] = useState();
   const [selected, setSelected] = useState();
   const data = [
     {
@@ -78,6 +79,18 @@ export const BookService = ({navigation}) => {
             mobileNumber: '',
             vehicleType: '',
             vehicleNumber: '',
+            serviceType: '',
+            comment: '',
+          }}
+          onSubmit={ (values) => {
+            const obj ={
+              mobileNumber: values.mobileNumber,
+              vehicleType: values.vehicleType,
+              vehicleNumber: values.vehicleNumber,
+              serviceType: selected,
+              comment: comment
+            }
+            navigation.navigate('SearchService',obj)
           }}>
           {({isValid, handleSubmit, values}) => (
             <>
@@ -117,14 +130,14 @@ export const BookService = ({navigation}) => {
               <Text style={styles.commentText}>Comments</Text>
               <View style={styles.commentTextInputView}>
                 <InsetShadow>
-                  <TextInput multiline={true} style={{padding: 10}} />
+                  <TextInput multiline={true} style={{padding: 10}} value={values} onChangeText = {(value) => setComment(value)} />
                 </InsetShadow>
               </View>
               <View style={styles.btnView}>
                 <ButtonLarge
                   title="FIND A DEALER"
                   //disabled={!isValid}
-                  onPress={() => navigation.navigate('SearchService')}
+                  onPress={handleSubmit}
                 />
               </View>
             </>

@@ -107,10 +107,9 @@ export const Password = props => {
   );
 };
 
-export const PlaceholderTextField = (props) => {
-
+export const PlaceholderTextField = props => {
   const {
-    field: {name,onBlur,onChange,value},
+    field: {name, onBlur, onChange, value},
     form: {errors, touched, setFieldTouched},
     ...inputProps
   } = props;
@@ -148,7 +147,6 @@ export const PlaceholderTextField = (props) => {
   );
 };
 export const PlaceholderTextFieldOwnerManual = props => {
-
   const {
     field: {name, onBlur, onChange, value},
     form: {errors, touched, setFieldTouched},
@@ -240,6 +238,25 @@ export const DropDownInputField = props => {
     </View>
   );
 };
+
+export const BookingDetailsInput = props => {
+  return (
+    <View style={styles.textInputView}>
+      <Text style={styles.titleText}>{props.title}</Text>
+      <Text>:</Text>
+      <TextInput
+        style={styles.textInputText}
+        editable={props.editable}
+        name="mobile"
+        value={props.value}
+        onChangeText={props.onChangeText}
+        // values={values.mobile}
+        // defaultValue={route.params.mobileNumber}
+      />
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   inputTextView: {
     width: '80%',
@@ -363,7 +380,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(151,151,151,0.85)',
     borderBottomWidth: 1,
     paddingLeft: 20,
-    opacity: 0.5
+    opacity: 0.5,
   },
   imageIcons: {
     height: 32,
@@ -416,5 +433,30 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
     marginLeft: -15,
+  },
+  textInputView: {
+    marginHorizontal: 25,
+    paddingTop: 28,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingEnd: 3,
+    marginTop: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#B4B3B3',
+  },
+  titleText: {
+    paddingBottom: 5,
+    fontFamily: 'Roboto-Medium',
+    fontWeight: 'bold',
+    fontSize: 14,
+    color: '#4F504F',
+    width: '35%',
+  },
+  textInputText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+    color: '#4F504F',
+    width: '50%',
+    textAlign: 'left',
   },
 });

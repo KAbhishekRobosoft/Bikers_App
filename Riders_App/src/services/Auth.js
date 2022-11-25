@@ -64,7 +64,7 @@ export const searchCity = async string => {
   return response.data.results;
 };
 
-export const searchServiceCenter = async (value, token) => {
+export const searchServiceCenter = async (value, key) => {
   let res = await fetch(
     'https://riding-application.herokuapp.com/api/v1/dealer/searchDealers',
     {
@@ -74,7 +74,7 @@ export const searchServiceCenter = async (value, token) => {
       }),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4MSIsImlhdCI6MTY2OTM2NjE5OCwiZXhwIjoxNjY5MzY5Nzk4fQ.kXIAIvycesYJoyTeuxYeSFB7R0KzMaQFRDSSIcnWXZg'}`,
+        Authorization: `Bearer ${key}`,
       },
     },
   );
@@ -195,7 +195,6 @@ export const getOwnerDetails = async token => {
   }
 };
 
-
 export const updateOwnerDetails = async (values, token) => {
   try {
     const response = await axios.post(
@@ -212,7 +211,7 @@ export const updateOwnerDetails = async (values, token) => {
         },
       },
     );
-    console.log('res',response.data);
+    console.log('res', response.data);
   } catch (error) {
     console.log('Error Occured');
   }
@@ -255,13 +254,13 @@ export const getBikeDetails = async token => {
         },
       },
     );
-    return response.data
+    return response.data;
   } catch (error) {
     console.log('Error Occured');
   }
 };
 
-export const createTrip = async (obj,token) => {
+export const createTrip = async (obj, token) => {
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/trip/createTrip',
@@ -363,19 +362,18 @@ export const getLocationName = async (lat, lon) => {
   return response.data;
 };
 
-export const UserTrips = async (key) => {
-  console.log('key',key)
+export const UserTrips = async key => {
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/trip/searchTrip',
       {
-        text: ""
+        text: '',
       },
       {
         headers: {
-          Authorization: `Bearer ${key}`
-        }
-      }
+          Authorization: `Bearer ${key}`,
+        },
+      },
     );
     return response.data;
   } catch (err) {
@@ -383,21 +381,20 @@ export const UserTrips = async (key) => {
   }
 };
 
-export const SearchUserTrips = async (key,value) => {
-  console.log('key',key)
+export const SearchUserTrips = async (key, value) => {
+
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/trip/searchTrip',
       {
-        text: value
+        text: value,
       },
       {
         headers: {
-          Authorization: `Bearer ${key}`
-        }
-      }
+          Authorization: `Bearer ${key}`,
+        },
+      },
     );
-    console.log('usertripssss',response.data);
     return response.data;
   } catch (err) {
     console.log('error occurred');
@@ -409,17 +406,42 @@ export const deleteTrip = async (id, key) => {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/trip/deleteTrip',
       {
-        _id: id
+        _id: id,
       },
       {
         headers: {
-          Authorization: `Bearer ${key}`
-        }
-      }
+          Authorization: `Bearer ${key}`,
+        },
+      },
     );
-    console.log('delete tripssss',response.data);
     return response.data;
-  }catch(err) {
+  } catch (err) {
     console.log('delete trip error occurred');
   }
-}
+};
+
+export const BookService = async (key, value) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/service/bookService',
+      {
+        vehicleNumber: value.vehicleNumber,
+        serviceType: value.serviceType,
+        slotDate: value.slotDate,
+        time: value.time,
+        dealer: value.dealer,
+        city: value.city,
+        comments: value.comments,
+        dealerPhoneNumber: value.dealerPhoneNumber,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${key}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log('Book Service error occurred');
+  }
+};

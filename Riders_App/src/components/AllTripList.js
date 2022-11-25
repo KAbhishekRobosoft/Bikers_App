@@ -10,8 +10,8 @@ const AllTripList = ({image, placeName, startDateText, statusText, endDateText, 
   const state = useSelector(state => state.milestone.initialState)
   const authData= useSelector(state=>state.auth);
   const dispatch = useDispatch();
+  
   const handleClose = async (id) => {
-    console.log(id);
     const key = await getVerifiedKeys(authData.userToken)
     const reponse = await deleteTrip(id,key);
     dispatch(setInitialState(state))
