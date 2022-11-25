@@ -12,19 +12,21 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
-import { RecommendationTripSummary } from '../components/Recommendations';
-import { CreateButton } from '../components/Buttons';
-import { useSelector } from 'react-redux';
-import { month } from '../utils/Functions';
+import {RecommendationTripSummary} from '../components/Recommendations';
+import {CreateButton} from '../components/Buttons';
+import {useDispatch, useSelector} from 'react-redux';
 import BikeImageComponent from '../components/BikeImageComponent';
+import {createTrip} from '../services/Auth';
+
 
 export const TripSummary = ({navigation}) => {
-  const milestonedata = useSelector(state => state.milestone.milestoneData)
-  const tripDetails = useSelector(state => state.milestone.storeTrip)
+  const milestonedata = useSelector(state => state.milestone.milestoneData);
+  const tripDetails = useSelector(state => state.milestone.storeTrip);
   const contactsData = useSelector(state => state.contact);
-  console.log('tripdetailssss',tripDetails)
-  console.log('dfdgd',milestonedata)
-    return (
+  const dispatch  = useDispatch();
+  console.log('tripdetailssss', tripDetails);
+  console.log('dfdgd', milestonedata);
+  return (
     <SafeAreaView>
       <View style={styles.mainView}>
         <View style={[styles.header]}>
@@ -53,18 +55,30 @@ export const TripSummary = ({navigation}) => {
           <View style={styles.mapView}>
             <View style={styles.summaryView}>
               <Image source={require('../assets/images/motorcycle.png')} />
-              <Text style={styles.tripName}>{tripDetails.tripName}</Text>
-              <Text style={styles.dateText}>{tripDetails.startDate.substring(8,10)} {tripDetails.startDate.substring(4,7)} - {tripDetails.endDate.substring(8,10)} {tripDetails.endDate.substring(4,7)} {tripDetails.endDate.substring(11, 15)}</Text>
-              <Text style={styles.timeText}> {tripDetails.startTime.substring(15,21)}</Text>
+              <Text style={styles.tripName}>{tripDetails?.tripName}</Text>
+              <Text style={styles.dateText}>
+                {tripDetails?.startDate?.substring(8, 10)}
+                {tripDetails?.startDate?.substring(4, 7)} -
+                {tripDetails?.endDate?.substring(8, 10)}
+                {tripDetails?.endDate?.substring(4, 7)}
+                {tripDetails?.endDate?.substring(11, 15)}
+              </Text>
+              <Text style={styles.timeText}>
+                {tripDetails?.startTime?.substring(15, 21)}
+              </Text>
               <View style={styles.fromToView}>
-                <Text style={styles.fromToText}>{tripDetails.source[0].place}</Text>
+                <Text style={styles.fromToText}>
+                  {tripDetails?.source[0]?.place}
+                </Text>
                 <View style={styles.lineView}></View>
-                <Text style={styles.fromToText}>{tripDetails.destination[0].place}</Text>
+                <Text style={styles.fromToText}>
+                  {tripDetails?.destination[0]?.place}
+                </Text>
               </View>
             </View>
           </View>
           <View style={styles.listView}>
-            <TripSummaryList data={milestonedata}/>
+            <TripSummaryList data={milestonedata} />
             <View style={styles.recommendationsView}>
               <RecommendationTripSummary />
             </View>
@@ -78,12 +92,21 @@ export const TripSummary = ({navigation}) => {
                 </Pressable>
               </View>
               {contactsData.addTripContacts.length === 0 && (
-              <Text style={styles.text}>Invite other riders</Text>
-            )}
-            {contactsData.addTripContacts.length > 0 && <BikeImageComponent />}
+                <Text style={styles.text}>Invite other riders</Text>
+              )}
+              {contactsData.addTripContacts.length > 0 && (
+                <BikeImageComponent />
+              )}
             </View>
             <View style={styles.buttonView}>
-              <CreateButton title="CREATE" />
+              <CreateButton
+                title="CREATE"
+                onPress={async () => {
+                  const tripCreate = await createTrip(tripDetails);
+                  navigation.navigate('CreateTripSuccess')
+                  
+                }}
+              />
             </View>
           </View>
         </ScrollView>
@@ -202,7 +225,7 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     paddingTop: 40,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   calenderImg: {
     width: 22,

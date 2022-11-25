@@ -5,8 +5,7 @@ const contactSlice = createSlice({
   initialState: {
     contactsData: [],
     filterData: [],
-    addTripContacts:[],
-
+    addTripContacts: [],
   },
 
   reducers: {
@@ -22,7 +21,7 @@ const contactSlice = createSlice({
             ...ele,
             givenName: action.payload.givenName,
             marked: true,
-            recordID: action.payload.recordID
+            recordID: action.payload.recordID,
           };
         }
         return ele;
@@ -33,13 +32,13 @@ const contactSlice = createSlice({
             ...ele,
             givenName: action.payload.givenName,
             marked: true,
-            recordID: action.payload.recordID
+            recordID: action.payload.recordID,
           };
         }
         return ele;
       });
     },
-    
+
     selectUnMarked: (state, action) => {
       state.contactsData = state.contactsData.map(ele => {
         if (ele.recordID === action.payload.recordID) {
@@ -47,8 +46,7 @@ const contactSlice = createSlice({
             ...ele,
             givenName: action.payload.givenName,
             marked: false,
-            recordID: action.payload.recordID
-          
+            recordID: action.payload.recordID,
           };
         }
         return ele;
@@ -59,12 +57,11 @@ const contactSlice = createSlice({
             ...ele,
             givenName: action.payload.givenName,
             marked: false,
-            recordID: action.payload.recordID
+            recordID: action.payload.recordID,
           };
         }
         return ele;
       });
-
     },
     filterContacts: (state, action) => {
       state.contactsData = state.filterData.filter(site =>
@@ -72,16 +69,29 @@ const contactSlice = createSlice({
       );
     },
 
-    addTripContacts:(state,action)=>{
-        state.addTripContacts.push(action.payload)
+    addTripContacts: (state, action) => {
+      state.addTripContacts.push(action.payload);
     },
 
-    deleteTripContacts:(state,action)=>{
-        state.addTripContacts= state.addTripContacts.filter(ele=> ele.id !== action.payload.id)
-  }
+    deleteTripContacts: (state, action) => {
+      state.addTripContacts = state.addTripContacts.filter(
+        ele => ele.id !== action.payload.id,
+      );
+    },
+    deleteAllTripContacts: (state, action) => {
+      state.addTripContacts = [];
+    },
   },
 });
 
-export const {selectContacts, selectMarked, selectUnMarked, filterContacts,addTripContacts,deleteTripContacts} = contactSlice.actions;
+export const {
+  selectContacts,
+  selectMarked,
+  selectUnMarked,
+  filterContacts,
+  addTripContacts,
+  deleteTripContacts,
+  deleteAllTripContacts,
+} = contactSlice.actions;
 
 export default contactSlice.reducer;

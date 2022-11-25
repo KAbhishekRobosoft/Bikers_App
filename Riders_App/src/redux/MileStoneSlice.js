@@ -6,9 +6,10 @@ const milestoneSlice = createSlice({
     mileStone: false,
     otherMilestone: false,
     milestoneData: [],
-    isLoading:true,
+    isLoading: true,
     setTo: 'Where do you want to go?',
     storeTrip: {},
+    initialState: false,
   },
 
   reducers: {
@@ -17,24 +18,43 @@ const milestoneSlice = createSlice({
     },
     setMileStoneData: (state, action) => {
       state.milestoneData.push(action.payload);
-      state.mileStone= true
+      state.mileStone = true;
     },
 
-    setLoading:(state)=>{
-      state.isLoading= false
+    setLoading: state => {
+      state.isLoading = false;
     },
 
-    deSetLoading:(state)=>{
-      state.isLoading= true
+    deSetLoading: state => {
+      state.isLoading = true;
     },
     whereTo: (state, action) => {
       state.setTo = action.payload;
     },
     tripStore: (state, action) => {
       state.storeTrip = action.payload;
+    },
+    deleteMilestonesData: (state, action) => {
+      state.milestoneData = [];
+    },
+    deleteStoreTrip: (state, action) => {
+      state.storeTrip = {};
+    },
+    setInitialState: (state, action) => {
+      state.initialState = !action.payload
     }
   },
 });
 
-export const {setMileStone,setMileStoneData,setLoading,deSetLoading, whereTo, tripStore} = milestoneSlice.actions;
+export const {
+  setMileStone,
+  setMileStoneData,
+  setLoading,
+  deSetLoading,
+  whereTo,
+  tripStore,
+  deleteMilestonesData,
+  deleteStoreTrip,
+  setInitialState,
+} = milestoneSlice.actions;
 export default milestoneSlice.reducer;

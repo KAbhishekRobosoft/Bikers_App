@@ -203,7 +203,7 @@ export const createTrip = async obj => {
       obj,
       {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiODE5Nzc1MDQ1NyIsImlhdCI6MTY2OTI4NzYwNiwiZXhwIjoxNjY5MjkxMjA2fQ.QD8DdKWVlnnMK-Q_vAjcgcnVrnVy-w-OVMpw5xv7UZI`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4MCIsImlhdCI6MTY2OTM1NDI0OSwiZXhwIjoxNjY5MzU3ODQ5fQ.QNqMcPRcMJPbfVxWf3TocLCivjBrOdtFtJTk1s5Y6gg`,
         },
       },
     );
@@ -297,3 +297,64 @@ export const getLocationName = async (lat, lon) => {
   );
   return response.data;
 };
+
+export const UserTrips = async (key) => {
+  console.log('key',key)
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/trip/searchTrip',
+      {
+        text: ""
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${key}`
+        }
+      }
+    );
+    return response.data;
+  } catch (err) {
+    console.log('error occurred');
+  }
+};
+
+export const SearchUserTrips = async (key,value) => {
+  console.log('key',key)
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/trip/searchTrip',
+      {
+        text: value
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${key}`
+        }
+      }
+    );
+    console.log('usertripssss',response.data);
+    return response.data;
+  } catch (err) {
+    console.log('error occurred');
+  }
+};
+
+export const deleteTrip = async (id, key) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/trip/deleteTrip',
+      {
+        _id: id
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${key}`
+        }
+      }
+    );
+    console.log('delete tripssss',response.data);
+    return response.data;
+  }catch(err) {
+    console.log('delete trip error occurred');
+  }
+}

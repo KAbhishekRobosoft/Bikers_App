@@ -20,7 +20,6 @@ function NavigationFunctionality() {
           userToken = null;
           try {
              userToken = await AsyncStorage.getItem('token');
-             await getVerifiedKeys(userToken)
           } catch (e) {
             console.log(e);
           }

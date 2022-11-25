@@ -17,7 +17,6 @@ import BikeImageComponent from '../components/BikeImageComponent';
 import DatePicker from 'react-native-date-picker';
 import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
-import {deSetRegistered} from '../redux/AuthSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
 import {setMileStoneData} from '../redux/MileStoneSlice';
@@ -26,7 +25,6 @@ import GetLocation from 'react-native-get-location';
 import {getLocationName} from '../services/Auth';
 import {setLoading} from '../redux/MileStoneSlice';
 import {deSetLoading} from '../redux/MileStoneSlice';
-import {createTrip} from '../services/Auth';
 import { tripStore } from '../redux/MileStoneSlice';
 
 const CreateTrip = ({navigation}) => {
@@ -333,9 +331,9 @@ const CreateTrip = ({navigation}) => {
                   milestones: milesonesData,
                 };
                 console.log(obj)
-                navigation.navigate('TripSummary')
                 dispatch(tripStore(obj))
-                // dispatch(deSetRegistered())
+                navigation.navigate('TripSummary')
+                
               }}
               title="Done"
             />
