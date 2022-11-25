@@ -4,16 +4,8 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
 import {NavigationContainer} from '@react-navigation/native';
-import BottomTabLoginNavigation from './src/utils/BottomTabLoginNavigation';
-import {Accessories} from './src/screens/AccessoriesScreen';
-import BottomTabNavigation from './src/utils/BottomTabNavigation';
 import NavigationFunctionality from './src/utils/NavigationFunctionality';
-import NumberEntryScreen from './src/screens/NumberEntryScreen';
-import OwnersManualScreen from './src/screens/OwnersManualScreen';
-import {TripSummary} from './src/screens/TripSummaryScreen';
-import UpcomingTrips from './src/screens/AllTripScreen';
-import AllTrips from './src/screens/AllTripScreen';
-import Profile from './src/screens/Profile';
+
 let persistor = persistStore(store);
 
 const App = () => {
@@ -23,9 +15,6 @@ const App = () => {
         <NavigationContainer>
           <NavigationFunctionality />
         </NavigationContainer>
-        {/* <TripSummary /> */}
-        {/* <AllTrips /> */}
-        {/* <Profile /> */}
       </PersistGate>
     </Provider>
   );

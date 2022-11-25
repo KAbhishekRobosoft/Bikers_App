@@ -1,9 +1,7 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
-  FlatList,
   SafeAreaView,
   StyleSheet,
-  TextInput,
   View,
   Text,
   Image,
@@ -14,14 +12,19 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
 import { RecommendationTripSummary } from '../components/Recommendations';
 import { CreateButton } from '../components/Buttons';
-import { useSelector } from 'react-redux';
+import { useSelector,useDispatch } from 'react-redux';
 import { month } from '../utils/Functions';
-import BikeImageComponent from '../components/BikeImageComponent';
+import BikeImageComponent from '../components/BikeImageComponent'
+import { getVerifiedKeys } from '../utils/Functions';
+import { setToken } from '../redux/AuthSlice';
+import { createTrip } from '../services/Auth';
+import Toast from 'react-native-simple-toast'
 
 export const TripSummary = ({navigation}) => {
   const milestonedata = useSelector(state => state.milestone.milestoneData)
   const tripDetails = useSelector(state => state.milestone.storeTrip)
   const contactsData = useSelector(state => state.contact);
+  const authData= useSelector(state=>state.auth)
   console.log('tripdetailssss',tripDetails)
   console.log('dfdgd',milestonedata)
     return (
@@ -51,6 +54,7 @@ export const TripSummary = ({navigation}) => {
         </View>
         <ScrollView style={styles.scrollView}>
           <View style={styles.mapView}>
+              
             <View style={styles.summaryView}>
               <Image source={require('../assets/images/motorcycle.png')} />
               <Text style={styles.tripName}>{tripDetails.tripName}</Text>
@@ -83,7 +87,17 @@ export const TripSummary = ({navigation}) => {
             {contactsData.addTripContacts.length > 0 && <BikeImageComponent />}
             </View>
             <View style={styles.buttonView}>
-              <CreateButton title="CREATE" />
+              <CreateButton onPress={
+                async()=>{
+                    const cred= await getVerifiedKeys(authData.userToken)
+                    dispatch(setToken(cred))
+                    const resp= await createTrip(tripDetails,cred)
+                    if(resp !== undefined)
+                      navigation.navigate('CreateTripSuccess')
+                    else
+                      Toast.show('Trip Creation Unsuccessfull')
+                }
+              } title="CREATE" />
             </View>
           </View>
         </ScrollView>

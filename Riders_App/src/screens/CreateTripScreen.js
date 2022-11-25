@@ -17,27 +17,24 @@ import BikeImageComponent from '../components/BikeImageComponent';
 import DatePicker from 'react-native-date-picker';
 import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
-import {deSetRegistered} from '../redux/AuthSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
-import {setMileStoneData} from '../redux/MileStoneSlice';
-import {getCoordinates} from '../services/Auth';
+import {getCoordinates, getDistance} from '../services/Auth';
 import GetLocation from 'react-native-get-location';
 import {getLocationName} from '../services/Auth';
 import {setLoading} from '../redux/MileStoneSlice';
 import {deSetLoading} from '../redux/MileStoneSlice';
-import {createTrip} from '../services/Auth';
 import { tripStore } from '../redux/MileStoneSlice';
 
 const CreateTrip = ({navigation}) => {
   useEffect(() => {
     setTimeout(async () => {
+      const rep= await getDistance()
       GetLocation.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 15000,
       })
         .then(async location => {
-          console.log('location', location)
           const resp = await getLocationName(
             location.latitude,
             location.longitude,
@@ -332,10 +329,9 @@ const CreateTrip = ({navigation}) => {
                   riders: contactsData.addTripContacts,
                   milestones: milesonesData,
                 };
-                console.log(obj)
-                navigation.navigate('TripSummary')
                 dispatch(tripStore(obj))
-                // dispatch(deSetRegistered())
+                navigation.navigate('TripSummary')
+                
               }}
               title="Done"
             />

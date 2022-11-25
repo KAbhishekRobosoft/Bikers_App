@@ -16,7 +16,6 @@ function NavigationFunctionality() {
     useEffect(() => {
         setTimeout(async () => {
           let userToken
-          cred= null
           userToken = null
           try {
              userToken = await AsyncStorage.getItem('token');

@@ -21,6 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { login } from '../redux/AuthSlice';
 import { setToken } from '../redux/AuthSlice';
 import { setForgotPassword } from '../redux/AuthSlice';
+import { setImage } from '../redux/AuthSlice';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),
@@ -45,6 +46,8 @@ const LoginScreen = ({navigation}) => {
         } catch (e) {
           console.log(e);
         }
+        let image= "https"+response.profileImage.substring(4)
+        dispatch(setImage(image))
         dispatch(login(response));
         dispatch(setToken(response.token))
       } else {

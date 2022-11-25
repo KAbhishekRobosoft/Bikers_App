@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setImage } from '../redux/AuthSlice';
 import { refreshToken } from '../services/Auth';
 import { setToken } from '../redux/AuthSlice'; 
+import { getVerifiedKeys } from '../utils/Functions';
 
 function RegisterUserIntro({navigation}) {
   const dispatch= useDispatch()
