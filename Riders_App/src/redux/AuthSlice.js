@@ -11,7 +11,7 @@ const authenticateSlice = createSlice({
     registered:false,
     forgotPassword:false,
     image:'',
-    haveBike:false
+    haveBike:false,
   },
 
   reducers: {

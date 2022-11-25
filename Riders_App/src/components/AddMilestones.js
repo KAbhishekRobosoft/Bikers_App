@@ -35,27 +35,28 @@ export const Milestone = () => {
             </Text>
             <Pressable
               onPress={async () => {
-                const resp = await getCoordinates(from);
-                const resp1 = await getCoordinates(to);
-                console.log(resp)
-                const obj = {
-                  id: mileStoneData.length + 1,
-                  source: [
-                    {
-                      place: from,
-                      latitude: resp.lat,
-                      longitude: resp.lon,
-                    },
-                  ],
-                  destination: [
-                    {
-                      place: to,
-                      latitude: resp1.lat,
-                      longitude: resp1.lon,
-                    },
-                  ],
-                };
-                if (JSON.stringify(obj) !== "{}") {
+                // console.log(resp)
+
+                if (from,to !== "") {
+                  const resp = await getCoordinates(from);
+                  const resp1 = await getCoordinates(to);
+                  const obj = {
+                    id: mileStoneData.length + 1,
+                    source: [
+                      {
+                        place: from,
+                        latitude: resp.lat,
+                        longitude: resp.lon,
+                      },
+                    ],
+                    destination: [
+                      {
+                        place: to,
+                        latitude: resp1.lat,
+                        longitude: resp1.lon,
+                      },
+                    ],
+                  };
                   dispatch(setMileStoneData(obj));
                   dispatch(setMileStone(false));
                 } else {

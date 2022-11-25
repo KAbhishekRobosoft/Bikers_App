@@ -20,6 +20,7 @@ const Profile = ({image}) => {
   const [personData, setPersonData] = useState({});
   const [tripDetails, setTripDetails] = useState([]);
   const userData = useSelector(state => state.auth.userData);
+  //userData is use for image and mobileNumber of user.
 
   useEffect(() => {
     setTimeout(async () => {
@@ -37,91 +38,79 @@ const Profile = ({image}) => {
 
   console.log(tripDetails);
 
-  // const renderItem = details => {
-  //   return (
-  //     <ActivityList
-  //       image={'https' + details?.item?.tripImage?.substring(4)}
-  //       placeName={details?.item?.tripName}
-  //       tripYear={details?.item?.startDate?.substring(0, 4)}
-  //       startDate={details?.item?.startDate?.substring(8, 10)}
-  //       endDate={details?.item?.endDate?.substring(8, 10)}
-  //       startMonth={month[details?.item?.startDate?.substring(5, 7)]}
-  //       endMonth={month[details?.item?.endDate?.substring(5, 7)]}
-  //     />
-  //   );
-  // };
-
   return (
     <SafeAreaView style={styles.safeArea}>
-      <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        colors={['#ED7E2C', '#F7B557']}
-        style={styles.gradientCreateButton}>
-        <ImageBackground
-          source={require('../assets/images/profilebike.png')}
-          resizeMode="cover"
-          style={styles.backgroundImage}></ImageBackground>
-        <Pressable>
-          <Image
-            source={require('../assets/images/edit.png')}
-            style={styles.editIcon}
-          />
-        </Pressable>
-        <View style={styles.profileContainer}>
-          <Image
-            source={require('../assets/images/photoless.png')}
-            style={styles.profileImage}
-          />
-          <Text style={styles.profileName}>
-            {personData?.userDetails?.userName}
-          </Text>
-          <Text style={styles.bioText}>
-            {personData?.userDetails?.aboutUser}
-          </Text>
-          <View style={styles.followContainer}>
-            <Text style={styles.followText}>Follow</Text>
+      <ScrollView style={{flex: 1}}>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#ED7E2C', '#F7B557']}
+          style={styles.gradientCreateButton}>
+          <ImageBackground
+            source={require('../assets/images/profilebike.png')}
+            resizeMode="cover"
+            style={styles.backgroundImage}></ImageBackground>
+          <Pressable>
+            <Image
+              source={require('../assets/images/edit.png')}
+              style={styles.editIcon}
+            />
+          </Pressable>
+          <View style={styles.profileContainer}>
+            <Image
+              source={require('../assets/images/photoless.png')}
+              style={styles.profileImage}
+            />
+            <Text style={styles.profileName}>
+              {personData?.userDetails?.userName}
+            </Text>
+            <Text style={styles.bioText}>
+              {personData?.userDetails?.aboutUser}
+            </Text>
+            <View style={styles.followContainer}>
+              <Text style={styles.followText}>Follow</Text>
+            </View>
+          </View>
+        </LinearGradient>
+        <View style={styles.detailContainer}>
+          <View style={styles.textContainer}>
+            <Text style={styles.detailText}>Rides</Text>
+            <Text style={styles.numberText}>{personData?.tripCount}</Text>
+          </View>
+          <View style={styles.line}></View>
+          <View style={styles.textContainer}>
+            <Text style={styles.detailText}>Following</Text>
+            <Text style={styles.numberText}>
+              {personData?.userDetails?.followingCount}
+            </Text>
+          </View>
+          <View style={styles.line}></View>
+          <View style={styles.textContainer}>
+            <Text style={styles.detailText}>Followers</Text>
+            <Text style={styles.numberText}>
+              {personData?.userDetails?.followersCount}
+            </Text>
           </View>
         </View>
-      </LinearGradient>
-      <View style={styles.detailContainer}>
-        <View style={styles.textContainer}>
-          <Text style={styles.detailText}>Rides</Text>
-          <Text style={styles.numberText}>{personData?.tripCount}</Text>
+        <View>
+          <Text style={styles.activitiText}>My Activities</Text>
         </View>
-        <View style={styles.line}></View>
-        <View style={styles.textContainer}>
-          <Text style={styles.detailText}>Following</Text>
-          <Text style={styles.numberText}>
-            {personData?.userDetails?.followingCount}
-          </Text>
-        </View>
-        <View style={styles.line}></View>
-        <View style={styles.textContainer}>
-          <Text style={styles.detailText}>Followers</Text>
-          <Text style={styles.numberText}>
-            {personData?.userDetails?.followersCount}
-          </Text>
-        </View>
-      </View>
-      <View>
-        <Text style={styles.activitiText}>My Activities</Text>
-      </View>
-      <ScrollView>
-        {tripDetails.length > 0
-          ? tripDetails.map(details => (
-              <ActivityList
-                key={details?._id}
-                image={'https' + details?.tripImage?.substring(4)}
-                placeName={details?.tripName}
-                tripYear={details?.startDate?.substring(0, 4)}
-                startDate={details?.startDate?.substring(8, 10)}
-                endDate={details?.endDate?.substring(8, 10)}
-                startMonth={month[details?.startDate?.substring(5, 7)]}
-                endMonth={month[details?.endDate?.substring(5, 7)]}
-              />
-            ))
-          : null}
+        <ScrollView style={{flex: 1}}>
+          {tripDetails.length > 0
+            ? tripDetails.map(details => (
+                <ActivityList
+                  key={details?._id}
+                  image={'https' + details?.tripImage?.substring(4)}
+                  placeName={details?.tripName}
+                  tripYear={details?.startDate?.substring(0, 4)}
+                  startDate={details?.startDate?.substring(8, 10)}
+                  endDate={details?.endDate?.substring(8, 10)}
+                  startMonth={month[details?.startDate?.substring(5, 7)]}
+                  endMonth={month[details?.endDate?.substring(5, 7)]}
+                />
+              ))
+            : null}
+        </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );

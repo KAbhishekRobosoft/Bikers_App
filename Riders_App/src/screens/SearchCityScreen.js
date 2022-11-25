@@ -11,10 +11,14 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {searchCity} from '../services/Auth';
+import uuid from 'react-native-uuid';
+import { whereTo } from '../redux/MileStoneSlice';
+import { useDispatch } from 'react-redux';
 
-export const SearchCity = () => {
+export const SearchCity = ({navigation}) => {
   const [text, setText] = useState('');
   const [data, setData] = useState([]);
+  const dispatch = useDispatch();
 
   const search = async value => {
     setText(value);
@@ -60,9 +64,11 @@ export const SearchCity = () => {
       {data.length !== 0
         ? data.map(ele => {
             return (
-              <Pressable>
+              <Pressable key={uuid.v4()} onPress={() => {
+                navigation.navigate('CreateTrip');
+                dispatch(whereTo(ele.geo.name))
+              }}>
                 <View
-                  key={Math.floor(Math.random() * 100)}
                   style={styles.resultContainer}>
                   <View style={styles.locationImage}>
                     <Image

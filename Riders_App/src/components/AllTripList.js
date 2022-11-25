@@ -1,7 +1,8 @@
 import React from 'react';
 import {View, StyleSheet, Text, ImageBackground, Image} from 'react-native';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 
-const UpcomingList = ({image, placeName, dateText, statusText}) => {
+const AllTripList = ({image, placeName, dateText, statusText}) => {
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -16,17 +17,19 @@ const UpcomingList = ({image, placeName, dateText, statusText}) => {
               <Text style={styles.statusText}>{statusText}</Text>
             </View>
           </View>
-          <Image
-            source={require('../assets/images/close.png')}
-            style={styles.closeImage}
-          />
+          <Pressable>
+            <Image
+              source={require('../assets/images/close.png')}
+              style={styles.closeImage}
+            />
+          </Pressable>
         </View>
       </ImageBackground>
     </View>
   );
 };
 
-export default UpcomingList;
+export default AllTripList;
 
 const styles = StyleSheet.create({
   container: {

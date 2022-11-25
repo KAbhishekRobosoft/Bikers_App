@@ -5,6 +5,9 @@ import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 import CreateTrip from '../screens/CreateTripScreen';
 import BottomTabNavigation from './BottomTabNavigation';
 import { ContactDisplay } from '../screens/Contact';
+import { TripSummary } from '../screens/TripSummaryScreen';
+import {CreateTripSuccess} from '../screens/CreateTripSuccessScreen';
+import { SearchCity } from '../screens/SearchCityScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,11 +24,25 @@ const NewUserSubStack = () => {
         name="CreateTrip"
         component={CreateTrip}
       />
-
       <Stack.Screen
         options={{headerShown: false}}
         name="Contacts"
         component={ContactDisplay}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="TripSummary"
+        component={TripSummary}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="CreateTripSuccess"
+        component={CreateTripSuccess}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="SearchCity"
+        component={SearchCity}
       />
     </Stack.Navigator>
   );
