@@ -1,4 +1,3 @@
-import {useDrawerStatus} from '@react-navigation/drawer';
 import axios from 'axios';
 const BASE_URL = 'https://riding-application.herokuapp.com/api/v1';
 
@@ -196,14 +195,14 @@ export const getOwnerDetails = async token => {
   }
 };
 
-export const createTrip = async obj => {
+export const createTrip = async (obj,token) => {
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/trip/createTrip',
       obj,
       {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4MCIsImlhdCI6MTY2OTM1NDI0OSwiZXhwIjoxNjY5MzU3ODQ5fQ.QNqMcPRcMJPbfVxWf3TocLCivjBrOdtFtJTk1s5Y6gg`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );

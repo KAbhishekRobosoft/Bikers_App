@@ -1,9 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
-  FlatList,
   SafeAreaView,
   StyleSheet,
-  TextInput,
   View,
   Text,
   Image,
@@ -14,15 +12,34 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
 import {RecommendationTripSummary} from '../components/Recommendations';
 import {CreateButton} from '../components/Buttons';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {month} from '../utils/Functions';
 import BikeImageComponent from '../components/BikeImageComponent';
+import {getVerifiedKeys} from '../utils/Functions';
+import {setToken} from '../redux/AuthSlice';
 import {createTrip} from '../services/Auth';
+import Toast from 'react-native-simple-toast';
+import MapView from 'react-native-maps';
 
 
 export const TripSummary = ({navigation}) => {
+  const mapRef= useRef(null)
+
+  useEffect(() => {
+    mapRef.current.animateToRegion(
+      {
+        latitude: tripDetails.source[0].latitude,
+        longitude: tripDetails.source[0].longitude,
+        latitudeDelta: 0.03,
+        longitudeDelta: 0.01,
+      },
+      3 * 1000,
+    );
+  }, []);
   const milestonedata = useSelector(state => state.milestone.milestoneData);
   const tripDetails = useSelector(state => state.milestone.storeTrip);
   const contactsData = useSelector(state => state.contact);
+  const authData = useSelector(state => state.auth);
   const dispatch  = useDispatch();
   console.log('tripdetailssss', tripDetails);
   console.log('dfdgd', milestonedata);
@@ -53,6 +70,48 @@ export const TripSummary = ({navigation}) => {
         </View>
         <ScrollView style={styles.scrollView}>
           <View style={styles.mapView}>
+            <MapView
+              ref={mapRef}
+              style={styles.mapStyle}
+              customMapStyle={mapStyle}>
+              <Polyline
+                coordinates={[
+                  {
+                    latitude: tripDetails.source[0].latitude,
+                    longitude: tripDetails.source[0].longitude,
+                    latitudeDelta: 0.03,
+                    longitudeDelta: 0.01,
+                  },
+                  {
+                    latitude: tripDetails.destination[0].latitude,
+                    longitude: tripDetails.destination[0].longitude,
+                    latitudeDelta: 0.03,
+                    longitudeDelta: 0.01,
+                  },
+                ]}
+                strokeColor={'blue'}
+                strokeWidth={5}
+                lineDashPattern={[1]}
+              />
+
+              <Marker
+                coordinate={{
+                  latitude: tripDetails.source[0].latitude,
+                  longitude: tripDetails.source[0].longitude,
+                  latitudeDelta: 0.03,
+                  longitudeDelta: 0.01,
+                }}
+              />
+
+              <Marker
+                coordinate={{
+                  latitude: tripDetails.destination[0].latitude,
+                  longitude: tripDetails.destination[0].longitude,
+                  latitudeDelta: 0.03,
+                  longitudeDelta: 0.01,
+                }}
+              />
+            </MapView>
             <View style={styles.summaryView}>
               <Image source={require('../assets/images/motorcycle.png')} />
               <Text style={styles.tripName}>{tripDetails?.tripName}</Text>
@@ -100,12 +159,15 @@ export const TripSummary = ({navigation}) => {
             </View>
             <View style={styles.buttonView}>
               <CreateButton
-                title="CREATE"
                 onPress={async () => {
-                  const tripCreate = await createTrip(tripDetails);
-                  navigation.navigate('CreateTripSuccess')
-                  
+                  const cred = await getVerifiedKeys(authData.userToken);
+                  dispatch(setToken(cred));
+                  const resp = await createTrip(tripDetails, cred);
+                  if (resp !== undefined)
+                    navigation.navigate('CreateTripSuccess');
+                  else Toast.show('Trip Creation Unsuccessfull');
                 }}
+                title="CREATE"
               />
             </View>
           </View>

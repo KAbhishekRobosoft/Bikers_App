@@ -19,8 +19,7 @@ import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
 import {useDispatch, useSelector} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
-import {setMileStoneData} from '../redux/MileStoneSlice';
-import {getCoordinates} from '../services/Auth';
+import {getCoordinates, getDistance} from '../services/Auth';
 import GetLocation from 'react-native-get-location';
 import {getLocationName} from '../services/Auth';
 import {setLoading} from '../redux/MileStoneSlice';
@@ -35,7 +34,6 @@ const CreateTrip = ({navigation}) => {
         timeout: 15000,
       })
         .then(async location => {
-          console.log('location', location)
           const resp = await getLocationName(
             location.latitude,
             location.longitude,
