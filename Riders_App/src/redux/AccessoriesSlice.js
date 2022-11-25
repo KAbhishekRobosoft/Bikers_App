@@ -4,7 +4,6 @@ import {AccessoriesData} from '../assets/data';
 const asseccoriesSlice = createSlice({
   name: 'shop',
   initialState: {
-    
     bikeType: [],
     allBikeData: [],
     fliteredBikeData: [],
@@ -49,45 +48,11 @@ const asseccoriesSlice = createSlice({
         return ele;
       });
     },
-<<<<<<< HEAD
-    selectUnLiked: (state, action) => {
-      state.accessoriesData = state.accessoriesData.map(ele => {
-        if (ele.id === action.payload.id) {
-          return {
-            ...ele,
-            id: action.payload.id,
-            photo: action.payload.photo,
-            title: action.payload.title,
-            cost: action.payload.cost,
-            liked: false,
-            date: action.payload.date,
-          };
-        }
-        return ele;
-      });
-      state.filterAccessoriesData = state.filterAccessoriesData.map(ele => {
-        if (ele.id === action.payload.id) {
-          return {
-            ...ele,
-            id: action.payload.id,
-            photo: action.payload.photo,
-            title: action.payload.title,
-            cost: action.payload.cost,
-            liked: false,
-            date: action.payload.date,
-          };
-        }
-        return ele;
-      });
-    },
-=======
->>>>>>> de9c4b05ae1bc7321772a3a0042a90a0db0d0525
     filterAccessories: (state, action) => {
       state.accessoriesData = state.filterAccessoriesData.filter(site =>
         site.title.toLowerCase().includes(action.payload.toLowerCase()),
       );
     },
-<<<<<<< HEAD
     addBikeType: (state, action) => {
       state.bikeType = action.payload;
     },
@@ -97,25 +62,17 @@ const asseccoriesSlice = createSlice({
     },
     fliteredBikeDetails: (state, action) => {
       state.allBikeData = state.fliteredBikeData.filter(
-        ele => ele.vehicleType === action.payload, 
-
+        ele => ele.vehicleType === action.payload,
       );
-    
     },
   },
 });
 export const {
-  selectLiked,
-  selectUnLiked,
+  addLiked,
+  disLiked,
   filterAccessories,
   addBikeType,
   addBikeData,
   fliteredBikeDetails,
 } = asseccoriesSlice.actions;
-=======
-  },
-});
-export const {addAccessoriesData, filterAccessories, addLiked, disLiked} =
-  asseccoriesSlice.actions;
->>>>>>> de9c4b05ae1bc7321772a3a0042a90a0db0d0525
 export default asseccoriesSlice.reducer;
