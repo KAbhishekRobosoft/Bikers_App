@@ -6,28 +6,32 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
 import {DropDownInputField} from '../components/InputFields';
+import {useDispatch, useSelector} from 'react-redux';
+import {fliteredBikeDetails} from '../redux/AccessoriesSlice';
 
 const OwnersManualScreen = ({navigation}) => {
+  const Data = useSelector(state => state.shop.bikeType);
   const [selected, setSelected] = useState();
+  const dispatch = useDispatch();
 
-  const data = [
-    {
-      key: 'Classic 350-Black',
-      value: 'Classic 350-Black',
-    },
-    {
-      key: 'Splender',
-      value: 'Splender',
-    },
-    {
-      key: 'KTM DUKE-200',
-      value: 'KTM DUKE-200',
-    },
-  ];
+  const ref=useRef()
+
+
+  const submit = () => {
+    console.log(selected);
+    if (selected === undefined) {
+      alert('Select Vehicle Type');
+    } else {
+      dispatch(fliteredBikeDetails(selected));
+      navigation.navigate('OwnersManualDetail');
+      setSelected('');
+    }
+  };
+
   return (
     <SafeAreaView>
       <View style={[styles.header, styles.shadow]}>
@@ -47,17 +51,15 @@ const OwnersManualScreen = ({navigation}) => {
       <ScrollView style={styles.scrollView}>
         <View style={styles.dropDrowView}>
           <DropDownInputField
-            data={data}
+            data={Data}
             values={selected}
             setSelected={value => setSelected(value)}
             placeholder="Vehicle Type"
+            default={selected}
           />
         </View>
         <View style={styles.btn}>
-          <ButtonLarge
-            title="Go"
-            onPress={() => navigation.navigate('OwnersManualDetail')}
-          />
+          <ButtonLarge title="Go" onPress={submit} />
         </View>
       </ScrollView>
     </SafeAreaView>

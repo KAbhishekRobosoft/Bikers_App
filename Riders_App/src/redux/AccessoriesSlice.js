@@ -4,6 +4,9 @@ import {AccessoriesData} from '../assets/data';
 const asseccoriesSlice = createSlice({
   name: 'shop',
   initialState: {
+    bikeType: [],
+    allBikeData: [],
+    fliteredBikeData: [],
     accessoriesData: [],
     filterAccessoriesData: [],
   },
@@ -50,8 +53,26 @@ const asseccoriesSlice = createSlice({
         site.title.toLowerCase().includes(action.payload.toLowerCase()),
       );
     },
+    addBikeType: (state, action) => {
+      state.bikeType = action.payload;
+    },
+    addBikeData: (state, action) => {
+      state.allBikeData = action.payload;
+      state.fliteredBikeData = action.payload;
+    },
+    fliteredBikeDetails: (state, action) => {
+      state.allBikeData = state.fliteredBikeData.filter(
+        ele => ele.vehicleType === action.payload,
+      );
+    },
   },
 });
-export const {addAccessoriesData, filterAccessories, addLiked, disLiked} =
-  asseccoriesSlice.actions;
+export const {
+  addLiked,
+  disLiked,
+  filterAccessories,
+  addBikeType,
+  addBikeData,
+  fliteredBikeDetails,
+} = asseccoriesSlice.actions;
 export default asseccoriesSlice.reducer;

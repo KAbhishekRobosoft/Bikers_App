@@ -3,10 +3,16 @@ import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs
 import {NavigationContainer} from '@react-navigation/native';
 import {BikeDetails} from '../components/BikeDetailsComponent';
 import {PersonalDetails} from '../components/PersonalDetailsComponent';
+import { useSelector } from 'react-redux';
+
+
 
 const Tab = createMaterialTopTabNavigator();
 
-const TopNavigation = ({editable}) => {
+const TopNavigation = ({editable,defaultValue}) => {
+
+
+ // console.log('top',defaultValue);
   return (
     <Tab.Navigator
       initialRouteName="PersonalDetails"

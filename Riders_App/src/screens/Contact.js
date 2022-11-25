@@ -57,7 +57,7 @@ export const ContactDisplay = ({navigation}) => {
     } else if (Platform.OS === 'android') {
       PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
         title: 'Contacts',
-        message: 'This app would like to view your contacts.',
+        message: 'Rider app would like to view your contacts.',
       });
       Contacts.getAll()
         .then(contacts => {

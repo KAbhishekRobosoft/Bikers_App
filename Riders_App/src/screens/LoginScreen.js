@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import React, {useState} from 'react';
 import ButtonLarge from '../components/Buttons';
@@ -14,14 +14,14 @@ import {Input} from '../components/InputFields';
 import {Password} from '../components/InputFields';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
-import { useDispatch } from 'react-redux';
-import { checkIn } from '../services/Auth';
-import Toast from 'react-native-simple-toast'
+import {useDispatch} from 'react-redux';
+import {checkIn} from '../services/Auth';
+import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { login } from '../redux/AuthSlice';
-import { setToken } from '../redux/AuthSlice';
-import { setForgotPassword } from '../redux/AuthSlice';
-import { setImage } from '../redux/AuthSlice';
+import {login} from '../redux/AuthSlice';
+import {setToken} from '../redux/AuthSlice';
+import {setForgotPassword} from '../redux/AuthSlice';
+import {setImage} from '../redux/AuthSlice';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),
@@ -36,116 +36,120 @@ const registerValidationSchema = yup.object().shape({
 
 const LoginScreen = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
-  const dispatch= useDispatch()
+  const dispatch = useDispatch();
 
-  async function signIn(values){
-      const response= await checkIn(values)
-      if (response !== undefined) {
-        try {
-          await AsyncStorage.setItem('token', response.token);
-        } catch (e) {
-          console.log(e);
-        }
-        let image= "https"+response.profileImage.substring(4)
-        dispatch(setImage(image))
-        dispatch(login(response));
-        dispatch(setToken(response.token))
-      } else {
-        Toast.show('User Does not exist');
+  async function signIn(values) {
+    let image = '';
+    const response = await checkIn(values);
+    if (response !== undefined) {
+      try {
+        await AsyncStorage.setItem('token', response.token);
+      } catch (e) {
+        console.log(e);
       }
+      if (response.hasOwnProperty('profileImage')) {
+        image = 'https' + response.profileImage.substring(4);
+        dispatch(setImage(image));
+      }
+      dispatch(login(response));
+      dispatch(setToken(response.token));
+    } else {
+      Toast.show('User Does not exist');
+    }
   }
-  
+
   return (
     <SafeAreaView style={styles.main}>
-    <ScrollView horizontal={false}>
-    <View style={styles.main}>
-      <View style={styles.logoView}>
-        <Image
-          source={require('../assets/images/appicon.png')}
-          style={styles.logo}
-        />
-      </View>
-      <View style={styles.loginContainer}>
-        <Formik
-          // validationSchema={registerValidationSchema}
-          initialValues={{
-            number: '',
-            password: '',
-          }}
-          onSubmit={async values => {
-                signIn(values)
-          }}>
-          {({values, handleSubmit, isValid}) => (
-            <>
-              <View style={styles.inputTextView1}>
-                <Field
-                  component={Input}
-                  name="number"
-                  source={require('../assets/images/user.png')}
-                  placeholderTextColor="grey"
-                  placeholder="Mobile Number/Email id"
-                  styleUser={styles.userLogo}
-                  value={values.number}
+      <ScrollView horizontal={false}>
+        <View style={styles.main}>
+          <View style={styles.logoView}>
+            <Image
+              source={require('../assets/images/appicon.png')}
+              style={styles.logo}
+            />
+          </View>
+          <View style={styles.loginContainer}>
+            <Formik
+              // validationSchema={registerValidationSchema}
+              initialValues={{
+                number: '',
+                password: '',
+              }}
+              onSubmit={async values => {
+                signIn(values);
+              }}>
+              {({values, handleSubmit, isValid}) => (
+                <>
+                  <View style={styles.inputTextView1}>
+                    <Field
+                      component={Input}
+                      name="number"
+                      source={require('../assets/images/user.png')}
+                      placeholderTextColor="grey"
+                      placeholder="Mobile Number/Email id"
+                      styleUser={styles.userLogo}
+                      value={values.number}
+                    />
+                  </View>
+                  <View style={styles.inputTextView2}>
+                    <Field
+                      component={Password}
+                      name="password"
+                      source={require('../assets/images/locked.png')}
+                      placeholderTextColor="grey"
+                      placeholder="Password"
+                      styleUser={styles.lockImg}
+                      value={values.password}
+                      secureTextEntry={secureText}
+                      onPress={() => setSecureText(!secureText)}
+                    />
+                  </View>
+                  <View style={styles.forgetTextView}>
+                    <Pressable
+                      onPress={() => {
+                        dispatch(setForgotPassword());
+                        navigation.navigate('NumberEntry');
+                      }}>
+                      <Text style={styles.forgetText}>Forgot Password</Text>
+                    </Pressable>
+                  </View>
+
+                  <View style={styles.buttonView}>
+                    <ButtonLarge
+                      disabled={!isValid}
+                      title="LOGIN"
+                      onPress={handleSubmit}
+                    />
+                  </View>
+                </>
+              )}
+            </Formik>
+          </View>
+          <View style={styles.bottomView}>
+            <ImageBackground
+              style={styles.bgImage}
+              source={require('../assets/images/BG.png')}>
+              <View style={styles.bottomImgView}>
+                <Image
+                  style={styles.bottomImg1}
+                  source={require('../assets/images/fb.png')}
+                />
+                <Image
+                  style={styles.bottomImg2}
+                  source={require('../assets/images/g.png')}
                 />
               </View>
-              <View style={styles.inputTextView2}>
-                <Field
-                  component={Password}
-                  name="password"
-                  source={require('../assets/images/locked.png')}
-                  placeholderTextColor="grey"
-                  placeholder="Password"
-                  styleUser={styles.lockImg}
-                  value={values.password}
-                  secureTextEntry={secureText}
-                  onPress={() => setSecureText(!secureText)}
-                />
-              </View>
-              <View style={styles.forgetTextView}>
-                <Pressable onPress={() => {
-                  dispatch(setForgotPassword())
-                  navigation.navigate('NumberEntry')}}>
-                  <Text style={styles.forgetText}>Forgot Password</Text>
+              <View style={styles.bottomTextView}>
+                <Text style={styles.bottomText1}>Don't have an account?</Text>
+                <Pressable onPress={() => navigation.navigate('Confirm')}>
+                  <Text style={styles.bottomText2}> Register</Text>
                 </Pressable>
               </View>
-
-              <View style={styles.buttonView}>
-                <ButtonLarge
-                  disabled={!isValid}
-                  title="LOGIN"
-                  onPress={handleSubmit}
-                />
-              </View>
-            </>
-          )}
-        </Formik>
-      </View>
-      <View style={styles.bottomView}>
-        <ImageBackground
-          style={styles.bgImage}
-          source={require('../assets/images/BG.png')}>
-          <View style={styles.bottomImgView}>
-            <Image
-              style={styles.bottomImg1}
-              source={require('../assets/images/fb.png')}
-            />
-            <Image
-              style={styles.bottomImg2}
-              source={require('../assets/images/g.png')}
-            />
+            </ImageBackground>
           </View>
-          <View style={styles.bottomTextView}>
-            <Text style={styles.bottomText1}>Don't have an account?</Text>
-            <Pressable onPress={() => navigation.navigate('Confirm')}>
-              <Text style={styles.bottomText2}> Register</Text>
-            </Pressable>
-          </View>
-        </ImageBackground>
-      </View>
-      </View>
+        </View>
       </ScrollView>
     </SafeAreaView>
-
   );
 };
 
@@ -197,7 +201,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontFamily: 'Roboto-Regular',
   },
-  forgetTextView:{width:"85%"},
+  forgetTextView: {width: '85%'},
   forgetText: {
     color: '#EF8B40',
     fontSize: 16,
