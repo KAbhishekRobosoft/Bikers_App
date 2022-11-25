@@ -17,6 +17,7 @@ import {getCoordinates} from '../services/Auth';
 
 export const Milestone = () => {
   const mileStoneData = useSelector(state => state.milestone.milestoneData);
+  console.log('',mileStoneData)
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const dispatch = useDispatch();

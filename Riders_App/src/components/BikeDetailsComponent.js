@@ -1,12 +1,35 @@
 import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
+import {useSelector} from 'react-redux';
 
-export const BikeDetails = ({header, editable, vehicleType, vehicleNumber}) => {
+export const BikeDetails = ({
+  header,
+  editable,
+  Type,
+  Number,
+  values,
+  vehicleNo,
+  vehicleType,
+  engine,
+  frameNo,
+  batteryMake,
+  regNo,
+  model,
+  color,
+  dealerCode,
+  defaultValue
+}) => {
+
+  const BikeDetails = useSelector(state => state.shop.allBikeData);
+ 
+  
+
+
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
         {header ? <Text style={styles.bikeDetailText}>{header}</Text> : null}
-        {vehicleType ? (
+        {Type ? (
           <View style={styles.inputView}>
             <Text style={styles.text}>Vehicle Type</Text>
             <View style={styles.inputTextView}>
@@ -16,11 +39,14 @@ export const BikeDetails = ({header, editable, vehicleType, vehicleNumber}) => {
                 placeholder="Vehicle Type"
                 editable={editable ? editable : false}
                 placeholderTextColor="#4F504F"
+                onChangeText={vehicleType}
+                defaultValue={BikeDetails[0].vehicleType}
+           
               />
             </View>
           </View>
         ) : null}
-        {vehicleNumber ? (
+        {Number ? (
           <View style={styles.inputView}>
             <Text style={styles.text}>Vehicle No</Text>
             <View style={styles.inputTextView}>
@@ -30,6 +56,10 @@ export const BikeDetails = ({header, editable, vehicleType, vehicleNumber}) => {
                 placeholder="Vehicle No"
                 editable={editable ? editable : false}
                 placeholderTextColor="#4F504F"
+                onChangeText={vehicleNo}
+                defaultValue={BikeDetails[0].vehicleNumber}
+                
+
               />
             </View>
           </View>
@@ -44,6 +74,9 @@ export const BikeDetails = ({header, editable, vehicleType, vehicleNumber}) => {
               placeholder="Engine"
               editable={editable ? editable : false}
               placeholderTextColor="#4F504F"
+              onChangeText={engine}
+             defaultValue={BikeDetails[0].engineNumber}
+        
             />
           </View>
         </View>
@@ -56,6 +89,9 @@ export const BikeDetails = ({header, editable, vehicleType, vehicleNumber}) => {
               placeholder="Frame No"
               editable={editable ? editable : false}
               placeholderTextColor="#4F504F"
+              onChangeText={frameNo}
+              defaultValue={BikeDetails[0].frameNumber}
+
             />
           </View>
         </View>
@@ -69,6 +105,9 @@ export const BikeDetails = ({header, editable, vehicleType, vehicleNumber}) => {
               placeholder="Battery make"
               editable={editable ? editable : false}
               placeholderTextColor="#4F504F"
+              onChangeText={batteryMake}
+              defaultValue={BikeDetails[0].batteryMake}
+
             />
           </View>
         </View>
@@ -82,6 +121,9 @@ export const BikeDetails = ({header, editable, vehicleType, vehicleNumber}) => {
               placeholder="Reg No."
               editable={editable ? editable : false}
               placeholderTextColor="#4F504F"
+              onChangeText={regNo}
+              defaultValue={BikeDetails[0].registerNumber}
+
             />
           </View>
         </View>
@@ -95,6 +137,9 @@ export const BikeDetails = ({header, editable, vehicleType, vehicleNumber}) => {
               placeholder="Model"
               editable={editable ? editable : false}
               placeholderTextColor="#4F504F"
+              onChangeText={model}
+              defaultValue={BikeDetails[0].model}
+
             />
           </View>
         </View>
@@ -107,6 +152,9 @@ export const BikeDetails = ({header, editable, vehicleType, vehicleNumber}) => {
               placeholder="Color"
               editable={editable ? editable : false}
               placeholderTextColor="#4F504F"
+              onChangeText={color}
+              defaultValue={BikeDetails[0].color}
+
             />
           </View>
         </View>
@@ -121,6 +169,9 @@ export const BikeDetails = ({header, editable, vehicleType, vehicleNumber}) => {
               placeholder="Dealer code"
               editable={editable ? editable : false}
               placeholderTextColor="#4F504F"
+              onChangeText={dealerCode}
+              defaultValue={BikeDetails[0].dealerCode}
+
             />
           </View>
         </View>
@@ -133,7 +184,7 @@ const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: 'white',
     height: '51%',
-    paddingBottom:10
+    paddingBottom: 10,
   },
   container: {
     backgroundColor: 'white',

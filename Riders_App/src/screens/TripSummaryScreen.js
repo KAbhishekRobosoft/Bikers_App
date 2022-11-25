@@ -43,6 +43,7 @@ export const TripSummary = ({navigation}) => {
   const tripDetails = useSelector(state => state.milestone.storeTrip);
   const contactsData = useSelector(state => state.contact);
   const authData = useSelector(state => state.auth);
+  const dispatch  = useDispatch();
   console.log('tripdetailssss', tripDetails);
   console.log('dfdgd', milestonedata);
   return (
@@ -116,25 +117,24 @@ export const TripSummary = ({navigation}) => {
             </MapView>
             <View style={styles.summaryView}>
               <Image source={require('../assets/images/motorcycle.png')} />
-              <Text style={styles.tripName}>{tripDetails.tripName}</Text>
+              <Text style={styles.tripName}>{tripDetails?.tripName}</Text>
               <Text style={styles.dateText}>
-                {tripDetails.startDate.substring(8, 10)}{' '}
-                {tripDetails.startDate.substring(4, 7)} -{' '}
-                {tripDetails.endDate.substring(8, 10)}{' '}
-                {tripDetails.endDate.substring(4, 7)}{' '}
-                {tripDetails.endDate.substring(11, 15)}
+                {tripDetails?.startDate?.substring(8, 10)}
+                {tripDetails?.startDate?.substring(4, 7)} -
+                {tripDetails?.endDate?.substring(8, 10)}
+                {tripDetails?.endDate?.substring(4, 7)}
+                {tripDetails?.endDate?.substring(11, 15)}
               </Text>
               <Text style={styles.timeText}>
-                {' '}
-                {tripDetails.startTime.substring(15, 21)}
+                {tripDetails?.startTime?.substring(15, 21)}
               </Text>
               <View style={styles.fromToView}>
                 <Text style={styles.fromToText}>
-                  {tripDetails.source[0].place}
+                  {tripDetails?.source[0]?.place}
                 </Text>
                 <View style={styles.lineView}></View>
                 <Text style={styles.fromToText}>
-                  {tripDetails.destination[0].place}
+                  {tripDetails?.destination[0]?.place}
                 </Text>
               </View>
             </View>

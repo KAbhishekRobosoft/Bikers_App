@@ -4,13 +4,15 @@ import CreateTrip from '../screens/CreateTripScreen';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 import MyGarageStack from './MyGarageStack';
+import AddBikeDetails from '../screens/AddBikeDetailsScreen';
+import { AddPersonalDetails } from '../screens/AddPersonalDetailsScreen';
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomTabNavigation = () => {
   return (
     <Tab.Navigator
       shifting={true}
-      initialRouteName="Home"
+      initialRouteName="Trip5"
       activeColor="#ffffff"
       barStyle={{backgroundColor: '#ED7E2B', height: 65}}>
       <Tab.Screen
@@ -85,12 +87,12 @@ const BottomTabNavigation = () => {
       />
       <Tab.Screen
         name="Trip4"
-        listeners={{
-          tabPress: e => {
-            e.preventDefault();
-          },
-        }}
-        component={CreateTrip}
+        // listeners={{
+        //   tabPress: e => {
+        //     e.preventDefault();
+        //   },
+        // }}
+        component={AddPersonalDetails}
         options={{
           tabBarIcon: ({focused}) => {
             return (
@@ -109,12 +111,12 @@ const BottomTabNavigation = () => {
       />
       <Tab.Screen
         name="Trip5"
-        listeners={{
-          tabPress: e => {
-            e.preventDefault();
-          },
-        }}
-        component={CreateTrip}
+        // listeners={{
+        //   tabPress: e => {
+        //     e.preventDefault();
+        //   },
+        // }}
+        component={AddBikeDetails}
         options={{
           tabBarIcon: ({focused}) => {
             return (

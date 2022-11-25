@@ -1,4 +1,4 @@
-import {Formik} from 'formik';
+import {Formik, Field} from 'formik';
 import React, {useState} from 'react';
 import {
   FlatList,
@@ -14,18 +14,40 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
 import {BikeDetails} from '../components/BikeDetailsComponent';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {updateOwnerDetails} from '../services/Auth';
+import {useRoute} from '@react-navigation/native';
+import { setUserData } from '../redux/AuthSlice';
+// import route
+
 export const OwnerManualEdit = ({navigation}) => {
   const userDetails = useSelector(state => state.auth.userData);
+  const dispatch = useDispatch();
 
-  const [licence, setLicence] = useState();
-  const [name, setName] = useState();
-  const [DoorNo, setDoorNo] = useState();
-  const [city, setCity] = useState();
-  const [state, setState] = useState();
-  const [pincode, setPincode] = useState();
-  const [mobile, setMobile] = useState();
-  const [email, setEmail] = useState();
+
+  // const [licence, setLicence] = useState();
+  // const [name, setName] = useState();
+  // const [DoorNo, setDoorNo] = useState();
+  // const [city, setCity] = useState();
+  // const [state, setState] = useState();
+  // const [pincode, setPincode] = useState();
+  // const [mobile, setMobile] = useState();
+  // const [email, setEmail] = useState();
+
+  const update = async (values) => {
+    console.log('values',values)
+    const obj = {
+      city: values.city,
+      state: values.state,
+      doorNumber: values.doorNumber,
+      pincode: values.pincode,
+      lisenceNumber:values.licence
+    };
+    await updateOwnerDetails(obj);
+    dispatch(setUserData(obj));
+    navigation.navigate('OwnersManualDetail')
+  };
+  //console.log('userDetails', userDetails);
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <View style={styles.mainView}>
@@ -53,83 +75,103 @@ export const OwnerManualEdit = ({navigation}) => {
         </View>
         <ScrollView style={{height: '88%'}}>
           <View style={styles.personalDetailView}>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: 20,
-                marginHorizontal: '5%',
-                justifyContent: 'space-between',
-              }}>
-              <Text style={styles.personaldetailText}>Personal Details</Text>
-              <Image source={require('../assets/images/save.png')} />
-            </View>
-            <View style={{width: '90%', alignSelf: 'center', marginTop: 20}}>
-              <PlaceholderTextFieldOwnerManual
-                name="licence"
-                placeholder="Licence No."
-                keyboardType="default"
-                defaultValue={userDetails.lisenceNumber}
-                onChangeText={value => setLicence(value)}
-              />
-              <PlaceholderTextFieldOwnerManual
-                name="name"
-                placeholder="Name"
-                keyboardType="default"
-                value={name}
-                onChangeText={value => setName(value)}
-                defaultValue={userDetails.name}
-              />
-              <PlaceholderTextFieldOwnerManual
-                name="doorNumber"
-                placeholder="Door No."
-                keyboardType="default"
-                value={DoorNo}
-                onChangeText={value => setDoorNo(value)}
-                defaultValue={userDetails.doorNumber}
-              />
-              <PlaceholderTextFieldOwnerManual
-                name="city"
-                placeholder="City"
-                keyboardType="default"
-                value={city}
-                onChangeText={value => setCity(value)}
-                defaultValue={userDetails.city}
-              />
-              <PlaceholderTextFieldOwnerManual
-                name="state"
-                placeholder="State"
-                keyboardType="default"
-                value={state}
-                onChangeText={value => setState(value)}
-                defaultValue={userDetails.state}
-              />
-              <PlaceholderTextFieldOwnerManual
-                name="pincode"
-                placeholder="Pincode"
-                keyboardType="default"
-                value={pincode}
-                onChangeText={value => setPincode(value)}
-                defaultValue={userDetails.pincode}
-
-              />
-              <PlaceholderTextFieldOwnerManual
-                name="mobile"
-                placeholder="Mobile"
-                keyboardType="default"
-                value={mobile}
-                onChangeText={value => setMobile(value)}
-                defaultValue={userDetails.lisenceNumber}
-
-              />
-              <PlaceholderTextFieldOwnerManual
-                name="email"
-                placeholder="Email"
-                keyboardType="default"
-                value={email}
-                onChangeText={value => setEmail(value)}
-                defaultValue={userDetails.email}
-              />
-            </View>
+            <Formik
+              initialValues={{
+                licence:userDetails.lisenceNumber,
+                name: userDetails.userName,
+                doorNumber: userDetails.doorNumber,
+                city: userDetails.city,
+                state: userDetails.state,
+                pincode: userDetails.pincode,
+                mobile: '',
+                email: '',
+              }}
+              onSubmit={
+                (values) => update(values)
+                //console.log('00')
+              }>
+              {({values, handleSubmit, isValid, resetForm}) => (
+                <>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: 20,
+                      marginHorizontal: '5%',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Text style={styles.personaldetailText}>
+                      Personal Details
+                    </Text>
+                    <Pressable onPress={handleSubmit}>
+                      <Image source={require('../assets/images/save.png')} />
+                    </Pressable>
+                  </View>
+                  <View
+                    style={{width: '90%', alignSelf: 'center', marginTop: 20}}>
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="licence"
+                      placeholder="Licence No."
+                      keyboardType="numeric"
+                      value={values.licence}
+                    />
+                   <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="name"
+                      placeholder="Name"
+                      keyboardType="default"
+                      value={values.name}
+                      editable={false}
+                    />
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="doorNumber"
+                      placeholder="Door No."
+                      keyboardType="default"
+                      value={values.doorNumber}
+                    />
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="city"
+                      placeholder="City"
+                      keyboardType="default"
+                      value={values.city}
+                    />
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="state"
+                      placeholder="State"
+                      keyboardType="default"
+                      value={values.state}
+                    />
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="pincode"
+                      placeholder="Pincode"
+                      keyboardType="numeric"
+                      value={values.pincode}
+                      
+                    />
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="mobile"
+                      placeholder="Mobile"
+                      keyboardType="default"
+                      value={values.mobile}
+                      editable={false}
+                    />
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="email"
+                      placeholder="Email"
+                      keyboardType="default"
+                      value={values.email}
+                      editable={false}
+                    />
+                  </View>
+                </>
+              )}
+            </Formik>
           </View>
           <View style={{marginTop: 10}}>
             <BikeDetails header="Bike Details" />

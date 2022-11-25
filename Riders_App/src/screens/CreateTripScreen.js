@@ -329,6 +329,7 @@ const CreateTrip = ({navigation}) => {
                   riders: contactsData.addTripContacts,
                   milestones: milesonesData,
                 };
+                console.log(obj)
                 dispatch(tripStore(obj))
                 navigation.navigate('TripSummary')
                 
