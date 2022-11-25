@@ -8,6 +8,8 @@ import {
   useWindowDimensions,
   Platform,
   Pressable,
+  TextInput,
+  Text,
 } from 'react-native';
 import {PlaceholderTextField} from '../components/InputFields';
 import LinearGradient from 'react-native-linear-gradient';
@@ -27,9 +29,10 @@ function NumberEntryScreen({navigation}) {
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={{flex: 1}}>
-        <Pressable onPress= {()=>{
-          navigation.goBack()
-        }}>
+        <Pressable
+          onPress={() => {
+            navigation.goBack();
+          }}>
           <Image
             style={styles.back_pic}
             source={require('../assets/images/back_arrow.png')}
@@ -53,13 +56,23 @@ function NumberEntryScreen({navigation}) {
               end={{x: 0, y: 0.45}}
               colors={['#fbe5d4', 'rgba(255,255,255,0)']}
               style={styles.gradient}>
-              <PlaceholderTextField
-                name="sample"
-                placeholder="Enter your Mobile number"
-                keyboardType="numeric"
-                value={text}
-                onChangeText={value => setText(value)}
-              />
+              {text ? (
+                <View style={styles.placeholder}>
+                  <Text style={styles.text}>Enter your Mobile number</Text>
+                </View>
+              ) : (
+                <></>
+              )}
+              <View style={styles.textInputView}>
+                <TextInput
+                  name="sample"
+                  placeholder="Enter your Mobile number"
+                  keyboardType="numeric"
+                  value={text}
+                  onChangeText={value => setText(value)}
+                  style={styles.textInput}
+                />
+              </View>
             </LinearGradient>
             <View style={{alignSelf: 'center'}}>
               <ButtonLarge
@@ -89,6 +102,8 @@ const styles = StyleSheet.create({
     width: 321,
     borderRadius: 13,
     alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   blueCircle: {
@@ -104,6 +119,33 @@ const styles = StyleSheet.create({
 
   mobilePic: {
     alignSelf: 'center',
+  },
+  textInput: {
+    width: '100%',
+    marginVertical: Platform.OS === 'android' ? -17 : -3,
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
+    color: '#4F504F',
+    marginHorizontal: 60
+  },
+  textInputView: {
+    width: '90%',
+    height: 50,
+    flexDirection: 'row',
+    // marginTop: 25,
+    borderColor: '#B4B3B3',
+    borderBottomWidth: 1,
+  },
+  placeholder: {
+    marginLeft: 10,
+    paddingBottom: 5,
+  },
+  text: {
+    height: 17,
+    color: '#9F9F9F',
+    fontSize: 14,
+    letterSpacing: 0.29,
+    lineHeight: 17,
   },
 });
 

@@ -11,7 +11,7 @@ import {ToolKit} from '../screens/ToolKitScreen'
 import {Accessories} from '../screens/AccessoriesScreen'
 import OwnerManualStack from './OwnerManualStack';
 import BookServiceStack from './BookServiceStack';
-
+import ServiceRecordStack from './ServiceRecordsStack';
 const Stack = createNativeStackNavigator();
 
 function MyGarageStack() {
@@ -29,8 +29,8 @@ function MyGarageStack() {
         />
         <Stack.Screen
           options={{headerShown: false}}
-          name="ServiceRecords"
-          component={BookService}
+          name="ServiceRecordStack"
+          component={ServiceRecordStack}
         />
         <Stack.Screen
           options={{headerShown: false}}

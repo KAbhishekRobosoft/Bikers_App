@@ -5,34 +5,65 @@ import {
   View,
   Image,
   Pressable,
-  TouchableOpacity,
   Platform,
   ScrollView,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import ButtonLarge from '../components/Buttons';
-import {BikeComponent1} from '../components/StarComponent';
-import {BikeComponent2} from '../components/StarComponent';
-import {BikeComponent3} from '../components/StarComponent';
-import {BikeComponent4} from '../components/StarComponent';
-import {BikeComponent5} from '../components/StarComponent';
+import BikeImageComponent from '../components/BikeImageComponent';
 import DatePicker from 'react-native-date-picker';
 import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
-import {deSetRegistered} from '../redux/AuthSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
-import {setMileStoneData} from '../redux/MileStoneSlice';
+import {getCoordinates, getDistance} from '../services/Auth';
+import GetLocation from 'react-native-get-location';
+import {getLocationName} from '../services/Auth';
+import {setLoading} from '../redux/MileStoneSlice';
+import {deSetLoading} from '../redux/MileStoneSlice';
+import { tripStore } from '../redux/MileStoneSlice';
 
 const CreateTrip = ({navigation}) => {
+  useEffect(() => {
+    setTimeout(async () => {
+      GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+      })
+        .then(async location => {
+          const resp = await getLocationName(
+            location.latitude,
+            location.longitude,
+          );
+          setcurLoc(resp.name);
+          setLat1(location.latitude);
+          setLon1(location.longitude);
+          dispatch(setLoading());
+        })
+        .catch(error => {
+          const {code, message} = error;
+          console.warn(code, message);
+        });
+    }, 500);
+  }, []);
+
   const mileStones = useSelector(state => state.milestone.mileStone);
+  const authData = useSelector(state => state.auth.userData);
+  const milesonesData = useSelector(state => state.milestone.milestoneData);
+  const loading = useSelector(state => state.milestone.isLoading);
   const dispatch = useDispatch();
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [date, setDate] = useState(new Date());
+  const [lat1, setLat1] = useState(0);
+  const [lon1, setLon1] = useState(0);
+  const [lat2, setLat2] = useState(0);
+  const [lon2, setLon2] = useState(0);
+  const [currLoc, setcurLoc] = useState('');
   const [endDate, setEndDate] = useState(new Date());
   const [time, setTimer] = useState(new Date());
   const [recommend, setRecommend] = useState(false);
@@ -45,12 +76,22 @@ const CreateTrip = ({navigation}) => {
   const contactsData = useSelector(state => state.contact);
   const [open, setOpen] = useState(true);
 
+  const whereto = useSelector(state => state.milestone.setTo);
+
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator />
+      </View>
+    );
+  }
   return (
     <SafeAreaView style={styles.main}>
       <View style={[styles.header]}>
         <Pressable
           onPress={() => {
             navigation.goBack();
+            dispatch(deSetLoading());
           }}>
           <Icon name="arrow-left" color={'white'} size={16} />
         </Pressable>
@@ -65,16 +106,15 @@ const CreateTrip = ({navigation}) => {
           ) : (
             <View style={styles.placeholderText}></View>
           )}
-         
-            <TextInput
-              name="Go"
-              value={go}
-              placeholderTextColor={'#4F504F'}
-              placeholder="Where do you want to go?"
-              style={styles.inputText}
-              onChangeText={value => setGo(value)}
-              onTouchStart={()=>navigation.navigate('SearchCity')}
-            />
+
+          <TextInput
+            name="Go"
+            value={whereto}
+            placeholderTextColor={'#4F504F'}
+            placeholder="Where do you want to go?"
+            style={styles.inputText}
+            onTouchStart={() => navigation.navigate('SearchCity')}
+          />
         </View>
         <View style={styles.textInputView}>
           {from ? (
@@ -94,22 +134,23 @@ const CreateTrip = ({navigation}) => {
             onChangeText={value => setFrom(value)}
           />
         </View>
-        {open && <Pressable
-          onPress={() => {
-            setOpen(false)
-            console.log('hello');
-          }}>
-          <View style={styles.locationNamesView}>
-            <Image
-              style={{height: 20, width: 20, marginLeft: 10}}
-              source={require('../assets/images/pin.png')}
-            />
-            <View>
-              <Text style={styles.textUdupi}>Udupi</Text>
-              <Text style={styles.textCurrentLocation}>current location</Text>
+        {open && (
+          <Pressable
+            onPress={() => {
+              setOpen(false);
+            }}>
+            <View style={styles.locationNamesView}>
+              <Image
+                style={{height: 20, width: 20, marginLeft: 10}}
+                source={require('../assets/images/pin.png')}
+              />
+              <View>
+                <Text style={styles.textUdupi}>{currLoc}</Text>
+                <Text style={styles.textCurrentLocation}>current location</Text>
+              </View>
             </View>
-          </View>
-        </Pressable>}
+          </Pressable>
+        )}
 
         <View style={styles.textInputView}>
           {tripName ? (
@@ -236,23 +277,7 @@ const CreateTrip = ({navigation}) => {
             {contactsData.addTripContacts.length === 0 && (
               <Text style={styles.text}>Invite other riders</Text>
             )}
-
-            {contactsData.addTripContacts.length === 1 ? (
-              <BikeComponent1 />
-            ) : null}
-
-            {contactsData.addTripContacts.length === 2 ? (
-              <BikeComponent2 />
-            ) : null}
-            {contactsData.addTripContacts.length === 3 ? (
-              <BikeComponent3 />
-            ) : null}
-            {contactsData.addTripContacts.length === 4 ? (
-              <BikeComponent4 />
-            ) : null}
-            {contactsData.addTripContacts.length === 5 ? (
-              <BikeComponent5 />
-            ) : null}
+            {contactsData.addTripContacts.length > 0 && <BikeImageComponent />}
           </View>
           {mileStones ? (
             <View style={styles.mileStone}>
@@ -261,7 +286,10 @@ const CreateTrip = ({navigation}) => {
           ) : null}
           <View style={styles.addMileStoneView}>
             <View style={styles.addUserImgView}>
-              <Pressable>
+              <Pressable
+                onPress={() => {
+                  dispatch(setMileStone(true));
+                }}>
                 <Image
                   style={styles.calenderImg}
                   source={require('../assets/images/mileStone.png')}
@@ -272,8 +300,38 @@ const CreateTrip = ({navigation}) => {
           </View>
           <View style={styles.btn}>
             <ButtonLarge
-              onPress={() => {
-                dispatch(deSetRegistered());
+              onPress={async () => {
+
+                const resp = await getCoordinates(from);
+                const resp1 = await getCoordinates(whereto);
+                
+                const obj = {
+                  tripName: tripName,
+                  source: [
+                    {
+                      place: from,
+                      latitude: resp.lat,
+                      longitude: resp.lon,
+                    },
+                  ],
+                  destination: [
+                    {
+                      place: whereto,
+                      latitude: resp1.lat,
+                      longitude: resp1.lon,
+                    },
+                  ],
+                  startDate: date.toString(),
+                  endDate: endDate.toString(),
+                  startTime: time.toString(),
+                  distance: '500m',
+                  riders: contactsData.addTripContacts,
+                  milestones: milesonesData,
+                };
+                console.log(obj)
+                dispatch(tripStore(obj))
+                navigation.navigate('TripSummary')
+                
               }}
               title="Done"
             />
@@ -284,7 +342,7 @@ const CreateTrip = ({navigation}) => {
   );
 };
 
-export default CreateTrip
+export default CreateTrip;
 
 const styles = StyleSheet.create({
   main: {flex: 1, backgroundColor: '#ffffff'},
@@ -363,7 +421,7 @@ const styles = StyleSheet.create({
     height: 40,
     width: 195,
     color: '#4F504F',
-    bottom:5
+    bottom: 5,
   },
   calenderView: {
     flexDirection: 'row',

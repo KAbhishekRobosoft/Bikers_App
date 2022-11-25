@@ -1,9 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
-  FlatList,
   SafeAreaView,
   StyleSheet,
-  TextInput,
   View,
   Text,
   Image,
@@ -12,10 +10,39 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
-import { RecommendationTripSummary } from '../components/Recommendations';
-import { CreateButton } from '../components/Buttons';
+import {RecommendationTripSummary} from '../components/Recommendations';
+import {CreateButton} from '../components/Buttons';
+import {useSelector, useDispatch} from 'react-redux';
+import {month} from '../utils/Functions';
+import BikeImageComponent from '../components/BikeImageComponent';
+import {getVerifiedKeys} from '../utils/Functions';
+import {setToken} from '../redux/AuthSlice';
+import {createTrip} from '../services/Auth';
+import Toast from 'react-native-simple-toast';
+import MapView from 'react-native-maps';
 
-export const TripSummary = () => {
+
+export const TripSummary = ({navigation}) => {
+  const mapRef= useRef(null)
+
+  useEffect(() => {
+    mapRef.current.animateToRegion(
+      {
+        latitude: tripDetails.source[0].latitude,
+        longitude: tripDetails.source[0].longitude,
+        latitudeDelta: 0.03,
+        longitudeDelta: 0.01,
+      },
+      3 * 1000,
+    );
+  }, []);
+  const milestonedata = useSelector(state => state.milestone.milestoneData);
+  const tripDetails = useSelector(state => state.milestone.storeTrip);
+  const contactsData = useSelector(state => state.contact);
+  const authData = useSelector(state => state.auth);
+  const dispatch  = useDispatch();
+  console.log('tripdetailssss', tripDetails);
+  console.log('dfdgd', milestonedata);
   return (
     <SafeAreaView>
       <View style={styles.mainView}>
@@ -43,20 +70,74 @@ export const TripSummary = () => {
         </View>
         <ScrollView style={styles.scrollView}>
           <View style={styles.mapView}>
+            <MapView
+              ref={mapRef}
+              style={styles.mapStyle}
+              customMapStyle={mapStyle}>
+              <Polyline
+                coordinates={[
+                  {
+                    latitude: tripDetails.source[0].latitude,
+                    longitude: tripDetails.source[0].longitude,
+                    latitudeDelta: 0.03,
+                    longitudeDelta: 0.01,
+                  },
+                  {
+                    latitude: tripDetails.destination[0].latitude,
+                    longitude: tripDetails.destination[0].longitude,
+                    latitudeDelta: 0.03,
+                    longitudeDelta: 0.01,
+                  },
+                ]}
+                strokeColor={'blue'}
+                strokeWidth={5}
+                lineDashPattern={[1]}
+              />
+
+              <Marker
+                coordinate={{
+                  latitude: tripDetails.source[0].latitude,
+                  longitude: tripDetails.source[0].longitude,
+                  latitudeDelta: 0.03,
+                  longitudeDelta: 0.01,
+                }}
+              />
+
+              <Marker
+                coordinate={{
+                  latitude: tripDetails.destination[0].latitude,
+                  longitude: tripDetails.destination[0].longitude,
+                  latitudeDelta: 0.03,
+                  longitudeDelta: 0.01,
+                }}
+              />
+            </MapView>
             <View style={styles.summaryView}>
               <Image source={require('../assets/images/motorcycle.png')} />
-              <Text style={styles.tripName}>Reunion Manali</Text>
-              <Text style={styles.dateText}>5 -15 Nov, 2017</Text>
-              <Text style={styles.timeText}> 08:00 am</Text>
+              <Text style={styles.tripName}>{tripDetails?.tripName}</Text>
+              <Text style={styles.dateText}>
+                {tripDetails?.startDate?.substring(8, 10)}
+                {tripDetails?.startDate?.substring(4, 7)} -
+                {tripDetails?.endDate?.substring(8, 10)}
+                {tripDetails?.endDate?.substring(4, 7)}
+                {tripDetails?.endDate?.substring(11, 15)}
+              </Text>
+              <Text style={styles.timeText}>
+                {tripDetails?.startTime?.substring(15, 21)}
+              </Text>
               <View style={styles.fromToView}>
-                <Text style={styles.fromToText}>Udupi</Text>
+                <Text style={styles.fromToText}>
+                  {tripDetails?.source[0]?.place}
+                </Text>
                 <View style={styles.lineView}></View>
-                <Text style={styles.fromToText}>Manali</Text>
+                <Text style={styles.fromToText}>
+                  {tripDetails?.destination[0]?.place}
+                </Text>
               </View>
             </View>
           </View>
           <View style={styles.listView}>
-            <TripSummaryList />
+            <TripSummaryList data={milestonedata} />
             <View style={styles.recommendationsView}>
               <RecommendationTripSummary />
             </View>
@@ -69,10 +150,25 @@ export const TripSummary = () => {
                   />
                 </Pressable>
               </View>
-              <Text style={styles.text}>Invite other riders</Text>
+              {contactsData.addTripContacts.length === 0 && (
+                <Text style={styles.text}>Invite other riders</Text>
+              )}
+              {contactsData.addTripContacts.length > 0 && (
+                <BikeImageComponent />
+              )}
             </View>
             <View style={styles.buttonView}>
-              <CreateButton title="CREATE" />
+              <CreateButton
+                onPress={async () => {
+                  const cred = await getVerifiedKeys(authData.userToken);
+                  dispatch(setToken(cred));
+                  const resp = await createTrip(tripDetails, cred);
+                  if (resp !== undefined)
+                    navigation.navigate('CreateTripSuccess');
+                  else Toast.show('Trip Creation Unsuccessfull');
+                }}
+                title="CREATE"
+              />
             </View>
           </View>
         </ScrollView>
@@ -191,7 +287,7 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     paddingTop: 40,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   calenderImg: {
     width: 22,

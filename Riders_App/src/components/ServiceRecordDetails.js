@@ -1,44 +1,86 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, Pressable} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {StarComponent5} from './StarComponent';
+import { Star } from './StarComponent';
 
-const NewServiceRecordDetails = () => {
+export const NewServiceRecordDetails = ({navigation}) => {
   return (
-    <View style={[styles.container, styles.shadow]}>
-      <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        colors={['#E59152', '#EFB97B']}
-        style={styles.gradientCreateButton}>
-        <Text
-          style={{
-            marginLeft: '25%',
-            color: '#ffffff',
-          }}>
-          New
-        </Text>
-      </LinearGradient>
-      <View style={styles.textContainer}>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginLeft: '5%',
-            alignItems: 'center',
-          }}>
-          <Text style={[styles.dateText, {color: '#ED7F2C'}]}>15</Text>
-          <View style={{marginLeft: '5%'}}>
-            <Text style={[styles.monthText, {color: '#ED7F2C'}]}>Nov</Text>
-            <Text style={[styles.yearText, {color: '#ED7F2C'}]}>2017</Text>
+    <Pressable onPress={() => navigation.navigate('BookingSummary')}>
+      <View style={[styles.container, styles.shadow]}>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#E59152', '#EFB97B']}
+          style={styles.gradientCreateButton}>
+          <Text
+            style={{
+              marginLeft: '25%',
+              color: '#ffffff',
+            }}>
+            New
+          </Text>
+        </LinearGradient>
+        <View style={styles.textContainer}>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: '5%',
+              alignItems: 'center',
+            }}>
+            <Text style={[styles.dateText, {color: '#ED7F2C'}]}>15</Text>
+            <View style={{marginLeft: '5%'}}>
+              <Text style={[styles.monthText, {color: '#ED7F2C'}]}>Nov</Text>
+              <Text style={[styles.yearText, {color: '#ED7F2C'}]}>2017</Text>
+            </View>
+          </View>
+          <View style={styles.line}></View>
+          <View style={{justifyContent: 'flex-start', right: 20}}>
+            <Text style={styles.serviceText}>General Service</Text>
+            <Star />
           </View>
         </View>
-        <View style={styles.line}></View>
-        <View style={{justifyContent: 'flex-start', right: 20}}>
-          <Text style={styles.serviceText}>General Service</Text>
-          <StarComponent5 />
+      </View>
+    </Pressable>
+  );
+};
+export const PastServiceRecordDetails = ({navigation}) => {
+  return (
+    <Pressable onPress={() => navigation.navigate('BookingSummary')}>
+      <View style={[styles.container, styles.shadow]}>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#10B691', '#3EE1BC']}
+          style={styles.gradientCreateButton}>
+          <Text
+            style={{
+              marginLeft: '25%',
+              color: '#ffffff',
+            }}>
+            Past
+          </Text>
+        </LinearGradient>
+        <View style={styles.textContainer}>
+          <View
+            style={{
+              flexDirection: 'row',
+              marginLeft: '5%',
+              alignItems: 'center',
+            }}>
+            <Text style={[styles.dateText, {color: '#1CB391'}]}>15</Text>
+            <View style={{marginLeft: '5%'}}>
+              <Text style={[styles.monthText, {color: '#1CB391'}]}>Nov</Text>
+              <Text style={[styles.yearText, {color: '#1CB391'}]}>2017</Text>
+            </View>
+          </View>
+          <View style={styles.line}></View>
+          <View style={{justifyContent: 'flex-start', right: 20}}>
+            <Text style={styles.serviceText}>General Service</Text>
+            <Star rating={3} />
+          </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -117,43 +159,4 @@ const styles = StyleSheet.create({
     left: '5%',
   },
 });
-export default NewServiceRecordDetails;
 
-export const PastServiceRecordDetails = () => {
-  return (
-    <View style={[styles.container, styles.shadow]}>
-      <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 1, y: 0}}
-        colors={['#10B691', '#3EE1BC']}
-        style={styles.gradientCreateButton}>
-        <Text
-          style={{
-            marginLeft: '25%',
-            color: '#ffffff',
-          }}>
-          Past
-        </Text>
-      </LinearGradient>
-      <View style={styles.textContainer}>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginLeft: '5%',
-            alignItems: 'center',
-          }}>
-          <Text style={[styles.dateText, {color: '#1CB391'}]}>15</Text>
-          <View style={{marginLeft: '5%'}}>
-            <Text style={[styles.monthText, {color: '#1CB391'}]}>Nov</Text>
-            <Text style={[styles.yearText, {color: '#1CB391'}]}>2017</Text>
-          </View>
-        </View>
-        <View style={styles.line}></View>
-        <View style={{justifyContent: 'flex-start', right: 20}}>
-          <Text style={styles.serviceText}>General Service</Text>
-          <StarComponent5 />
-        </View>
-      </View>
-    </View>
-  );
-};

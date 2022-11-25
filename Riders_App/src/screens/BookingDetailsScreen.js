@@ -22,7 +22,7 @@ const BookingDetails = ({navigation}) => {
   }
 
   const handleEditable = () => {
-    setEditable(!editable);
+    setEditable(true);
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -184,6 +184,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 14,
     color: '#4F504F',
+    width: '50%',
+    textAlign: 'right'
   },
   textInputCommentText: {
     fontFamily: 'Roboto-Regular',

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -17,25 +17,63 @@ import {useDispatch, useSelector} from 'react-redux';
 import {selectLiked} from '../redux/AccessoriesSlice';
 import {selectUnLiked} from '../redux/AccessoriesSlice';
 import {filterAccessories} from '../redux/AccessoriesSlice';
+import {searchProducts} from '../services/Auth';
+import {LikeProducts} from '../services/Auth';
+import {addAccessoriesData} from '../redux/AccessoriesSlice';
+import {addLiked} from '../redux/AccessoriesSlice';
+import {disLiked} from '../redux/AccessoriesSlice';
+
 export const Accessories = ({navigation}) => {
   const [text, setText] = useState('');
-  const [like, setLike] = useState(false);
-  const data = useSelector(state => state.shop.accessoriesData);
+  // const [like, setLike] = useState(false);
+  const [data, setData] = useState([]);
+
+  const accessories = useSelector(state => state.shop.accessoriesData);
+
   const dispatch = useDispatch();
 
-  const search = async value => {
+  const handleSearch = async value => {
     setText(value);
-    // const Data = await searchCity(value);
-    // setData(Data);
+    const Data = await searchProducts(value);
+    // const image = 'https'+Data.productImage.subString(4)
+    // console.log('dataaaaaa',Data)
+    const trimmedData = Data.map(ele => {
+      let liked = false;
+
+      if (ele.likedBy.length > 0) {
+        liked = true;
+      }
+      return {
+        _id: ele._id,
+        productImage: ele.productImage,
+        productName: ele.productName,
+        productPrice: ele.productPrice,
+        likedBy: ele.likedBy,
+        liked: liked,
+      };
+    });
+
+    dispatch(addAccessoriesData(trimmedData));
+
+    setData(Data);
   };
 
-  const handleLike = items => {
-    dispatch(selectLiked(items));
+  const handleLike = async items => {
+    const product = await LikeProducts(items._id);
+    console.log('likeeeeee', product.message);
+    // setLike(true)
+    dispatch(addLiked(items));
   };
 
-  const handleUnLike = items => {
-    dispatch(selectUnLiked(items));
+  const handleUnLike = async items => {
+    const product = await LikeProducts(items._id);
+    console.log('dislike ', product.message);
+    dispatch(disLiked(items));
+
+    // setLike(false)
   };
+
+  // const response = await searchProducts();
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -75,7 +113,8 @@ export const Accessories = ({navigation}) => {
             name="search"
             placeholder="What do you want?"
             placeholderTextColor={'rgba(141,138,138,0.87)'}
-            onChangeText={text => dispatch(filterAccessories(text))}
+            // onChangeText={text => dispatch(filterAccessories(text))}
+            onChangeText={text => handleSearch(text)}
             style={styles.textInput}
           />
           <Image
@@ -84,46 +123,65 @@ export const Accessories = ({navigation}) => {
           />
         </View>
       </View>
-      <ScrollView
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        style={{marginTop: 20}}>
-        <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
-          {data.map(item => {
-            return (
-              <View style={styles.mainView} key={item.id}>
-                <View style={styles.subView}>
-                  <Text style={styles.dateText}>{item.date}</Text>
-                  {!item.liked ? (
-                    <Pressable onPress={() => handleLike(item)}>
-                      <FontAwesome
-                        name="thumbs-up"
-                        color={'rgba(150,75,0,0.5)'}
-                        size={18}
-                        solid={false}
-                      />
-                    </Pressable>
-                  ) : (
-                    <Pressable onPress={() => handleUnLike(item)}>
-                      <FontAwesome
-                        name="thumbs-up"
-                        color={'rgba(150,75,0,0.5)'}
-                        size={18}
-                        solid={true}
-                      />
-                    </Pressable>
-                  )}
+
+      {text ? (
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          style={{marginTop: 20}}>
+          <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
+            {accessories.map(item => {
+              // console.log(item.likedBy)
+              return (
+                <View style={styles.mainView} key={item._id}>
+                  <View style={styles.subView}>
+                    <Text style={styles.dateText}>18 NOV</Text>
+                    {!item.liked ? (
+                      <Pressable onPress={() => handleLike(item)}>
+                        <FontAwesome
+                          name="thumbs-up"
+                          color={'rgba(150,75,0,0.5)'}
+                          size={18}
+                          solid={false}
+                        />
+                      </Pressable>
+                    ) : (
+                      <Pressable onPress={() => handleUnLike(item)}>
+                        <FontAwesome
+                          name="thumbs-up"
+                          color={'rgba(150,75,0,0.5)'}
+                          size={18}
+                          solid={true}
+                        />
+                      </Pressable>
+                    )}
+                  </View>
+                  <Image
+                    source={{uri: 'https' + item.productImage.substring(4)}}
+                    style={styles.image}
+                  />
+                  <View style={styles.costTitleText}>
+                    <Text style={styles.titleText}>{item.productName}</Text>
+                    <Text style={styles.costText}>Rs{item.productPrice}/-</Text>
+                  </View>
                 </View>
-                <Image source={item.photo} style={styles.image} />
-                <View style={styles.costTitleText}>
-                  <Text style={styles.titleText}>{item.title}</Text>
-                  <Text style={styles.costText}>{item.cost}</Text>
-                </View>
-              </View>
-            );
-          })}
-        </View>
-      </ScrollView>
+              );
+            })}
+          </View>
+        </ScrollView>
+      ) : (
+        <>
+          <Text
+            style={{
+              alignSelf: 'center',
+              marginTop: '50%',
+              fontFamily: 'Roboto-Medium',
+              fontSize: 30,
+            }}>
+            Search Something!!
+          </Text>
+        </>
+      )}
     </SafeAreaView>
   );
 };

@@ -8,7 +8,8 @@ export const PersonalDetails = () => {
   const dispatch=useDispatch()
   const userDetails=useSelector(state=>state.auth.userData)
  console.log(userDetails);
-  const [userData, setUserData] = useState([]);
+  // const [userData, setUserData] = useState([]);
+  
   useEffect(() => {
     setTimeout(async () => {
       const response = await getOwnerDetails();

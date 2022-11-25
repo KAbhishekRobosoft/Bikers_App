@@ -1,29 +1,34 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import RegisterUserIntro from '../screens/RegisterUserIntro';
+import ImageSuccessPage from '../screens/ImageSuccessPage';
+import NewUserSubStack from './NewUserSubStack';
+import {useSelector} from 'react-redux';
+import PracScreen from '../screens/PracScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
+import BottomTabLoginNavigation from './BottomTabLoginNavigation';
 import CreateTrip from '../screens/CreateTripScreen';
-import BottomTabNavigation from './BottomTabNavigation';
-import { ContactDisplay } from '../screens/Contact';
-import { TripSummary } from '../screens/TripSummaryScreen';
+import {ContactDisplay} from '../screens/Contact';
+import {TripSummary} from '../screens/TripSummaryScreen';
 import {CreateTripSuccess} from '../screens/CreateTripSuccessScreen';
-import { SearchCity } from '../screens/SearchCityScreen';
-
+import {SearchCity} from '../screens/SearchCityScreen';
 const Stack = createNativeStackNavigator();
 
-const NewUserSubStack = () => {
+function UserLoginStack() {
+  const authData = useSelector(state => state.auth);
   return (
-    <Stack.Navigator initialRouteName="WelcomeAboardScreen">
+    <Stack.Navigator initialRouteName="BottomTabLoginNavigation">
       <Stack.Screen
         options={{headerShown: false}}
-        name="WelcomeAboardScreen"
-        component={BottomTabNavigation}
+        name="BottomTabLoginNavigation"
+        component={BottomTabLoginNavigation}
       />
+
       <Stack.Screen
         options={{headerShown: false}}
         name="CreateTrip"
         component={CreateTrip}
       />
+
       <Stack.Screen
         options={{headerShown: false}}
         name="Contacts"
@@ -46,8 +51,6 @@ const NewUserSubStack = () => {
       />
     </Stack.Navigator>
   );
-};
+}
 
-export default NewUserSubStack;
-
-const styles = StyleSheet.create({});
+export default UserLoginStack;

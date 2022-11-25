@@ -1,32 +1,51 @@
 import React from 'react';
 import {View, StyleSheet, Text, ImageBackground, Image} from 'react-native';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
+import { getVerifiedKeys } from '../utils/Functions';
+import { deleteTrip } from '../services/Auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { setInitialState } from '../redux/MileStoneSlice';
 
-const UpcomingList = ({image, placeName, dateText, statusText}) => {
+const AllTripList = ({image, placeName, startDateText, statusText, endDateText, month,id}) => {
+  const state = useSelector(state => state.milestone.initialState)
+  const authData= useSelector(state=>state.auth);
+  const dispatch = useDispatch();
+  const handleClose = async (id) => {
+    console.log(id);
+    const key = await getVerifiedKeys(authData.userToken)
+    const reponse = await deleteTrip(id,key);
+    dispatch(setInitialState(state))
+  }
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={{uri: image}}
+        source={{uri: 'https' + image.substring(4)}}
         resizeMode="cover"
         style={styles.image}>
         <View style={styles.listContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.placeName}>{placeName}</Text>
-            <Text style={styles.dateText}>{dateText}</Text>
+            <View style={{flexDirection: 'row'}}>
+            <Text style={styles.dateText}>{startDateText.substring(8, 10)} - </Text>
+            <Text style={styles.dateText}>{endDateText.substring(8, 10)} {month.substring(4, 7)}</Text>
+            </View>
             <View style={styles.statusContainer}>
               <Text style={styles.statusText}>{statusText}</Text>
             </View>
           </View>
-          <Image
-            source={require('../assets/images/close.png')}
-            style={styles.closeImage}
-          />
+          <Pressable onPress={() => handleClose(id)}>
+            <Image
+              source={require('../assets/images/close.png')}
+              style={styles.closeImage}
+            />
+          </Pressable>
         </View>
       </ImageBackground>
     </View>
   );
 };
 
-export default UpcomingList;
+export default AllTripList;
 
 const styles = StyleSheet.create({
   container: {

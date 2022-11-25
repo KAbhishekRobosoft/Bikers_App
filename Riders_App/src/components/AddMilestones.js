@@ -1,4 +1,3 @@
-import {set} from 'immer/dist/internal';
 import React, {useState} from 'react';
 import {
   Text,
@@ -11,14 +10,14 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {useDispatch} from 'react-redux';
-import { setMileStone } from '../redux/MileStoneSlice';
-import { setMileStoneData } from '../redux/MileStoneSlice';
+import {setMileStone} from '../redux/MileStoneSlice';
+import {setMileStoneData} from '../redux/MileStoneSlice';
 import {useSelector} from 'react-redux';
+import {getCoordinates} from '../services/Auth';
 
 export const Milestone = () => {
   const mileStoneData = useSelector(state => state.milestone.milestoneData);
-  console.log(mileStoneData);
-
+  console.log('',mileStoneData)
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const dispatch = useDispatch();
@@ -36,9 +35,29 @@ export const Milestone = () => {
               Milestone {mileStoneData.length + 1}
             </Text>
             <Pressable
-              onPress={() => {
-                const obj = {from: from, to: to};
-                if ((from, to !== '')) {
+              onPress={async () => {
+                // console.log(resp)
+
+                if (from,to !== "") {
+                  const resp = await getCoordinates(from);
+                  const resp1 = await getCoordinates(to);
+                  const obj = {
+                    id: mileStoneData.length + 1,
+                    source: [
+                      {
+                        place: from,
+                        latitude: resp.lat,
+                        longitude: resp.lon,
+                      },
+                    ],
+                    destination: [
+                      {
+                        place: to,
+                        latitude: resp1.lat,
+                        longitude: resp1.lon,
+                      },
+                    ],
+                  };
                   dispatch(setMileStoneData(obj));
                   dispatch(setMileStone(false));
                 } else {

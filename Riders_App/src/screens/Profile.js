@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -11,12 +11,36 @@ import {
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
+import {useSelector} from 'react-redux';
 import ActivityList from '../components/MyActivityList';
+import {getSortedTripDetails, profileData} from '../services/Auth';
+import {month} from '../utils/Functions';
 
 const Profile = ({image}) => {
+  const [personData, setPersonData] = useState({});
+  const [tripDetails, setTripDetails] = useState([]);
+  const userData = useSelector(state => state.auth.userData);
+  //userData is use for image and mobileNumber of user.
+
+  useEffect(() => {
+    setTimeout(async () => {
+      const data = await profileData();
+      setPersonData(data);
+    }, 500);
+  }, []);
+
+  useEffect(() => {
+    setTimeout(async () => {
+      const tripdata = await getSortedTripDetails();
+      setTripDetails(tripdata);
+    }, 500);
+  }, []);
+
+  console.log(tripDetails);
+
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView>
+      <ScrollView style={{flex: 1}}>
         <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
@@ -34,11 +58,15 @@ const Profile = ({image}) => {
           </Pressable>
           <View style={styles.profileContainer}>
             <Image
-              source={require('../assets/images/Illustration_4.png')}
+              source={require('../assets/images/photoless.png')}
               style={styles.profileImage}
             />
-            <Text style={styles.profileName}>Ashley Varghese</Text>
-            <Text style={styles.bioText}>Chase your dreams</Text>
+            <Text style={styles.profileName}>
+              {personData?.userDetails?.userName}
+            </Text>
+            <Text style={styles.bioText}>
+              {personData?.userDetails?.aboutUser}
+            </Text>
             <View style={styles.followContainer}>
               <Text style={styles.followText}>Follow</Text>
             </View>
@@ -47,24 +75,42 @@ const Profile = ({image}) => {
         <View style={styles.detailContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.detailText}>Rides</Text>
-            <Text style={styles.numberText}>6</Text>
+            <Text style={styles.numberText}>{personData?.tripCount}</Text>
           </View>
           <View style={styles.line}></View>
           <View style={styles.textContainer}>
             <Text style={styles.detailText}>Following</Text>
-            <Text style={styles.numberText}>16</Text>
+            <Text style={styles.numberText}>
+              {personData?.userDetails?.followingCount}
+            </Text>
           </View>
           <View style={styles.line}></View>
           <View style={styles.textContainer}>
             <Text style={styles.detailText}>Followers</Text>
-            <Text style={styles.numberText}>5</Text>
+            <Text style={styles.numberText}>
+              {personData?.userDetails?.followersCount}
+            </Text>
           </View>
         </View>
         <View>
           <Text style={styles.activitiText}>My Activities</Text>
         </View>
-        <ActivityList />
-        <ActivityList />
+        <ScrollView style={{flex: 1}}>
+          {tripDetails.length > 0
+            ? tripDetails.map(details => (
+                <ActivityList
+                  key={details?._id}
+                  image={'https' + details?.tripImage?.substring(4)}
+                  placeName={details?.tripName}
+                  tripYear={details?.startDate?.substring(0, 4)}
+                  startDate={details?.startDate?.substring(8, 10)}
+                  endDate={details?.endDate?.substring(8, 10)}
+                  startMonth={month[details?.startDate?.substring(5, 7)]}
+                  endMonth={month[details?.endDate?.substring(5, 7)]}
+                />
+              ))
+            : null}
+        </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );
@@ -100,7 +146,7 @@ const styles = StyleSheet.create({
   profileImage: {
     height: 115,
     width: 115,
-    borderWidth: 2,
+    // borderWidth: 2,
     borderRadius: 65,
     marginBottom: 10,
     borderColor: '#FFFFFF',

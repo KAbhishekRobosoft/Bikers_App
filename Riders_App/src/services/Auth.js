@@ -1,5 +1,5 @@
-import {useDrawerStatus} from '@react-navigation/drawer';
 import axios from 'axios';
+const BASE_URL = 'https://riding-application.herokuapp.com/api/v1';
 
 export const register = async (values, haveBike) => {
   try {
@@ -35,15 +35,19 @@ export const checkIn = async values => {
 };
 
 export const refreshToken = async token => {
-  const options = {
-    method: 'POST',
-    url: 'https://riding-application.herokuapp.com/api/v1/getAccessToken',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const response = await axios.request(options);
-  return response.data;
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/getAccessToken',
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.log('An error has occurred');
+  }
 };
 
 export const searchCity = async string => {
@@ -175,7 +179,6 @@ export const addOwnerDetails = async (values, token) => {
   }
 };
 
-
 export const getOwnerDetails = async token => {
   try {
     const response = await axios.get(
@@ -257,3 +260,166 @@ export const getBikeDetails = async token => {
     console.log('Error Occured');
   }
 };
+
+export const createTrip = async (obj,token) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/trip/createTrip',
+      obj,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.log('Error Occured');
+  }
+};
+
+export const getCoordinates = async place => {
+  const response = await axios.get(
+    `https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=2dff1a0f7576b6388c89a15bc5a40171`,
+  );
+  return response.data.coord;
+};
+
+export const profileData = async (token, mobile) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/getProfile',
+      {
+        mobile: '9963865628', //mobile number from userData
+      },
+      {
+        headers: {
+          // Authorization: `Bearer ${token}`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk2Mzg2NTYyOCIsImlhdCI6MTY2OTI5MDc4NSwiZXhwIjoxNjY5Mjk0Mzg1fQ.KZFlHVbYr7P1d-WBEBqcjWYP3KfR_jQxJAlosEyDghc`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getSortedTripDetails = async token => {
+  try {
+    const response = await axios.get(BASE_URL + '/trip/getTrip', {
+      headers: {
+        // Authorization: `Bearer ${token}`,
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk2Mzg2NTYyOCIsImlhdCI6MTY2OTI5MDc4NSwiZXhwIjoxNjY5Mjk0Mzg1fQ.KZFlHVbYr7P1d-WBEBqcjWYP3KfR_jQxJAlosEyDghc`,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const searchProducts = async value => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/product/searchProducts',
+      {
+        text: value,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTI4OTAxMiwiZXhwIjoxNjY5MjkyNjEyfQ.P7B188BFv4PbdyuH5-vfiXuISXPro5MeHtrPJZM1S8M'}`,
+        },
+      },
+    );
+    return response.data.products;
+  } catch (error) {
+    console.log('Error Occured');
+  }
+};
+
+export const LikeProducts = async value => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/product/addLike',
+      {
+        _id: value,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTI4OTAxMiwiZXhwIjoxNjY5MjkyNjEyfQ.P7B188BFv4PbdyuH5-vfiXuISXPro5MeHtrPJZM1S8M'}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.log('Error Occured');
+  }
+};
+
+export const getLocationName = async (lat, lon) => {
+  const response = await axios.get(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=2dff1a0f7576b6388c89a15bc5a40171`,
+  );
+  return response.data;
+};
+
+export const UserTrips = async (key) => {
+  console.log('key',key)
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/trip/searchTrip',
+      {
+        text: ""
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${key}`
+        }
+      }
+    );
+    return response.data;
+  } catch (err) {
+    console.log('error occurred');
+  }
+};
+
+export const SearchUserTrips = async (key,value) => {
+  console.log('key',key)
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/trip/searchTrip',
+      {
+        text: value
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${key}`
+        }
+      }
+    );
+    console.log('usertripssss',response.data);
+    return response.data;
+  } catch (err) {
+    console.log('error occurred');
+  }
+};
+
+export const deleteTrip = async (id, key) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/trip/deleteTrip',
+      {
+        _id: id
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${key}`
+        }
+      }
+    );
+    console.log('delete tripssss',response.data);
+    return response.data;
+  }catch(err) {
+    console.log('delete trip error occurred');
+  }
+}

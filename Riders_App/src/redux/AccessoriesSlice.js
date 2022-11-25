@@ -4,44 +4,52 @@ import {AccessoriesData} from '../assets/data';
 const asseccoriesSlice = createSlice({
   name: 'shop',
   initialState: {
-    accessoriesData: AccessoriesData,
-    filterAccessoriesData: AccessoriesData,
+    
     bikeType: [],
     allBikeData: [],
     fliteredBikeData: [],
+    accessoriesData: [],
+    filterAccessoriesData: [],
   },
 
   reducers: {
-    selectLiked: (state, action) => {
+    addAccessoriesData: (state, action) => {
+      state.accessoriesData = action.payload;
+      state.filterAccessoriesData = action.payload;
+    },
+    addLiked: (state, action) => {
       state.accessoriesData = state.accessoriesData.map(ele => {
-        if (ele.id === action.payload.id) {
+        if (ele._id === action.payload._id) {
           return {
             ...ele,
-            id: action.payload.id,
-            photo: action.payload.photo,
-            title: action.payload.title,
-            cost: action.payload.cost,
+            _id: ele._id,
+            productImage: ele.productImage,
+            productName: ele.productName,
+            productPrice: ele.productPrice,
+            likedBy: ele.likedBy,
             liked: true,
-            date: action.payload.date,
-          };
-        }
-        return ele;
-      });
-      state.filterAccessoriesData = state.filterAccessoriesData.map(ele => {
-        if (ele.id === action.payload.id) {
-          return {
-            ...ele,
-            id: action.payload.id,
-            photo: action.payload.photo,
-            title: action.payload.title,
-            cost: action.payload.cost,
-            liked: true,
-            date: action.payload.date,
           };
         }
         return ele;
       });
     },
+    disLiked: (state, action) => {
+      state.accessoriesData = state.accessoriesData.map(ele => {
+        if (ele._id === action.payload._id) {
+          return {
+            ...ele,
+            _id: ele._id,
+            productImage: ele.productImage,
+            productName: ele.productName,
+            productPrice: ele.productPrice,
+            likedBy: ele.likedBy,
+            liked: false,
+          };
+        }
+        return ele;
+      });
+    },
+<<<<<<< HEAD
     selectUnLiked: (state, action) => {
       state.accessoriesData = state.accessoriesData.map(ele => {
         if (ele.id === action.payload.id) {
@@ -72,11 +80,14 @@ const asseccoriesSlice = createSlice({
         return ele;
       });
     },
+=======
+>>>>>>> de9c4b05ae1bc7321772a3a0042a90a0db0d0525
     filterAccessories: (state, action) => {
       state.accessoriesData = state.filterAccessoriesData.filter(site =>
         site.title.toLowerCase().includes(action.payload.toLowerCase()),
       );
     },
+<<<<<<< HEAD
     addBikeType: (state, action) => {
       state.bikeType = action.payload;
     },
@@ -101,4 +112,10 @@ export const {
   addBikeData,
   fliteredBikeDetails,
 } = asseccoriesSlice.actions;
+=======
+  },
+});
+export const {addAccessoriesData, filterAccessories, addLiked, disLiked} =
+  asseccoriesSlice.actions;
+>>>>>>> de9c4b05ae1bc7321772a3a0042a90a0db0d0525
 export default asseccoriesSlice.reducer;

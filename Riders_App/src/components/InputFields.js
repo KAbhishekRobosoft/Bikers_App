@@ -107,7 +107,16 @@ export const Password = props => {
   );
 };
 
-export const PlaceholderTextField = props => {
+export const PlaceholderTextField = (props) => {
+
+  const {
+    field: {name,onBlur,onChange,value},
+    form: {errors, touched, setFieldTouched},
+    ...inputProps
+  } = props;
+
+  const hasError = errors[name] && touched[name];
+
   return (
     <View>
       <View style={styles.inputTextView2}>
@@ -120,16 +129,21 @@ export const PlaceholderTextField = props => {
             <></>
           )}
           <TextInput
-            name={props.name}
             placeholder={props.placeholder}
             placeholderTextColor={'#4F504F'}
             style={styles.typedText}
             keyboardType={props.keyboardType}
-            value={props.value}
-            onChangeText={props.onChangeText}
+            value={value}
+            onChangeText={text => onChange(name)(text)}
+            onBlur={() => {
+              setFieldTouched(name);
+              onBlur(name);
+            }}
+            {...inputProps}
           />
         </View>
       </View>
+      {hasError && <Text style={styles.errorText}>{errors[name]}</Text>}
     </View>
   );
 };
@@ -174,12 +188,23 @@ export const PlaceholderTextFieldOwnerManual = props => {
 };
 export const GarageInputField = props => {
   return (
-    <Pressable onPress={props.onPress}>
-      <View style={styles.garageView}>
-        <Image source={props.source} style={styles.imageIcons} />
-        <Text style={styles.optionsText}>{props.text}</Text>
-      </View>
-    </Pressable>
+    <>
+      {props.disabled ? (
+        <Pressable onPress={props.onPress} disabled={props.disabled}>
+          <View style={styles.garageView2}>
+            <Image source={props.source} style={styles.imageIcons} />
+            <Text style={styles.optionsText}>{props.text}</Text>
+          </View>
+        </Pressable>
+      ) : (
+        <Pressable onPress={props.onPress} disabled={props.disabled}>
+          <View style={styles.garageView}>
+            <Image source={props.source} style={styles.imageIcons} />
+            <Text style={styles.optionsText}>{props.text}</Text>
+          </View>
+        </Pressable>
+      )}
+    </>
   );
 };
 
@@ -229,7 +254,7 @@ const styles = StyleSheet.create({
   },
   inputTextView2: {
     width: '100%',
-    height: 60,
+    height: 50,
     flexDirection: 'row',
     marginTop: 25,
     borderColor: '#B4B3B3',
@@ -330,6 +355,15 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(151,151,151,0.85)',
     borderBottomWidth: 1,
     paddingLeft: 20,
+  },
+  garageView2: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 70,
+    borderBottomColor: 'rgba(151,151,151,0.85)',
+    borderBottomWidth: 1,
+    paddingLeft: 20,
+    opacity: 0.5
   },
   imageIcons: {
     height: 32,
