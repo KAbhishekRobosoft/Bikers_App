@@ -1,18 +1,23 @@
 import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {getOwnerDetails} from '../services/Auth';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const PersonalDetails = () => {
+
+  const dispatch=useDispatch()
   const userDetails=useSelector(state=>state.auth.userData)
-  console.log(userDetails);
+ console.log(userDetails);
   const [userData, setUserData] = useState([]);
   useEffect(() => {
     setTimeout(async () => {
       const response = await getOwnerDetails();
-      setUserData(response);
+      setUserData(response[0]);
+      //dispatch(setUserData(response))
     }, 1000);
   }, []);
+
+  //console.log(userData);
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
@@ -25,7 +30,7 @@ export const PersonalDetails = () => {
               placeholder='Licence'
               editable={false}
               placeholderTextColor="#4F504F"
-              value={userDetails.lisenceNumber} 
+              defaultValue={userDetails.lisenceNumber} 
             />
           </View>
         </View>
@@ -38,7 +43,7 @@ export const PersonalDetails = () => {
               placeholder="Name"
               editable={false}
               placeholderTextColor="#4F504F"
-              value={userDetails.name} 
+              defaultValue={userDetails.userName} 
 
             />
           </View>
@@ -52,7 +57,7 @@ export const PersonalDetails = () => {
               placeholder="Door"
               editable={false}
               placeholderTextColor="#4F504F"
-              value={userDetails.doorNumber} 
+              defaultValue={userDetails.doorNumber} 
             />
           </View>
         </View>
@@ -65,7 +70,7 @@ export const PersonalDetails = () => {
               placeholder="City"
               editable={false}
               placeholderTextColor="#4F504F"
-              value={userDetails.city} 
+              defaultValue={userDetails.city} 
             />
           </View>
         </View>
@@ -78,7 +83,7 @@ export const PersonalDetails = () => {
               placeholder="State"
               editable={false}
               placeholderTextColor="#4F504F"
-              value={userDetails.state} 
+              defaultValue={userDetails.state} 
 
             />
           </View>
@@ -92,7 +97,7 @@ export const PersonalDetails = () => {
               placeholder="Pincode"
               editable={false}
               placeholderTextColor="#4F504F"
-              value={userDetails.pincode} 
+              defaultValue={userDetails.pincode} 
 
             />
           </View>
@@ -106,7 +111,7 @@ export const PersonalDetails = () => {
               placeholder="Mobile"
               editable={false}
               placeholderTextColor="#4F504F"
-              value={userDetails.mobile} 
+              defaultValue={userDetails.mobile} 
 
             />
           </View>
@@ -120,7 +125,7 @@ export const PersonalDetails = () => {
               placeholder="Email"
               editable={false}
               placeholderTextColor="#4F504F"
-              value={userDetails.email} 
+              defaultValue={userDetails.email} 
 
             />
           </View>

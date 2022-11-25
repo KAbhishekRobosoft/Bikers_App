@@ -70,7 +70,7 @@ export const searchServiceCenter = async (value, token) => {
       }),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTE5NzAwNCwiZXhwIjoxNjY5MjAwNjA0fQ.-wJhsRsUFo5fh0Okp0BdeqUR3OE8vJKcPiQz-T8Ds1E"}`,
+        Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTE5NzAwNCwiZXhwIjoxNjY5MjAwNjA0fQ.-wJhsRsUFo5fh0Okp0BdeqUR3OE8vJKcPiQz-T8Ds1E'}`,
       },
     },
   );
@@ -165,7 +165,7 @@ export const addOwnerDetails = async (values, token) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg'}`,
         },
       },
     );
@@ -174,17 +174,85 @@ export const addOwnerDetails = async (values, token) => {
     console.log('Error Occured');
   }
 };
+
+
 export const getOwnerDetails = async token => {
   try {
     const response = await axios.get(
       'https://riding-application.herokuapp.com/api/v1/owner/getOwnerDetails',
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg'}`,
         },
       },
     );
     return response.data;
+  } catch (error) {
+    //console.log('Error Occured');
+  }
+};
+
+
+export const updateOwnerDetails = async (values, token) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/owner/updateOwnerDetails',
+      {
+        city: values.city,
+        state: values.state,
+        doorNumber: values.doorNumber,
+        pincode: values.pincode,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg'}`,
+        },
+      },
+    );
+    console.log('res',response.data);
+  } catch (error) {
+    console.log('Error Occured');
+  }
+};
+
+export const addBikeDetails = async (values, token) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/bike/addBike',
+      {
+        vehicleType: values.vehicleType,
+        vehicleNumber: values.vehicleNumber,
+        engineNumber: values.engineNumber,
+        frameNumber: values.frameNumber,
+        batteryMake: values.batteryMake,
+        registerNumber: values.registerNumber,
+        model: values.model,
+        color: values.color,
+        dealerCode: values.dealerCode,
+      },
+      {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg`,
+        },
+      },
+    );
+
+    console.log(response.data);
+  } catch (error) {
+    console.log('Error Occured');
+  }
+};
+export const getBikeDetails = async token => {
+  try {
+    const response = await axios.get(
+      'https://riding-application.herokuapp.com/api/v1/bike/getBikeDetails',
+      {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg`,
+        },
+      },
+    );
+    return response.data
   } catch (error) {
     console.log('Error Occured');
   }

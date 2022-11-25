@@ -1,4 +1,3 @@
-import {Formik} from 'formik';
 import React, {useState} from 'react';
 import {
   FlatList,
@@ -11,6 +10,7 @@ import {
   Pressable,
   ScrollView,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
@@ -19,40 +19,45 @@ import {useDispatch, useSelector} from 'react-redux';
 import {addOwnerDetails} from '../services/Auth';
 import {setUserData} from '../redux/AuthSlice';
 import ButtonLarge from '../components/Buttons';
+import {Field, Formik} from 'formik';
+import * as yup from 'yup';
 
 export const AddPersonalDetails = ({navigation}) => {
   const useDetails = useSelector(state => state.auth.userData);
   const dispatch = useDispatch();
 
-  const [licence, setLicence] = useState();
-  const [name, setName] = useState();
-  const [DoorNo, setDoorNo] = useState();
-  const [city, setCity] = useState();
-  const [state, setState] = useState();
-  const [pincode, setPincode] = useState();
-  const [mobile, setMobile] = useState();
-  const [email, setEmail] = useState();
+  // const [licence, setLicence] = useState();
+  // const [name, setName] = useState();
+  // const [DoorNo, setDoorNo] = useState();
+  // const [city, setCity] = useState();
+  // const [state, setState] = useState();
+  // const [pincode, setPincode] = useState();
+  // const [mobile, setMobile] = useState();
+  // const [email, setEmail] = useState();
 
-  const submitForm = async () => {
+  const submitForm = async (values, {resetForm}) => {
+    console.log(values);
+
     const obj = {
-      lisenceNumber: licence,
-      city: city,
-      state: state,
-      doorNumber: DoorNo,
-      pincode: pincode,
+      lisenceNumber: values.licence,
+      city: values.city,
+      state: values.state,
+      doorNumber: values.doorNumber,
+      pincode: values.pincode,
     };
     const response = await addOwnerDetails(obj);
     const userData = {
-      lisenceNumber: licence,
-      city: city,
-      state: state,
-      doorNumber: DoorNo,
-      pincode: pincode,
+      lisenceNumber: values.licence,
+      city: values.city,
+      state: values.state,
+      doorNumber: values.doorNumber,
+      pincode: values.pincode,
       name: useDetails.name,
       mobile: useDetails.mobile,
       email: useDetails.email,
     };
     dispatch(setUserData(userData));
+    resetForm((initialValues = ''));
     console.log(response);
   };
 
@@ -67,16 +72,16 @@ export const AddPersonalDetails = ({navigation}) => {
               }}>
               <Icon
                 name="md-arrow-back"
-                color='white'
+                color="white"
                 size={25}
                 style={styles.icon}
               />
             </Pressable>
-            <Text style={styles.headerText}>Add Details</Text>
+            <Text style={styles.headerText}>Add Personal Details</Text>
           </View>
         </View>
         <ScrollView
-          style={{height: '88%'}}
+          style={{height: '91%'}}
           showsVerticalScrollIndicator={false}>
           <View style={styles.personalDetailView}>
             <View
@@ -90,71 +95,100 @@ export const AddPersonalDetails = ({navigation}) => {
                 Add Personal Details
               </Text>
             </View>
-            <View style={{width: '90%', alignSelf: 'center', marginTop: 20}}>
-              <PlaceholderTextFieldOwnerManual
-                name="licence"
-                placeholder="Licence No."
-                keyboardType="default"
-                value={licence}
-                onChangeText={value => setLicence(value)}
-              />
-              <PlaceholderTextFieldOwnerManual
-                name="name"
-                placeholder="Name"
-                keyboardType="default"
-                value={name}
-                onChangeText={value => setName(value)}
-                editable={false}
-              />
-              <PlaceholderTextFieldOwnerManual
-                name="doorNumber"
-                placeholder="Door No."
-                keyboardType="default"
-                value={DoorNo}
-                onChangeText={value => setDoorNo(value)}
-              />
-              <PlaceholderTextFieldOwnerManual
-                name="city"
-                placeholder="City"
-                keyboardType="default"
-                value={city}
-                onChangeText={value => setCity(value)}
-              />
-              <PlaceholderTextFieldOwnerManual
-                name="state"
-                placeholder="State"
-                keyboardType="default"
-                value={state}
-                onChangeText={value => setState(value)}
-              />
-              <PlaceholderTextFieldOwnerManual
-                name="pincode"
-                placeholder="Pincode"
-                keyboardType="default"
-                value={pincode}
-                onChangeText={value => setPincode(value)}
-              />
-              <PlaceholderTextFieldOwnerManual
-                name="mobile"
-                placeholder="Mobile"
-                keyboardType="default"
-                value={mobile}
-                onChangeText={value => setMobile(value)}
-                editable={false}
-              />
-              <PlaceholderTextFieldOwnerManual
-                name="email"
-                placeholder="Email"
-                keyboardType="default"
-                value={email}
-                onChangeText={value => setEmail(value)}
-                editable={false}
-              />
+            <View style={{width: '90%', alignSelf: 'center', marginTop: 10}}>
+              <Formik
+                //validationSchema={personalDetailsValidation}
+                initialValues={{
+                  licence: '',
+                  name: '',
+                  doorNumber: '',
+                  city: '',
+                  state: '',
+                  pincode: '',
+                  mobile: '',
+                  email: '',
+                }}
+                onSubmit={(values, {resetForm}) =>
+                  submitForm(values, {resetForm})
+                }>
+                {({values, handleSubmit, isValid, resetForm}) => (
+                  <>
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="licence"
+                      placeholder="Licence No."
+                      keyboardType="numeric"
+                      value={values.licence}
+                      
+                    />
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="name"
+                      placeholder="Name"
+                      keyboardType="default"
+                      value={values.name}
+                      editable={false}
+                      defaultValue={useDetails.name}
+                    />
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="doorNumber"
+                      placeholder="Door No."
+                      keyboardType="default"
+                      value={values.doorNumber}
+                    />
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="city"
+                      placeholder="City"
+                      keyboardType="default"
+                      value={values.city}
+                    />
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="state"
+                      placeholder="State"
+                      keyboardType="default"
+                      value={values.state}
+                    />
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="pincode"
+                      placeholder="Pincode"
+                      keyboardType="numeric"
+                      value={values.pincode}
+                      
+                    />
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="mobile"
+                      placeholder="Mobile"
+                      keyboardType="default"
+                      value={values.mobile}
+                      editable={false}
+                      defaultValue={useDetails.mobile}
+                    />
+                    <Field
+                      component={PlaceholderTextFieldOwnerManual}
+                      name="email"
+                      placeholder="Email"
+                      keyboardType="default"
+                      value={values.email}
+                      editable={false}
+                      defaultValue={useDetails.email}
+                    />
+                    <View style={styles.btn}>
+                      <ButtonLarge
+                        title="Submit"
+                        onPress={handleSubmit}
+                        disabled={!isValid}
+                      />
+                    </View>
+
+                  </>
+                )}
+              </Formik>
             </View>
-          </View>
-         
-          <View style={styles.btn}>
-            <ButtonLarge title="Submit" onPress={submitForm} />
           </View>
         </ScrollView>
       </View>
@@ -204,7 +238,7 @@ const styles = StyleSheet.create({
     height: 27,
   },
   personalDetailView: {
-    height: 584,
+    //height:Platform.OS==='ios'? 584:630,
     alignSelf: 'center',
     backgroundColor: '#FFFFFF',
     width: '90%',
@@ -228,6 +262,8 @@ const styles = StyleSheet.create({
   },
   btn: {
     alignSelf: 'center',
-    marginVertical: 15,
+    marginVertical: Platform.OS === 'ios' ? 30 : 40,
+    marginBottom: 40,
+   
   },
 });

@@ -11,8 +11,11 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
 import TopNavigation from '../utils/TopNavigation';
+import { useSelector } from 'react-redux';
 
 const OwnersManualDetailScreen = ({navigation}) => {
+
+
   return (
     <SafeAreaView style={styles.main}>
       <View style={[styles.header, styles.shadow]}>
@@ -43,7 +46,7 @@ const OwnersManualDetailScreen = ({navigation}) => {
           </Pressable>
         </View>
       </View>
-      <TopNavigation editable={false} />
+      <TopNavigation editable={false}  defaultValue={true}/>
     </SafeAreaView>
   );
 };

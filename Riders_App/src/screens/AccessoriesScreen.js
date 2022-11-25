@@ -16,7 +16,7 @@ import {AccessoriesData} from '../assets/data';
 import {useDispatch, useSelector} from 'react-redux';
 import {selectLiked} from '../redux/AccessoriesSlice';
 import {selectUnLiked} from '../redux/AccessoriesSlice';
-import { filterAccessories } from '../redux/AccessoriesSlice';
+import {filterAccessories} from '../redux/AccessoriesSlice';
 export const Accessories = ({navigation}) => {
   const [text, setText] = useState('');
   const [like, setLike] = useState(false);
@@ -87,7 +87,7 @@ export const Accessories = ({navigation}) => {
       <ScrollView
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        style={{ marginTop: 20}}>
+        style={{marginTop: 20}}>
         <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
           {data.map(item => {
             return (

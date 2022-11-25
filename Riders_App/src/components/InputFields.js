@@ -134,11 +134,17 @@ export const PlaceholderTextField = props => {
   );
 };
 export const PlaceholderTextFieldOwnerManual = props => {
+
+  const {
+    field: {name, onBlur, onChange, value},
+    form: {errors, touched, setFieldTouched},
+    ...inputProps
+  } = props;
   return (
     <View>
       <View style={styles.inputTextView3}>
         <View style={styles.placeholderView2}>
-          {props.value ? (
+          {props.value || props.defaultValue ? (
             <View style={styles.commonPlaceholder}>
               <Text style={styles.text}>{props.placeholder}</Text>
             </View>
@@ -152,9 +158,14 @@ export const PlaceholderTextFieldOwnerManual = props => {
             style={styles.typedText}
             keyboardType={props.keyboardType}
             value={props.value}
-            onChangeText={props.onChangeText}
             editable={props.editable}
             defaultValue={props.defaultValue}
+            onChangeText={text => onChange(name)(text)}
+            onBlur={() => {
+              setFieldTouched(name);
+              onBlur(name);
+            }}
+            {...inputProps}
           />
         </View>
       </View>
