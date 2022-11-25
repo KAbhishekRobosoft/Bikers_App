@@ -61,7 +61,6 @@ const ResetPasswordScreen = ({navigation}) => {
               confirmPassword: '',
             }}
             onSubmit={async values => {
-              console.log(values.password)
               const resp= await resetPassword({mobile:authData.userData.mobile,password:values.password})
               if(resp !== undefined)
                   navigation.navigate('ResetSuccess');

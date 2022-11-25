@@ -6,6 +6,10 @@ import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 import MyGarageStack from './MyGarageStack';
 import AddBikeDetails from '../screens/AddBikeDetailsScreen';
 import { AddPersonalDetails } from '../screens/AddPersonalDetailsScreen';
+import AllTripList from '../components/AllTripList';
+import Profile from '../screens/Profile';
+import ProfileStack from './ProfileStack';
+
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomTabNavigation = () => {
@@ -63,7 +67,7 @@ const BottomTabNavigation = () => {
       />
       <Tab.Screen
         name="Trip3"
-        component={CreateTrip}
+        component={AllTripList}
         listeners={{
           tabPress: e => {
             e.preventDefault();
@@ -92,7 +96,7 @@ const BottomTabNavigation = () => {
         //     e.preventDefault();
         //   },
         // }}
-        component={AddPersonalDetails}
+        component={ProfileStack}
         options={{
           tabBarIcon: ({focused}) => {
             return (

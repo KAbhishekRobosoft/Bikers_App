@@ -14,29 +14,24 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
 import ActivityList from '../components/MyActivityList';
 import {getSortedTripDetails, profileData} from '../services/Auth';
-import {month} from '../utils/Functions';
+import {getVerifiedKeys, month} from '../utils/Functions';
 
-const Profile = ({image}) => {
+const Profile = ({navigation}) => {
   const [personData, setPersonData] = useState({});
   const [tripDetails, setTripDetails] = useState([]);
   const userData = useSelector(state => state.auth.userData);
+  const token = useSelector(state => state.auth);
+  const state= useSelector(state=>state.milestone.initalState)
   //userData is use for image and mobileNumber of user.
-
   useEffect(() => {
     setTimeout(async () => {
-      const data = await profileData();
+      const cred= await getVerifiedKeys(token.userToken)
+      const data = await profileData(cred,userData.mobile);
       setPersonData(data);
-    }, 500);
-  }, []);
-
-  useEffect(() => {
-    setTimeout(async () => {
-      const tripdata = await getSortedTripDetails();
+      const tripdata = await getSortedTripDetails(cred);
       setTripDetails(tripdata);
     }, 500);
-  }, []);
-
-  console.log(tripDetails);
+  }, [state]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -50,17 +45,20 @@ const Profile = ({image}) => {
             source={require('../assets/images/profilebike.png')}
             resizeMode="cover"
             style={styles.backgroundImage}></ImageBackground>
-          <Pressable>
+          <Pressable onPress={()=>navigation.navigate('updateProfile')}>
             <Image
               source={require('../assets/images/edit.png')}
               style={styles.editIcon}
             />
           </Pressable>
           <View style={styles.profileContainer}>
-            <Image
+            {token.image !== '' ?(<Image
+              source={{uri:token.image}}
+              style={styles.profileImage}
+            />):<Image
               source={require('../assets/images/photoless.png')}
               style={styles.profileImage}
-            />
+            />}
             <Text style={styles.profileName}>
               {personData?.userDetails?.userName}
             </Text>
@@ -144,9 +142,8 @@ const styles = StyleSheet.create({
   },
 
   profileImage: {
-    height: 115,
-    width: 115,
-    // borderWidth: 2,
+    height: 120,
+    width: 150,
     borderRadius: 65,
     marginBottom: 10,
     borderColor: '#FFFFFF',

@@ -35,19 +35,17 @@ export const checkIn = async values => {
 };
 
 export const refreshToken = async token => {
-  try {
-    const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/getAccessToken',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+  let res = await fetch(
+    'https://riding-application.herokuapp.com/api/v1/getAccessToken',
+    {
+      method: 'post',
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
-    return response.data;
-  } catch (error) {
-    console.log('An error has occurred');
-  }
+    },
+  );
+  let data = await res.json();
+  return data;
 };
 
 export const searchCity = async string => {
@@ -169,7 +167,7 @@ export const addOwnerDetails = async (values, token) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg'}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -284,32 +282,11 @@ export const getCoordinates = async place => {
   return response.data.coord;
 };
 
-export const profileData = async (token, mobile) => {
-  try {
-    const response = await axios.post(
-      BASE_URL + '/getProfile',
-      {
-        mobile: '9963865628', //mobile number from userData
-      },
-      {
-        headers: {
-          // Authorization: `Bearer ${token}`,
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk2Mzg2NTYyOCIsImlhdCI6MTY2OTI5MDc4NSwiZXhwIjoxNjY5Mjk0Mzg1fQ.KZFlHVbYr7P1d-WBEBqcjWYP3KfR_jQxJAlosEyDghc`,
-        },
-      },
-    );
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
 export const getSortedTripDetails = async token => {
   try {
     const response = await axios.get(BASE_URL + '/trip/getTrip', {
       headers: {
-        // Authorization: `Bearer ${token}`,
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk2Mzg2NTYyOCIsImlhdCI6MTY2OTI5MDc4NSwiZXhwIjoxNjY5Mjk0Mzg1fQ.KZFlHVbYr7P1d-WBEBqcjWYP3KfR_jQxJAlosEyDghc`,
+        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
@@ -382,7 +359,6 @@ export const UserTrips = async key => {
 };
 
 export const SearchUserTrips = async (key, value) => {
-
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/trip/searchTrip',
@@ -442,6 +418,83 @@ export const BookService = async (key, value) => {
     );
     return response.data;
   } catch (err) {
+    console.log('error in book service');
+  }
+};
+export const profileData = async (token, mobile) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/getProfile',
+      {
+        mobile: mobile,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
     console.log('Book Service error occurred');
+    console.log(err);
+  }
+};
+
+export const editProfileuserName = async (token, userName) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/editProfile',
+      {
+        userName: userName,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const editAboutUser = async (token, aboutUser) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/editProfile',
+      {
+        aboutUser: aboutUser,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const editProfile = async (token, obj) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/editProfile',
+      {
+        userName: obj.userName,
+        aboutUser: obj.aboutUser,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
   }
 };
