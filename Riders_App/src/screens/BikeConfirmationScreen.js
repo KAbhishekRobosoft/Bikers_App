@@ -32,11 +32,13 @@ function BikeConfirmationScreen({navigation}) {
           end={{x: 1, y: 0}}
           colors={['#ED7E2B', '#F4A264']}>
           <SmallButton onPress={()=>{navigation.navigate('Register')
-              dispatch(setHaveBike())
+              dispatch(setHaveBike(true))
           }} styleName="confirmStyle" name="YES" />
         </LinearGradient>
         <View style={styles.confirmBut2}>
-          <SmallButton  onPress={()=>navigation.navigate('Register')} styleName="confirmStyle" name="NO" />
+          <SmallButton  onPress={()=>{navigation.navigate('Register')
+            dispatch(setHaveBike(false))
+          }} styleName="confirmStyle" name="NO" />
         </View>
       </View>
       <View style={styles.confirmTreeCon}>

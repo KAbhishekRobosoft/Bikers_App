@@ -1,45 +1,47 @@
-import React,{useEffect} from 'react'
-import {View,ActivityIndicator} from 'react-native'
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useEffect} from 'react';
+import {View, ActivityIndicator} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { setToken } from '../redux/AuthSlice';
-import AppTourStack from './AppTourStack'
+import {setToken} from '../redux/AuthSlice';
+import AppTourStack from './AppTourStack';
 import StackNavigation from './StackNavigation';
 import NewUserStack from './NewUserStack';
-import { getVerifiedKeys } from './Functions';
+import {getVerifiedKeys} from './Functions';
 
 function NavigationFunctionality() {
-    const authData= useSelector(state=>state.auth)
-    const dispatch= useDispatch()
+  const authData = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
-
-    useEffect(() => {
-        setTimeout(async () => {
-          let userToken,cred
-          userToken = null
-          cred = null
-          try {
-             userToken = await AsyncStorage.getItem('token');
-             cred = await getVerifiedKeys(userToken)
-          } catch (e) {
-            console.log(e);
-          }
-          dispatch(setToken(cred))
-        }, 1000);
-      }, [authData.userToken]);
-    
-      if (authData.isLoading) {
-        return (
-          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <ActivityIndicator color="green" size="large" />
-          </View>
-        );
+  useEffect(() => {
+    setTimeout(async () => {
+      let userToken, cred;
+      cred = null;
+      userToken = null;
+      try {
+        userToken = await AsyncStorage.getItem('token');
+        if (userToken !== null) cred = await getVerifiedKeys(userToken);
+      } catch (e) {
+        console.log(e);
       }
-  return (
-    
-        authData.infoPage !== false ?<AppTourStack /> :(
-            (authData.userToken === null) ? <StackNavigation /> :((authData.userToken !== null && authData.otpVerified) ? <NewUserStack /> : null)
-        ))
+      if (userToken !== null) dispatch(setToken(cred));
+      else dispatch(setToken(userToken));
+    }, 1000);
+  }, []);
+
+  if (authData.isLoading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator color="green" size="large" />
+      </View>
+    );
+  }
+  return authData.infoPage !== false ? (
+    <AppTourStack />
+  ) : authData.userToken === null ? (
+    <StackNavigation />
+  ) : authData.userToken !== null && authData.otpVerified ? (
+    <NewUserStack />
+  ) : null;
 }
 
-export default NavigationFunctionality
+export default NavigationFunctionality;

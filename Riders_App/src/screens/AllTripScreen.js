@@ -13,6 +13,7 @@ import AllTripList from '../components/AllTripList';
 import { UserTrips } from '../services/Auth';
 import { getVerifiedKeys } from '../utils/Functions';
 import { SearchUserTrips } from '../services/Auth';
+
 const AllTrips = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
   const authData= useSelector(state=>state.auth);

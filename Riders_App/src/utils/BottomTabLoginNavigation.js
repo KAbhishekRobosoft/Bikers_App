@@ -5,6 +5,8 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 import MyGarageStack from './MyGarageStack';
 import UpcomingList from '../screens/AllTripScreen';
+import Profile from '../screens/Profile';
+import ProfileStack from './ProfileStack';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -58,7 +60,7 @@ const BottomTabLoginNavigation = () => {
       />
       <Tab.Screen
         name="Trip3"
-        component={CreateTrip}
+        component={UpcomingList}
         options={{
           tabBarIcon: ({focused}) => {
             return (
@@ -77,7 +79,7 @@ const BottomTabLoginNavigation = () => {
       />
       <Tab.Screen
         name="Trip4"
-        component={CreateTrip}
+        component={ProfileStack}
         options={{
           tabBarIcon: ({focused}) => {
             return (

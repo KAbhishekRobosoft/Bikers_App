@@ -1,20 +1,15 @@
 import React, {useState} from 'react';
 import {
-  FlatList,
   SafeAreaView,
   StyleSheet,
-  TextInput,
   View,
   Text,
-  Image,
   Pressable,
   ScrollView,
-  TouchableOpacity,
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
-import {BikeDetails} from '../components/BikeDetailsComponent';
 import {useDispatch, useSelector} from 'react-redux';
 import {addOwnerDetails, getOwnerDetails} from '../services/Auth';
 import {setUserData} from '../redux/AuthSlice';
@@ -25,15 +20,6 @@ import * as yup from 'yup';
 export const AddPersonalDetails = ({navigation}) => {
   const useDetails = useSelector(state => state.auth.userData);
   const dispatch = useDispatch();
-
-  // const [licence, setLicence] = useState();
-  // const [name, setName] = useState();
-  // const [DoorNo, setDoorNo] = useState();
-  // const [city, setCity] = useState();
-  // const [state, setState] = useState();
-  // const [pincode, setPincode] = useState();
-  // const [mobile, setMobile] = useState();
-  // const [email, setEmail] = useState();
 
   const submitForm = async (values, {resetForm}) => {
     console.log(values);
@@ -98,7 +84,7 @@ export const AddPersonalDetails = ({navigation}) => {
             </View>
             <View style={{width: '90%', alignSelf: 'center', marginTop: 10}}>
               <Formik
-                //validationSchema={personalDetailsValidation}
+                // validationSchema={personalDetailsValidation}
                 initialValues={{
                   licence: '',
                   name: '',

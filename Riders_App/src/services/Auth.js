@@ -34,20 +34,19 @@ export const checkIn = async values => {
   }
 };
 
-export const refreshToken = async token => {
-  try {
-    const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/getAccessToken',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+export const refreshToken = async (token) => {
+
+  let res = await fetch(
+    'https://riding-application.herokuapp.com/api/v1/getAccessToken',
+    {
+      method: 'post',
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
-    return response.data;
-  } catch (error) {
-    console.log('An error has occurred');
-  }
+    },
+  );
+  let data = await res.json();
+  return data;
 };
 
 export const searchCity = async string => {
@@ -169,7 +168,7 @@ export const addOwnerDetails = async (values, token) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${'${token}'}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -195,7 +194,6 @@ export const getOwnerDetails = async token => {
   }
 };
 
-
 export const updateOwnerDetails = async (values, token) => {
   try {
     const response = await axios.post(
@@ -212,7 +210,7 @@ export const updateOwnerDetails = async (values, token) => {
         },
       },
     );
-    console.log('res',response.data);
+    console.log('res', response.data);
   } catch (error) {
     console.log('Error Occured');
   }
@@ -255,13 +253,13 @@ export const getBikeDetails = async token => {
         },
       },
     );
-    return response.data
+    return response.data;
   } catch (error) {
     console.log('Error Occured');
   }
 };
 
-export const createTrip = async (obj,token) => {
+export const createTrip = async (obj, token) => {
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/trip/createTrip',
@@ -285,32 +283,13 @@ export const getCoordinates = async place => {
   return response.data.coord;
 };
 
-export const profileData = async (token, mobile) => {
-  try {
-    const response = await axios.post(
-      BASE_URL + '/getProfile',
-      {
-        mobile: '9963865628', //mobile number from userData
-      },
-      {
-        headers: {
-          // Authorization: `Bearer ${token}`,
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk2Mzg2NTYyOCIsImlhdCI6MTY2OTI5MDc4NSwiZXhwIjoxNjY5Mjk0Mzg1fQ.KZFlHVbYr7P1d-WBEBqcjWYP3KfR_jQxJAlosEyDghc`,
-        },
-      },
-    );
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
+
 
 export const getSortedTripDetails = async token => {
   try {
     const response = await axios.get(BASE_URL + '/trip/getTrip', {
       headers: {
-        // Authorization: `Bearer ${token}`,
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk2Mzg2NTYyOCIsImlhdCI6MTY2OTI5MDc4NSwiZXhwIjoxNjY5Mjk0Mzg1fQ.KZFlHVbYr7P1d-WBEBqcjWYP3KfR_jQxJAlosEyDghc`,
+        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
@@ -363,19 +342,19 @@ export const getLocationName = async (lat, lon) => {
   return response.data;
 };
 
-export const UserTrips = async (key) => {
-  console.log('key',key)
+export const UserTrips = async key => {
+  console.log('key', key);
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/trip/searchTrip',
       {
-        text: ""
+        text: '',
       },
       {
         headers: {
-          Authorization: `Bearer ${key}`
-        }
-      }
+          Authorization: `Bearer ${key}`,
+        },
+      },
     );
     return response.data;
   } catch (err) {
@@ -383,21 +362,21 @@ export const UserTrips = async (key) => {
   }
 };
 
-export const SearchUserTrips = async (key,value) => {
-  console.log('key',key)
+export const SearchUserTrips = async (key, value) => {
+  console.log('key', key);
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/trip/searchTrip',
       {
-        text: value
+        text: value,
       },
       {
         headers: {
-          Authorization: `Bearer ${key}`
-        }
-      }
+          Authorization: `Bearer ${key}`,
+        },
+      },
     );
-    console.log('usertripssss',response.data);
+    console.log('usertripssss', response.data);
     return response.data;
   } catch (err) {
     console.log('error occurred');
@@ -409,17 +388,94 @@ export const deleteTrip = async (id, key) => {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/trip/deleteTrip',
       {
-        _id: id
+        _id: id,
       },
       {
         headers: {
-          Authorization: `Bearer ${key}`
-        }
-      }
+          Authorization: `Bearer ${key}`,
+        },
+      },
     );
-    console.log('delete tripssss',response.data);
+    console.log('delete tripssss', response.data);
     return response.data;
-  }catch(err) {
+  } catch (err) {
     console.log('delete trip error occurred');
   }
-}
+};
+
+export const profileData = async (token, mobile) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/getProfile',
+      {
+        mobile: mobile, 
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const editProfileuserName = async (token,userName) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/editProfile',
+      {
+        userName: userName, 
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const editAboutUser = async (token,aboutUser) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/editProfile',
+      {
+        aboutUser: aboutUser, 
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const editProfile = async (token,obj) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/editProfile',
+      {
+        userName:obj.userName,
+        aboutUser: obj.aboutUser, 
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};

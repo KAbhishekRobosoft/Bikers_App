@@ -58,8 +58,8 @@ const authenticateSlice = createSlice({
       state.forgotPassword = false;
     },
 
-    setHaveBike:(state)=>{
-        state.haveBike= true
+    setHaveBike:(state,action)=>{
+        state.haveBike= action.payload
     },
 
     setRegistered: state => {
