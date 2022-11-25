@@ -23,7 +23,7 @@ export const TripSummaryList = ({data}) => {
             return (
               <View
                 style={styles.mainView}
-                key={Math.floor(Math.random() * 100)}>
+                key={item.id}>
                 <View style={styles.dotView}>
                   <View>
                     <Image source={require('../assets/images/Oval.png')} />

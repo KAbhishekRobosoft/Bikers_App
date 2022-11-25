@@ -15,14 +15,16 @@ function NavigationFunctionality() {
 
     useEffect(() => {
         setTimeout(async () => {
-          let userToken
+          let userToken,cred
+          cred= null
           userToken = null
           try {
              userToken = await AsyncStorage.getItem('token');
+             cred= await getVerifiedKeys(userToken)
           } catch (e) {
             console.log(e);
           }
-          dispatch(setToken(userToken))
+          dispatch(setToken(cred))
         }, 1000);
       }, [authData.userToken]);
     

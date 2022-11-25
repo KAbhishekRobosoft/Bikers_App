@@ -301,7 +301,8 @@ const CreateTrip = ({navigation}) => {
           <View style={styles.btn}>
             <ButtonLarge
               onPress={async () => {
-
+                console.log(from)
+                console.log(whereto)
                 const resp = await getCoordinates(from);
                 const resp1 = await getCoordinates(whereto);
                 

@@ -16,7 +16,7 @@ import ButtonLarge from '../components/Buttons';
 function ImageSuccessPage({navigation}) {
   const authData = useSelector(state => state.auth);
   const {width, height} = useWindowDimensions();
-  const marginRight = width > height ? (Platform.OS === 'ios' ? 60 : 0) : 10;
+  const marginRight = width > height ? (Platform.OS === 'ios' ? 60 : 50) : 10;
   const marginTop= width > height ? (Platform.OS === "ios" ? 15 : 0) : 39
   
   return (
