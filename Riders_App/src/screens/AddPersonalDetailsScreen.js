@@ -57,8 +57,9 @@ export const AddPersonalDetails = ({navigation}) => {
       email: useDetails.email,
     };
     dispatch(setUserData(userData));
+    
     resetForm((initialValues = ''));
-    console.log(response);
+   
   };
 
   return (
@@ -119,7 +120,6 @@ export const AddPersonalDetails = ({navigation}) => {
                       placeholder="Licence No."
                       keyboardType="numeric"
                       value={values.licence}
-                      
                     />
                     <Field
                       component={PlaceholderTextFieldOwnerManual}
@@ -157,7 +157,6 @@ export const AddPersonalDetails = ({navigation}) => {
                       placeholder="Pincode"
                       keyboardType="numeric"
                       value={values.pincode}
-                      
                     />
                     <Field
                       component={PlaceholderTextFieldOwnerManual}
@@ -184,7 +183,6 @@ export const AddPersonalDetails = ({navigation}) => {
                         disabled={!isValid}
                       />
                     </View>
-
                   </>
                 )}
               </Formik>
@@ -264,6 +262,5 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: Platform.OS === 'ios' ? 30 : 40,
     marginBottom: 40,
-   
   },
 });

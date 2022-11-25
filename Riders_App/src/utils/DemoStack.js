@@ -7,20 +7,22 @@ import SearchServiceComponent from '../components/SearchServiceComponent';
 import OwnersManualScreen from '../screens/OwnersManualScreen';
 import OwnersManualDetailScreen from '../screens/OwnersManualDetailScreen';
 import { OwnerManualEdit } from '../screens/OwnerManualEditableScreen';
+import AddBikeDetails from '../screens/AddBikeDetailsScreen';
+import { AddPersonalDetails } from '../screens/AddPersonalDetailsScreen';
 const Stack = createNativeStackNavigator();
 
 function DemoStack() {
   return (
-      <Stack.Navigator initialRouteName="SearchServiceScreen">
+      <Stack.Navigator initialRouteName="AddBikeDetails">
         <Stack.Screen
           options={{headerShown: false}}
-          name="SearchServiceScreen"
-          component={SearchServiceScreen}
+          name="AddBikeDetails"
+          component={AddBikeDetails}
         />
         <Stack.Screen
           options={{headerShown: false}}
-          name="ServiceCenter"
-          component={ServiceCenterScreen}
+          name="AddPersonalDetails"
+          component={AddPersonalDetails}
         />
       
       </Stack.Navigator>

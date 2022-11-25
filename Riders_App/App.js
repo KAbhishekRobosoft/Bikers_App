@@ -5,6 +5,8 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
 import {NavigationContainer} from '@react-navigation/native';
 import NavigationFunctionality from './src/utils/NavigationFunctionality';
+import AddBikeDetails from './src/screens/AddBikeDetailsScreen';
+import DemoStack from './src/utils/DemoStack';
 
 let persistor = persistStore(store);
 
@@ -13,7 +15,7 @@ const App = () => {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <NavigationContainer>
-          <NavigationFunctionality />
+          <DemoStack />
         </NavigationContainer>
       </PersistGate>
     </Provider>
