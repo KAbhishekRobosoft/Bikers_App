@@ -296,13 +296,3 @@ export const getLocationName = async (lat, lon) => {
   );
   return response.data;
 };
-
-export const getDistance= async (lat1,lon1,lat2,lon2)=>{
-  try{
-    const response= await axios.post('https://api.tomtom.com/routing/1/calculateRoute/52.50931,13.42936:52.50274,13.43872/json?key={CP6eYa1nKYmvo3zE3e78a7xGH9rGQeZB}')
-    response.data
-  }
-  catch(er){
-    console.log(er)
-  }
-}

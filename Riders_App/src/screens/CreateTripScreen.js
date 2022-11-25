@@ -29,7 +29,6 @@ import { tripStore } from '../redux/MileStoneSlice';
 const CreateTrip = ({navigation}) => {
   useEffect(() => {
     setTimeout(async () => {
-      const rep= await getDistance()
       GetLocation.getCurrentPosition({
         enableHighAccuracy: true,
         timeout: 15000,
