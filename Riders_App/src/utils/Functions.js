@@ -22,7 +22,7 @@ export async function getVerifiedKeys(key) {
         'token',
         JSON.stringify(response.access_token),
       );
-      return response;
+      return response.access_token;
     }
   } else {
     return 'Enter access token';

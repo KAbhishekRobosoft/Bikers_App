@@ -5,7 +5,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setToken } from '../redux/AuthSlice';
 import AppTourStack from './AppTourStack'
 import StackNavigation from './StackNavigation';
-import PracScreen from '../screens/PracScreen';
 import NewUserStack from './NewUserStack';
 import { getVerifiedKeys } from './Functions';
 
@@ -17,10 +16,10 @@ function NavigationFunctionality() {
     useEffect(() => {
         setTimeout(async () => {
           let userToken
-          userToken = null;
+          cred= null
+          userToken = null
           try {
              userToken = await AsyncStorage.getItem('token');
-             await getVerifiedKeys(userToken)
           } catch (e) {
             console.log(e);
           }

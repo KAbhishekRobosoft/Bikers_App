@@ -17,19 +17,11 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { setImage } from '../redux/AuthSlice';
 import { refreshToken } from '../services/Auth';
-import { setToken } from '../redux/AuthSlice';
+import { setToken } from '../redux/AuthSlice'; 
 
 function RegisterUserIntro({navigation}) {
   const dispatch= useDispatch()
   const authData= useSelector(state=>state.auth)
-
-  useEffect(()=>{
-      setTimeout(async ()=>{
-          const resp= await refreshToken(authData.userToken)
-          dispatch(setToken(resp.access_token))
-      
-      },1000)
-  },[])
 
 
   const pickImage = () => {
@@ -47,8 +39,8 @@ function RegisterUserIntro({navigation}) {
           image.mime.indexOf('/') + 1,
         )}`,
       })
-
-      const resp = await uploadImage(payload,authData.userToken)
+      let cred= await getVerifiedKeys(authData.userToken)
+      const resp = await uploadImage(payload,cred)
       if(resp.hasOwnProperty('message')){
           dispatch(setImage('https'+resp.url.substring(4)))
           navigation.navigate('ImageSuccess')
