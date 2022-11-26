@@ -7,6 +7,7 @@ import MyGarageStack from './MyGarageStack';
 import UpcomingList from '../screens/AllTripScreen';
 import Profile from '../screens/Profile';
 import ProfileStack from './ProfileStack';
+import AddBikeDetails from '../screens/AddBikeDetailsScreen'
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -98,7 +99,7 @@ const BottomTabLoginNavigation = () => {
       />
       <Tab.Screen
         name="Trip5"
-        component={CreateTrip}
+        component={AddBikeDetails}
         options={{
           tabBarIcon: ({focused}) => {
             return (

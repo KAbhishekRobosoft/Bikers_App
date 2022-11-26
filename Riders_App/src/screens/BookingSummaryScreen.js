@@ -13,8 +13,18 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import {Star} from '../components/StarComponent';
+import {useRoute} from '@react-navigation/native';
+import {month1} from '../utils/Functions';
 
 const BookingSummary = ({navigation}) => {
+  const route = useRoute();
+  console.log('routeeeee', route)
+  const handlePast = () => {
+    const obj = {
+      date: route.params.slotDate
+    }
+    navigation.navigate('Invoice',obj)
+  }
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={[styles.header]}>
@@ -32,31 +42,57 @@ const BookingSummary = ({navigation}) => {
           </Pressable>
           <Text style={styles.headerText}>Booking Details</Text>
         </View>
-        <Pressable onPress={() => navigation.navigate('Invoice')}>
-          <Image
-            source={require('../assets/images/invoice.png')}
-            style={styles.invoiceImage}
-          />
-        </Pressable>
+        {new Date(route.params.slotDate) < Date.now() ? (
+          <Pressable
+            onPress={handlePast}>
+            <Image
+              source={require('../assets/images/invoice.png')}
+              style={styles.invoiceImage}
+            />
+          </Pressable>
+        ) : (
+          <Pressable disabled={true}>
+            <Image
+              source={require('../assets/images/invoice.png')}
+              style={styles.invoiceImage}
+            />
+          </Pressable>
+        )}
       </View>
       <ScrollView
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
         <View style={{marginHorizontal: '6%'}}>
           <View style={[styles.container, styles.shadow]}>
-            <LinearGradient
-              start={{x: 0, y: 0}}
-              end={{x: 1, y: 0}}
-              colors={['#10B691', '#3EE1BC']}
-              style={styles.gradientCreateButton}>
-              <Text
-                style={{
-                  marginLeft: '25%',
-                  color: '#ffffff',
-                }}>
-                Past
-              </Text>
-            </LinearGradient>
+            {new Date(route.params.slotDate) < Date.now() ? (
+              <LinearGradient
+                start={{x: 0, y: 0}}
+                end={{x: 1, y: 0}}
+                colors={['#10B691', '#3EE1BC']}
+                style={styles.gradientCreateButton}>
+                <Text
+                  style={{
+                    marginLeft: '25%',
+                    color: '#ffffff',
+                  }}>
+                  Past
+                </Text>
+              </LinearGradient>
+            ) : (
+              <LinearGradient
+                start={{x: 0, y: 0}}
+                end={{x: 1, y: 0}}
+                colors={['#E59152', '#EFB97B']}
+                style={styles.gradientCreateButton}>
+                <Text
+                  style={{
+                    marginLeft: '25%',
+                    color: '#ffffff',
+                  }}>
+                  New
+                </Text>
+              </LinearGradient>
+            )}
             <View style={styles.textContainer}>
               <View
                 style={{
@@ -64,19 +100,23 @@ const BookingSummary = ({navigation}) => {
                   marginLeft: '5%',
                   alignItems: 'center',
                 }}>
-                <Text style={[styles.dateText, {color: '#ED7F2C'}]}>15</Text>
+                <Text style={[styles.dateText, {color: '#ED7F2C'}]}>
+                  {route.params.slotDate.substring(8, 10)}
+                </Text>
                 <View style={{marginLeft: '5%'}}>
                   <Text style={[styles.monthText, {color: '#ED7F2C'}]}>
-                    Nov
+                    {month1[route.params.slotDate.substring(5, 7)]}
                   </Text>
                   <Text style={[styles.yearText, {color: '#ED7F2C'}]}>
-                    2017
+                    {route.params.slotDate.substring(0, 4)}
                   </Text>
                 </View>
               </View>
               <View style={styles.line}></View>
               <View style={{justifyContent: 'flex-start', right: 20}}>
-                <Text style={styles.serviceText}>General Service</Text>
+                <Text style={styles.serviceText}>
+                  {route.params.serviceType}
+                </Text>
                 <Star rating={0} />
               </View>
             </View>
@@ -84,48 +124,51 @@ const BookingSummary = ({navigation}) => {
               <Text style={styles.titleText}>Mobile Number</Text>
               <Text>:</Text>
               <TextInput style={styles.textInputText} editable={editable}>
-                809917301
+                {route.params.mobile}
               </TextInput>
             </View>
             <View style={styles.textInputView}>
               <Text style={styles.titleText}>Vehicle Number</Text>
               <Text>:</Text>
               <TextInput style={styles.textInputText} editable={editable}>
-                <Text>KA 03F5333</Text>
+                <Text>{route.params.vehicleNumber}</Text>
               </TextInput>
             </View>
             <View style={styles.textInputView}>
               <Text style={styles.titleText}>Service Type</Text>
               <Text>:</Text>
               <TextInput style={styles.textInputText} editable={editable}>
-                <Text>General</Text>
+                <Text>{route.params.serviceType}</Text>
               </TextInput>
             </View>
             <View style={styles.textInputView}>
               <Text style={styles.titleText}>Time</Text>
               <Text>:</Text>
               <TextInput style={styles.textInputText} editable={editable}>
-                <Text>10:00am</Text>
+                <Text>
+                  {route.params.time.substring(0, 4)}
+                  {route.params.time.substring(8, 10)}
+                </Text>
               </TextInput>
             </View>
             <View style={styles.textInputView}>
               <Text style={styles.titleText}>Dealer</Text>
               <Text>:</Text>
               <TextInput style={styles.textInputText} editable={editable}>
-                <Text>Tune Motors</Text>
+                <Text>{route.params.dealer}</Text>
               </TextInput>
             </View>
             <View style={styles.textInputView}>
               <Text style={styles.titleText}>City</Text>
               <Text>:</Text>
               <TextInput style={styles.textInputText} editable={editable}>
-                <Text>Udupi</Text>
+                <Text>{route.params.city}</Text>
               </TextInput>
             </View>
             <View style={styles.textInputCommentView}>
               <Text style={styles.titleTextComment}>Comments</Text>
               <Text style={styles.textInputCommentText}>
-                Brake Oil, handle tight and chain lose
+                {route.params.comments}
               </Text>
             </View>
           </View>
@@ -137,10 +180,14 @@ const BookingSummary = ({navigation}) => {
               marginTop: 20,
               marginBottom: 50,
             }}>
-            <Text style={styles.totalText}>Total bill payed</Text>
-            <Text style={styles.ruppesText}>Rs 4,000 /-</Text>
-            <Text style={styles.totalText}>Rate the Service</Text>
-            <Star rating={0} />
+            {new Date(route.params.slotDate) < Date.now() ? (
+              <>
+                <Text style={styles.totalText}>Total bill payed</Text>
+                <Text style={styles.ruppesText}>Rs 4,000 /-</Text>
+                <Text style={styles.totalText}>Rate the Service</Text>
+                <Star rating={0} />
+              </>
+            ) : null}
           </View>
         </View>
       </ScrollView>

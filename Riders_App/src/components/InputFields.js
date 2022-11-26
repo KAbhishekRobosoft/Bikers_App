@@ -209,7 +209,40 @@ export const GarageInputField = props => {
 export const DropDownInputField = props => {
   return (
     <View>
-      <View style={{height: 25, marginTop: 15, paddingLeft: 5, paddingTop: 6}}>
+      <View style={{height: 25, marginTop: 15, paddingLeft: 5, paddingTop: 6,}}>
+        {props.values ? (
+          <View>
+            <Text style={styles.text}>{props.placeholder}</Text>
+          </View>
+        ) : (
+          <></>
+        )}
+      </View>
+      <View style={{marginTop: -38}}>
+        <SelectList
+          data={props.data}
+          setSelected={props.setSelected}
+          boxStyles={styles.dropDownBox}
+          inputStyles={styles.dropDropInput}
+          dropdownStyles={styles.dropDown}
+          values={props.values}
+          placeholder={props.placeholder}
+          dropdownTextStyles={styles.dropDownText}
+          arrowicon={
+            <Icon name="sort-down" color="rgba(0,0,0,0.54)" size={16} />
+          }
+          closeicon={<Icon name="sort-up" color="rgba(0,0,0,0.54)" size={16} />}
+          search={false}
+        />
+      </View>
+    </View>
+  );
+};
+
+export const DropDownInputField2 = props => {
+  return (
+    <View style={{marginTop: -30}}>
+      <View style={{height: 25, marginTop: 15, paddingLeft: 5, paddingTop: 6,}}>
         {props.values ? (
           <View>
             <Text style={styles.text}>{props.placeholder}</Text>

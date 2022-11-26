@@ -16,8 +16,8 @@ import {useRef} from 'react';
 import SearchServiceComponent from '../components/SearchServiceComponent';
 import {searchServiceCenter} from '../services/Auth';
 import { getVerifiedKeys } from '../utils/Functions';
-import { useSelector } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import {setToken} from '../redux/AuthSlice'
 const SearchServiceScreen = ({navigation}) => {
   const route = useRoute()
   const [text, setText] = useState('');
@@ -25,6 +25,7 @@ const SearchServiceScreen = ({navigation}) => {
   const [cross, setCross] = useState(false);
   const ref = useRef();
   const authData= useSelector(state=>state.auth);
+  const dispatch = useDispatch();
 
   const search = async value => {
     if (value !== '') {
@@ -34,6 +35,7 @@ const SearchServiceScreen = ({navigation}) => {
     }
     setText(value);
     const key = await getVerifiedKeys(authData.userToken)
+    dispatch(setToken(key))
     const Data = await searchServiceCenter(value, key);
     setData(Data);
   };

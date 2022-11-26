@@ -16,16 +16,15 @@ import {Formik, Field} from 'formik';
 import {useRoute} from '@react-navigation/native';
 import {BookingDetailsInput} from '../components/InputFields';
 import { BookService } from '../services/Auth';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getVerifiedKeys } from '../utils/Functions';
+import {setToken} from '../redux/AuthSlice'
 
 const BookingDetails = ({navigation}) => {
   const route = useRoute();
   const [editable, setEditable] = useState(false);
   const [comment, setComment] = useState(route.params.comment);
-  const book = () => {
-    navigation.navigate('BookingSuccess');
-  };
+  const dispatch = useDispatch();
 
   const handleEditable = () => {
     setEditable(true);
@@ -85,6 +84,7 @@ const BookingDetails = ({navigation}) => {
             };
 
             const key = await getVerifiedKeys(authData.userToken)
+            dispatch(setToken(key))
             const response  = await BookService(key,value)
             navigation.navigate('BookingSuccess')
 

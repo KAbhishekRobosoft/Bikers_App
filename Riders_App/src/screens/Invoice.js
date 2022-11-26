@@ -10,8 +10,12 @@ import {
   ScrollView,
 } from 'react-native';
 import InvoiceItem from '../components/InvoiceItemPrice';
+import {useRoute} from '@react-navigation/native';
+import {month1} from '../utils/Functions';
 
 const Invoice = ({navigation}) => {
+  const route = useRoute();
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView>
@@ -39,7 +43,7 @@ const Invoice = ({navigation}) => {
             <View style={styles.maintextContainer}>
               <View>
                 <Text style={styles.invoiceText}>Invoice</Text>
-                <Text style={styles.dateText}>18 Nov, 2017</Text>
+                <Text style={styles.dateText}>{route.params.date.substring(8, 10)} {month1[route.params.date.substring(5, 7)]}, {route.params.date.substring(0, 4)}</Text>
               </View>
               <Text style={styles.billNo}>#0162</Text>
             </View>

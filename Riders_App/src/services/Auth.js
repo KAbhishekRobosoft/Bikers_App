@@ -232,7 +232,7 @@ export const addBikeDetails = async (values, token) => {
       },
       {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg`,
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTQ0NjY3OCwiZXhwIjoxNjY5NDUwMjc4fQ.vyrl4MNGnggX8j7u_C8JjrgflpnWZ2uLmbwz3j9e_Dc'}`,
         },
       },
     );
@@ -248,13 +248,13 @@ export const getBikeDetails = async token => {
       'https://riding-application.herokuapp.com/api/v1/bike/getBikeDetails',
       {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg`,
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTQ0NjY3OCwiZXhwIjoxNjY5NDUwMjc4fQ.vyrl4MNGnggX8j7u_C8JjrgflpnWZ2uLmbwz3j9e_Dc'}`,
         },
       },
     );
     return response.data;
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in get Bike details');
   }
 };
 
@@ -303,13 +303,13 @@ export const searchProducts = async value => {
       },
       {
         headers: {
-          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTI4OTAxMiwiZXhwIjoxNjY5MjkyNjEyfQ.P7B188BFv4PbdyuH5-vfiXuISXPro5MeHtrPJZM1S8M'}`,
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTQzNTQ5NywiZXhwIjoxNjY5NDM5MDk3fQ.y8GFsTlC5_GdfJ567lSSNd07_qDWTXrNiuBYGlKa6I0'}`,
         },
       },
     );
     return response.data.products;
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in searchProducts of accssories ');
   }
 };
 
@@ -322,13 +322,13 @@ export const LikeProducts = async value => {
       },
       {
         headers: {
-          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTI4OTAxMiwiZXhwIjoxNjY5MjkyNjEyfQ.P7B188BFv4PbdyuH5-vfiXuISXPro5MeHtrPJZM1S8M'}`,
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTQzNTQ5NywiZXhwIjoxNjY5NDM5MDk3fQ.y8GFsTlC5_GdfJ567lSSNd07_qDWTXrNiuBYGlKa6I0'}`,
         },
       },
     );
     return response.data;
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in like products');
   }
 };
 
@@ -496,5 +496,37 @@ export const editProfile = async (token, obj) => {
     return response.data;
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const getAllService = async token => {
+  try {
+    const response = await axios.get(BASE_URL + '/service/getAllService', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.serviceDetails;
+  } catch (err) {
+    console.log('error occurred in get all service');
+  }
+};
+
+export const getParticularService = async (key, id) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/service/getParticularService',
+      {
+        _id: id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${key}`,
+        },
+      },
+    );
+    return response.data
+  } catch (err) {
+    console.log('error occured in get particular service');
   }
 };

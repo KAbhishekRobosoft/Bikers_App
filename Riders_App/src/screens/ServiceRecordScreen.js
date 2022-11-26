@@ -1,30 +1,57 @@
-import React, {useState} from 'react';
-import {SafeAreaView, View, Text, Pressable, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  SafeAreaView,
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {DropDownInputField} from '../components/InputFields';
-import { NewServiceRecordDetails } from '../components/ServiceRecordDetails';
-import { PastServiceRecordDetails } from '../components/ServiceRecordDetails';
+import {NewServiceRecordDetails} from '../components/ServiceRecordDetails';
+import {PastServiceRecordDetails} from '../components/ServiceRecordDetails';
+import {DropDownInputField2} from '../components/InputFields';
+import {useDispatch, useSelector} from 'react-redux';
+import {getVerifiedKeys} from '../utils/Functions';
+import {setToken} from '../redux/AuthSlice';
+import {getAllService} from '../services/Auth';
+import {addAllServices} from '../redux/AccessoriesSlice';
 
 const ServiceRecord = ({navigation}) => {
   const [bikeSelected, setBikeSelected] = useState('');
   const [serviceSelected, setServiceSelected] = useState('');
 
-  const bikedata = [
-    {
-      key: 'Classic 350 - Black',
-      value: 'Classic 350 - Black',
-    },
-  ];
-
+  const bikedata = useSelector(state => state.shop.bikeType);
+  const authData = useSelector(state => state.auth);
+  const serviceData = useSelector(state => state.shop.serviceData);
+  const dispatch = useDispatch();
   const servicedata = [
+    {
+      key: 'Free service',
+      value: 'Free service',
+    },
     {
       key: 'General service',
       value: 'General service',
     },
+    {
+      key: 'Breakdown assistance',
+      value: 'Breakdown assistance',
+    },
   ];
 
+  useEffect(() => {
+    setTimeout(async () => {
+      const key = await getVerifiedKeys(authData.userToken);
+      dispatch(setToken(key));
+      const response = await getAllService(key);
+      dispatch(addAllServices(response));
+    }, 500);
+  }, []);
+
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <View style={[styles.header, styles.shadow]}>
         <Pressable
           onPress={() => {
@@ -39,28 +66,65 @@ const ServiceRecord = ({navigation}) => {
         </Pressable>
         <Text style={styles.headerText}>Service Records</Text>
       </View>
-      <View style={styles.container}>
-        <DropDownInputField
-          data={bikedata}
-          values={bikeSelected}
-          setSelected={value => setBikeSelected(value)}
-          placeholder="Vehicle Type"
-        />
-        <DropDownInputField
-          data={servicedata}
-          values={serviceSelected}
-          setSelected={value => setServiceSelected(value)}
-          placeholder="Service Type"
-        />
-        {!bikeSelected == '' && !serviceSelected == '' ? (
+      <ScrollView
+        style={styles.container2}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}>
+        <View>
+          <DropDownInputField
+            data={bikedata}
+            values={bikeSelected}
+            setSelected={value => setBikeSelected(value)}
+            placeholder="Vehicle Type"
+          />
+          <DropDownInputField2
+            data={servicedata}
+            values={serviceSelected}
+            setSelected={value => setServiceSelected(value)}
+            placeholder="Service Type"
+          />
+        </View>
+        {!bikeSelected == '' || !serviceSelected == '' ? (
           <View>
-            <NewServiceRecordDetails navigation={navigation}/>
-            <PastServiceRecordDetails navigation={navigation}/>
+            {serviceData.length > 0 ? (
+              serviceData
+                .filter(ele => ele.serviceType === serviceSelected)
+                .filter(ele => new Date(ele.slotDate) > Date.now())
+                .map(ele => (
+                  <View key={ele._id}>
+                    <NewServiceRecordDetails
+                      navigation={navigation}
+                      data={ele}
+                    />
+                  </View>
+                ))
+            ) : (
+              <View>
+                <Text style={{fontSize: 50}}>No Service Records Found :(</Text>
+              </View>
+            )}
+            {serviceData.length > 0 ? (
+              serviceData
+                .filter(ele => ele.serviceType === serviceSelected)
+                .filter(ele => new Date(ele.slotDate) < Date.now())
+                .map(ele => (
+                  <View key={ele._id}>
+                    <PastServiceRecordDetails
+                      navigation={navigation}
+                      data={ele}
+                    />
+                  </View>
+                ))
+            ) : (
+              <View>
+                <Text style={{fontSize: 50}}>No Service Records Found :(</Text>
+              </View>
+            )}
           </View>
         ) : (
-          <></>
+          <><Text>select something</Text></>
         )}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -106,6 +170,10 @@ const styles = StyleSheet.create({
 
   container: {
     marginHorizontal: '6%',
+  },
+  container2: {
+    width: '100%',
+    paddingHorizontal: '7%',
   },
 });
 

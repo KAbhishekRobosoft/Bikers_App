@@ -26,7 +26,7 @@ const ServiceCenterScreen = ({navigation}) => {
   const [open2, setOpen2] = useState(false);
 
   const route = useRoute();
-  console.log('route service center', route);
+
   return (
     <SafeAreaView style={styles.main}>
       <Image

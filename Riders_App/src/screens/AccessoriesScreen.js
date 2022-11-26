@@ -25,9 +25,6 @@ import {disLiked} from '../redux/AccessoriesSlice';
 
 export const Accessories = ({navigation}) => {
   const [text, setText] = useState('');
-  // const [like, setLike] = useState(false);
-  const [data, setData] = useState([]);
-
   const accessories = useSelector(state => state.shop.accessoriesData);
 
   const dispatch = useDispatch();
@@ -35,8 +32,6 @@ export const Accessories = ({navigation}) => {
   const handleSearch = async value => {
     setText(value);
     const Data = await searchProducts(value);
-    // const image = 'https'+Data.productImage.subString(4)
-    // console.log('dataaaaaa',Data)
     const trimmedData = Data.map(ele => {
       let liked = false;
 
@@ -54,26 +49,18 @@ export const Accessories = ({navigation}) => {
     });
 
     dispatch(addAccessoriesData(trimmedData));
-
-    setData(Data);
   };
 
   const handleLike = async items => {
     const product = await LikeProducts(items._id);
-    console.log('likeeeeee', product.message);
-    // setLike(true)
     dispatch(addLiked(items));
   };
 
   const handleUnLike = async items => {
     const product = await LikeProducts(items._id);
-    console.log('dislike ', product.message);
     dispatch(disLiked(items));
 
-    // setLike(false)
   };
-
-  // const response = await searchProducts();
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -113,7 +100,6 @@ export const Accessories = ({navigation}) => {
             name="search"
             placeholder="What do you want?"
             placeholderTextColor={'rgba(141,138,138,0.87)'}
-            // onChangeText={text => dispatch(filterAccessories(text))}
             onChangeText={text => handleSearch(text)}
             style={styles.textInput}
           />
@@ -131,7 +117,6 @@ export const Accessories = ({navigation}) => {
           style={{marginTop: 20}}>
           <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
             {accessories.map(item => {
-              // console.log(item.likedBy)
               return (
                 <View style={styles.mainView} key={item._id}>
                   <View style={styles.subView}>
