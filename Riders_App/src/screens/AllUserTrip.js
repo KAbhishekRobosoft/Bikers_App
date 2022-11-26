@@ -8,27 +8,30 @@ import {
   Pressable,
   FlatList,
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AllTripList from '../components/AllTripList';
-import { UserTrips } from '../services/Auth';
+import { SearchAllUserInputTrips } from '../services/Auth';
 import { getVerifiedKeys } from '../utils/Functions';
-import { SearchUserTrips } from '../services/Auth';
+import { SearchAllUserTrips } from '../services/Auth';
+import { setToken } from '../redux/AuthSlice';
 
-const AllTrips = ({navigation}) => {
+
+const AllUserTrip= ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
   const authData= useSelector(state=>state.auth);
   const state = useSelector(state => state.milestone.initialState)
+  const dispatch= useDispatch()
 
   useEffect(() => {
     setTimeout(async () => {
       const key = await getVerifiedKeys(authData.userToken)
-      const tripdata = await UserTrips(key);
+      dispatch(setToken(key))
+      const tripdata = await SearchAllUserTrips(key);
       setTripDetails(tripdata);
     }, 500);
   }, [state]);
 
   const renderItem = details => {
-    console.log('detailsss', details)
     return (
       <AllTripList
         image={details.item.tripImage}
@@ -43,7 +46,7 @@ const AllTrips = ({navigation}) => {
   };
   const handleSearch = async (value) => {
     const key = await getVerifiedKeys(authData.userToken)
-    const response = await SearchUserTrips(key,value);
+    const response = await SearchAllUserInputTrips(key,value);
     setTripDetails(response);
 
   }
@@ -120,4 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AllTrips;
+export default AllUserTrip;

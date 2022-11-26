@@ -74,5 +74,6 @@ export const {
   addBikeType,
   addBikeData,
   fliteredBikeDetails,
+  addAccessoriesData
 } = asseccoriesSlice.actions;
 export default asseccoriesSlice.reducer;

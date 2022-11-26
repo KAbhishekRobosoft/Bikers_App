@@ -16,7 +16,6 @@ import SmallButton from '../components/SmallButton';
 import ImagePicker from 'react-native-image-crop-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import { setImage } from '../redux/AuthSlice';
-import { refreshToken } from '../services/Auth';
 import { setToken } from '../redux/AuthSlice'; 
 import { getVerifiedKeys } from '../utils/Functions';
 import { profileData } from '../services/Auth';
@@ -26,6 +25,7 @@ function RegisterUserIntro({navigation}) {
   useEffect(() => {
     setTimeout(async () => {
       const cred= await getVerifiedKeys(authData.userToken)
+      dispatch(setToken(cred))
       const data = await profileData(cred,authData.userData.mobile);
       setPersonData(data);
     }, 500);

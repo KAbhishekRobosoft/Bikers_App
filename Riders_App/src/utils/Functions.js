@@ -1,11 +1,14 @@
-import jwtDecode from 'jwt-decode';
+
 import {refreshToken} from '../services/Auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export function isTokenExpired(token) {
-  var decoded = jwtDecode(token);
 
-  if (decoded.exp < Date.now() / 1000) {
+export function isTokenExpired(token) {
+  var jwt_decode = require('jwt-decode')
+  var decoded = jwt_decode(token);
+  const time= new Date(decoded.exp)
+  const time2= new Date(Date.now() / 1000)
+  if (time.getTime() <= time2.getTime()) {
     return true;
   } else {
     return false;
@@ -14,15 +17,12 @@ export function isTokenExpired(token) {
 
 export async function getVerifiedKeys(key) {
   if (key) {
-    if (!isTokenExpired(key)) {
-      return key;
-    } else {
-      const response = await refreshToken(key);
-      await AsyncStorage.setItem(
-        'token',
-        JSON.stringify(response.access_token),
-      );
+    if (isTokenExpired(key)) {
+      let response = await refreshToken(key);
+      await AsyncStorage.setItem('token',response.access_token)
       return response.access_token;
+    } else {
+      return key;
     }
   } else {
     return 'Enter access token';
@@ -43,4 +43,3 @@ export const month = {
   11: 'Nov',
   12: 'Dec',
 };
-

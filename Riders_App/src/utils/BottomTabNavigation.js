@@ -1,14 +1,11 @@
-import {StyleSheet, Image} from 'react-native';
+import Image from 'react-native';
 import React from 'react';
-import CreateTrip from '../screens/CreateTripScreen';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 import MyGarageStack from './MyGarageStack';
 import AddBikeDetails from '../screens/AddBikeDetailsScreen';
-import { AddPersonalDetails } from '../screens/AddPersonalDetailsScreen';
-import AllTripList from '../components/AllTripList';
-import Profile from '../screens/Profile';
 import ProfileStack from './ProfileStack';
+import AllUserTrip from '../screens/AllUserTrip';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -66,13 +63,8 @@ const BottomTabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Trip3"
-        component={AllTripList}
-        listeners={{
-          tabPress: e => {
-            e.preventDefault();
-          },
-        }}
+        name="All Trips"
+        component={AllUserTrip}
         options={{
           tabBarIcon: ({focused}) => {
             return (
@@ -90,12 +82,7 @@ const BottomTabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Trip4"
-        // listeners={{
-        //   tabPress: e => {
-        //     e.preventDefault();
-        //   },
-        // }}
+        name="Profile"
         component={ProfileStack}
         options={{
           tabBarIcon: ({focused}) => {
@@ -115,11 +102,6 @@ const BottomTabNavigation = () => {
       />
       <Tab.Screen
         name="Trip5"
-        // listeners={{
-        //   tabPress: e => {
-        //     e.preventDefault();
-        //   },
-        // }}
         component={AddBikeDetails}
         options={{
           tabBarIcon: ({focused}) => {
@@ -143,4 +125,3 @@ const BottomTabNavigation = () => {
 
 export default BottomTabNavigation;
 
-const styles = StyleSheet.create({});

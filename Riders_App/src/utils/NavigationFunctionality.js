@@ -19,7 +19,13 @@ function NavigationFunctionality() {
       userToken = null;
       try {
         userToken = await AsyncStorage.getItem('token');
-        if (userToken !== null) cred = await getVerifiedKeys(userToken);
+        if (userToken !== null){
+          cred = await getVerifiedKeys(userToken);
+          dispatch(setToken(cred))
+        }
+        else{
+          dispatch(setToken(userToken))
+        }
       } catch (e) {
         console.log(e);
       }
@@ -35,6 +41,7 @@ function NavigationFunctionality() {
       </View>
     );
   }
+
   return authData.infoPage !== false ? (
     <AppTourStack />
   ) : authData.userToken === null ? (

@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, StyleSheet, Text, ImageBackground, Image} from 'react-native';
+import React,{useState} from 'react';
+import {View, StyleSheet, Text, ImageBackground, Image,Modal} from 'react-native';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import { getVerifiedKeys } from '../utils/Functions';
 import { deleteTrip } from '../services/Auth';
@@ -8,15 +8,17 @@ import { setInitialState } from '../redux/MileStoneSlice';
 
 const AllTripList = ({image, placeName, startDateText, statusText, endDateText, month,id}) => {
   const state = useSelector(state => state.milestone.initialState)
+  const [visible,setVisible]= useState(false)
   const authData= useSelector(state=>state.auth);
   const dispatch = useDispatch();
   const handleClose = async (id) => {
-    console.log(id);
     const key = await getVerifiedKeys(authData.userToken)
     const reponse = await deleteTrip(id,key);
     dispatch(setInitialState(state))
   }
   return (
+    <View>
+    <Pressable onPress={()=>setVisible(true)}>
     <View style={styles.container}>
       <ImageBackground
         source={{uri: 'https' + image.substring(4)}}
@@ -41,6 +43,13 @@ const AllTripList = ({image, placeName, startDateText, statusText, endDateText, 
           </Pressable>
         </View>
       </ImageBackground>
+    </View>
+    </Pressable>
+    <Modal visible= {visible} animationType="slide">
+        <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
+          <Pressable onPress= {()=>setVisible(false)}><Text>HeLLO</Text></Pressable>
+        </View>
+    </Modal>
     </View>
   );
 };

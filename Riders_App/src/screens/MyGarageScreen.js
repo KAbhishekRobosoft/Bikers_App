@@ -14,8 +14,7 @@ import {useSelector} from 'react-redux';
 import {GarageInputField} from '../components/InputFields';
 
 export const MyGarage = ({navigation}) => {
-  const hadBike = useSelector(state => state.auth.userData);
-  console.log(hadBike.haveBike)
+  const hadBike = useSelector(state => state.auth.userCredentials);
   return (
     <SafeAreaView>
       <ScrollView

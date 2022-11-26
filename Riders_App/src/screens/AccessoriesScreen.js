@@ -22,24 +22,22 @@ import {LikeProducts} from '../services/Auth';
 import {addAccessoriesData} from '../redux/AccessoriesSlice';
 import {addLiked} from '../redux/AccessoriesSlice';
 import {disLiked} from '../redux/AccessoriesSlice';
+import { getVerifiedKeys } from '../utils/Functions';
 
 export const Accessories = ({navigation}) => {
+
   const [text, setText] = useState('');
-  // const [like, setLike] = useState(false);
   const [data, setData] = useState([]);
-
   const accessories = useSelector(state => state.shop.accessoriesData);
-
   const dispatch = useDispatch();
+  const auth= useSelector(state=>state.auth)
 
   const handleSearch = async value => {
     setText(value);
-    const Data = await searchProducts(value);
-    // const image = 'https'+Data.productImage.subString(4)
-    // console.log('dataaaaaa',Data)
+    const key= await getVerifiedKeys(auth.userToken)
+    const Data = await searchProducts(value,key);
     const trimmedData = Data.map(ele => {
       let liked = false;
-
       if (ele.likedBy.length > 0) {
         liked = true;
       }
@@ -52,28 +50,22 @@ export const Accessories = ({navigation}) => {
         liked: liked,
       };
     });
-
     dispatch(addAccessoriesData(trimmedData));
-
     setData(Data);
   };
 
+
   const handleLike = async items => {
-    const product = await LikeProducts(items._id);
-    console.log('likeeeeee', product.message);
-    // setLike(true)
+    const key= await getVerifiedKeys(auth.userToken)
+    const product = await LikeProducts(items._id,key);
     dispatch(addLiked(items));
   };
 
   const handleUnLike = async items => {
-    const product = await LikeProducts(items._id);
-    console.log('dislike ', product.message);
+    const key= await getVerifiedKeys(auth.userToken)
+    const product = await LikeProducts(items._id,key);
     dispatch(disLiked(items));
-
-    // setLike(false)
   };
-
-  // const response = await searchProducts();
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -130,7 +122,7 @@ export const Accessories = ({navigation}) => {
           showsVerticalScrollIndicator={false}
           style={{marginTop: 20}}>
           <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
-            {accessories.map(item => {
+            {accessories.length > 0 ? accessories.map(item => {
               // console.log(item.likedBy)
               return (
                 <View style={styles.mainView} key={item._id}>
@@ -166,7 +158,7 @@ export const Accessories = ({navigation}) => {
                   </View>
                 </View>
               );
-            })}
+            }):null}
           </View>
         </ScrollView>
       ) : (

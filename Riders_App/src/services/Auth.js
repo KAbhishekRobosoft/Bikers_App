@@ -297,7 +297,7 @@ export const getSortedTripDetails = async token => {
     console.log(err);
   }
 };
-export const searchProducts = async value => {
+export const searchProducts = async (value,token) => {
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/product/searchProducts',
@@ -306,7 +306,7 @@ export const searchProducts = async value => {
       },
       {
         headers: {
-          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTI4OTAxMiwiZXhwIjoxNjY5MjkyNjEyfQ.P7B188BFv4PbdyuH5-vfiXuISXPro5MeHtrPJZM1S8M'}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -316,7 +316,7 @@ export const searchProducts = async value => {
   }
 };
 
-export const LikeProducts = async value => {
+export const LikeProducts = async (value,token) => {
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/product/addLike',
@@ -325,7 +325,7 @@ export const LikeProducts = async value => {
       },
       {
         headers: {
-          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTI4OTAxMiwiZXhwIjoxNjY5MjkyNjEyfQ.P7B188BFv4PbdyuH5-vfiXuISXPro5MeHtrPJZM1S8M'}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
@@ -343,7 +343,6 @@ export const getLocationName = async (lat, lon) => {
 };
 
 export const UserTrips = async key => {
-  console.log('key', key);
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/trip/searchTrip',
@@ -363,7 +362,6 @@ export const UserTrips = async key => {
 };
 
 export const SearchUserTrips = async (key, value) => {
-  console.log('key', key);
   try {
     const response = await axios.post(
       'https://riding-application.herokuapp.com/api/v1/trip/searchTrip',
@@ -376,7 +374,44 @@ export const SearchUserTrips = async (key, value) => {
         },
       },
     );
-    console.log('usertripssss', response.data);
+    return response.data;
+  } catch (err) {
+    console.log('error occurred');
+  }
+};
+
+export const SearchAllUserTrips = async (key) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/trip/searchAllTrips',
+      {
+        text:'',
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${key}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log('error occurred');
+  }
+};
+
+export const SearchAllUserInputTrips = async (key, value) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/trip/searchAllTrips',
+      {
+        text: value,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${key}`,
+        },
+      },
+    );
     return response.data;
   } catch (err) {
     console.log('error occurred');
@@ -478,4 +513,20 @@ export const editProfile = async (token,obj) => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const uploadProfileImage = async (payload, token) => {
+  let res = await fetch(
+    BASE_URL+'/editProfile/image',
+    {
+      method: 'post',
+      body: payload,
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  let data = await res.json();
+  console.log(data)
+  // return data;
 };
