@@ -14,17 +14,22 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextField} from '../components/InputFields';
 import {DropDownInputField} from '../components/InputFields';
+import { DropDownInputField2 } from '../components/InputFields';
 import {Dropdown} from 'react-native-material-dropdown';
 import SelectDropdown from 'react-native-select-dropdown';
 import InsetShadow from 'react-native-inset-shadow';
 import ButtonLarge from '../components/Buttons';
 import * as yup from 'yup';
+import { useSelector } from 'react-redux';
 
 export const BookService = ({navigation}) => {
   const [number, setNumber] = useState();
   const [vehicleType, setvehicleType] = useState();
   const [vehicleNumber, setvehicleNumber] = useState();
+  const [comment, setComment] = useState();
   const [selected, setSelected] = useState();
+  const [selectedVehicle, setSelectedVehicle] = useState();
+  const Data = useSelector(state => state.shop.bikeType);
   const data = [
     {
       key: 'Free service',
@@ -78,6 +83,19 @@ export const BookService = ({navigation}) => {
             mobileNumber: '',
             vehicleType: '',
             vehicleNumber: '',
+            serviceType: '',
+            comment: '',
+          }}
+          onSubmit={ (values) => {
+            const obj ={
+              mobileNumber: values.mobileNumber,
+              vehicleType: selectedVehicle,
+              vehicleNumber: values.vehicleNumber,
+              serviceType: selected,
+              comment: comment
+            }
+            console.log('objecttt',obj)
+            navigation.navigate('SearchService',obj)
           }}>
           {({isValid, handleSubmit, values}) => (
             <>
@@ -94,13 +112,7 @@ export const BookService = ({navigation}) => {
                   style={styles.editImage}
                 />
               </View>
-              <Field
-                component={PlaceholderTextField}
-                name="vehicleType"
-                placeholder="Vehicle type"
-                keyboardType="default"
-                value={values.vehicleType}
-              />
+              
               <Field
                 component={PlaceholderTextField}
                 name="vehicleNumber"
@@ -108,23 +120,30 @@ export const BookService = ({navigation}) => {
                 keyboardType="default"
                 value={values.vehicleNumber}
               />
+              
               <DropDownInputField
                 data={data}
                 values={selected}
                 setSelected={value => setSelected(value)}
                 placeholder="Service Type"
               />
+              <DropDownInputField2
+                data={Data}
+                values={selectedVehicle}
+                setSelected={value => setSelectedVehicle(value)}
+                placeholder="Vehicle Type"
+              />
               <Text style={styles.commentText}>Comments</Text>
               <View style={styles.commentTextInputView}>
                 <InsetShadow>
-                  <TextInput multiline={true} style={{padding: 10}} />
+                  <TextInput multiline={true} style={{padding: 10}} value={values} onChangeText = {(value) => setComment(value)} />
                 </InsetShadow>
               </View>
               <View style={styles.btnView}>
                 <ButtonLarge
                   title="FIND A DEALER"
                   //disabled={!isValid}
-                  onPress={() => navigation.navigate('SearchService')}
+                  onPress={handleSubmit}
                 />
               </View>
             </>
@@ -191,6 +210,7 @@ const styles = StyleSheet.create({
     color: '#4F504F',
     fontFamily: 'Roboto-Regular',
     fontSize: 16,
+    marginTop: 10,
   },
   commentTextInputView: {
     height: 71,

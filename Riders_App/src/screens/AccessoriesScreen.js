@@ -27,7 +27,6 @@ import { getVerifiedKeys } from '../utils/Functions';
 export const Accessories = ({navigation}) => {
 
   const [text, setText] = useState('');
-  const [data, setData] = useState([]);
   const accessories = useSelector(state => state.shop.accessoriesData);
   const dispatch = useDispatch();
   const auth= useSelector(state=>state.auth)
@@ -51,7 +50,6 @@ export const Accessories = ({navigation}) => {
       };
     });
     dispatch(addAccessoriesData(trimmedData));
-    setData(Data);
   };
 
 
@@ -105,7 +103,6 @@ export const Accessories = ({navigation}) => {
             name="search"
             placeholder="What do you want?"
             placeholderTextColor={'rgba(141,138,138,0.87)'}
-            // onChangeText={text => dispatch(filterAccessories(text))}
             onChangeText={text => handleSearch(text)}
             style={styles.textInput}
           />

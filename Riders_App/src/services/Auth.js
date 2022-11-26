@@ -34,8 +34,7 @@ export const checkIn = async values => {
   }
 };
 
-export const refreshToken = async (token) => {
-
+export const refreshToken = async token => {
   let res = await fetch(
     'https://riding-application.herokuapp.com/api/v1/getAccessToken',
     {
@@ -63,7 +62,7 @@ export const searchCity = async string => {
   return response.data.results;
 };
 
-export const searchServiceCenter = async (value, token) => {
+export const searchServiceCenter = async (value, key) => {
   let res = await fetch(
     'https://riding-application.herokuapp.com/api/v1/dealer/searchDealers',
     {
@@ -73,7 +72,7 @@ export const searchServiceCenter = async (value, token) => {
       }),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiMTIzNDU2Nzg5MCIsImlhdCI6MTY2OTE5NzAwNCwiZXhwIjoxNjY5MjAwNjA0fQ.-wJhsRsUFo5fh0Okp0BdeqUR3OE8vJKcPiQz-T8Ds1E'}`,
+        Authorization: `Bearer ${key}`,
       },
     },
   );
@@ -233,7 +232,7 @@ export const addBikeDetails = async (values, token) => {
       },
       {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg`,
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTQ0NjY3OCwiZXhwIjoxNjY5NDUwMjc4fQ.vyrl4MNGnggX8j7u_C8JjrgflpnWZ2uLmbwz3j9e_Dc'}`,
         },
       },
     );
@@ -249,13 +248,13 @@ export const getBikeDetails = async token => {
       'https://riding-application.herokuapp.com/api/v1/bike/getBikeDetails',
       {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg`,
+          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTQ0NjY3OCwiZXhwIjoxNjY5NDUwMjc4fQ.vyrl4MNGnggX8j7u_C8JjrgflpnWZ2uLmbwz3j9e_Dc'}`,
         },
       },
     );
     return response.data;
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in get Bike details');
   }
 };
 
@@ -282,8 +281,6 @@ export const getCoordinates = async place => {
   );
   return response.data.coord;
 };
-
-
 
 export const getSortedTripDetails = async token => {
   try {
@@ -312,7 +309,7 @@ export const searchProducts = async (value,token) => {
     );
     return response.data.products;
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in searchProducts of accssories ');
   }
 };
 
@@ -331,7 +328,7 @@ export const LikeProducts = async (value,token) => {
     );
     return response.data;
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in like products');
   }
 };
 
@@ -431,19 +428,63 @@ export const deleteTrip = async (id, key) => {
         },
       },
     );
-    console.log('delete tripssss', response.data);
     return response.data;
   } catch (err) {
     console.log('delete trip error occurred');
   }
 };
 
+export const BookService = async (key, value) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/service/bookService',
+      {
+        vehicleNumber: value.vehicleNumber,
+        serviceType: value.serviceType,
+        slotDate: value.slotDate,
+        time: value.time,
+        dealer: value.dealer,
+        city: value.city,
+        comments: value.comments,
+        dealerPhoneNumber: value.dealerPhoneNumber,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${key}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log('error in book service');
+  }
+};
 export const profileData = async (token, mobile) => {
   try {
     const response = await axios.post(
       BASE_URL + '/getProfile',
       {
-        mobile: mobile, 
+        mobile: mobile,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log('Book Service error occurred');
+    console.log(err);
+  }
+};
+
+export const editProfileuserName = async (token, userName) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/editProfile',
+      {
+        userName: userName,
       },
       {
         headers: {
@@ -457,12 +498,12 @@ export const profileData = async (token, mobile) => {
   }
 };
 
-export const editProfileuserName = async (token,userName) => {
+export const editAboutUser = async (token, aboutUser) => {
   try {
     const response = await axios.post(
       BASE_URL + '/editProfile',
       {
-        userName: userName, 
+        aboutUser: aboutUser,
       },
       {
         headers: {
@@ -476,32 +517,13 @@ export const editProfileuserName = async (token,userName) => {
   }
 };
 
-export const editAboutUser = async (token,aboutUser) => {
+export const editProfile = async (token, obj) => {
   try {
     const response = await axios.post(
       BASE_URL + '/editProfile',
       {
-        aboutUser: aboutUser, 
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-export const editProfile = async (token,obj) => {
-  try {
-    const response = await axios.post(
-      BASE_URL + '/editProfile',
-      {
-        userName:obj.userName,
-        aboutUser: obj.aboutUser, 
+        userName: obj.userName,
+        aboutUser: obj.aboutUser,
       },
       {
         headers: {
@@ -528,5 +550,36 @@ export const uploadProfileImage = async (payload, token) => {
   );
   let data = await res.json();
   console.log(data)
+}
   // return data;
+export const getAllService = async token => {
+  try {
+    const response = await axios.get(BASE_URL + '/service/getAllService', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.serviceDetails;
+  } catch (err) {
+    console.log('error occurred in get all service');
+  }
+};
+
+export const getParticularService = async (key, id) => {
+  try {
+    const response = await axios.post(
+      'https://riding-application.herokuapp.com/api/v1/service/getParticularService',
+      {
+        _id: id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${key}`,
+        },
+      },
+    );
+    return response.data
+  } catch (err) {
+    console.log('error occured in get particular service');
+  }
 };

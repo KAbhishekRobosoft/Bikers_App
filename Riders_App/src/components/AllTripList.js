@@ -11,6 +11,7 @@ const AllTripList = ({image, placeName, startDateText, statusText, endDateText, 
   const [visible,setVisible]= useState(false)
   const authData= useSelector(state=>state.auth);
   const dispatch = useDispatch();
+  
   const handleClose = async (id) => {
     const key = await getVerifiedKeys(authData.userToken)
     const reponse = await deleteTrip(id,key);

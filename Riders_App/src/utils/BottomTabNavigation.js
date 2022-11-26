@@ -13,7 +13,7 @@ const BottomTabNavigation = () => {
   return (
     <Tab.Navigator
       shifting={true}
-      initialRouteName=" WelcomeAboardScreen"
+      initialRouteName="Trips"
       activeColor="#ffffff"
       barStyle={{backgroundColor: '#ED7E2B', height: 65}}>
       <Tab.Screen

@@ -12,18 +12,25 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
+import {Formik, Field} from 'formik';
+import {useRoute} from '@react-navigation/native';
+import {BookingDetailsInput} from '../components/InputFields';
+import { BookService } from '../services/Auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { getVerifiedKeys } from '../utils/Functions';
+import {setToken} from '../redux/AuthSlice'
 
 const BookingDetails = ({navigation}) => {
+  const route = useRoute();
   const [editable, setEditable] = useState(false);
-
-  const book=()=>{
-
-    navigation.navigate("BookingSuccess")
-  }
+  const [comment, setComment] = useState(route.params.comment);
+  const dispatch = useDispatch();
 
   const handleEditable = () => {
     setEditable(true);
   };
+  const authData= useSelector(state=>state.auth);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={[styles.header]}>
@@ -52,64 +59,111 @@ const BookingDetails = ({navigation}) => {
         style={{marginTop: '5%'}}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}>
-        <View style={styles.textInputView}>
-          <Text style={styles.titleText}>Mobile Number</Text>
-          <Text>:</Text>
-          <TextInput style={styles.textInputText} editable={editable}>
-            123456789
-          </TextInput>
-        </View>
-        <View style={styles.textInputView}>
-          <Text style={styles.titleText}>Vehicle Number</Text>
-          <Text>:</Text>
-          <TextInput style={styles.textInputText} editable={editable}>
-            <Text>123456789</Text>
-          </TextInput>
-        </View>
-        <View style={styles.textInputView}>
-          <Text style={styles.titleText}>Service Type</Text>
-          <Text>:</Text>
-          <TextInput style={styles.textInputText} editable={editable}>
-            <Text>123456789</Text>
-          </TextInput>
-        </View>
-        <View style={styles.textInputView}>
-          <Text style={styles.titleText}>Slot date</Text>
-          <Text>:</Text>
-          <TextInput style={styles.textInputText} editable={editable}>
-            <Text>123456789</Text>
-          </TextInput>
-        </View>
-        <View style={styles.textInputView}>
-          <Text style={styles.titleText}>Time</Text>
-          <Text>:</Text>
-          <TextInput style={styles.textInputText} editable={editable}>
-            <Text>123456789</Text>
-          </TextInput>
-        </View>
-        <View style={styles.textInputView}>
-          <Text style={styles.titleText}>Dealer</Text>
-          <Text>:</Text>
-          <TextInput style={styles.textInputText} editable={editable}>
-            <Text>123456789</Text>
-          </TextInput>
-        </View>
-        <View style={styles.textInputView}>
-          <Text style={styles.titleText}>City</Text>
-          <Text>:</Text>
-          <TextInput style={styles.textInputText} editable={editable}>
-            <Text>123456789</Text>
-          </TextInput>
-        </View>
-        <View style={styles.textInputCommentView}>
-          <Text style={styles.titleTextComment}>Comment</Text>
-          <TextInput style={styles.textInputCommentText} editable={editable}>
-            <Text>Brake Oil, handle tight and chain lose</Text>
-          </TextInput>
-        </View>
-        <View style={styles.buttonView}>
-          <ButtonLarge title="BOOK" onPress={book} />
-        </View>
+        <Formik
+          initialValues={{
+            mobile: route.params.mobileNumber,
+            vehicle: route.params.vehicleNumber,
+            serviceType: route.params.serviceType,
+            slotDate: route.params.slotDate,
+            time: route.params.time,
+            dealer: route.params.dealerName,
+            city: route.params.dealerCity,
+            comment: '',
+          }}
+          onSubmit={async values => {
+            
+            const value = {
+              vehicleNumber: values.vehicle,
+              serviceType: values.serviceType,
+              slotDate: values.slotDate,
+              time: values.time,
+              dealer: values.dealer,
+              city: values.city,
+              comments: comment,
+              dealerPhoneNumber: route.params.dealerPhoneNumber,
+            };
+
+            const key = await getVerifiedKeys(authData.userToken)
+            dispatch(setToken(key))
+            const response  = await BookService(key,value)
+            navigation.navigate('BookingSuccess')
+
+          }}>
+          {({handleSubmit, values, isValid, handleChange}) => (
+            <>
+              <Field
+                component={BookingDetailsInput}
+                name="mobile"
+                title="Mobile Number"
+                editable={editable}
+                onChangeText={handleChange('mobile')}
+                value={values.mobile}
+              />
+              <Field
+                component={BookingDetailsInput}
+                name="vehicle"
+                title="Vehicle Number"
+                editable={editable}
+                onChangeText={handleChange('vehicle')}
+                value={values.vehicle}
+              />
+              <Field
+                component={BookingDetailsInput}
+                name="serviceType"
+                title="Service Type"
+                editable={editable}
+                onChangeText={handleChange('serviceType')}
+                value={values.serviceType}
+              />
+              <Field
+                component={BookingDetailsInput}
+                name="slotDate"
+                title="Slot Date"
+                editable={editable}
+                onChangeText={handleChange('slotDate')}
+                value={values.slotDate}
+              />
+              <Field
+                component={BookingDetailsInput}
+                name="time"
+                title="Time"
+                editable={editable}
+                onChangeText={handleChange('time')}
+                value={values.time}
+              />
+              <Field
+                component={BookingDetailsInput}
+                name="dealer"
+                title="Dealer"
+                editable={editable}
+                onChangeText={handleChange('dealer')}
+                value={values.dealer}
+              />
+              <Field
+                component={BookingDetailsInput}
+                name="city"
+                title="City"
+                editable={editable}
+                onChangeText={handleChange('city')}
+                value={values.city}
+              />
+              <View style={styles.textInputCommentView}>
+                <Text style={styles.titleTextComment}>Comment</Text>
+                <TextInput
+                  style={styles.textInputText}
+                  editable={editable}
+                  name="comment"
+                  // value={route.params.comment}
+                  defaultValue={route.params.comment}
+                  onChangeText={value => setComment(value)}
+                />
+              </View>
+              <View style={styles.buttonView}>
+                <ButtonLarge title="BOOK" onPress={handleSubmit} />
+              </View>
+            </>
+          )}
+        </Formik>
       </ScrollView>
     </SafeAreaView>
   );
@@ -185,7 +239,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#4F504F',
     width: '50%',
-    textAlign: 'right'
+    textAlign: 'left',
   },
   textInputCommentText: {
     fontFamily: 'Roboto-Regular',

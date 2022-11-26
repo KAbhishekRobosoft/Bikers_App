@@ -44,8 +44,6 @@ export const TripSummary = ({navigation}) => {
   const contactsData = useSelector(state => state.contact);
   const authData = useSelector(state => state.auth);
   const dispatch  = useDispatch();
-  console.log('tripdetailssss', tripDetails);
-  console.log('dfdgd', milestonedata);
   return (
     <SafeAreaView>
       <View style={styles.mainView}>
