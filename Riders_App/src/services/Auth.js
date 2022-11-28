@@ -616,5 +616,16 @@ export const calculateRoute = async (latitude,longitude,latitude1,longitude1) =>
   }
 };
 
+export const nearbyPlace = async (query,lat,lon) => {
+  try {
+    const response = await axios.get(
+    `https://api.foursquare.com/v3/places/nearby?ll=${lat}%2C${lon}&query=${query}`,
+    );
+      console.log(response.data)
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 
 
