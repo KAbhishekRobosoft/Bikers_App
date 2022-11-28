@@ -20,6 +20,7 @@ export const TripSummaryList = ({data}) => {
     <View>
       {data !== 0
         ? data.map(item => {
+          {console.log(item)}
             return (
               <View
                 style={styles.mainView}
@@ -28,13 +29,6 @@ export const TripSummaryList = ({data}) => {
                   <View>
                     <Image source={require('../assets/images/Oval.png')} />
                   </View>
-                  {/* <View
-                    style={{
-                      height: 110,
-                      backgroundColor: 'orange',
-                      // borderWidth: 2,
-                      width: 1,
-                    }}></View> */}
                 </View>
                 <View style={styles.milestoneView}>
                   <LinearGradient
@@ -51,7 +45,7 @@ export const TripSummaryList = ({data}) => {
                       <View
                         style={{flexDirection: 'column', paddingHorizontal: 6}}>
                         <Text style={styles.descriptionOverLine}>
-                          300 - 6h 50 min
+                          {item.destination[0].distance}{' '}km{' '}{item.destination[0].duration}hr
                         </Text>
                         <View style={styles.lineView2}></View>
                       </View>

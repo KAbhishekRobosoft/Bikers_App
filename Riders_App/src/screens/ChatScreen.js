@@ -9,14 +9,57 @@ import {
   TextInput,
   ImageBackground,
   useWindowDimensions,
-  ScrollView,
+  FlatList,
+  RefreshControl
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ReceiverContainer, SenderChatDetails} from '../components/chatDetails';
 import PopUpMenu from '../components/PopUpMenu';
+import Toast from 'react-native-simple-toast'
 
 const ChatScreen = () => {
-  const [inputChat, setInputChat] = React.useState('');
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(async() => {
+    setRefreshing(true);
+    if (chat.length > 2) {
+      try {
+        let response = await fetch(
+          'http://www.mocky.io/v2/5e3315753200008abe94d3d8?mocky-delay=2000ms',
+        );
+        let responseJson = await response.json();
+        console.log(responseJson);
+        setListData(responseJson.result.concat(chat));
+        setRefreshing(false)
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    else{
+      Toast.show('No more new data available');
+      setRefreshing(false)
+    }
+  }, [refreshing]);
+
+  const [chat, setChat] = React.useState([
+    {
+      id: 1,
+      groupId: '21',
+      senderName: 'sumukh',
+      chat: 'boom boom',
+      phoneNumber: '8197781176',
+      time: '2022-11-28T05:24:01.463Z',
+    },
+    {
+      id: 2,
+      groupId: '22',
+      senderName: 'prabhal',
+      chat: 'boom boom',
+      phoneNumber: '8197781175',
+      time: '2022-11-28T05:24:01.463Z',
+    },
+  ]);
+
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
 
@@ -41,16 +84,19 @@ const ChatScreen = () => {
       <ImageBackground
         source={require('../assets/images/chat.png')}
         style={styles.image}></ImageBackground>
-      <ScrollView style={{marginBottom: '15%', flex: 1}}>
-        <SenderChatDetails />
-        <ReceiverContainer />
-        <SenderChatDetails />
-        <ReceiverContainer />
-        <SenderChatDetails />
-        <ReceiverContainer />
-        <SenderChatDetails />
-        <ReceiverContainer />
-      </ScrollView>
+      <FlatList
+        data={chat}
+        renderItem={({item}) => {
+          if (item.phoneNumber === '8197781176') {
+            return <SenderChatDetails chat={item} />;
+          } else {
+            return <ReceiverContainer chat={item} />;
+          }
+        }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      />
       <View style={[styles.bottomContainer, styles.bottomshadow, {top}]}>
         <View style={styles.iconContainer}>
           <Pressable>
@@ -59,12 +105,7 @@ const ChatScreen = () => {
               style={{height: 30, width: 30}}
             />
           </Pressable>
-          <TextInput
-            style={styles.input}
-            onChangeText={setInputChat}
-            value={inputChat}
-            placeholder="Type a Message"
-          />
+          <TextInput style={styles.input} placeholder="Type a Message" />
         </View>
         <View
           style={{

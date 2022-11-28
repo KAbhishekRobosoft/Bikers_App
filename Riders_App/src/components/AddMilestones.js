@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TextInput,
   Pressable,
+  ToastAndroid,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -14,10 +15,12 @@ import {setMileStone} from '../redux/MileStoneSlice';
 import {setMileStoneData} from '../redux/MileStoneSlice';
 import {useSelector} from 'react-redux';
 import {getCoordinates} from '../services/Auth';
+import {calculateRoute} from '../services/Auth';
+import Toast from 'react-native-simple-toast'
 
 export const Milestone = () => {
   const mileStoneData = useSelector(state => state.milestone.milestoneData);
-  console.log('',mileStoneData)
+  console.log('', mileStoneData);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const dispatch = useDispatch();
@@ -38,28 +41,51 @@ export const Milestone = () => {
               onPress={async () => {
                 // console.log(resp)
 
-                if (from,to !== "") {
+                if ((from, to !== '')) {
                   const resp = await getCoordinates(from);
                   const resp1 = await getCoordinates(to);
-                  const obj = {
-                    id: mileStoneData.length + 1,
-                    source: [
-                      {
-                        place: from,
-                        latitude: resp.lat,
-                        longitude: resp.lon,
-                      },
-                    ],
-                    destination: [
-                      {
-                        place: to,
-                        latitude: resp1.lat,
-                        longitude: resp1.lon,
-                      },
-                    ],
-                  };
-                  dispatch(setMileStoneData(obj));
-                  dispatch(setMileStone(false));
+                  const dist = await calculateRoute(
+                    resp.lat,
+                    resp.lon,
+                    resp1.lat,
+                    resp1.lon,
+                  );
+                  const msInHour = 1000 * 60 * 60;
+                  if (
+                    resp !== undefined &&
+                    resp1 !== undefined &&
+                    dist !== undefined
+                  ) {
+                    const obj = {
+                      id: mileStoneData.length + 1,
+                      source: [
+                        {
+                          place: from,
+                          latitude: resp.lat,
+                          longitude: resp.lon,
+                        },
+                      ],
+                      destination: [
+                        {
+                          place: to,
+                          latitude: resp1.lat,
+                          longitude: resp1.lon,
+                          distance: dist.summary.lengthInMeters / 1000,
+                          duration: Math.round(
+                            Math.abs(
+                              new Date(dist.summary.arrivalTime) -
+                                new Date(dist.summary.departureTime),
+                            ) / msInHour,
+                          ),
+                        },
+                      ],
+                    };
+                    dispatch(setMileStoneData(obj));
+                    dispatch(setMileStone(false));
+                  }
+                  else{
+                    Toast.show('Enter proper location')
+                  }
                 } else {
                   dispatch(setMileStone(false));
                 }

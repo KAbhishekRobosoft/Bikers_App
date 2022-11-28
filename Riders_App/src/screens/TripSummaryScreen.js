@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -13,167 +13,167 @@ import {TripSummaryList} from '../components/summarizeMilestones';
 import {RecommendationTripSummary} from '../components/Recommendations';
 import {CreateButton} from '../components/Buttons';
 import {useSelector, useDispatch} from 'react-redux';
-import {month} from '../utils/Functions';
 import BikeImageComponent from '../components/BikeImageComponent';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setToken} from '../redux/AuthSlice';
 import {createTrip} from '../services/Auth';
 import Toast from 'react-native-simple-toast';
-import MapView,{ Marker } from 'react-native-maps';
-import { Polyline } from "react-native-maps";
-
+import MapView, {Marker} from 'react-native-maps';
+import {Polyline} from 'react-native-maps';
+import {calculateRoute} from '../services/Auth';
+import uuid from 'react-native-uuid';
 
 export const TripSummary = ({navigation}) => {
-  const mapRef= useRef(null)
+  const mapRef = useRef(null);
+  const tripDetails = useSelector(state => state.milestone.storeTrip);
 
   useEffect(() => {
-    setTimeout(()=>{
+    setTimeout(async () => {
+      const resp = await calculateRoute(
+        tripDetails.source[0].latitude,
+        tripDetails.source[0].longitude,
+        tripDetails.destination[0].latitude,
+        tripDetails.destination[0].longitude,
+      );
+      setRoute(resp.legs[0].points);
       mapRef.current.animateToRegion(
         {
-          latitude: tripDetails.destination[0].latitude,
-          longitude: tripDetails.destination[0].longitude,
-          latitudeDelta: 20,
+          latitude: tripDetails.source[0].latitude,
+          longitude: tripDetails.source[0].longitude,
+          latitudeDelta: 8,
           longitudeDelta: 10,
         },
         3 * 1000,
       );
-    },500)
+    }, 500);
   }, []);
   const milestonedata = useSelector(state => state.milestone.milestoneData);
-  const tripDetails = useSelector(state => state.milestone.storeTrip);
   const contactsData = useSelector(state => state.contact);
   const authData = useSelector(state => state.auth);
-  const dispatch  = useDispatch();
+  const dispatch = useDispatch();
+  const [route, setRoute] = useState([]);
   return (
     <SafeAreaView>
-      <View style={styles.mainView}>
-        <View style={[styles.header]}>
-          <View style={styles.subHeader}>
-            <Pressable
-              onPress={() => {
-                navigation.goBack();
-              }}>
-              <Icon
-                name="md-arrow-back"
-                color={'white'}
-                size={25}
-                style={styles.icon}
+      {route.length > 0 ? (
+        <View style={styles.mainView}>
+          <View style={[styles.header]}>
+            <View style={styles.subHeader}>
+              <Pressable
+                onPress={() => {
+                  navigation.goBack();
+                }}>
+                <Icon
+                  name="md-arrow-back"
+                  color={'white'}
+                  size={25}
+                  style={styles.icon}
+                />
+              </Pressable>
+              <Text style={styles.headerText}>TripSummary</Text>
+            </View>
+            <Pressable>
+              <Image
+                source={require('../assets/images/ic_mode_edit_black.png')}
+                style={styles.editImage}
               />
             </Pressable>
-            <Text style={styles.headerText}>TripSummary</Text>
           </View>
-          <Pressable>
-            <Image
-              source={require('../assets/images/ic_mode_edit_black.png')}
-              style={styles.editImage}
-            />
-          </Pressable>
-        </View>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.mapView}>
-            <MapView
-              ref={mapRef}
-              style={styles.mapStyle}
-              customMapStyle={mapStyle}>
-              <Polyline
-                coordinates={[
-                  {
+          <ScrollView style={styles.scrollView}>
+            <View style={styles.mapView}>
+              <MapView
+                ref={mapRef}
+                style={styles.mapStyle}
+                customMapStyle={mapStyle}>
+                <Polyline
+                  key={uuid.v4()}
+                  coordinates={route.map(ele => ({
+                    latitude: ele.latitude,
+                    longitude: ele.longitude,
+                  }))}
+                  strokeColor={'blue'}
+                  strokeWidth={2}
+                  lineDashPattern={[1]}
+                />
+                <Marker
+                  coordinate={{
                     latitude: tripDetails.source[0].latitude,
                     longitude: tripDetails.source[0].longitude,
-                    latitudeDelta: 0.03,
+                    latitudeDelta: 0.01,
                     longitudeDelta: 0.01,
-                  },
-                  {
+                  }}
+                />
+
+                <Marker
+                  coordinate={{
                     latitude: tripDetails.destination[0].latitude,
                     longitude: tripDetails.destination[0].longitude,
                     latitudeDelta: 0.03,
                     longitudeDelta: 0.01,
-                  },
-                ]}
-                strokeColor={'blue'}
-                strokeWidth={5}
-                lineDashPattern={[1]}
-              />
-
-              <Marker
-                coordinate={{
-                  latitude: tripDetails.source[0].latitude,
-                  longitude: tripDetails.source[0].longitude,
-                  latitudeDelta: 0.03,
-                  longitudeDelta: 0.01,
-                }}
-              />
-
-              <Marker
-                coordinate={{
-                  latitude: tripDetails.destination[0].latitude,
-                  longitude: tripDetails.destination[0].longitude,
-                  latitudeDelta: 0.03,
-                  longitudeDelta: 0.01,
-                }}
-              />
-            </MapView>
-            <View style={styles.summaryView}>
-              <Image source={require('../assets/images/motorcycle.png')} />
-              <Text style={styles.tripName}>{tripDetails?.tripName}</Text>
-              <Text style={styles.dateText}>
-                {tripDetails?.startDate?.substring(8, 10)}
-                {tripDetails?.startDate?.substring(4, 7)} -
-                {tripDetails?.endDate?.substring(8, 10)}
-                {tripDetails?.endDate?.substring(4, 7)}
-                {tripDetails?.endDate?.substring(11, 15)}
-              </Text>
-              <Text style={styles.timeText}>
-                {tripDetails?.startTime?.substring(15, 21)}
-              </Text>
-              <View style={styles.fromToView}>
-                <Text style={styles.fromToText}>
-                  {tripDetails?.source[0]?.place}
+                  }}
+                />
+              </MapView>
+              <View style={styles.summaryView}>
+                <Image source={require('../assets/images/motorcycle.png')} />
+                <Text style={styles.tripName}>{tripDetails?.tripName}</Text>
+                <Text style={styles.dateText}>
+                  {tripDetails?.startDate?.substring(8, 10)}
+                  {tripDetails?.startDate?.substring(4, 7)} -
+                  {tripDetails?.endDate?.substring(8, 10)}
+                  {tripDetails?.endDate?.substring(4, 7)}
+                  {tripDetails?.endDate?.substring(11, 15)}
                 </Text>
-                <View style={styles.lineView}></View>
-                <Text style={styles.fromToText}>
-                  {tripDetails?.destination[0]?.place}
+                <Text style={styles.timeText}>
+                  {tripDetails?.startTime?.substring(15, 21)}
                 </Text>
+                <View style={styles.fromToView}>
+                  <Text style={styles.fromToText}>
+                    {tripDetails?.source[0]?.place}
+                  </Text>
+                  <View style={styles.lineView}></View>
+                  <Text style={styles.fromToText}>
+                    {tripDetails?.destination[0]?.place}
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
-          <View style={styles.listView}>
-            <TripSummaryList data={milestonedata} />
-            <View style={styles.recommendationsView}>
-              <RecommendationTripSummary />
-            </View>
-            <View style={styles.addUserView}>
-              <View style={styles.addUserImgView}>
-                <Pressable>
-                  <Image
-                    style={styles.calenderImg}
-                    source={require('../assets/images/adduser.png')}
-                  />
-                </Pressable>
+            <View style={styles.listView}>
+              <TripSummaryList data={milestonedata} />
+              <View style={styles.recommendationsView}>
+                <RecommendationTripSummary />
               </View>
-              {contactsData.addTripContacts.length === 0 && (
-                <Text style={styles.text}>Invite other riders</Text>
-              )}
-              {contactsData.addTripContacts.length > 0 && (
-                <BikeImageComponent />
-              )}
+              <View style={styles.addUserView}>
+                <View style={styles.addUserImgView}>
+                  <Pressable>
+                    <Image
+                      style={styles.calenderImg}
+                      source={require('../assets/images/adduser.png')}
+                    />
+                  </Pressable>
+                </View>
+                {contactsData.addTripContacts.length === 0 && (
+                  <Text style={styles.text}>Invite other riders</Text>
+                )}
+                {contactsData.addTripContacts.length > 0 && (
+                  <BikeImageComponent />
+                )}
+              </View>
+              <View style={styles.buttonView}>
+                <CreateButton
+                  onPress={async () => {
+                    const cred = await getVerifiedKeys(authData.userToken);
+                    dispatch(setToken(cred));
+                    const resp = await createTrip(tripDetails, cred);
+                    if (resp !== undefined)
+                      navigation.navigate('CreateTripSuccess');
+                    else Toast.show('Trip Creation Unsuccessfull');
+                  }}
+                  title="CREATE"
+                />
+              </View>
             </View>
-            <View style={styles.buttonView}>
-              <CreateButton
-                onPress={async () => {
-                  const cred = await getVerifiedKeys(authData.userToken);
-                  dispatch(setToken(cred));
-                  const resp = await createTrip(tripDetails, cred);
-                  if (resp !== undefined)
-                    navigation.navigate('CreateTripSuccess');
-                  else Toast.show('Trip Creation Unsuccessfull');
-                }}
-                title="CREATE"
-              />
-            </View>
-          </View>
-        </ScrollView>
-      </View>
+          </ScrollView>
+        </View>
+      ) : null}
     </SafeAreaView>
   );
 };

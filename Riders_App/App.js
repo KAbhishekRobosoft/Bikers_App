@@ -5,6 +5,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
 import {NavigationContainer} from '@react-navigation/native';
 import NavigationFunctionality from './src/utils/NavigationFunctionality';
+import ChatScreen from './src/screens/ChatScreen'
 
 let persistor = persistStore(store);
 
