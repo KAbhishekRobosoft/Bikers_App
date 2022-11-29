@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -13,20 +13,32 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import {Star} from '../components/StarComponent';
-import {useRoute} from '@react-navigation/native';
+import {getVerifiedKeys} from '../utils/Functions';
+import {setToken} from '../redux/AuthSlice';
+import {useDispatch, useSelector} from 'react-redux';
 import {month1} from '../utils/Functions';
-
+import {Rating, AirbnbRating} from 'react-native-ratings';
+import { getRatings } from '../services/Auth';
+import {useRoute} from '@react-navigation/native';
 const BookingSummary = ({navigation}) => {
+  const dispatch = useDispatch();
+  const authData = useSelector(state => state.auth);
   const route = useRoute();
-  console.log('routeeeee', route)
   const handlePast = () => {
     const obj = {
-      date: route.params.slotDate
-    }
-    navigation.navigate('Invoice',obj)
+      date: route.params.slotDate,
+    };
+    navigation.navigate('Invoice', obj);
+  };
+  const ratingCompleted = async (rating) => {
+    const id = route.params._id
+    const key = await getVerifiedKeys(authData.userToken);
+    console.log(key)
+    dispatch(setToken(key));
+    const response = await getRatings(key,id,rating);
   }
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1,backgroundColor: 'white'}}>
       <View style={[styles.header]}>
         <View style={styles.subHeader}>
           <Pressable
@@ -43,8 +55,7 @@ const BookingSummary = ({navigation}) => {
           <Text style={styles.headerText}>Booking Details</Text>
         </View>
         {new Date(route.params.slotDate) < Date.now() ? (
-          <Pressable
-            onPress={handlePast}>
+          <Pressable onPress={handlePast}>
             <Image
               source={require('../assets/images/invoice.png')}
               style={styles.invoiceImage}
@@ -117,7 +128,7 @@ const BookingSummary = ({navigation}) => {
                 <Text style={styles.serviceText}>
                   {route.params.serviceType}
                 </Text>
-                <Star rating={0} />
+                <Star rating={route.params.ratings} />
               </View>
             </View>
             <View style={styles.textInputView}>
@@ -185,7 +196,12 @@ const BookingSummary = ({navigation}) => {
                 <Text style={styles.totalText}>Total bill payed</Text>
                 <Text style={styles.ruppesText}>Rs 4,000 /-</Text>
                 <Text style={styles.totalText}>Rate the Service</Text>
-                <Star rating={0} />
+                <AirbnbRating
+                  size={15}
+                  showRating={false}
+                  onFinishRating={(rate) => ratingCompleted(rate)}
+                  defaultRating = {0}
+                />
               </>
             ) : null}
           </View>
@@ -389,6 +405,12 @@ const styles = StyleSheet.create({
     letterSpacing: 0,
     textAlign: 'center',
     marginBottom: 7,
+  },
+  ratingImg: {
+    width: 16,
+    height: 16,
+    alignSelf: 'center',
+    resizeMode: 'contain',
   },
 });
 

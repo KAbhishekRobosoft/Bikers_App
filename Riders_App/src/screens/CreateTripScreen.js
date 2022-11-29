@@ -99,7 +99,7 @@ const CreateTrip = ({navigation}) => {
       </View>
       <ScrollView style={{height: '80%'}} showsVerticalScrollIndicator={false}>
         <View style={styles.textInputView}>
-          {go ? (
+          {whereto ? (
             <View style={styles.placeholder}>
               <Text style={styles.placeholderText}>{placeholder1}</Text>
             </View>
@@ -400,8 +400,8 @@ const styles = StyleSheet.create({
   locationNamesView: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 2,
-    margin: 25,
+    marginTop: 3,
+    marginHorizontal: '7%',
     backgroundColor: 'white',
     borderRadius: 10,
     shadowColor: '#000',
@@ -413,6 +413,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
 
     elevation: 5,
+    height: 60,
   },
 
   inputText: {
@@ -420,7 +421,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
     height: 40,
-    width: 195,
+    width: 350,
     color: '#4F504F',
     bottom: 5,
   },
@@ -442,6 +443,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingBottom: Platform.OS === 'ios' ? 3 : 0,
     alignItems: 'center',
+
   },
   timeView: {
     borderBottomWidth: 1,
@@ -458,7 +460,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
-    height: Platform.OS === 'ios' ? 0 : 37,
+    height: Platform.OS === 'ios' ? 0 : 39,
   },
   calenderImg: {
     width: 22,

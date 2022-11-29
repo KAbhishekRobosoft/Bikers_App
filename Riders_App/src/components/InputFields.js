@@ -138,6 +138,8 @@ export const PlaceholderTextField = props => {
               setFieldTouched(name);
               onBlur(name);
             }}
+            editable={props.editable}
+            
             {...inputProps}
           />
         </View>

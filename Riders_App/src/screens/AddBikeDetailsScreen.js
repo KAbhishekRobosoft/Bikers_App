@@ -50,7 +50,7 @@ const AddBikeDetails = () => {
       dealerCode: dealerCode,
     };
     let cred=await getVerifiedKeys(authData.userToken)
-    await addBikeDetails(obj); // <-----------API  CAll
+    await addBikeDetails(obj,cred); // <-----------API  CAll
     const response = await getBikeDetails(cred);
     const BikeTypes = response.map(e => {
       return e.vehicleType;

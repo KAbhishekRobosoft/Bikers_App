@@ -100,7 +100,7 @@ const ServiceRecord = ({navigation}) => {
                 ))
             ) : (
               <View>
-                <Text style={{fontSize: 50}}>No Service Records Found :(</Text>
+                <Text style={{fontSize: 30, alignSelf: 'center'}}>No Service Records Found :(</Text>
               </View>
             )}
             {serviceData.length > 0 ? (
@@ -115,11 +115,7 @@ const ServiceRecord = ({navigation}) => {
                     />
                   </View>
                 ))
-            ) : (
-              <View>
-                <Text style={{fontSize: 50}}>No Service Records Found :(</Text>
-              </View>
-            )}
+            ) : null}
           </View>
         ) : (
           <><Text>select something</Text></>

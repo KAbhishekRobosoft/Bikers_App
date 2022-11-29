@@ -65,6 +65,14 @@ const authenticateSlice = createSlice({
     deSetRegistered: state => {
       state.registered = false;
     },
+    updateUserCredentials: (state, action) => {
+      state.userCredentials =  {
+          mobile: action.payload.mobile,
+          email: action.payload.email,
+          userName: action.payload.userName,
+          haveBike: action.payload.haveBike,
+        };
+    },
   },
 });
 
@@ -80,5 +88,6 @@ export const {
   deSetForgotPassword,
   setUserData,
   setImage,
+  updateUserCredentials,
 } = authenticateSlice.actions;
 export default authenticateSlice.reducer;

@@ -17,7 +17,6 @@ import {getCoordinates} from '../services/Auth';
 
 export const Milestone = () => {
   const mileStoneData = useSelector(state => state.milestone.milestoneData);
-  console.log('',mileStoneData)
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const dispatch = useDispatch();
@@ -36,7 +35,6 @@ export const Milestone = () => {
             </Text>
             <Pressable
               onPress={async () => {
-                // console.log(resp)
 
                 if (from,to !== "") {
                   const resp = await getCoordinates(from);
