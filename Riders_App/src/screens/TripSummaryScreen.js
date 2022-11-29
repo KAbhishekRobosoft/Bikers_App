@@ -7,6 +7,7 @@ import {
   Image,
   Pressable,
   ScrollView,
+  ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
@@ -22,13 +23,23 @@ import MapView, {Marker} from 'react-native-maps';
 import {Polyline} from 'react-native-maps';
 import {calculateRoute} from '../services/Auth';
 import uuid from 'react-native-uuid';
+import {deleteMilestonesData} from '../redux/MileStoneSlice';
+import {setLoading} from '../redux/MileStoneSlice';
+import {deSetLoading} from '../redux/MileStoneSlice';
 
 export const TripSummary = ({navigation}) => {
   const mapRef = useRef(null);
   const tripDetails = useSelector(state => state.milestone.storeTrip);
+  const loading = useSelector(state => state.milestone.isLoading);
+  const milestonedata = useSelector(state => state.milestone.milestoneData);
+  const contactsData = useSelector(state => state.contact);
+  const authData = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  const [route, setRoute] = useState([]);
 
   useEffect(() => {
     setTimeout(async () => {
+      dispatch(deSetLoading());
       const resp = await calculateRoute(
         tripDetails.source[0].latitude,
         tripDetails.source[0].longitude,
@@ -36,6 +47,7 @@ export const TripSummary = ({navigation}) => {
         tripDetails.destination[0].longitude,
       );
       setRoute(resp.legs[0].points);
+      dispatch(setLoading());
       mapRef.current.animateToRegion(
         {
           latitude: tripDetails.source[0].latitude,
@@ -45,13 +57,16 @@ export const TripSummary = ({navigation}) => {
         },
         3 * 1000,
       );
+      
     }, 500);
   }, []);
-  const milestonedata = useSelector(state => state.milestone.milestoneData);
-  const contactsData = useSelector(state => state.contact);
-  const authData = useSelector(state => state.auth);
-  const dispatch = useDispatch();
-  const [route, setRoute] = useState([]);
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator color="orange"/>
+      </View>
+    );
+  }
   return (
     <SafeAreaView>
       {route.length > 0 ? (
@@ -71,7 +86,11 @@ export const TripSummary = ({navigation}) => {
               </Pressable>
               <Text style={styles.headerText}>TripSummary</Text>
             </View>
-            <Pressable>
+            <Pressable
+              onPress={() => {
+                navigation.navigate('CreateTrip');
+                dispatch(deleteMilestonesData());
+              }}>
               <Image
                 source={require('../assets/images/ic_mode_edit_black.png')}
                 style={styles.editImage}
@@ -116,11 +135,7 @@ export const TripSummary = ({navigation}) => {
                 <Image source={require('../assets/images/motorcycle.png')} />
                 <Text style={styles.tripName}>{tripDetails?.tripName}</Text>
                 <Text style={styles.dateText}>
-                  {tripDetails?.startDate?.substring(8, 10)}
-                  {tripDetails?.startDate?.substring(4, 7)} -
-                  {tripDetails?.endDate?.substring(8, 10)}
-                  {tripDetails?.endDate?.substring(4, 7)}
-                  {tripDetails?.endDate?.substring(11, 15)}
+                  {tripDetails?.startDate?.substring(8, 10)}{' '}{tripDetails?.startDate?.substring(4, 7)}{' '}-{' '}{tripDetails?.endDate?.substring(8, 10)}{' '}{tripDetails?.endDate?.substring(4, 7)} {tripDetails?.endDate?.substring(11, 15)}
                 </Text>
                 <Text style={styles.timeText}>
                   {tripDetails?.startTime?.substring(15, 21)}
@@ -130,7 +145,7 @@ export const TripSummary = ({navigation}) => {
                     {tripDetails?.source[0]?.place}
                   </Text>
                   <View style={styles.lineView}></View>
-                  <Text style={styles.fromToText}>
+                  <Text style={styles.fromToText1}>
                     {tripDetails?.destination[0]?.place}
                   </Text>
                 </View>
@@ -282,6 +297,7 @@ const styles = StyleSheet.create({
   fromToView: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-evenly'
   },
   fromToText: {
     fontFamily: 'Roboto-Regular',
@@ -289,6 +305,14 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     color: '#4F504F',
     paddingHorizontal: 3,
+  },
+  fromToText1: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+    lineHeight: 19,
+    color: '#4F504F',
+    paddingHorizontal: 3,
+    width: '30%'
   },
   lineView: {
     borderWidth: 1,
