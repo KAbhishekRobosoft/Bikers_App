@@ -18,26 +18,13 @@ import {addBikeType, addBikeData} from '../redux/AccessoriesSlice';
 import {Formik, Field} from 'formik';
 import {getVerifiedKeys} from '../utils/Functions';
 
-
-
 import * as yup from 'yup';
 import {PlaceholderTextField} from '../components/InputFields';
 
 const AddBikeDetails = ({navigation}) => {
-  // const authData = useSelector(state => state.auth);
-  // const [vehicleType, setvehicleType] = useState('');
-  // const [vehicleNo, setvehicleNo] = useState('');
-  // const [engine, setEngine] = useState('');
-  // const [frameNo, setFrameNo] = useState('');
-  // const [batteryMake, setBatteryMake] = useState('');
-  // const [regNo, setRegNo] = useState('');
-  // const [model, setModel] = useState('');
-  // const [color, setColor] = useState('');
-  // const [dealerCode, setDealerCode] = useState('');
-  // const [defaultValue, setDefaultValue] = useState('');
-  const authData= useSelector(state=>state.auth);
+
+  const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
-  //console.log(vehicleType,vehicleNo,engine,dealerCode);
 
   const initialValues = {
     vehicleType: '',
@@ -52,7 +39,6 @@ const AddBikeDetails = ({navigation}) => {
   };
 
   const submit = async (values, {resetForm}) => {
-    console.log('click');
     const obj = {
       vehicleType: values.vehicleType,
       vehicleNumber: values.vehicleNumber,
@@ -64,20 +50,19 @@ const AddBikeDetails = ({navigation}) => {
       color: values.color,
       dealerCode: values.dealerCode,
     };
-    console.log('objj',obj);
     let cred = await getVerifiedKeys(authData.userToken);
-    await addBikeDetails(obj,cred); // <-----------API  CAll
+    await addBikeDetails(obj, cred); // <-----------API  CAll
     const response = await getBikeDetails(cred);
     const BikeTypes = response.map(e => {
       return e.vehicleType;
     });
-    
-    console.log('res',BikeTypes);
+
+    console.log('res', BikeTypes);
     dispatch(addBikeType(BikeTypes));
     dispatch(addBikeData(response)); // <-----------Redux
-    //console.log('b4', values);
     resetForm({initialValues});
-    //navigation.navigate('Garage');
+
+    navigation.navigate('Garage');
   };
 
   return (
@@ -100,7 +85,6 @@ const AddBikeDetails = ({navigation}) => {
       </View>
       <ScrollView style={{backgroundColor: 'white', height: '91%'}}>
         <Formik
-          //validationSchema={personalDetailsValidation}
           initialValues={initialValues}
           onSubmit={(values, {resetForm}) => {
             submit(values, {resetForm});
@@ -161,8 +145,6 @@ const AddBikeDetails = ({navigation}) => {
                       placeholderTextColor="#4F504F"
                       onChangeText={handleChange('frameNumber')}
                       value={values.frameNumber}
-
-                      // defaultValue={defaultValue?BikeDetails[0].frameNumber:null}
                     />
                   </View>
                 </View>
@@ -178,8 +160,6 @@ const AddBikeDetails = ({navigation}) => {
                       placeholderTextColor="#4F504F"
                       onChangeText={handleChange('batteryMake')}
                       value={values.batteryMake}
-
-                      // defaultValue={defaultValue?BikeDetails[0].batteryMake:null}
                     />
                   </View>
                 </View>
@@ -189,7 +169,6 @@ const AddBikeDetails = ({navigation}) => {
                     <Text>:</Text>
 
                     <TextInput
-                    
                       name="registerNumber"
                       style={styles.inputText}
                       placeholder="Reg No."
@@ -214,7 +193,6 @@ const AddBikeDetails = ({navigation}) => {
                       placeholderTextColor="#4F504F"
                       onChangeText={handleChange('model')}
                       value={values.model}
-                      
                     />
                   </View>
                 </View>

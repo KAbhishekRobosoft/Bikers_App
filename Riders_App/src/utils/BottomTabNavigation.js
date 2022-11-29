@@ -6,6 +6,7 @@ import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 import MyGarageStack from './MyGarageStack';
 import AllTrips from '../screens/IndividualTripScreen';
 import ProfileStack from './ProfileStack';
+import LogoutStack from './LogoutStack';
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomTabNavigation = () => {
@@ -38,7 +39,7 @@ const BottomTabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Tab2"
+        name="Garage"
         component={MyGarageStack}
         // listeners={{
         //   tabPress: e => {
@@ -63,13 +64,13 @@ const BottomTabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Trip3"
-        component={AllTripList}
-        listeners={{
-          tabPress: e => {
-            e.preventDefault();
-          },
-        }}
+        name="All Trips"
+        component={AllTrips}
+        // listeners={{
+        //   tabPress: e => {
+        //     e.preventDefault();
+        //   },
+        // }}
         options={{
           tabBarIcon: ({focused}) => {
             return (
@@ -87,7 +88,7 @@ const BottomTabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Trip4"
+        name="Profile"
         // listeners={{
         //   tabPress: e => {
         //     e.preventDefault();
@@ -111,7 +112,7 @@ const BottomTabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Trip5"
+        name="Logout"
         
         // listeners={{
         //   tabPress: e => {
@@ -119,7 +120,7 @@ const BottomTabNavigation = () => {
         //   },
         // }}
         
-        component={AddBikeDetails}
+        component={LogoutStack}
         options={{
           tabBarIcon: ({focused}) => {
             return (

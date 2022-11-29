@@ -1,3 +1,18 @@
+// import { StyleSheet, Text, View } from 'react-native'
+// import React from 'react'
+
+// const OwnerManualEdit = ({navigation}) => {
+//   return (
+//     <View>
+//       <Text>OwnerManualEditableScreen</Text>
+//     </View>
+//   )
+// }
+
+// export default OwnerManualEdit
+
+// const styles = StyleSheet.create({})
+
 import {Formik, Field} from 'formik';
 import React, {useEffect, useState} from 'react';
 import {
@@ -12,31 +27,31 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import Share from 'react-native-share';
+import {useSelector, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
-import {BikeDetails} from '../components/BikeDetailsComponent';
-import {useDispatch, useSelector} from 'react-redux';
-import {getBikeDetails, updateOwnerDetails} from '../services/Auth';
 import {setUserData} from '../redux/AuthSlice';
 import {getVerifiedKeys} from '../utils/Functions';
 import pdf from 'react-native-html-to-pdf';
+import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
+import {updateOwnerDetails} from '../services/Auth';
+import Share from 'react-native-share';
+import { BikeDetails } from '../components/BikeDetailsComponent';
 
-export const OwnerManualEdit = ({navigation}) => {
+const OwnerManualEdit = ({navigation}) => {
   const userDetails = useSelector(state => state.auth.userData);
+  console.log(userDetails);
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
-  const bikeDetails = useSelector(state => state.shop.selectedBikeData);
-  //console.log('0000',bikeDetails[0].engineNumber);
-
-  // const BikeDetails = useSelector(state => state.shop.allBikeData);
+  //const bikeDetails = useSelector(state => state.shop.selectedBikeData);
+  const bikedata = useSelector(state => state.shop.allBikeData);
+  console.log('0000', bikedata[0].engineNumber);
   // useEffect(() => {
   //   setTimeout(async () => {
   //     let cred = await getVerifiedKeys(authData.userToken);
-  //     const response = await getBikeDetails(cred);
+  //     const response = await getbikedata(cred);
   //     console.log(response);
-  //     const bikeDetails = response.filter(ele => ele.vehicleType === 'aa');
-  //     console.log(bikeDetails);
+  //     const bikedata = response.filter(ele => ele.vehicleType === 'aa');
+  //     console.log(bikedata);
   //   }, 1000);
   // }, []);
 
@@ -51,6 +66,7 @@ export const OwnerManualEdit = ({navigation}) => {
     let cred = await getVerifiedKeys(authData.userToken);
 
     await updateOwnerDetails(obj, cred);
+   
     const obj2 = {
       city: values.city,
       state: values.state,
@@ -65,7 +81,7 @@ export const OwnerManualEdit = ({navigation}) => {
     dispatch(setUserData(obj2));
     navigation.navigate('OwnersManualDetail');
   };
-  
+
   const htmlContent = `
         <html>
           <head>
@@ -136,31 +152,31 @@ export const OwnerManualEdit = ({navigation}) => {
               <table>
             <tr>
               <th><span>Engine :- </span></th>
-              <td><span>${bikeDetails[0].engineNumber}</span></td>
+              <td><span>${bikedata[0].engineNumber}</span></td>
             </tr>
             <tr>
               <th><span>Frame No :- </span></th>
-              <td><span>${bikeDetails[0].frameNumber}</span></td>
+              <td><span>${bikedata[0].frameNumber}</span></td>
             </tr>
             <tr>
               <th><span>Battery Make :- </span></th>
-              <td><span>${bikeDetails[0].batteryMake}</span></td>
+              <td><span>${bikedata[0].batteryMake}</span></td>
             </tr>
             <tr>
               <th><span>Registration No :- </span></th>
-              <td><span>${bikeDetails[0].registerNumber}</span></td>
+              <td><span>${bikedata[0].registerNumber}</span></td>
             </tr>
             <tr>
               <th><span>Model :- </span></th>
-              <td><span>${bikeDetails[0].model}</span></td>
+              <td><span>${bikedata[0].model}</span></td>
             </tr>
             <tr>
               <th><span>Color :- </span></th>
-              <td><span>${bikeDetails[0].color}</span></td>
+              <td><span>${bikedata[0].color}</span></td>
             </tr>
             <tr>
               <th><span>Dealer Code :- </span></th>
-              <td><span>${bikeDetails[0].dealerCode}</span></td>
+              <td><span>${bikedata[0].dealerCode}</span></td>
             </tr>
             </table>
 
@@ -224,7 +240,7 @@ export const OwnerManualEdit = ({navigation}) => {
                 doorNumber: userDetails.doorNumber,
                 city: userDetails.city,
                 state: userDetails.state,
-                pincode:JSON.stringify(userDetails.pincode) ,
+                pincode: JSON.stringify(userDetails.pincode),
                 mobile: userDetails.mobile,
                 email: userDetails.email,
               }}
@@ -387,6 +403,8 @@ const styles = StyleSheet.create({
     width: '90%',
   },
 });
+
+export default OwnerManualEdit;
 
 const htmlStyles = `
 *{

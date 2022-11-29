@@ -18,7 +18,8 @@ import {getBikeDetails} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
 export const MyGarage = ({navigation}) => {
-  const hadBike = useSelector(state => state.auth.userData);
+  const hadBike = useSelector(state => state.auth.userCredentials);
+
   //console.log(hadBike.haveBike)
   const dispatch = useDispatch();
   const bikeType = useSelector(state => state.shop.bikeType);
@@ -34,9 +35,7 @@ export const MyGarage = ({navigation}) => {
       });
       console.log('bike tpyes', BikeTypes);
       dispatch(addBikeType(BikeTypes));
-     // console.log('bikeType', bikeType[0]);
       dispatch(addBikeData(response));
-      //console.log(response);
       dispatch(setLoading());
     };
     get();
@@ -63,8 +62,8 @@ export const MyGarage = ({navigation}) => {
           style={styles.meterImage}
         />
         {
-        // hadBike.haveBike
-        true
+         hadBike.haveBike
+      
          ? (
           <View style={{marginTop: 30}}>
             <GarageInputField

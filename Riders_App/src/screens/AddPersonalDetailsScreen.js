@@ -21,9 +21,8 @@ import { getVerifiedKeys } from '../utils/Functions';
 export const AddPersonalDetails = ({navigation}) => {
   const useDetails = useSelector(state => state.auth.userData);
   const authData= useSelector(state=>state.auth);
-
-  // console.log(useDetails.email)
-  // console.log(useDetails.mobile)
+  const userCredentials=useSelector(state=>state.auth.userCredentials)
+  console.log(userCredentials);
    console.log(useDetails)
   const dispatch = useDispatch();
 
@@ -40,17 +39,16 @@ export const AddPersonalDetails = ({navigation}) => {
 
     let cred = await getVerifiedKeys(authData.userToken);
 
-    const response = await addOwnerDetails(obj,cred);
+   await addOwnerDetails(obj,cred);
     const userData = {
       lisenceNumber: values.licence,
       city: values.city,
       state: values.state,
       doorNumber: values.doorNumber,
       pincode: values.pincode,
-      name: useDetails.userName,
-      mobile: useDetails.mobile,
-      email: useDetails.email,
-      haveBike: true,
+      name: userCredentials.userName,
+      mobile: userCredentials.mobile,
+      email: userCredentials.email,
     };
     dispatch(setUserData(userData));
     resetForm((initialValues = ''));
@@ -123,7 +121,7 @@ export const AddPersonalDetails = ({navigation}) => {
                       keyboardType="default"
                       //value={values.name}
                       editable={false}
-                      defaultValue={useDetails.userName}
+                      defaultValue={userCredentials.userName}
                     />
                     <Field
                       component={PlaceholderTextFieldOwnerManual}
@@ -160,7 +158,7 @@ export const AddPersonalDetails = ({navigation}) => {
                       keyboardType="default"
                       //value={values.mobile}
                       editable={false}
-                      defaultValue={useDetails.mobile}
+                      defaultValue={userCredentials.mobile}
                     />
                     <Field
                       component={PlaceholderTextFieldOwnerManual}
@@ -169,7 +167,7 @@ export const AddPersonalDetails = ({navigation}) => {
                       keyboardType="default"
                       //value={values.email}
                       editable={false}
-                      defaultValue={useDetails.email}
+                      defaultValue={userCredentials.email}
                     />
                     <View style={styles.btn}>
                       <ButtonLarge

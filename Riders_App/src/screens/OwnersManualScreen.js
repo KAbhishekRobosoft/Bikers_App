@@ -15,21 +15,17 @@ import {fliteredBikeDetails} from '../redux/AccessoriesSlice';
 
 const OwnersManualScreen = ({navigation}) => {
   useEffect(() => {}, [selected]);
-  const ref = useRef();
-
   const Data = useSelector(state => state.shop.bikeType);
   const [selected, setSelected] = useState();
   const dispatch = useDispatch();
-  // const BikeDetails = useSelector(state => state.shop.allBikeData);
 
   const submit = () => {
-    console.log('dd',selected);
     if (selected ===1) {
       alert('Select Vehicle Type');
     } else {
       dispatch(fliteredBikeDetails(selected));
       navigation.navigate('OwnersManualDetail');
-      // ref.current.clear()
+     
     }
   };
 
@@ -57,7 +53,7 @@ const OwnersManualScreen = ({navigation}) => {
             setSelected={value => setSelected(value)}
             placeholder="Vehicle Type"
             defaultOption={{key: 1, value: 'Vehicle Type'}}
-            // ref={ref}
+       
           />
         </View>
         <View style={styles.btn}>

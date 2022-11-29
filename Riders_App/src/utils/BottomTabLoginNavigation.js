@@ -6,6 +6,7 @@ import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 import MyGarageStack from './MyGarageStack';
 import UpcomingList from '../screens/IndividualTripScreen';
 import Profile from '../screens/Profile';
+import LogoutStack from '../utils/LogoutStack'
 import ProfileStack from './ProfileStack';
 import AllUserTrip from '../screens/AllUserTrip';
 
