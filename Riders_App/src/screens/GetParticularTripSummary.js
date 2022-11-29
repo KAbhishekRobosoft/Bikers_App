@@ -140,7 +140,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                 </View>
               </View>
             </View>
-            <View style={styles.listView}>
+            {route.params.status === "upcoming" && <View style={styles.listView}>
               <TripSummaryList data={data[0].milestones} />
               <View style={styles.recommendationsView}>
                 <RecommendationTripSummary />
@@ -177,7 +177,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                   title="GO"
                 />
               </View>
-            </View>
+            </View>}
           </ScrollView>
         </View>
       ) : null}

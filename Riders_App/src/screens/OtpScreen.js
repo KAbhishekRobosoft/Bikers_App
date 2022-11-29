@@ -90,7 +90,7 @@ const OtpScreen = ({navigation}) => {
             </Pressable>
           </View>
           <View style={styles.textView2}>
-              <Count
+              {/* <Count
                 until={59}
                 size={14}
                 //onFinish={() => alert('Finished')}
@@ -99,7 +99,7 @@ const OtpScreen = ({navigation}) => {
                 timeToShow={['S']}
                 timeLabels={{s: ''}}
                 style={{height: 1, width: 1,borderWidth:1,marginLeft:40}}
-              />
+              /> */}
             <Text style={styles.secondsText}>
               seconds left
             </Text>

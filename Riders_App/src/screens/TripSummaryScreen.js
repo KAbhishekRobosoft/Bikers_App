@@ -38,8 +38,8 @@ export const TripSummary = ({navigation}) => {
   const [route, setRoute] = useState([]);
 
   useEffect(() => {
+    dispatch(deSetLoading());
     setTimeout(async () => {
-      dispatch(deSetLoading());
       const resp = await calculateRoute(
         tripDetails.source[0].latitude,
         tripDetails.source[0].longitude,
@@ -52,8 +52,8 @@ export const TripSummary = ({navigation}) => {
         {
           latitude: tripDetails.source[0].latitude,
           longitude: tripDetails.source[0].longitude,
-          latitudeDelta: 8,
-          longitudeDelta: 10,
+          latitudeDelta: 0.03,
+          longitudeDelta: 0.1,
         },
         3 * 1000,
       );
