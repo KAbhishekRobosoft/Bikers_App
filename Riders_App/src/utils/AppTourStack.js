@@ -2,9 +2,9 @@ import React from 'react';
 import AppTourScreen from '../screens/AppTourScreen';
 import BikeConfirmationScreen from '../screens/BikeConfirmationScreen';
 import LoginScreen from '../screens/LoginScreen';
-import OtpScreen from '../screens/OtpScreen'
-import ResetPasswordScreen from '../screens/ResetPasswordScreen'
-import SuccessPasswordScreen from '../screens/SuccessPasswordScreen'
+import OtpScreen from '../screens/OtpScreen';
+import ResetPasswordScreen from '../screens/ResetPasswordScreen';
+import SuccessPasswordScreen from '../screens/SuccessPasswordScreen';
 import Register from '../screens/RegisterScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import NumberEntryScreen from '../screens/NumberEntryScreen';
@@ -50,7 +50,11 @@ function AppTourStack() {
         component={SuccessPasswordScreen}
       />
 
-<Stack.Screen options={{headerShown: false}} name="NumberEntry" component={NumberEntryScreen} />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="NumberEntry"
+        component={NumberEntryScreen}
+      />
     </Stack.Navigator>
   );
 }

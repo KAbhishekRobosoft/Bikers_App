@@ -1,10 +1,10 @@
 import axios from 'axios';
-const BASE_URL = 'https://riding-application.herokuapp.com/api/v1';
+const BASE_URL = 'https://ride-app-node.vercel.app/api/v1';
 
 export const register = async (values, haveBike) => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/register',
+      'https://ride-app-node.vercel.app/api/v1/register',
       {
         userName: values.userName,
         password: values.password,
@@ -22,7 +22,7 @@ export const register = async (values, haveBike) => {
 export const checkIn = async values => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/loginPhone',
+      'https://ride-app-node.vercel.app/api/v1/loginPhone',
       {
         mobile: values.number,
         password: values.password,
@@ -37,7 +37,7 @@ export const checkIn = async values => {
 export const refreshToken = async (token) => {
 
   let res = await fetch(
-    'https://riding-application.herokuapp.com/api/v1/getAccessToken',
+    'https://ride-app-node.vercel.app/api/v1/getAccessToken',
     {
       method: 'post',
       headers: {
@@ -65,7 +65,7 @@ export const searchCity = async string => {
 
 export const searchServiceCenter = async (value, token) => {
   let res = await fetch(
-    'https://riding-application.herokuapp.com/api/v1/dealer/searchDealers',
+    'https://ride-app-node.vercel.app/api/v1/dealer/searchDealers',
     {
       method: 'post',
       body: JSON.stringify({
@@ -83,7 +83,7 @@ export const searchServiceCenter = async (value, token) => {
 
 export const uploadImage = async (payload, token) => {
   let res = await fetch(
-    'https://riding-application.herokuapp.com/api/v1/profileImageUpload',
+    'https://ride-app-node.vercel.app/api/v1/profileImageUpload',
     {
       method: 'post',
       body: payload,
@@ -99,7 +99,7 @@ export const uploadImage = async (payload, token) => {
 export const sendOtp = async mobileNumber => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/sendOtp',
+      'https://ride-app-node.vercel.app/api/v1/sendOtp',
       {
         destination: mobileNumber,
       },
@@ -113,7 +113,7 @@ export const sendOtp = async mobileNumber => {
 export const verifyOtp = async otp => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/verifyOtp',
+      'https://ride-app-node.vercel.app/api/v1/verifyOtp',
       {
         otp: otp,
       },
@@ -127,7 +127,7 @@ export const verifyOtp = async otp => {
 export const resetPassword = async userData => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/forgotPassword',
+      'https://ride-app-node.vercel.app/api/v1/forgotPassword',
       {
         mobile: userData.mobile,
         password: userData.password,
@@ -142,7 +142,7 @@ export const resetPassword = async userData => {
 export const allTripDetails = async token => {
   try {
     const response = await axios.get(
-      'https://riding-application.herokuapp.com/api/v1/trip/getTrip',
+      'https://ride-app-node.vercel.app/api/v1/trip/getTrip',
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -158,7 +158,7 @@ export const allTripDetails = async token => {
 export const addOwnerDetails = async (values, token) => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/owner/addOwnerDetails',
+      'https://ride-app-node.vercel.app/api/v1/owner/addOwnerDetails',
       {
         lisenceNumber: values.lisenceNumber,
         city: values.city,
@@ -174,30 +174,30 @@ export const addOwnerDetails = async (values, token) => {
     );
     console.log(response.data);
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in adding owner Details');
   }
 };
 
 export const getOwnerDetails = async token => {
   try {
     const response = await axios.get(
-      'https://riding-application.herokuapp.com/api/v1/owner/getOwnerDetails',
+      'https://ride-app-node.vercel.app/api/v1/owner/getOwnerDetails',
       {
         headers: {
-          Authorization: `Bearer ${'${token}'}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
     return response.data;
   } catch (error) {
-    //console.log('Error Occured');
+    console.log('Error Occured in getting owner details');
   }
 };
 
 export const updateOwnerDetails = async (values, token) => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/owner/updateOwnerDetails',
+      'https://ride-app-node.vercel.app/api/v1/owner/updateOwnerDetails',
       {
         city: values.city,
         state: values.state,
@@ -206,20 +206,20 @@ export const updateOwnerDetails = async (values, token) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${'${token}'}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
     console.log('res', response.data);
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in updating owner Details');
   }
 };
 
 export const addBikeDetails = async (values, token) => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/bike/addBike',
+      'https://ride-app-node.vercel.app/api/v1/bike/addBike',
       {
         vehicleType: values.vehicleType,
         vehicleNumber: values.vehicleNumber,
@@ -240,13 +240,13 @@ export const addBikeDetails = async (values, token) => {
 
     console.log(response.data);
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in adding Bike Details');
   }
 };
 export const getBikeDetails = async token => {
   try {
     const response = await axios.get(
-      'https://riding-application.herokuapp.com/api/v1/bike/getBikeDetails',
+      'https://ride-app-node.vercel.app/api/v1/bike/getBikeDetails',
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -255,14 +255,14 @@ export const getBikeDetails = async token => {
     );
     return response.data;
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in getting Bike Details');
   }
 };
 
 export const createTrip = async (obj, token) => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/trip/createTrip',
+      'https://ride-app-node.vercel.app/api/v1/trip/createTrip',
       obj,
       {
         headers: {
@@ -300,7 +300,7 @@ export const getSortedTripDetails = async token => {
 export const searchProducts = async value => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/product/searchProducts',
+      'https://ride-app-node.vercel.app/api/v1/product/searchProducts',
       {
         text: value,
       },
@@ -319,7 +319,7 @@ export const searchProducts = async value => {
 export const LikeProducts = async value => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/product/addLike',
+      'https://ride-app-node.vercel.app/api/v1/product/addLike',
       {
         _id: value,
       },
@@ -346,7 +346,7 @@ export const UserTrips = async key => {
   console.log('key', key);
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/trip/searchTrip',
+      'https://ride-app-node.vercel.app/api/v1/trip/searchTrip',
       {
         text: '',
       },
@@ -366,7 +366,7 @@ export const SearchUserTrips = async (key, value) => {
   console.log('key', key);
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/trip/searchTrip',
+      'https://ride-app-node.vercel.app/api/v1/trip/searchTrip',
       {
         text: value,
       },
@@ -386,7 +386,7 @@ export const SearchUserTrips = async (key, value) => {
 export const deleteTrip = async (id, key) => {
   try {
     const response = await axios.post(
-      'https://riding-application.herokuapp.com/api/v1/trip/deleteTrip',
+      'https://ride-app-node.vercel.app/api/v1/trip/deleteTrip',
       {
         _id: id,
       },

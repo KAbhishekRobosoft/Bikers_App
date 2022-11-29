@@ -107,10 +107,9 @@ export const Password = props => {
   );
 };
 
-export const PlaceholderTextField = (props) => {
-
+export const PlaceholderTextField = props => {
   const {
-    field: {name,onBlur,onChange,value},
+    field: {name, onBlur, onChange, value},
     form: {errors, touched, setFieldTouched},
     ...inputProps
   } = props;
@@ -148,7 +147,6 @@ export const PlaceholderTextField = (props) => {
   );
 };
 export const PlaceholderTextFieldOwnerManual = props => {
-
   const {
     field: {name, onBlur, onChange, value},
     form: {errors, touched, setFieldTouched},
@@ -222,6 +220,8 @@ export const DropDownInputField = props => {
       </View>
       <View style={{marginTop: -38}}>
         <SelectList
+       
+          defaultOption={props.defaultOption}
           data={props.data}
           setSelected={props.setSelected}
           boxStyles={styles.dropDownBox}
@@ -363,7 +363,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'rgba(151,151,151,0.85)',
     borderBottomWidth: 1,
     paddingLeft: 20,
-    opacity: 0.5
+    opacity: 0.5,
   },
   imageIcons: {
     height: 32,

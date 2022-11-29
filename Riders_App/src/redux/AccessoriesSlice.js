@@ -7,6 +7,7 @@ const asseccoriesSlice = createSlice({
     bikeType: [],
     allBikeData: [],
     fliteredBikeData: [],
+    selectedBikeData:[],
     accessoriesData: [],
     filterAccessoriesData: [],
   },
@@ -60,6 +61,9 @@ const asseccoriesSlice = createSlice({
       state.allBikeData = action.payload;
       state.fliteredBikeData = action.payload;
     },
+    SelectedBike: (state, action) => {
+      state.selectedBikeData = action.payload;   
+    },
     fliteredBikeDetails: (state, action) => {
       state.allBikeData = state.fliteredBikeData.filter(
         ele => ele.vehicleType === action.payload,
@@ -73,6 +77,7 @@ export const {
   filterAccessories,
   addBikeType,
   addBikeData,
+  SelectedBike,
   fliteredBikeDetails,
 } = asseccoriesSlice.actions;
 export default asseccoriesSlice.reducer;

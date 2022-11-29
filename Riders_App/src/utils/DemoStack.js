@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator();
 
 function DemoStack() {
   return (
-      <Stack.Navigator initialRouteName="AddBikeDetails">
+      <Stack.Navigator initialRouteName="AddPersonalDetails">
         <Stack.Screen
           options={{headerShown: false}}
           name="AddBikeDetails"

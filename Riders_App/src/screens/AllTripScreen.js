@@ -19,6 +19,8 @@ const AllTrips = ({navigation}) => {
   const authData= useSelector(state=>state.auth);
   const state = useSelector(state => state.milestone.initialState)
 
+  //console.log(authData.userData);
+
   useEffect(() => {
     setTimeout(async () => {
       const key = await getVerifiedKeys(authData.userToken)

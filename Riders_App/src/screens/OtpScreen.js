@@ -14,6 +14,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {register} from '../services/Auth';
 import {setOtpVerfied} from '../redux/AuthSlice';
 import Toast from 'react-native-simple-toast';
+import Count from 'react-native-countdown-component';
 
 const OtpScreen = ({navigation}) => {
   const data = useSelector(state => state.auth);
@@ -60,7 +61,10 @@ const OtpScreen = ({navigation}) => {
                     data.registered === true &&
                     data.forgotPassword === false
                   ) {
-                    const response = await register(data.userData,data.haveBike);
+                    const response = await register(
+                      data.userData,
+                      data.haveBike,
+                    );
                     if (response !== undefined) {
                       dispatch(setOtpVerfied());
                       navigation.navigate('Login');
@@ -87,7 +91,19 @@ const OtpScreen = ({navigation}) => {
             </Pressable>
           </View>
           <View style={styles.textView2}>
-            <Text style={styles.secondsText}>20 seconds left</Text>
+              <Count
+                until={59}
+                size={14}
+                //onFinish={() => alert('Finished')}
+                digitStyle={{backgroundColor: '#FFF'}}
+                digitTxtStyle={{color: 'rgba(174,168,168,0.87)'}}
+                timeToShow={['S']}
+                timeLabels={{s: ''}}
+                style={{height: 1, width: 1,borderWidth:1,marginLeft:40}}
+              />
+            <Text style={styles.secondsText}>
+              seconds left
+            </Text>
           </View>
         </View>
       </ScrollView>
@@ -135,12 +151,18 @@ const styles = StyleSheet.create({
   },
   textView2: {
     marginTop: 30,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   resendText: {
     color: '#F7931E',
   },
   secondsText: {
     color: 'rgba(174,168,168,0.87)',
+    width: 100,
+    marginLeft:4,
+    bottom:1
+
   },
 
   optView: {

@@ -16,9 +16,15 @@ import {setUserData} from '../redux/AuthSlice';
 import ButtonLarge from '../components/Buttons';
 import {Field, Formik} from 'formik';
 import * as yup from 'yup';
+import { getVerifiedKeys } from '../utils/Functions';
 
 export const AddPersonalDetails = ({navigation}) => {
   const useDetails = useSelector(state => state.auth.userData);
+  const authData= useSelector(state=>state.auth);
+
+  // console.log(useDetails.email)
+  // console.log(useDetails.mobile)
+   console.log(useDetails)
   const dispatch = useDispatch();
 
   const submitForm = async (values, {resetForm}) => {
@@ -31,21 +37,24 @@ export const AddPersonalDetails = ({navigation}) => {
       doorNumber: values.doorNumber,
       pincode: values.pincode,
     };
-    const response = await addOwnerDetails(obj);
+
+    let cred = await getVerifiedKeys(authData.userToken);
+
+    const response = await addOwnerDetails(obj,cred);
     const userData = {
       lisenceNumber: values.licence,
       city: values.city,
       state: values.state,
       doorNumber: values.doorNumber,
       pincode: values.pincode,
-      name: useDetails.name,
+      name: useDetails.userName,
       mobile: useDetails.mobile,
       email: useDetails.email,
+      haveBike: true,
     };
     dispatch(setUserData(userData));
-    
     resetForm((initialValues = ''));
-   
+    navigation.navigate('AddBikeDetails');
   };
 
   return (
@@ -112,9 +121,9 @@ export const AddPersonalDetails = ({navigation}) => {
                       name="name"
                       placeholder="Name"
                       keyboardType="default"
-                      value={values.name}
+                      //value={values.name}
                       editable={false}
-                      defaultValue={useDetails.name}
+                      defaultValue={useDetails.userName}
                     />
                     <Field
                       component={PlaceholderTextFieldOwnerManual}
@@ -149,7 +158,7 @@ export const AddPersonalDetails = ({navigation}) => {
                       name="mobile"
                       placeholder="Mobile"
                       keyboardType="default"
-                      value={values.mobile}
+                      //value={values.mobile}
                       editable={false}
                       defaultValue={useDetails.mobile}
                     />
@@ -158,7 +167,7 @@ export const AddPersonalDetails = ({navigation}) => {
                       name="email"
                       placeholder="Email"
                       keyboardType="default"
-                      value={values.email}
+                      //value={values.email}
                       editable={false}
                       defaultValue={useDetails.email}
                     />

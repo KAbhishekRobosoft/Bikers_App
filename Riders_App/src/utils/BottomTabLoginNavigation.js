@@ -1,4 +1,4 @@
-import {StyleSheet, Image} from 'react-native';
+import {StyleSheet, Image, Platform} from 'react-native';
 import React from 'react';
 import CreateTrip from '../screens/CreateTripScreen';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
@@ -7,17 +7,21 @@ import MyGarageStack from './MyGarageStack';
 import UpcomingList from '../screens/AllTripScreen';
 import Profile from '../screens/Profile';
 import ProfileStack from './ProfileStack';
-
+import {AddPersonalDetails} from '../screens/AddPersonalDetailsScreen';
+import AddBikeDetails from '../screens/AddBikeDetailsScreen';
+import LogoutScreen from '../screens/LogoutScreen';
+import pop, {BottomPopUpMenu} from '../components/PopUpMenu';
+import { logOut } from '../redux/AuthSlice';
+import LogoutStack from './LogoutStack';
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomTabLoginNavigation = () => {
   return (
-    // <NavigationContainer>
     <Tab.Navigator
       shifting={true}
       initialRouteName="Home"
       activeColor="#ffffff"
-      barStyle={{backgroundColor: '#ED7E2B', height: 65}}>
+      barStyle={{backgroundColor: '#ED7E2B', height:Platform.OS==='ios'? 65:62}}>
       <Tab.Screen
         name="Trips"
         component={UpcomingList}
@@ -32,6 +36,7 @@ const BottomTabLoginNavigation = () => {
                   width: 35,
                   height: 22,
                   resizeMode: 'contain',
+                  opacity: 0.7,
                 }}
               />
             );
@@ -52,6 +57,7 @@ const BottomTabLoginNavigation = () => {
                   width: 35,
                   height: 22,
                   resizeMode: 'contain',
+                  opacity: 3,
                 }}
               />
             );
@@ -78,7 +84,8 @@ const BottomTabLoginNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Trip4"
+      
+        name="Profile"
         component={ProfileStack}
         options={{
           tabBarIcon: ({focused}) => {
@@ -97,8 +104,14 @@ const BottomTabLoginNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="Trip5"
-        component={CreateTrip}
+        name="Logout"
+        component={LogoutStack}
+        // listeners={({navigation}) => ({
+        //   tabPress: e => {
+        //     e.preventDefault();
+        //     navigation.navigate('Logout')
+        //   },
+        // })}
         options={{
           tabBarIcon: ({focused}) => {
             return (
@@ -116,7 +129,6 @@ const BottomTabLoginNavigation = () => {
         }}
       />
     </Tab.Navigator>
-    // </NavigationContainer>
   );
 };
 

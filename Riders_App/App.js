@@ -7,6 +7,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import NavigationFunctionality from './src/utils/NavigationFunctionality';
 import AddBikeDetails from './src/screens/AddBikeDetailsScreen';
 import DemoStack from './src/utils/DemoStack';
+import { OwnerManualEdit } from './src/screens/OwnerManualEditableScreen';
+import LogoutScreen from './src/screens/LogoutScreen';
 
 let persistor = persistStore(store);
 
@@ -15,7 +17,7 @@ const App = () => {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <NavigationContainer>
-          <DemoStack />
+          <NavigationFunctionality />
         </NavigationContainer>
       </PersistGate>
     </Provider>

@@ -55,27 +55,29 @@ const AddBikeDetails = ({navigation}) => {
     console.log('click');
     const obj = {
       vehicleType: values.vehicleType,
-      vehicleNumber: values.vehicleNo,
-      engineNumber: values.engine,
-      frameNumber: values.frameNo,
+      vehicleNumber: values.vehicleNumber,
+      engineNumber: values.engineNumber,
+      frameNumber: values.frameNumber,
       batteryMake: values.batteryMake,
-      registerNumber: values.regNo,
+      registerNumber: values.registerNumber,
       model: values.model,
       color: values.color,
       dealerCode: values.dealerCode,
     };
+    console.log('objj',obj);
     let cred = await getVerifiedKeys(authData.userToken);
     await addBikeDetails(obj,cred); // <-----------API  CAll
-    const response = await getBikeDetails();
+    const response = await getBikeDetails(cred);
     const BikeTypes = response.map(e => {
       return e.vehicleType;
     });
-
+    
+    console.log('res',BikeTypes);
     dispatch(addBikeType(BikeTypes));
     dispatch(addBikeData(response)); // <-----------Redux
-    console.log('b4', values);
+    //console.log('b4', values);
     resetForm({initialValues});
-    navigation.navigate('AddPersonalDetails');
+    //navigation.navigate('Garage');
   };
 
   return (

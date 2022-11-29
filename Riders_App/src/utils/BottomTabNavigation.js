@@ -116,11 +116,13 @@ const BottomTabNavigation = () => {
       />
       <Tab.Screen
         name="Trip5"
+        
         // listeners={{
         //   tabPress: e => {
         //     e.preventDefault();
         //   },
         // }}
+        
         component={AddBikeDetails}
         options={{
           tabBarIcon: ({focused}) => {
