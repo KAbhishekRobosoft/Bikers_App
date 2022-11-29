@@ -70,15 +70,15 @@ export const Milestone = () => {
                           place: to,
                           latitude: resp1.lat,
                           longitude: resp1.lon,
-                          distance: dist.summary.lengthInMeters / 1000,
-                          duration: Math.round(
+                        },
+                      ],
+                      distance: dist.summary.lengthInMeters / 1000,
+                      duration: Math.round(
                             Math.abs(
                               new Date(dist.summary.arrivalTime) -
                                 new Date(dist.summary.departureTime),
                             ) / msInHour,
-                          ),
-                        },
-                      ],
+                          )
                     };
                     dispatch(setMileStoneData(obj));
                     dispatch(setMileStone(false));

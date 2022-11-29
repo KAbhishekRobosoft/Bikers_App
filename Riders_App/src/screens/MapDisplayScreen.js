@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
+  ActivityIndicator,
   SafeAreaView,
   StyleSheet,
   useWindowDimensions,
   View,
+  Text,
 } from 'react-native';
 import MapView, {Polyline} from 'react-native-maps';
 import {Marker} from 'react-native-maps';
@@ -11,8 +13,17 @@ import MapNavBar, {
   MapBottomBar,
   MapChatButton,
 } from '../components/MapDisplayItmes';
+import {calculateRoute} from '../services/Auth';
+import uuid from 'react-native-uuid';
+import {setLoading} from '../redux/MileStoneSlice';
+import {deSetLoading} from '../redux/MileStoneSlice';
+import {useDispatch, useSelector} from 'react-redux';
 
-const MapDisplayScreen = ({navigation,route}) => {
+const MapDisplayScreen = ({navigation, route}) => {
+  const [direction, setDirection] = useState([]);
+  const mapRef = useRef(null);
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.milestone.isLoading);
   const [latitude, setLatitude] = useState(parseFloat(route.params.latitude));
   const [longitude, setLongitude] = useState(
     parseFloat(route.params.longitude),
@@ -24,6 +35,36 @@ const MapDisplayScreen = ({navigation,route}) => {
     parseFloat(route.params.longitude1),
   );
 
+  useEffect(() => {
+    dispatch(deSetLoading());
+    setTimeout(async () => {
+      const dir = await calculateRoute(
+        latitude,
+        longitude,
+        latitude1,
+        longitude1,
+      );
+      dispatch(setLoading());
+      mapRef.current.animateToRegion(
+        {
+          latitude: latitude,
+          longitude: longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.1,
+        },
+        3 * 1000,
+      );
+
+      setDirection(dir.legs[0].points);
+    }, 500);
+  }, []);
+
+  const [atm, setAtm] = useState(false);
+  const [fuel, setFuel] = useState(false);
+  const [sleep, setSleep] = useState(false);
+  const [food, setFood] = useState(false);
+  const [data, setData] = useState([]);
+
   const [musicControlState, setMusicControlState] = useState(false);
 
   const {height, width} = useWindowDimensions();
@@ -33,36 +74,49 @@ const MapDisplayScreen = ({navigation,route}) => {
     setMusicControlState(!musicControlState);
   };
 
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator color="orange" size="large" />
+      </View>
+    );
+  }
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={{flex: 1}}>
-        <MapNavBar navigation= {navigation}/>
+        <MapNavBar
+          atm={atm}
+          setAtm={setAtm}
+          sleep={sleep}
+          setSleep={setSleep}
+          fuel={fuel}
+          setFuel={setFuel}
+          food={food}
+          setFood={setFood}
+          navigation={navigation}
+          data={data}
+          setData={setData}
+          id={route.params.id}
+        />
         <View style={{flex: 1}}>
-          <MapView style={styles.mapStyle} customMapStyle={mapStyle}>
+          <MapView
+            ref={mapRef}
+            style={styles.mapStyle}
+            customMapStyle={mapStyle}>
             <Polyline
-              coordinates={[
-                {
-                  latitude: parseFloat(latitude),
-                  longitude: parseFloat(longitude),
-                  latitudeDelta: 0.03,
-                  longitudeDelta: 0.01,
-                },
-                {
-                  latitude: parseFloat(latitude1),
-                  longitude: parseFloat(longitude1),
-                  latitudeDelta: 0.03,
-                  longitudeDelta: 0.01,
-                },
-              ]}
+              coordinates={direction.map(ele => ({
+                latitude: ele.latitude,
+                longitude: ele.longitude,
+              }))}
               strokeColor={'blue'}
-              strokeWidth={5}
+              strokeWidth={2}
               lineDashPattern={[1]}
             />
 
             <Marker
               coordinate={{
-                latitude: parseFloat(route.params.latitude),
-                longitude: parseFloat(route.params.longitude),
+                latitude: latitude,
+                longitude: longitude,
                 latitudeDelta: 0.03,
                 longitudeDelta: 0.01,
               }}
@@ -70,23 +124,111 @@ const MapDisplayScreen = ({navigation,route}) => {
 
             <Marker
               coordinate={{
-                latitude: parseFloat(route.params.latitude1),
-                longitude: parseFloat(route.params.longitude1),
+                latitude: latitude1,
+                longitude: longitude1,
                 latitudeDelta: 0.03,
                 longitudeDelta: 0.01,
               }}
             />
+
+            {sleep &&
+              data.length > 0 &&
+              data.map(ele => {
+                return (
+                  <Marker
+                    key={uuid.v4()}
+                    coordinate={{
+                      latitude: ele.geocodes.main.latitude,
+                      longitude: ele.geocodes.main.longitude,
+                      latitudeDelta: 0.1,
+                      longitudeDelta: 0.1,
+                    }}
+                    image={require('../assets/images/slumber.jpg')}
+                  />
+                );
+              })}
+
+            {atm &&
+              data.length > 0 &&
+              data.map(ele => {
+                return (
+                  <Marker
+                    key={uuid.v4()}
+                    coordinate={{
+                      latitude: ele.geocodes.main.latitude,
+                      longitude: ele.geocodes.main.longitude,
+                      latitudeDelta: 0.1,
+                      longitudeDelta: 0.1,
+                    }}
+                    image={require('../assets/images/card.jpg')}
+                    title={ele.name}
+                  />
+                );
+              })}
+
+            {fuel &&
+              data.length > 0 &&
+              data.map(ele => {
+                return (
+                  <Marker
+                    key={uuid.v4()}
+                    coordinate={{
+                      latitude: ele.geocodes.main.latitude,
+                      longitude: ele.geocodes.main.longitude,
+                      latitudeDelta: 0.1,
+                      longitudeDelta: 0.1,
+                    }}
+                    image={require('../assets/images/gasStation.jpg')}
+                    title={ele.name}
+                  />
+                );
+              })}
+            {food &&
+              data.length > 0 &&
+              data.map(ele => {
+                return (
+                  <Marker
+                    key={uuid.v4()}
+                    coordinate={{
+                      latitude: ele.geocodes.main.latitude,
+                      longitude: ele.geocodes.main.longitude,
+                      latitudeDelta: 0.1,
+                      longitudeDelta: 0.1,
+                    }}
+                    image={require('../assets/images/cutlery.jpg')}
+                    title={ele.name}
+                  />
+                );
+              })}
+
+            {route.params.destination.map(ele => {
+              return (
+                <Marker
+                  key={uuid.v4()}
+                  coordinate={{
+                    latitude: ele.destination[0].latitude,
+                    longitude: ele.destination[0].longitude,
+                    latitudeDelta: 0.03,
+                    longitudeDelta: 0.01,
+                  }}
+                  image={require('../assets/images/negative.jpg')}
+                  title={ele.name}
+                />
+              );
+            })}
           </MapView>
           <View>
             <View style={{flex: 1, top: top1}}>
-              <MapChatButton navigation={navigation}/>
+              <MapChatButton
+                setLatitude={setLatitude}
+                setLongitude={setLongitude}
+                navigation={navigation}
+                tripName={route.params.tripName}
+              />
               <View style={[styles.bottomContainer, {top}]}>
                 <MapBottomBar
+                  id={route.params.id}
                   musicControl={musicControl}
-                  latitude={val => setLatitude(val)}
-                  longitude={val => setLongitude(val)}
-                  latitude1={val => setLatitude1(val)}
-                  longitude1={val => setLongitude(val)}
                   musicControlIcon={
                     musicControlState ? 'ios-pause-sharp' : 'ios-play'
                   }

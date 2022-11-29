@@ -17,7 +17,7 @@ import {ReceiverContainer, SenderChatDetails} from '../components/chatDetails';
 import PopUpMenu from '../components/PopUpMenu';
 import Toast from 'react-native-simple-toast'
 
-const ChatScreen = () => {
+const ChatScreen = ({navigation,route}) => {
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(async() => {
@@ -77,7 +77,7 @@ const ChatScreen = () => {
             style={styles.icon}
           />
         </Pressable>
-        <Text style={styles.headerText}>Reunion Manali</Text>
+        <Text style={styles.headerText}>{route.params.tripName}</Text>
         <PopUpMenu />
       </View>
 
@@ -164,9 +164,8 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 20,
     fontWeight: '500',
-    marginLeft: '0%',
     fontFamily: 'Roboto-Medium',
-    right: '90%',
+    right: '95%',
   },
   icon: {
     marginHorizontal: 20,

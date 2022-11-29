@@ -45,7 +45,7 @@ export const TripSummaryList = ({data}) => {
                       <View
                         style={{flexDirection: 'column', paddingHorizontal: 6}}>
                         <Text style={styles.descriptionOverLine}>
-                          {item.destination[0].distance}{' '}km{' '}{item.destination[0].duration}hr
+                          {item.distance}{' '}km{' '}{item.duration}hr
                         </Text>
                         <View style={styles.lineView2}></View>
                       </View>

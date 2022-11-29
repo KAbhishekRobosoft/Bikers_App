@@ -29,6 +29,7 @@ const AllTrips = ({navigation}) => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const tripdata = await UserTrips(key);
+      console.log(tripdata)
       setTripDetails(tripdata);
     }, 500);
   }, [state]);
@@ -45,6 +46,7 @@ const AllTrips = ({navigation}) => {
           statusText={details.item.tripStatus}
           month={details.item.startTime.toString()}
           id={details.item._id}
+          status= {details.item.tripStatus}
         />
     );
   };

@@ -13,24 +13,9 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon1 from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const PopUpMenu = () => {
+const PopUpMenu = ({color,options,size}) => {
   const [visible, setVisible] = useState(false);
   const scale = useRef(new Animated.Value(0)).current;
-
-  const options = [
-    {
-      title: 'Group Info',
-      action: () => alert('Group info'),
-    },
-    {
-      title: 'Notifications',
-      action: () => alert('Notifications'),
-    },
-    {
-      title: 'Clear Chat',
-      action: () => alert('Clear Chat'),
-    },
-  ];
 
   const {height, width} = useWindowDimensions();
   const left = width > height ? (Platform.OS === 'ios' ? '85%' : '80%') : '71%';
@@ -50,8 +35,8 @@ const PopUpMenu = () => {
       <TouchableOpacity onPress={() => resizeBox(1)}>
         <Icon
           name="ellipsis-vertical"
-          color={'white'}
-          size={30}
+          color={color}
+          size={size}
           style={styles.icon}
         />
       </TouchableOpacity>

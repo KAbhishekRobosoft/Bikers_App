@@ -17,7 +17,7 @@ import ChatScreen from '../screens/ChatScreen';
 const Stack = createNativeStackNavigator();
 
 function UserLoginStack() {
-  const authData = useSelector(state => state.auth);
+
   return (
     <Stack.Navigator initialRouteName="BottomTabLoginNavigation">
       <Stack.Screen
