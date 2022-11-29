@@ -24,7 +24,9 @@ import GetLocation from 'react-native-get-location';
 import {getLocationName} from '../services/Auth';
 import {setLoading} from '../redux/MileStoneSlice';
 import {deSetLoading} from '../redux/MileStoneSlice';
-import { tripStore } from '../redux/MileStoneSlice';
+import {tripStore} from '../redux/MileStoneSlice';
+import {calculateRoute} from '../services/Auth';
+import Toast from 'react-native-simple-toast'
 
 const CreateTrip = ({navigation}) => {
   useEffect(() => {
@@ -301,38 +303,55 @@ const CreateTrip = ({navigation}) => {
           <View style={styles.btn}>
             <ButtonLarge
               onPress={async () => {
-                console.log(from)
-                console.log(whereto)
                 const resp = await getCoordinates(from);
                 const resp1 = await getCoordinates(whereto);
-                
-                const obj = {
-                  tripName: tripName,
-                  source: [
-                    {
-                      place: from,
-                      latitude: resp.lat,
-                      longitude: resp.lon,
-                    },
-                  ],
-                  destination: [
-                    {
-                      place: whereto,
-                      latitude: resp1.lat,
-                      longitude: resp1.lon,
-                    },
-                  ],
-                  startDate: date.toString(),
-                  endDate: endDate.toString(),
-                  startTime: time.toString(),
-                  distance: '500m',
-                  riders: contactsData.addTripContacts,
-                  milestones: milesonesData,
-                };
-                console.log(obj)
-                dispatch(tripStore(obj))
-                navigation.navigate('TripSummary')
-                
+                const dist = await calculateRoute(
+                  resp.lat,
+                  resp.lon,
+                  resp1.lat,
+                  resp1.lon,
+                );
+                const msInHour = 1000 * 60 * 60;
+                if (
+                  resp !== undefined &&
+                  resp1 !== undefined &&
+                  dist !== undefined
+                ) {
+                  const obj = {
+                    tripName: tripName,
+                    source: [
+                      {
+                        place: from,
+                        latitude: resp.lat,
+                        longitude: resp.lon,
+                      },
+                    ],
+                    destination: [
+                      {
+                        place: whereto,
+                        latitude: resp1.lat,
+                        longitude: resp1.lon,
+                      },
+                    ],
+                    startDate: date.toString(),
+                    endDate: endDate.toString(),
+                    startTime: time.toString(),
+                    distance: dist.summary.lengthInMeters / 1000,
+                    riders: contactsData.addTripContacts,
+                    milestones: milesonesData,
+                    duration: Math.round(
+                      Math.abs(
+                        new Date(dist.summary.arrivalTime) -
+                          new Date(dist.summary.departureTime),
+                      ) / msInHour,
+                    ),
+                  };
+                  dispatch(tripStore(obj));
+                  navigation.navigate('TripSummary');
+                }
+                else{
+                  Toast.show('Enter proper location')
+                }
               }}
               title="Done"
             />

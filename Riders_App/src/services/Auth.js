@@ -3,16 +3,13 @@ const BASE_URL = 'https://ride-app-node.vercel.app/api/v1';
 
 export const register = async (values, haveBike) => {
   try {
-    const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/register',
-      {
-        userName: values.userName,
-        password: values.password,
-        mobile: values.mobile,
-        email: values.email,
-        haveBike: haveBike,
-      },
-    );
+    const response = await axios.post(`${BASE_URL}/register`, {
+      userName: values.userName,
+      password: values.password,
+      mobile: values.mobile,
+      email: values.email,
+      haveBike: haveBike,
+    });
     return response.data;
   } catch (error) {
     console.log('An error has occurred');
@@ -21,13 +18,10 @@ export const register = async (values, haveBike) => {
 
 export const checkIn = async values => {
   try {
-    const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/loginPhone',
-      {
-        mobile: values.number,
-        password: values.password,
-      },
-    );
+    const response = await axios.post(`${BASE_URL}/loginPhone`, {
+      mobile: values.number,
+      password: values.password,
+    });
     return response.data;
   } catch (error) {
     console.log('An error has occurred');
@@ -35,15 +29,12 @@ export const checkIn = async values => {
 };
 
 export const refreshToken = async token => {
-  let res = await fetch(
-    'https://ride-app-node.vercel.app/api/v1/getAccessToken',
-    {
-      method: 'post',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  let res = await fetch(`${BASE_URL}/getAccessToken`, {
+    method: 'post',
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  );
+  });
   let data = await res.json();
   return data;
 };
@@ -63,46 +54,37 @@ export const searchCity = async string => {
 };
 
 export const searchServiceCenter = async (value, key) => {
-  let res = await fetch(
-    'https://ride-app-node.vercel.app/api/v1/dealer/searchDealers',
-    {
-      method: 'post',
-      body: JSON.stringify({
-        text: value,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${key}`,
-      },
+  let res = await fetch(`${BASE_URL}/dealer/searchDealers`, {
+    method: 'post',
+    body: JSON.stringify({
+      text: value,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
-  );
+  });
   let data = await res.json();
   return data;
 };
 
 export const uploadImage = async (payload, token) => {
-  let res = await fetch(
-    'https://ride-app-node.vercel.app/api/v1/profileImageUpload',
-    {
-      method: 'post',
-      body: payload,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  let res = await fetch(`${BASE_URL}/profileImageUpload`, {
+    method: 'post',
+    body: payload,
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  );
+  });
   let data = await res.json();
   return data;
 };
 
 export const sendOtp = async mobileNumber => {
   try {
-    const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/sendOtp',
-      {
-        destination: mobileNumber,
-      },
-    );
+    const response = await axios.post(`${BASE_URL}/sendOtp`, {
+      destination: mobileNumber,
+    });
     console.log(response.data);
   } catch (error) {
     console.log('Error Occured');
@@ -111,12 +93,9 @@ export const sendOtp = async mobileNumber => {
 
 export const verifyOtp = async otp => {
   try {
-    const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/verifyOtp',
-      {
-        otp: otp,
-      },
-    );
+    const response = await axios.post(`${BASE_URL}/verifyOtp`, {
+      otp: otp,
+    });
     return response.data.message;
   } catch (error) {
     console.log('Error Occured');
@@ -125,13 +104,10 @@ export const verifyOtp = async otp => {
 
 export const resetPassword = async userData => {
   try {
-    const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/forgotPassword',
-      {
-        mobile: userData.mobile,
-        password: userData.password,
-      },
-    );
+    const response = await axios.post(`${BASE_URL}/forgotPassword`, {
+      mobile: userData.mobile,
+      password: userData.password,
+    });
     return response.data;
   } catch (error) {
     console.log('An error has occurred');
@@ -140,14 +116,11 @@ export const resetPassword = async userData => {
 
 export const allTripDetails = async token => {
   try {
-    const response = await axios.get(
-      'https://ride-app-node.vercel.app/api/v1/trip/getTrip',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await axios.get(`${BASE_URL}/trip/getTrip`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     console.log(response.data);
   } catch (err) {
     console.log(err);
@@ -157,7 +130,7 @@ export const allTripDetails = async token => {
 export const addOwnerDetails = async (values, token) => {
   try {
     const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/owner/addOwnerDetails',
+      `${BASE_URL}/owner/addOwnerDetails`,
       {
         lisenceNumber: values.lisenceNumber,
         city: values.city,
@@ -179,14 +152,11 @@ export const addOwnerDetails = async (values, token) => {
 
 export const getOwnerDetails = async token => {
   try {
-    const response = await axios.get(
-      'https://ride-app-node.vercel.app/api/v1/owner/getOwnerDetails',
-      {
-        headers: {
-          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg'}`,
-        },
+    const response = await axios.get(`${BASE_URL}/owner/getOwnerDetails`, {
+      headers: {
+        Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg'}`,
       },
-    );
+    });
     return response.data;
   } catch (error) {
     //console.log('Error Occured');
@@ -196,7 +166,7 @@ export const getOwnerDetails = async token => {
 export const updateOwnerDetails = async (values, token) => {
   try {
     const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/owner/updateOwnerDetails',
+      `${BASE_URL}/owner/updateOwnerDetails`,
       {
         city: values.city,
         state: values.state,
@@ -218,7 +188,7 @@ export const updateOwnerDetails = async (values, token) => {
 export const addBikeDetails = async (values, token) => {
   try {
     const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/bike/addBike',
+      `${BASE_URL}/bike/addBike`,
       {
         vehicleType: values.vehicleType,
         vehicleNumber: values.vehicleNumber,
@@ -242,16 +212,14 @@ export const addBikeDetails = async (values, token) => {
     console.log('Error Occured');
   }
 };
+
 export const getBikeDetails = async token => {
   try {
-    const response = await axios.get(
-      'https://ride-app-node.vercel.app/api/v1/bike/getBikeDetails',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await axios.get(`${BASE_URL}/bike/getBikeDetails`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     return response.data;
   } catch (error) {
     console.log('Error Occured in get Bike details');
@@ -260,15 +228,11 @@ export const getBikeDetails = async token => {
 
 export const createTrip = async (obj, token) => {
   try {
-    const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/trip/createTrip',
-      obj,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await axios.post(`${BASE_URL}/trip/createTrip`, obj, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     return response.data;
   } catch (error) {
     console.log('Error Occured');
@@ -297,7 +261,7 @@ export const getSortedTripDetails = async token => {
 export const searchProducts = async (value, token) => {
   try {
     const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/product/searchProducts',
+      `${BASE_URL}/product/searchProducts`,
       {
         text: value,
       },
@@ -316,7 +280,7 @@ export const searchProducts = async (value, token) => {
 export const LikeProducts = async (value, token) => {
   try {
     const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/product/addLike',
+      `${BASE_URL}/product/addLike`,
       {
         _id: value,
       },
@@ -342,7 +306,7 @@ export const getLocationName = async (lat, lon) => {
 export const UserTrips = async key => {
   try {
     const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/trip/searchTrip',
+      `${BASE_URL}/trip/searchTrip`,
       {
         text: '',
       },
@@ -361,7 +325,7 @@ export const UserTrips = async key => {
 export const SearchUserTrips = async (key, value) => {
   try {
     const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/trip/searchTrip',
+      `${BASE_URL}/trip/searchTrip`,
       {
         text: value,
       },
@@ -380,7 +344,7 @@ export const SearchUserTrips = async (key, value) => {
 export const SearchAllUserTrips = async key => {
   try {
     const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/trip/searchAllTrips',
+      `${BASE_URL}/trip/searchAllTrips`,
       {
         text: '',
       },
@@ -399,7 +363,7 @@ export const SearchAllUserTrips = async key => {
 export const SearchAllUserInputTrips = async (key, value) => {
   try {
     const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/trip/searchAllTrips',
+      `${BASE_URL}/trip/searchAllTrips`,
       {
         text: value,
       },
@@ -418,7 +382,7 @@ export const SearchAllUserInputTrips = async (key, value) => {
 export const deleteTrip = async (id, key) => {
   try {
     const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/trip/deleteTrip',
+      `${BASE_URL}/trip/deleteTrip`,
       {
         _id: id,
       },
@@ -437,7 +401,7 @@ export const deleteTrip = async (id, key) => {
 export const BookService = async (key, value) => {
   try {
     const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/service/bookService',
+      `${BASE_URL}/service/bookService`,
       {
         vehicleNumber: value.vehicleNumber,
         serviceType: value.serviceType,
@@ -538,7 +502,7 @@ export const editProfile = async (token, obj) => {
 };
 
 export const uploadProfileImage = async (payload, token) => {
-  let res = await fetch(BASE_URL + '/editProfile/image', {
+  let res = await fetch(BASE_URL + '/editProfileImage', {
     method: 'post',
     body: payload,
     headers: {
@@ -546,9 +510,9 @@ export const uploadProfileImage = async (payload, token) => {
     },
   });
   let data = await res.json();
-  console.log(data);
+  return data;
 };
-// return data;
+
 export const getAllService = async token => {
   try {
     const response = await axios.get(BASE_URL + '/service/getAllService', {
@@ -565,7 +529,7 @@ export const getAllService = async token => {
 export const getParticularService = async (key, id) => {
   try {
     const response = await axios.post(
-      'https://ride-app-node.vercel.app/api/v1/service/getParticularService',
+      `${BASE_URL}/service/getParticularService`,
       {
         _id: id,
       },
@@ -596,6 +560,24 @@ export const updateMobileNumber = async (m, key) => {
     );
     return response.data;
   } catch (err) {
+    console.log('error in update mobile number');
+  }
+};
+export const getParticularTrip = async (token, tripName) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/trip/getParticularTrip',
+      {
+        tripName: tripName,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
     console.log('error in updating mobile number');
   }
 };
@@ -613,14 +595,14 @@ export const attempts = async token => {
   }
 };
 
-export const getRatings = async (key,id,rating) => {
-  console.log(key)
+export const getRatings = async (key, id, rating) => {
+  console.log(key);
   try {
     const response = await axios.post(
       BASE_URL + '/service/reviewservice',
       {
         _id: id,
-        ratings: rating
+        ratings: rating,
       },
       {
         headers: {
@@ -628,9 +610,36 @@ export const getRatings = async (key,id,rating) => {
         },
       },
     );
-    console.log(response.data)
+    console.log(response.data);
     return response.data;
   } catch (err) {
     console.log('error in getting ratings');
+  }
+};
+
+export const calculateRoute = async (
+  latitude,
+  longitude,
+  latitude1,
+  longitude1,
+) => {
+  try {
+    const response = await axios.get(
+      `https://api.tomtom.com/routing/1/calculateRoute/${latitude},${longitude}:${latitude1},${longitude1}/json?key=UReLAyYRKGeZ0t0ydFAT9cZxGvAYcfa1`,
+    );
+    return response.data.routes[0];
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const nearbyPlace = async (query, lat, lon) => {
+  try {
+    const response = await axios.get(
+      `https://api.foursquare.com/v3/places/nearby?ll=${lat}%2C${lon}&query=${query}`,
+    );
+    console.log(response.data);
+  } catch (err) {
+    console.log(err);
   }
 };

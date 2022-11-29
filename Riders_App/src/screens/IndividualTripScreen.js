@@ -16,14 +16,12 @@ import {UserTrips} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {SearchUserTrips} from '../services/Auth';
 import {setToken} from '../redux/AuthSlice';
-import { TripSummary } from './TripSummaryScreen';
 
 const AllTrips = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
   const authData = useSelector(state => state.auth);
   const state = useSelector(state => state.milestone.initialState);
   const dispatch = useDispatch();
-  const [visible, setVisible] = useState(false);
 
 
   useEffect(() => {
@@ -39,6 +37,7 @@ const AllTrips = ({navigation}) => {
     return (
 
         <AllTripList
+          navigation= {navigation}
           image={details.item.tripImage}
           placeName={details.item.tripName}
           startDateText={details.item.startDate.toString()}

@@ -36,7 +36,6 @@ const Profile = ({navigation}) => {
       height: 200,
       cropping: true,
     }).then(async image => {
-      
       const payload = new FormData();
       payload.append('image', {
         uri: image.path,
@@ -48,9 +47,6 @@ const Profile = ({navigation}) => {
       let cred= await getVerifiedKeys(token.userToken)
       dispatch(setToken(cred))
       const resp = await uploadProfileImage(payload,cred)
-      if(resp.hasOwnProperty('message')){
-          dispatch(setImage('https'+resp.url.substring(4)))
-      }
     })
   }
 

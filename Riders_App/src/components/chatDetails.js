@@ -1,7 +1,8 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 
-export const SenderChatDetails = () => {
+export const SenderChatDetails = ({chat}) => {
   return (
     <View>
       <View
@@ -21,43 +22,43 @@ export const SenderChatDetails = () => {
             source={require('../assets/images/checkmark.png')}
             style={{height: 13, width: 13}}
           />
-          <Text style={styles.timeText}>10:00</Text>
+          <Text style={styles.timeText}>{chat.time.substring(11,16)}</Text>
         </View>
         <View style={styles.senderContainer}>
-          <Text style={styles.senderText}>Hi</Text>
+          <Text style={styles.senderText}>{chat.chat}</Text>
         </View>
       </View>
     </View>
   );
 };
 
-export const ReceiverContainer = () => {
+export const ReceiverContainer = ({chat}) => {
   return (
     <View>
-      <View style={styles.container}>
-        <View style={{top: 20}}>
-          <Image
-            source={require('../assets/images/smile.png')}
-            style={styles.profile}
-          />
-          <Text style={styles.riderName}>Rob rider</Text>
-        </View>
-        <View style={styles.recivercontainer}>
-          <Text style={styles.senderText}>Hello</Text>
-        </View>
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginLeft: '3%',
-          }}>
-          <Image
-            source={require('../assets/images/checkmark.png')}
-            style={{height: 13, width: 13}}
-          />
-          <Text style={styles.timeText}>10:00</Text>
-        </View>
-      </View>
+            <View style={styles.container}>
+              <View style={{top: 20}}>
+                <Image
+                  source={require('../assets/images/smile.png')}
+                  style={styles.profile}
+                />
+                <Text style={styles.riderName}>{chat.senderName}</Text>
+              </View>
+              <View style={styles.recivercontainer}>
+                <Text style={styles.senderText}>{chat.chat}</Text>
+              </View>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginLeft: '3%',
+                }}>
+                <Image
+                  source={require('../assets/images/checkmark.png')}
+                  style={{height: 13, width: 13}}
+                />
+                <Text style={styles.timeText}>{chat.time.substring(11,16)}</Text>
+              </View>
+            </View>
     </View>
   );
 };
