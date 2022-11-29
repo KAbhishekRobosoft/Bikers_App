@@ -84,7 +84,7 @@ const ServiceRecord = ({navigation}) => {
             placeholder="Service Type"
           />
         </View>
-        {!bikeSelected == '' || !serviceSelected == '' ? (
+        {!bikeSelected == '' && !serviceSelected == '' ? (
           <View>
             {serviceData.length > 0 ? (
               serviceData
@@ -99,9 +99,9 @@ const ServiceRecord = ({navigation}) => {
                   </View>
                 ))
             ) : (
-              <View>
-                <Text style={{fontSize: 50}}>No Service Records Found :(</Text>
-              </View>
+              <>
+                <Text style={styles.alternateText}>no data found :(</Text>
+              </>
             )}
             {serviceData.length > 0 ? (
               serviceData
@@ -117,12 +117,16 @@ const ServiceRecord = ({navigation}) => {
                 ))
             ) : (
               <View>
-                <Text style={{fontSize: 50}}>No Service Records Found :(</Text>
+                <Text style={styles.alternateText}>no data found :(</Text>
               </View>
             )}
           </View>
         ) : (
-          <><Text>select something</Text></>
+          <View>
+            <Text style={styles.alternateText}>
+              Select Service and Vehicle Type.
+            </Text>
+          </View>
         )}
       </ScrollView>
     </SafeAreaView>
@@ -174,6 +178,12 @@ const styles = StyleSheet.create({
   container2: {
     width: '100%',
     paddingHorizontal: '7%',
+  },
+  alternateText: {
+    fontFamily: 'Roboto-Regular',
+    alignSelf: 'center',
+    fontSize: 20,
+    marginTop: 70,
   },
 });
 

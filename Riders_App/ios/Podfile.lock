@@ -308,6 +308,8 @@ PODS:
     - React-Core
   - react-native-date-picker (4.2.6):
     - React-Core
+  - react-native-html-to-pdf (0.12.0):
+    - React-Core
   - react-native-image-picker (4.10.1):
     - React-Core
   - react-native-maps (1.3.2):
@@ -397,6 +399,8 @@ PODS:
     - React-Core
   - RNDateTimePicker (6.7.0):
     - React-Core
+  - RNFileViewer (2.1.5):
+    - React-Core
   - RNGestureHandler (2.8.0):
     - React-Core
   - RNImageCropPicker (0.38.1):
@@ -438,6 +442,8 @@ PODS:
   - RNScreens (3.18.2):
     - React-Core
     - React-RCTImage
+  - RNShare (8.0.0):
+    - React-Core
   - RNVectorIcons (9.2.0):
     - React-Core
   - SocketRocket (0.6.0)
@@ -497,6 +503,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-contacts (from `../node_modules/react-native-contacts`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
+  - react-native-html-to-pdf (from `../node_modules/react-native-html-to-pdf`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
@@ -518,10 +525,12 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
+  - RNFileViewer (from `../node_modules/react-native-file-viewer`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNShare (from `../node_modules/react-native-share`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
@@ -594,6 +603,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-contacts"
   react-native-date-picker:
     :path: "../node_modules/react-native-date-picker"
+  react-native-html-to-pdf:
+    :path: "../node_modules/react-native-html-to-pdf"
   react-native-image-picker:
     :path: "../node_modules/react-native-image-picker"
   react-native-maps:
@@ -636,6 +647,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/clipboard"
   RNDateTimePicker:
     :path: "../node_modules/@react-native-community/datetimepicker"
+  RNFileViewer:
+    :path: "../node_modules/react-native-file-viewer"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
@@ -644,6 +657,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNShare:
+    :path: "../node_modules/react-native-share"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
   Yoga:
@@ -687,6 +702,7 @@ SPEC CHECKSUMS:
   React-logger: fdda34dd285bdb0232e059b19d9606fa0ec3bb9c
   react-native-contacts: 0aa99963d8f29099d4725cd0d2f8b6ef5f0d9a2d
   react-native-date-picker: 93e43b3084cea595b4d68b1405d6d99849663bd6
+  react-native-html-to-pdf: 4c5c6e26819fe202971061594058877aa9b25265
   react-native-image-picker: f2ab1215d17bcfe27b0eb6417cc236fd1f4775e7
   react-native-maps: 085f614cf14d3637b2048bb9752da5b1c27c2886
   react-native-pager-view: 7abf89f9834d9a4021b2fb6a5ef2abff570b46fb
@@ -708,10 +724,12 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 8616bd5a58af409453ea4e1b246521bb76578d60
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNDateTimePicker: c6b404647f45472443b0fdcdd31296fc3516b0eb
+  RNFileViewer: ce7ca3ac370e18554d35d6355cffd7c30437c592
   RNGestureHandler: 62232ba8f562f7dea5ba1b3383494eb5bf97a4d3
   RNImageCropPicker: 648356d68fbf9911a1016b3e3723885d28373eda
   RNReanimated: 2a91e85fcd343f8af3c58d3425b99fdd285590a5
   RNScreens: 34cc502acf1b916c582c60003dc3089fa01dc66d
+  RNShare: 36aa3e6958373a0ad1c95a1c960adef589da3794
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196

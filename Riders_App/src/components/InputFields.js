@@ -138,6 +138,8 @@ export const PlaceholderTextField = props => {
               setFieldTouched(name);
               onBlur(name);
             }}
+            editable={props.editable}
+            
             {...inputProps}
           />
         </View>
@@ -220,6 +222,8 @@ export const DropDownInputField = props => {
       </View>
       <View style={{marginTop: -38}}>
         <SelectList
+       
+          defaultOption={props.defaultOption}
           data={props.data}
           setSelected={props.setSelected}
           boxStyles={styles.dropDownBox}

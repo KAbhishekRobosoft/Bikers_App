@@ -9,7 +9,8 @@ import {
   ToastAndroid,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Icon2 from 'react-native-vector-icons/FontAwesome';
 import {useDispatch} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
 import {setMileStoneData} from '../redux/MileStoneSlice';
@@ -39,7 +40,6 @@ export const Milestone = () => {
             </Text>
             <Pressable
               onPress={async () => {
-                // console.log(resp)
 
                 if ((from, to !== '')) {
                   const resp = await getCoordinates(from);
@@ -91,7 +91,7 @@ export const Milestone = () => {
                 }
               }}>
               <Icon
-                name="times"
+                name="close"
                 size={20}
                 color={'#A4A4A4'}
                 style={styles.times}
@@ -110,7 +110,7 @@ export const Milestone = () => {
             />
           </View>
           <View style={styles.locationView}>
-            <Icon
+            <Icon2
               name="map-marker"
               color="#A4A4A4"
               style={styles.locationImage}
@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
   textFrom: {
     height: 24,
     alignSelf: 'flex-start',
+    width: '60%'
   },
   locationView: {
     height: 48,

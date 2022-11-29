@@ -53,6 +53,7 @@ const LoginScreen = ({navigation}) => {
         dispatch(setImage(image));
       }
       dispatch(login(response));
+      Toast.show('Logged in Successfully!');
     } else {
       Toast.show('User Does not exist');
     }
@@ -162,7 +163,7 @@ const styles = StyleSheet.create({
   },
   logoView: {
     width: '100%',
-    height: '22%',
+    height: '23%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -179,20 +180,27 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   inputTextView1: {
-    width: '120%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: '8%',
+    width: '100%',
+
   },
   inputTextView2: {
-    width: '116%',
-    alignItems: 'center',
+    width: '100%',
     justifyContent: 'center',
-    paddingRight: '9%',
+
   },
-  userLogo: {width: 18, height: 24},
-  lockImg: {width: 20, height: 24},
-  eyeImg: {width: 24, height: 14, right: 10},
+  userLogo: {
+    width: 18,
+    height: 24,
+  },
+  lockImg: {
+    width: 20,
+    height: 24,
+  },
+  eyeImg: {
+    width: 24,
+    height: 14,
+    right: 10,
+  },
   textInput: {
     width: '90%',
     height: 50,
@@ -201,17 +209,30 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontFamily: 'Roboto-Regular',
   },
-  forgetTextView: {width: '85%'},
+  forgetTextView: {
+    // width: '85%',
+    // borderWidth: 1,
+    // marginHorizontal: 140,
+    width: '100%',
+    // paddingEnd: '10%'
+    //alignItems: 'center',
+    // justifyContent: 'center',
+    //paddingRight: '9%',
+  //  borderWidth:1
+  },
   forgetText: {
     color: '#EF8B40',
     fontSize: 16,
     marginTop: 20,
-    textAlign: 'right',
     fontFamily: 'Roboto-Regular',
+    width: '80%',
+    // borderWidth: 1,
+    marginLeft: 40,
+    textAlign:'right'
   },
   buttonView: {
     marginTop: 30,
-    bottom: 0,
+    top: 25,
   },
   bottomView: {
     width: '100%',

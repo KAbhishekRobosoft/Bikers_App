@@ -19,20 +19,26 @@ const TopNavigation = ({editable,defaultValue}) => {
       screenOptions={{
         tabBarLabelStyle: {
           fontSize: 16,
-          color: '#ED7F2C',
           fontFamily: 'Roboto-Regular',
           lineHeight: 21,
           marginTop: 10,
           textAlign: 'left',
-          width: '130%',
+         // width: '130%',
           textTransform: 'none',
+          top:6
+          //borderWidth:1
         },
         tabBarStyle: {
           width: '100%',
           paddingHorizontal: '5%',
+          
+         // borderWidth:1
+
         },
         tabBarItemStyle: {
           alignSelf: 'flex-start',
+         // borderWidth:1
+
         },
         tabBarIndicatorStyle: {
           backgroundColor: '#ED7F2C',
@@ -41,6 +47,9 @@ const TopNavigation = ({editable,defaultValue}) => {
           height: 2,
           alignSelf: 'flex-start',
         },
+        tabBarActiveTintColor:'#ED7F2C',
+        tabBarInactiveTintColor:'#868584',
+        tabBarPressOpacity:0.1
       }}>
       <Tab.Screen
         name="Home"

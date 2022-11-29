@@ -165,9 +165,10 @@ export const Accessories = ({navigation}) => {
               alignSelf: 'center',
               marginTop: '50%',
               fontFamily: 'Roboto-Medium',
-              fontSize: 30,
+              fontSize: 20,
+              color: '#ED7E2B'
             }}>
-            Search Something!!
+            Search for Gloves, Jacket, Shoes!!
           </Text>
         </>
       )}

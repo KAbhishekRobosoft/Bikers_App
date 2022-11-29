@@ -9,13 +9,9 @@ import {
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import ButtonLarge from '../components/Buttons';
 import TopNavigation from '../utils/TopNavigation';
-import { useSelector } from 'react-redux';
 
 const OwnersManualDetailScreen = ({navigation}) => {
-
-
   return (
     <SafeAreaView style={styles.main}>
       <View style={[styles.header, styles.shadow]}>
@@ -27,7 +23,7 @@ const OwnersManualDetailScreen = ({navigation}) => {
             name="md-arrow-back"
             color={'white'}
             size={25}
-            style={styles.icon}
+           
           />
         </Pressable>
         <Text style={styles.headerText}>Owners Manual</Text>
@@ -36,17 +32,11 @@ const OwnersManualDetailScreen = ({navigation}) => {
             onPress={() => {
               navigation.navigate('OwnerManualEdit');
             }}>
-            <Icon name="pencil" color={'white'} size={24} style={styles.icon} />
-          </Pressable>
-          <Pressable>
-            <Image
-              style={styles.shareImg}
-              source={require('../assets/images/share.png')}
-            />
+            <Icon name="pencil" color={'white'} size={24} />
           </Pressable>
         </View>
       </View>
-      <TopNavigation editable={false}  defaultValue={true}/>
+      <TopNavigation editable={false} defaultValue={true} />
     </SafeAreaView>
   );
 };
@@ -92,7 +82,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 20,
     fontWeight: '500',
-    marginRight: '18%',
+    marginRight: '30%',
     fontFamily: 'Roboto-Medium',
   },
 
@@ -100,15 +90,6 @@ const styles = StyleSheet.create({
     height: '90%',
     paddingVertical: 10,
   },
-  shareImg: {
-    width: 24,
-    height: 27,
-    resizeMode: 'contain',
-  },
-  headerIcons: {
-    flexDirection: 'row',
-    marginRight: 0,
-    width: '22%',
-    justifyContent: 'space-between',
-  },
+
+ 
 });

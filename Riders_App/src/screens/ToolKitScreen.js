@@ -136,6 +136,7 @@ export const ToolKit = ({navigation}) => {
 const styles = StyleSheet.create({
   safeareaView: {
     flex: 1,
+    backgroundColor: 'white'
   },
   header: {
     flexDirection: 'row',

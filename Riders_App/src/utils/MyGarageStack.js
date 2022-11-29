@@ -12,6 +12,7 @@ import {Accessories} from '../screens/AccessoriesScreen'
 import OwnerManualStack from './OwnerManualStack';
 import BookServiceStack from './BookServiceStack';
 import ServiceRecordStack from './ServiceRecordsStack';
+import AddDetailsStack from './AddDetailsStack';
 const Stack = createNativeStackNavigator();
 
 function MyGarageStack() {
@@ -46,6 +47,11 @@ function MyGarageStack() {
           options={{headerShown: false}}
           name="Accessories"
           component={Accessories}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="AddDetailsStack"
+          component={AddDetailsStack}
         />
       
       </Stack.Navigator>

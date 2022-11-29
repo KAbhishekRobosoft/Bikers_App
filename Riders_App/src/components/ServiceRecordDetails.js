@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {Star} from './StarComponent';
@@ -12,14 +12,16 @@ export const NewServiceRecordDetails = ({navigation, data}) => {
   const id = data._id;
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
+  const [rate, setRate]  = useState(3)
 
   const handlePress = async () => {
     const key = await getVerifiedKeys(authData.userToken);
     dispatch(setToken(key));
     const response = await getParticularService(key, id);
-    console.log('response of particular', response);
     navigation.navigate('BookingSummary', response)
+    setRate(response.ratings)
   };
+  
   return (
     <Pressable onPress={handlePress}>
       <View style={[styles.container, styles.shadow]}>
@@ -56,7 +58,7 @@ export const NewServiceRecordDetails = ({navigation, data}) => {
           <View style={styles.line}></View>
           <View style={{justifyContent: 'flex-start', right: 20}}>
             <Text style={styles.serviceText}>{data.serviceType}</Text>
-            <Star rating={3} />
+            <Star rating={rate} />
           </View>
         </View>
       </View>
@@ -73,7 +75,6 @@ export const PastServiceRecordDetails = ({navigation, data}) => {
     const key = await getVerifiedKeys(authData.userToken);
     dispatch(setToken(key));
     const response = await getParticularService(key, id);
-    console.log('response of particular', response);
     navigation.navigate('BookingSummary', response)
   };
 

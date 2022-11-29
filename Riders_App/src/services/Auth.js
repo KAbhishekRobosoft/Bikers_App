@@ -1,19 +1,15 @@
-
 import axios from 'axios';
 const BASE_URL = 'https://ride-app-node.vercel.app/api/v1';
 
 export const register = async (values, haveBike) => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/register`,
-      {
-        userName: values.userName,
-        password: values.password,
-        mobile: values.mobile,
-        email: values.email,
-        haveBike: haveBike,
-      },
-    );
+    const response = await axios.post(`${BASE_URL}/register`, {
+      userName: values.userName,
+      password: values.password,
+      mobile: values.mobile,
+      email: values.email,
+      haveBike: haveBike,
+    });
     return response.data;
   } catch (error) {
     console.log('An error has occurred');
@@ -22,13 +18,10 @@ export const register = async (values, haveBike) => {
 
 export const checkIn = async values => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/loginPhone`,
-      {
-        mobile: values.number,
-        password: values.password,
-      },
-    );
+    const response = await axios.post(`${BASE_URL}/loginPhone`, {
+      mobile: values.number,
+      password: values.password,
+    });
     return response.data;
   } catch (error) {
     console.log('An error has occurred');
@@ -36,15 +29,12 @@ export const checkIn = async values => {
 };
 
 export const refreshToken = async token => {
-  let res = await fetch(
-    `${BASE_URL}/getAccessToken`,
-    {
-      method: 'post',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  let res = await fetch(`${BASE_URL}/getAccessToken`, {
+    method: 'post',
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  );
+  });
   let data = await res.json();
   return data;
 };
@@ -64,46 +54,37 @@ export const searchCity = async string => {
 };
 
 export const searchServiceCenter = async (value, key) => {
-  let res = await fetch(
-    `${BASE_URL}/dealer/searchDealers`,
-    {
-      method: 'post',
-      body: JSON.stringify({
-        text: value,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${key}`,
-      },
+  let res = await fetch(`${BASE_URL}/dealer/searchDealers`, {
+    method: 'post',
+    body: JSON.stringify({
+      text: value,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${key}`,
     },
-  );
+  });
   let data = await res.json();
   return data;
 };
 
 export const uploadImage = async (payload, token) => {
-  let res = await fetch(
-    `${BASE_URL}/profileImageUpload`,
-    {
-      method: 'post',
-      body: payload,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  let res = await fetch(`${BASE_URL}/profileImageUpload`, {
+    method: 'post',
+    body: payload,
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  );
+  });
   let data = await res.json();
   return data;
 };
 
 export const sendOtp = async mobileNumber => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/sendOtp`,
-      {
-        destination: mobileNumber,
-      },
-    );
+    const response = await axios.post(`${BASE_URL}/sendOtp`, {
+      destination: mobileNumber,
+    });
     console.log(response.data);
   } catch (error) {
     console.log('Error Occured');
@@ -112,12 +93,9 @@ export const sendOtp = async mobileNumber => {
 
 export const verifyOtp = async otp => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/verifyOtp`,
-      {
-        otp: otp,
-      },
-    );
+    const response = await axios.post(`${BASE_URL}/verifyOtp`, {
+      otp: otp,
+    });
     return response.data.message;
   } catch (error) {
     console.log('Error Occured');
@@ -126,13 +104,10 @@ export const verifyOtp = async otp => {
 
 export const resetPassword = async userData => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/forgotPassword`,
-      {
-        mobile: userData.mobile,
-        password: userData.password,
-      },
-    );
+    const response = await axios.post(`${BASE_URL}/forgotPassword`, {
+      mobile: userData.mobile,
+      password: userData.password,
+    });
     return response.data;
   } catch (error) {
     console.log('An error has occurred');
@@ -141,14 +116,11 @@ export const resetPassword = async userData => {
 
 export const allTripDetails = async token => {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/trip/getTrip`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await axios.get(`${BASE_URL}/trip/getTrip`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     console.log(response.data);
   } catch (err) {
     console.log(err);
@@ -158,7 +130,7 @@ export const allTripDetails = async token => {
 export const addOwnerDetails = async (values, token) => {
   try {
     const response = await axios.post(
-      `${BASE_URL}/owner/addOwnerDetails`,
+      'https://ride-app-node.vercel.app/api/v1/owner/addOwnerDetails',
       {
         lisenceNumber: values.lisenceNumber,
         city: values.city,
@@ -174,23 +146,21 @@ export const addOwnerDetails = async (values, token) => {
     );
     console.log(response.data);
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in adding owner Details');
+    alert('Provide All Details');
   }
 };
 
 export const getOwnerDetails = async token => {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/owner/getOwnerDetails`,
-      {
-        headers: {
-          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg'}`,
-        },
+    const response = await axios.get(`${BASE_URL}/owner/getOwnerDetails`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     return response.data;
   } catch (error) {
-    //console.log('Error Occured');
+    console.log('Error Occured in getting owner details');
   }
 };
 
@@ -206,13 +176,13 @@ export const updateOwnerDetails = async (values, token) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg'}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
     console.log('res', response.data);
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in updating owner Details');
   }
 };
 
@@ -233,27 +203,25 @@ export const addBikeDetails = async (values, token) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTQ0NjY3OCwiZXhwIjoxNjY5NDUwMjc4fQ.vyrl4MNGnggX8j7u_C8JjrgflpnWZ2uLmbwz3j9e_Dc'}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
 
     console.log(response.data);
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in adding Bike Details');
+    alert('Please Fill All The Details');
   }
 };
 
 export const getBikeDetails = async token => {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/bike/getBikeDetails`,
-      {
-        headers: {
-          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiNzAyNjMyNDE4NyIsImlhdCI6MTY2OTQ0NjY3OCwiZXhwIjoxNjY5NDUwMjc4fQ.vyrl4MNGnggX8j7u_C8JjrgflpnWZ2uLmbwz3j9e_Dc'}`,
-        },
+    const response = await axios.get(`${BASE_URL}/bike/getBikeDetails`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     return response.data;
   } catch (error) {
     console.log('Error Occured in get Bike details');
@@ -262,15 +230,11 @@ export const getBikeDetails = async token => {
 
 export const createTrip = async (obj, token) => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/trip/createTrip`,
-      obj,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    const response = await axios.post(`${BASE_URL}/trip/createTrip`, obj, {
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+    });
     return response.data;
   } catch (error) {
     console.log('Error Occured');
@@ -286,7 +250,7 @@ export const getCoordinates = async place => {
 
 export const getSortedTripDetails = async token => {
   try {
-    const response = await axios.get(BASE_URL +'/trip/getTrip', {
+    const response = await axios.get(BASE_URL + '/trip/getTrip', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -296,7 +260,7 @@ export const getSortedTripDetails = async token => {
     console.log(err);
   }
 };
-export const searchProducts = async (value,token) => {
+export const searchProducts = async (value, token) => {
   try {
     const response = await axios.post(
       `${BASE_URL}/product/searchProducts`,
@@ -315,7 +279,7 @@ export const searchProducts = async (value,token) => {
   }
 };
 
-export const LikeProducts = async (value,token) => {
+export const LikeProducts = async (value, token) => {
   try {
     const response = await axios.post(
       `${BASE_URL}/product/addLike`,
@@ -379,12 +343,12 @@ export const SearchUserTrips = async (key, value) => {
   }
 };
 
-export const SearchAllUserTrips = async (key) => {
+export const SearchAllUserTrips = async key => {
   try {
     const response = await axios.post(
       `${BASE_URL}/trip/searchAllTrips`,
       {
-        text:'',
+        text: '',
       },
       {
         headers: {
@@ -540,19 +504,16 @@ export const editProfile = async (token, obj) => {
 };
 
 export const uploadProfileImage = async (payload, token) => {
-  let res = await fetch(
-    BASE_URL+'/editProfileImage',
-    {
-      method: 'post',
-      body: payload,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  let res = await fetch(BASE_URL + '/editProfileImage', {
+    method: 'post',
+    body: payload,
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
-  );
+  });
   let data = await res.json();
-  return data
-}
+  return data;
+};
 
 export const getAllService = async token => {
   try {
@@ -580,16 +541,34 @@ export const getParticularService = async (key, id) => {
         },
       },
     );
-    return response.data
+    return response.data;
   } catch (err) {
     console.log('error occured in get particular service');
   }
 };
 
-export const getParticularTrip = async (token,tripName) => {
+export const updateMobileNumber = async (m, key) => {
   try {
     const response = await axios.post(
-      BASE_URL+'/trip/getParticularTrip',
+      BASE_URL + '/service/updateMobileNumber',
+      {
+        mobile: m,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${key}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log('error in update mobile number');
+  }
+};
+export const getParticularTrip = async (token, tripName) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/trip/getParticularTrip',
       {
         tripName: tripName,
       },
@@ -601,16 +580,56 @@ export const getParticularTrip = async (token,tripName) => {
     );
     return response.data;
   } catch (err) {
-    console.log(err);
+    console.log('error in updating mobile number');
   }
 };
 
-export const calculateRoute = async (latitude,longitude,latitude1,longitude1) => {
+export const attempts = async token => {
+  try {
+    const response = await axios.get(BASE_URL + '/service/prefilledService', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.log('error occurred in attempts api');
+  }
+};
+
+export const getRatings = async (key, id, rating) => {
+  console.log(key);
+  try {
+    const response = await axios.post(
+      BASE_URL + '/service/reviewservice',
+      {
+        _id: id,
+        ratings: rating,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${key}`,
+        },
+      },
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    console.log('error in getting ratings');
+  }
+};
+
+export const calculateRoute = async (
+  latitude,
+  longitude,
+  latitude1,
+  longitude1,
+) => {
   try {
     const response = await axios.get(
-    `https://api.tomtom.com/routing/1/calculateRoute/${latitude},${longitude}:${latitude1},${longitude1}/json?key=UReLAyYRKGeZ0t0ydFAT9cZxGvAYcfa1`,
+      `https://api.tomtom.com/routing/1/calculateRoute/${latitude},${longitude}:${latitude1},${longitude1}/json?key=UReLAyYRKGeZ0t0ydFAT9cZxGvAYcfa1`,
     );
-      return response.data.routes[0]
+    return response.data.routes[0];
   } catch (err) {
     console.log(err);
   }
@@ -668,6 +687,3 @@ export const endTrip = async (tripId,token) => {
     console.log(err);
   }
 };
-
-
-

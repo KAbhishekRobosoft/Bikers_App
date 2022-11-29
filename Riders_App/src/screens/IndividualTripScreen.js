@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
 
   inputText: {
     marginLeft: 10,
+    width: '70%'
   },
 
   searchIcon: {

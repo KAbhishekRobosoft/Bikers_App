@@ -102,8 +102,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 5,
   },
 
   statusText: {
@@ -114,6 +112,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     fontWeight: '500',
     letterSpacing: 0,
+    height: 30,
+    justifyContent: 'center',
   },
 
   textContainer: {

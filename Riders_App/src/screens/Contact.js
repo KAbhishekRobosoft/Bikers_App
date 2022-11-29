@@ -18,8 +18,8 @@ import {selectMarked} from '../redux/ContactSlice';
 import {selectContacts} from '../redux/ContactSlice';
 import {selectUnMarked} from '../redux/ContactSlice';
 import {filterContacts} from '../redux/ContactSlice';
-import {ContactFlatList} from '../components/ContactsFlatList'
-import { images } from '../components/StarComponent';
+import {ContactFlatList} from '../components/ContactsFlatList';
+import {images} from '../components/StarComponent';
 
 export const ContactDisplay = ({navigation}) => {
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ export const ContactDisplay = ({navigation}) => {
                 recordID: c.recordID,
                 phoneNumbers: c.phoneNumbers,
                 marked: false,
-                image1:""
+                image1: '',
               };
             });
           if (data.length === 0) {
@@ -59,6 +59,17 @@ export const ContactDisplay = ({navigation}) => {
         title: 'Contacts',
         message: 'Rider app would like to view your contacts.',
       });
+      // PermissionsAndroid.requestMultiple(
+      //   [
+      //     PermissionsAndroid.PERMISSIONS.WRITE_CONTACTS,
+      //     PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+      //   ],
+      //   {
+      //     title: 'Contacts',
+      //     message: 'Rider app would like to view your contacts.',
+      //     'buttonPositive': 'Please accept bare mortal'
+      //   },
+      // );
       Contacts.getAll()
         .then(contacts => {
           const trimmedContacts = contacts
@@ -75,14 +86,12 @@ export const ContactDisplay = ({navigation}) => {
           if (data.length === 0) {
             dispatch(selectContacts(trimmedContacts));
           }
-          console.log(trimmedContacts)
         })
         .catch(err => {
           console.log(err);
         });
     }
   };
-
 
   return (
     <SafeAreaView>
@@ -114,6 +123,7 @@ export const ContactDisplay = ({navigation}) => {
             fontSize={12}
             alignSelf={'center'}
             marginLeft={6}
+            width={'100%'}
             onChangeText={text => dispatch(filterContacts(text))}
           />
         </View>
