@@ -1,23 +1,38 @@
-import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, TextInput, ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {getOwnerDetails} from '../services/Auth';
+import {addOwnerDetails, getOwnerDetails} from '../services/Auth';
 import { useDispatch, useSelector } from 'react-redux';
+import { getVerifiedKeys } from '../utils/Functions';
+import { setUserData } from '../redux/AuthSlice';
+import { deSetLoading, setLoading } from '../redux/MileStoneSlice';
 
 export const PersonalDetails = () => {
-
   const dispatch=useDispatch()
   const userDetails=useSelector(state=>state.auth.userData)
-  // const [userData, setUserData] = useState([]);
+  const authData= useSelector(state=>state.auth);
+  const loading = useSelector(state => state.milestone.isLoading);
+
+// console.log('personal details-----',userDetails);
   
   useEffect(() => {
     setTimeout(async () => {
-      const response = await getOwnerDetails();
-      setUserData(response[0]);
-      //dispatch(setUserData(response))
-    }, 1000);
-  }, []);
+      dispatch(deSetLoading());
+      let cred = await getVerifiedKeys(authData.userToken);
+      const response = await getOwnerDetails(cred);
+      // console.log('response',response[0]);
+      dispatch(setUserData(response[0]))
+      dispatch(setLoading());
+      // setPin(response[0].pincode)
 
-  //console.log(userData);
+    }, 1000);
+  }, [userDetails.pincode]);
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="orange" />
+      </View>
+    );
+  }
   return (
     <ScrollView style={styles.scrollView}>
       <View style={styles.container}>
@@ -97,8 +112,7 @@ export const PersonalDetails = () => {
               placeholder="Pincode"
               editable={false}
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.pincode} 
-
+             defaultValue={JSON.stringify(userDetails.pincode) } 
             />
           </View>
         </View>
@@ -110,6 +124,7 @@ export const PersonalDetails = () => {
               style={styles.inputText}
               placeholder="Mobile"
               editable={false}
+              keyboardType='numeric'
               placeholderTextColor="#4F504F"
               defaultValue={userDetails.mobile} 
 
@@ -152,7 +167,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     elevation: 10,
     borderRadius: 8,
-    marginTop: 30,
+    marginTop: 20,
   },
   inputView: {
     width: '89%',

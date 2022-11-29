@@ -6,6 +6,7 @@ import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 import MyGarageStack from './MyGarageStack';
 import UpcomingList from '../screens/IndividualTripScreen';
 import Profile from '../screens/Profile';
+import LogoutStack from '../utils/LogoutStack'
 import ProfileStack from './ProfileStack';
 import AllUserTrip from '../screens/AllUserTrip';
 
@@ -33,6 +34,7 @@ const BottomTabLoginNavigation = () => {
                   width: 35,
                   height: 22,
                   resizeMode: 'contain',
+                  opacity: 0.7,
                 }}
               />
             );
@@ -54,6 +56,7 @@ const BottomTabLoginNavigation = () => {
                   width: 35,
                   height: 22,
                   resizeMode: 'contain',
+                  opacity: 3,
                 }}
               />
             );
@@ -82,7 +85,8 @@ const BottomTabLoginNavigation = () => {
       />
 
       <Tab.Screen
-        name="profile"
+      
+        name="Profile"
         component={ProfileStack}
         options={{
           tabBarIcon: ({focused}) => {
@@ -102,8 +106,14 @@ const BottomTabLoginNavigation = () => {
       />
 
       <Tab.Screen
-        name="Trip9"
-        component={AddBikeDetails}
+        name="Logout"
+        component={LogoutStack}
+        // listeners={({navigation}) => ({
+        //   tabPress: e => {
+        //     e.preventDefault();
+        //     navigation.navigate('Logout')
+        //   },
+        // })}
         options={{
           tabBarIcon: ({focused}) => {
             return (

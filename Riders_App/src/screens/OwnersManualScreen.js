@@ -6,7 +6,7 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
 import {DropDownInputField} from '../components/InputFields';
@@ -14,21 +14,18 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fliteredBikeDetails} from '../redux/AccessoriesSlice';
 
 const OwnersManualScreen = ({navigation}) => {
+  useEffect(() => {}, [selected]);
   const Data = useSelector(state => state.shop.bikeType);
   const [selected, setSelected] = useState();
   const dispatch = useDispatch();
 
-  const ref=useRef()
-
-
   const submit = () => {
-    console.log(selected);
-    if (selected === undefined) {
+    if (selected ===1) {
       alert('Select Vehicle Type');
     } else {
       dispatch(fliteredBikeDetails(selected));
       navigation.navigate('OwnersManualDetail');
-      setSelected('');
+     
     }
   };
 
@@ -55,7 +52,8 @@ const OwnersManualScreen = ({navigation}) => {
             values={selected}
             setSelected={value => setSelected(value)}
             placeholder="Vehicle Type"
-            default={selected}
+            defaultOption={{key: 1, value: 'Vehicle Type'}}
+       
           />
         </View>
         <View style={styles.btn}>

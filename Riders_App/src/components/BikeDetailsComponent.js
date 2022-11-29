@@ -1,6 +1,9 @@
-import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
-import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
+import {View, Text, StyleSheet, ScrollView, TextInput, ActivityIndicator} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {getBikeDetails} from '../services/Auth';
+import {SelectedBike} from '../redux/AccessoriesSlice';
+import { deSetLoading, setLoading } from '../redux/MileStoneSlice';
 
 export const BikeDetails = ({
   header,
@@ -17,13 +20,32 @@ export const BikeDetails = ({
   model,
   color,
   dealerCode,
-  defaultValue
 }) => {
-
   const BikeDetails = useSelector(state => state.shop.allBikeData);
- 
+  const loading = useSelector(state => state.milestone.isLoading);
+  const dispatch = useDispatch();
+  //console.log('=====', BikeDetails[0].vehicleNumber);
   
-
+  // useEffect(() => {
+  //   setTimeout(async () => {
+  //     dispatch(deSetLoading());
+  //     dispatch(SelectedBike(BikeDetails[0]));
+  //     console.log('++++', BikeDetails);
+  //     dispatch(setLoading());
+  //     //let cred = await getVerifiedKeys(authData.userToken);
+  //    // const response = await getBikeDetails(cred);
+  //     //setUserData(response[0]);
+  //     //console.log('iii',response[0]);
+  //     //dispatch(setUserData(response))
+  //   }, 1000);
+  // }, [BikeDetails]);
+  // if (loading) {
+  //   return (
+  //     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+  //       <ActivityIndicator size="large" color="orange" />
+  //     </View>
+  //   );
+  // }
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -41,7 +63,6 @@ export const BikeDetails = ({
                 placeholderTextColor="#4F504F"
                 onChangeText={vehicleType}
                 defaultValue={BikeDetails[0].vehicleType}
-           
               />
             </View>
           </View>
@@ -58,8 +79,6 @@ export const BikeDetails = ({
                 placeholderTextColor="#4F504F"
                 onChangeText={vehicleNo}
                 defaultValue={BikeDetails[0].vehicleNumber}
-                
-
               />
             </View>
           </View>
@@ -75,8 +94,7 @@ export const BikeDetails = ({
               editable={editable ? editable : false}
               placeholderTextColor="#4F504F"
               onChangeText={engine}
-             defaultValue={BikeDetails[0].engineNumber}
-        
+              defaultValue={BikeDetails[0].engineNumber}
             />
           </View>
         </View>
@@ -91,7 +109,6 @@ export const BikeDetails = ({
               placeholderTextColor="#4F504F"
               onChangeText={frameNo}
               defaultValue={BikeDetails[0].frameNumber}
-
             />
           </View>
         </View>
@@ -107,7 +124,6 @@ export const BikeDetails = ({
               placeholderTextColor="#4F504F"
               onChangeText={batteryMake}
               defaultValue={BikeDetails[0].batteryMake}
-
             />
           </View>
         </View>
@@ -123,7 +139,6 @@ export const BikeDetails = ({
               placeholderTextColor="#4F504F"
               onChangeText={regNo}
               defaultValue={BikeDetails[0].registerNumber}
-
             />
           </View>
         </View>
@@ -139,7 +154,6 @@ export const BikeDetails = ({
               placeholderTextColor="#4F504F"
               onChangeText={model}
               defaultValue={BikeDetails[0].model}
-
             />
           </View>
         </View>
@@ -154,7 +168,6 @@ export const BikeDetails = ({
               placeholderTextColor="#4F504F"
               onChangeText={color}
               defaultValue={BikeDetails[0].color}
-
             />
           </View>
         </View>
@@ -171,7 +184,6 @@ export const BikeDetails = ({
               placeholderTextColor="#4F504F"
               onChangeText={dealerCode}
               defaultValue={BikeDetails[0].dealerCode}
-
             />
           </View>
         </View>

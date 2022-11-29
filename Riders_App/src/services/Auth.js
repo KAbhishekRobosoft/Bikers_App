@@ -130,7 +130,7 @@ export const allTripDetails = async token => {
 export const addOwnerDetails = async (values, token) => {
   try {
     const response = await axios.post(
-      `${BASE_URL}/owner/addOwnerDetails`,
+      'https://ride-app-node.vercel.app/api/v1/owner/addOwnerDetails',
       {
         lisenceNumber: values.lisenceNumber,
         city: values.city,
@@ -146,7 +146,8 @@ export const addOwnerDetails = async (values, token) => {
     );
     console.log(response.data);
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in adding owner Details');
+    alert('Provide All Details');
   }
 };
 
@@ -154,12 +155,12 @@ export const getOwnerDetails = async token => {
   try {
     const response = await axios.get(`${BASE_URL}/owner/getOwnerDetails`, {
       headers: {
-        Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg'}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
   } catch (error) {
-    //console.log('Error Occured');
+    console.log('Error Occured in getting owner details');
   }
 };
 
@@ -175,13 +176,13 @@ export const updateOwnerDetails = async (values, token) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTW9iaWxlIjoiOTk5OTk5OTk5OSIsImlhdCI6MTY2OTM1NjU1NSwiZXhwIjoxNjY5MzYwMTU1fQ.rT4ZN_c42WuOOG2vchzy5GZTGDBjA7Wdi7WJE5HtOeg'}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     );
     console.log('res', response.data);
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in updating owner Details');
   }
 };
 
@@ -209,7 +210,8 @@ export const addBikeDetails = async (values, token) => {
 
     console.log(response.data);
   } catch (error) {
-    console.log('Error Occured');
+    console.log('Error Occured in adding Bike Details');
+    alert('Please Fill All The Details');
   }
 };
 

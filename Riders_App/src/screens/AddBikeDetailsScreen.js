@@ -16,49 +16,53 @@ import {addBikeDetails, getBikeDetails} from '../services/Auth';
 import {useDispatch, useSelector} from 'react-redux';
 import {addBikeType, addBikeData} from '../redux/AccessoriesSlice';
 import {Formik, Field} from 'formik';
-import  {getVerifiedKeys}  from '../utils/Functions'
+import {getVerifiedKeys} from '../utils/Functions';
 
 import * as yup from 'yup';
+import {PlaceholderTextField} from '../components/InputFields';
 
-const AddBikeDetails = () => {
-  const authData=useSelector(state=>state.auth)
-  const [vehicleType, setvehicleType] = useState('');
-  const [vehicleNo, setvehicleNo] = useState('');
-  const [engine, setEngine] = useState('');
-  const [frameNo, setFrameNo] = useState('');
-  const [batteryMake, setBatteryMake] = useState('');
-  const [regNo, setRegNo] = useState('');
-  const [model, setModel] = useState('');
-  const [color, setColor] = useState('');
-  const [dealerCode, setDealerCode] = useState('');
-  const [defaultValue, setDefaultValue] = useState('');
-  const ref = useRef();
+const AddBikeDetails = ({navigation}) => {
+
+  const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
-  //console.log(vehicleType,vehicleNo,engine,dealerCode);
 
-  const submit = async () => {
-    console.log('click');
+  const initialValues = {
+    vehicleType: '',
+    vehicleNumber: '',
+    engineNumber: '',
+    frameNumber: '',
+    batteryMake: '',
+    registerNumber: '',
+    model: '',
+    color: '',
+    dealerCode: '',
+  };
+
+  const submit = async (values, {resetForm}) => {
     const obj = {
-      vehicleType: vehicleType,
-      vehicleNumber: vehicleNo,
-      engineNumber: engine,
-      frameNumber: frameNo,
-      batteryMake: batteryMake,
-      registerNumber: regNo,
-      model: model,
-      color: color,
-      dealerCode: dealerCode,
+      vehicleType: values.vehicleType,
+      vehicleNumber: values.vehicleNumber,
+      engineNumber: values.engineNumber,
+      frameNumber: values.frameNumber,
+      batteryMake: values.batteryMake,
+      registerNumber: values.registerNumber,
+      model: values.model,
+      color: values.color,
+      dealerCode: values.dealerCode,
     };
-    let cred=await getVerifiedKeys(authData.userToken)
-    await addBikeDetails(obj,cred); // <-----------API  CAll
+    let cred = await getVerifiedKeys(authData.userToken);
+    await addBikeDetails(obj, cred); // <-----------API  CAll
     const response = await getBikeDetails(cred);
     const BikeTypes = response.map(e => {
       return e.vehicleType;
     });
 
-    //console.log('ppp', response);
+    console.log('res', BikeTypes);
     dispatch(addBikeType(BikeTypes));
     dispatch(addBikeData(response)); // <-----------Redux
+    resetForm({initialValues});
+
+    navigation.navigate('Garage');
   };
 
   return (
@@ -79,165 +83,156 @@ const AddBikeDetails = () => {
           <Text style={styles.headerText}>Add Bike Details</Text>
         </View>
       </View>
-      <ScrollView style={{ backgroundColor:'white', height: '91%'}}>
-       {/* <Formik 
-       //validationSchema={personalDetailsValidation}
-       initialValues={{
-        
-       }}
-       /> */}
-        <View style={styles.container}>
-          <View style={styles.inputView}>
-            <Text style={styles.text}>Vehicle Type</Text>
-            <View style={styles.inputTextView}>
-              <Text>:</Text>
-              <TextInput
-                ref={ref}
-                style={styles.inputText}
-                placeholder="Vehicle Type"
-                placeholderTextColor="#4F504F"
-                onChangeText={value => {
-                  setvehicleType(value);
-                }}
-              />
-            </View>
-          </View>
-          <View style={styles.inputView}>
-            <Text style={styles.text}>Vehicle No</Text>
-            <View style={styles.inputTextView}>
-              <Text>:</Text>
-              <TextInput
-                ref={ref}
-                style={styles.inputText}
-                placeholder="Vehicle No"
-                placeholderTextColor="#4F504F"
-                onChangeText={value => {
-                  setvehicleNo(value);
-                }}
-              />
-            </View>
-          </View>
-          <View style={styles.inputView}>
-            <Text style={styles.text}>Engine</Text>
-            <View style={styles.inputTextView}>
-              <Text>:</Text>
-              <TextInput
-                ref={ref}
-                style={styles.inputText}
-                placeholder="Engine"
-                placeholderTextColor="#4F504F"
-                onChangeText={value => {
-                  setEngine(value);
-                }}
-              />
-            </View>
-          </View>
-          <View style={styles.inputView}>
-            <Text style={styles.text}>Frame No</Text>
-            <View style={styles.inputTextView}>
-              <Text>:</Text>
-              <TextInput
-                ref={ref}
-                style={styles.inputText}
-                placeholder="Frame No"
-                placeholderTextColor="#4F504F"
-                onChangeText={value => {
-                  setFrameNo(value);
-                }}
+      <ScrollView style={{backgroundColor: 'white', height: '91%'}}>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={(values, {resetForm}) => {
+            submit(values, {resetForm});
+          }}>
+          {({values, handleSubmit, isValid, resetForm, handleChange}) => (
+            <>
+              <View style={styles.container}>
+                <View style={styles.inputView}>
+                  <Text style={styles.text}>Vehicle Type</Text>
+                  <View style={styles.inputTextView}>
+                    <Text>:</Text>
+                    <TextInput
+                      style={styles.inputText}
+                      name="vehicleType"
+                      placeholder="Vehicle Type"
+                      placeholderTextColor="#4F504F"
+                      onChangeText={handleChange('vehicleType')}
+                      value={values.vehicleType}
+                    />
+                  </View>
+                </View>
+                <View style={styles.inputView}>
+                  <Text style={styles.text}>Vehicle No</Text>
+                  <View style={styles.inputTextView}>
+                    <Text>:</Text>
+                    <TextInput
+                      style={styles.inputText}
+                      name="vehicleNumber"
+                      placeholder="Vehicle No"
+                      placeholderTextColor="#4F504F"
+                      onChangeText={handleChange('vehicleNumber')}
+                      value={values.vehicleNumber}
+                    />
+                  </View>
+                </View>
+                <View style={styles.inputView}>
+                  <Text style={styles.text}>Engine</Text>
+                  <View style={styles.inputTextView}>
+                    <Text>:</Text>
+                    <TextInput
+                      name="engineNumber"
+                      style={styles.inputText}
+                      placeholder="Engine"
+                      placeholderTextColor="#4F504F"
+                      onChangeText={handleChange('engineNumber')}
+                      value={values.engineNumber}
+                    />
+                  </View>
+                </View>
+                <View style={styles.inputView}>
+                  <Text style={styles.text}>Frame No</Text>
+                  <View style={styles.inputTextView}>
+                    <Text>:</Text>
+                    <TextInput
+                      name="frameNumber"
+                      style={styles.inputText}
+                      placeholder="Frame No"
+                      placeholderTextColor="#4F504F"
+                      onChangeText={handleChange('frameNumber')}
+                      value={values.frameNumber}
+                    />
+                  </View>
+                </View>
+                <View style={styles.inputView}>
+                  <Text style={styles.text}>Battery make</Text>
+                  <View style={styles.inputTextView}>
+                    <Text>:</Text>
 
-                // defaultValue={defaultValue?BikeDetails[0].frameNumber:null}
-              />
-            </View>
-          </View>
-          <View style={styles.inputView}>
-            <Text style={styles.text}>Battery make</Text>
-            <View style={styles.inputTextView}>
-              <Text>:</Text>
+                    <TextInput
+                      name="batteryMake"
+                      style={styles.inputText}
+                      placeholder="Battery make"
+                      placeholderTextColor="#4F504F"
+                      onChangeText={handleChange('batteryMake')}
+                      value={values.batteryMake}
+                    />
+                  </View>
+                </View>
+                <View style={styles.inputView}>
+                  <Text style={styles.text}>Reg No.</Text>
+                  <View style={styles.inputTextView}>
+                    <Text>:</Text>
 
-              <TextInput
-                ref={ref}
-                style={styles.inputText}
-                placeholder="Battery make"
-                placeholderTextColor="#4F504F"
-                onChangeText={value => {
-                  setBatteryMake(value);
-                }}
+                    <TextInput
+                      name="registerNumber"
+                      style={styles.inputText}
+                      placeholder="Reg No."
+                      placeholderTextColor="#4F504F"
+                      onChangeText={handleChange('registerNumber')}
+                      value={values.registerNumber}
 
-                // defaultValue={defaultValue?BikeDetails[0].batteryMake:null}
-              />
-            </View>
-          </View>
-          <View style={styles.inputView}>
-            <Text style={styles.text}>Reg No.</Text>
-            <View style={styles.inputTextView}>
-              <Text>:</Text>
+                      /// defaultValue={defaultValue?BikeDetails[0].registerNumber:null}
+                    />
+                  </View>
+                </View>
+                <View style={styles.inputView}>
+                  <Text style={styles.text}>Model</Text>
+                  <View style={styles.inputTextView}>
+                    <Text>:</Text>
 
-              <TextInput
-                ref={ref}
-                style={styles.inputText}
-                placeholder="Reg No."
-                placeholderTextColor="#4F504F"
-                onChangeText={value => {
-                  setRegNo(value);
-                }}
-
-                /// defaultValue={defaultValue?BikeDetails[0].registerNumber:null}
-              />
-            </View>
-          </View>
-          <View style={styles.inputView}>
-            <Text style={styles.text}>Model</Text>
-            <View style={styles.inputTextView}>
-              <Text>:</Text>
-
-              <TextInput
-                ref={ref}
-                keyboardType='numeric'
-                style={styles.inputText}
-                placeholder="Model"
-                placeholderTextColor="#4F504F"
-                onChangeText={value => {
-                  setModel(value);
-                }}
-              />
-            </View>
-          </View>
-          <View style={styles.inputView}>
-            <Text style={styles.text}>Color</Text>
-            <View style={styles.inputTextView}>
-              <Text>:</Text>
-              <TextInput
-                ref={ref}
-                style={styles.inputText}
-                placeholder="Color"
-                placeholderTextColor="#4F504F"
-                onChangeText={value => {
-                  setColor(value);
-                }}
-              />
-            </View>
-          </View>
-          <View style={styles.inputViewLast}>
-            <Text style={styles.text}>
-              <Text style={styles.text}>Dealer code</Text>
-            </Text>
-            <View style={styles.inputTextView}>
-              <Text>:</Text>
-              <TextInput
-                //ref={ref}
-                style={styles.inputText}
-                placeholder="Dealer code"
-                placeholderTextColor="#4F504F"
-                onChangeText={value => {
-                  setDealerCode(value);
-                }}
-              />
-            </View>
-          </View>
-        </View>
-        <View style={styles.btn}>
-          <ButtonLarge title="Submit" onPress={submit} />
-        </View>
+                    <TextInput
+                      name="model"
+                      keyboardType="numeric"
+                      style={styles.inputText}
+                      placeholder="Model"
+                      placeholderTextColor="#4F504F"
+                      onChangeText={handleChange('model')}
+                      value={values.model}
+                    />
+                  </View>
+                </View>
+                <View style={styles.inputView}>
+                  <Text style={styles.text}>Color</Text>
+                  <View style={styles.inputTextView}>
+                    <Text>:</Text>
+                    <TextInput
+                      name="color"
+                      style={styles.inputText}
+                      placeholder="Color"
+                      placeholderTextColor="#4F504F"
+                      onChangeText={handleChange('color')}
+                      value={values.color}
+                    />
+                  </View>
+                </View>
+                <View style={styles.inputViewLast}>
+                  <Text style={styles.text}>
+                    <Text style={styles.text}>Dealer code</Text>
+                  </Text>
+                  <View style={styles.inputTextView}>
+                    <Text>:</Text>
+                    <TextInput
+                      name="dealerCode"
+                      style={styles.inputText}
+                      placeholder="Dealer code"
+                      placeholderTextColor="#4F504F"
+                      onChangeText={handleChange('dealerCode')}
+                      value={values.dealerCode}
+                    />
+                  </View>
+                </View>
+              </View>
+              <View style={styles.btn}>
+                <ButtonLarge title="Submit" onPress={handleSubmit} />
+              </View>
+            </>
+          )}
+        </Formik>
       </ScrollView>
     </SafeAreaView>
   );

@@ -3,9 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
 import OwnersManualScreen from '../screens/OwnersManualScreen';
 import OwnersManualDetailScreen from '../screens/OwnersManualDetailScreen';
-import { OwnerManualEdit } from '../screens/OwnerManualEditableScreen';
-
-
+import OwnerManualEdit from '../screens/OwnerManualEditableScreen';
 
 const Stack = createNativeStackNavigator();
 
