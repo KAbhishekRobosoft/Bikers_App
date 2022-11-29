@@ -138,6 +138,8 @@ export const PlaceholderTextField = props => {
               setFieldTouched(name);
               onBlur(name);
             }}
+            editable={props.editable}
+            
             {...inputProps}
           />
         </View>
@@ -209,7 +211,7 @@ export const GarageInputField = props => {
 export const DropDownInputField = props => {
   return (
     <View>
-      <View style={{height: 25, marginTop: 15, paddingLeft: 5, paddingTop: 6}}>
+      <View style={{height: 25, marginTop: 15, paddingLeft: 5, paddingTop: 6,}}>
         {props.values ? (
           <View>
             <Text style={styles.text}>{props.placeholder}</Text>
@@ -240,6 +242,58 @@ export const DropDownInputField = props => {
     </View>
   );
 };
+
+export const DropDownInputField2 = props => {
+  return (
+    <View style={{marginTop: -30}}>
+      <View style={{height: 25, marginTop: 15, paddingLeft: 5, paddingTop: 6,}}>
+        {props.values ? (
+          <View>
+            <Text style={styles.text}>{props.placeholder}</Text>
+          </View>
+        ) : (
+          <></>
+        )}
+      </View>
+      <View style={{marginTop: -38}}>
+        <SelectList
+          data={props.data}
+          setSelected={props.setSelected}
+          boxStyles={styles.dropDownBox}
+          inputStyles={styles.dropDropInput}
+          dropdownStyles={styles.dropDown}
+          values={props.values}
+          placeholder={props.placeholder}
+          dropdownTextStyles={styles.dropDownText}
+          arrowicon={
+            <Icon name="sort-down" color="rgba(0,0,0,0.54)" size={16} />
+          }
+          closeicon={<Icon name="sort-up" color="rgba(0,0,0,0.54)" size={16} />}
+          search={false}
+        />
+      </View>
+    </View>
+  );
+};
+
+export const BookingDetailsInput = props => {
+  return (
+    <View style={styles.textInputView}>
+      <Text style={styles.titleText}>{props.title}</Text>
+      <Text>:</Text>
+      <TextInput
+        style={styles.textInputText}
+        editable={props.editable}
+        name="mobile"
+        value={props.value}
+        onChangeText={props.onChangeText}
+        // values={values.mobile}
+        // defaultValue={route.params.mobileNumber}
+      />
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   inputTextView: {
     width: '80%',
@@ -416,5 +470,30 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
     marginLeft: -15,
+  },
+  textInputView: {
+    marginHorizontal: 25,
+    paddingTop: 28,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingEnd: 3,
+    marginTop: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#B4B3B3',
+  },
+  titleText: {
+    paddingBottom: 5,
+    fontFamily: 'Roboto-Medium',
+    fontWeight: 'bold',
+    fontSize: 14,
+    color: '#4F504F',
+    width: '35%',
+  },
+  textInputText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+    color: '#4F504F',
+    width: '50%',
+    textAlign: 'left',
   },
 });

@@ -8,12 +8,13 @@ import {
   Text,
   Image,
   Pressable,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {searchCity} from '../services/Auth';
 import uuid from 'react-native-uuid';
-import { whereTo } from '../redux/MileStoneSlice';
-import { useDispatch } from 'react-redux';
+import {whereTo} from '../redux/MileStoneSlice';
+import {useDispatch} from 'react-redux';
 
 export const SearchCity = ({navigation}) => {
   const [text, setText] = useState('');
@@ -44,7 +45,7 @@ export const SearchCity = ({navigation}) => {
             )}
           </>
         </View>
-        <View style={{flexDirection: 'row'}}>
+        <View style={styles.mainView}>
           <TextInput
             name="search"
             placeholder="Where To?"
@@ -53,23 +54,19 @@ export const SearchCity = ({navigation}) => {
             onChangeText={value => search(value)}
             style={styles.textInput}
           />
-          <Icon
-            name="times"
-            size={20}
-            color={'#A4A4A4'}
-            style={styles.times}
-          />
+          <Icon name="times" size={20} color={'#A4A4A4'} style={styles.times} />
         </View>
       </View>
       {data.length !== 0
         ? data.map(ele => {
             return (
-              <Pressable key={uuid.v4()} onPress={() => {
-                navigation.navigate('CreateTrip');
-                dispatch(whereTo(ele.geo.name))
-              }}>
-                <View
-                  style={styles.resultContainer}>
+              <Pressable
+                key={uuid.v4()}
+                onPress={() => {
+                  navigation.navigate('CreateTrip');
+                  dispatch(whereTo(ele.geo.name));
+                }}>
+                <View style={styles.resultContainer}>
                   <View style={styles.locationImage}>
                     <Image
                       source={require('../assets/images/Facebook_Places.png')}
@@ -100,6 +97,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',
   },
+  mainView: {
+    flexDirection: 'row',
+    marginTop: Platform.OS === 'ios' ? 0 : -15,
+  },
   placeholder: {
     marginTop: 7,
   },
@@ -108,7 +109,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Medium',
     fontSize: 16,
     fontWeight: '500',
-    height: 20,
     width: '80%',
   },
   resultContainer: {

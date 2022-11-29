@@ -1,11 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { Star } from './StarComponent';
+import {Star} from './StarComponent';
+import {getVerifiedKeys} from '../utils/Functions';
+import {setToken} from '../redux/AuthSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {getParticularService} from '../services/Auth';
+import { month1 } from '../utils/Functions';
+export const NewServiceRecordDetails = ({navigation, data}) => {
 
-export const NewServiceRecordDetails = ({navigation}) => {
+  const id = data._id;
+  const dispatch = useDispatch();
+  const authData = useSelector(state => state.auth);
+  const [rate, setRate]  = useState(3)
+
+  const handlePress = async () => {
+    const key = await getVerifiedKeys(authData.userToken);
+    dispatch(setToken(key));
+    const response = await getParticularService(key, id);
+    navigation.navigate('BookingSummary', response)
+    setRate(response.ratings)
+  };
+  
   return (
-    <Pressable onPress={() => navigation.navigate('BookingSummary')}>
+    <Pressable onPress={handlePress}>
       <View style={[styles.container, styles.shadow]}>
         <LinearGradient
           start={{x: 0, y: 0}}
@@ -27,25 +45,41 @@ export const NewServiceRecordDetails = ({navigation}) => {
               marginLeft: '5%',
               alignItems: 'center',
             }}>
-            <Text style={[styles.dateText, {color: '#ED7F2C'}]}>15</Text>
+            <Text style={[styles.dateText, {color: '#ED7F2C'}]}>
+              {data.slotDate.substring(8, 10)}
+            </Text>
             <View style={{marginLeft: '5%'}}>
-              <Text style={[styles.monthText, {color: '#ED7F2C'}]}>Nov</Text>
-              <Text style={[styles.yearText, {color: '#ED7F2C'}]}>2017</Text>
+              <Text style={[styles.monthText, {color: '#ED7F2C'}]}>{month1[data.slotDate.substring(5,7)]}</Text>
+              <Text style={[styles.yearText, {color: '#ED7F2C'}]}>
+                {data.slotDate.substring(0, 4)}
+              </Text>
             </View>
           </View>
           <View style={styles.line}></View>
           <View style={{justifyContent: 'flex-start', right: 20}}>
-            <Text style={styles.serviceText}>General Service</Text>
-            <Star />
+            <Text style={styles.serviceText}>{data.serviceType}</Text>
+            <Star rating={rate} />
           </View>
         </View>
       </View>
     </Pressable>
   );
 };
-export const PastServiceRecordDetails = ({navigation}) => {
+export const PastServiceRecordDetails = ({navigation, data}) => {
+  console.log(data)
+  const id = data._id;
+  const dispatch = useDispatch();
+  const authData = useSelector(state => state.auth);
+
+  const handlePress = async () => {
+    const key = await getVerifiedKeys(authData.userToken);
+    dispatch(setToken(key));
+    const response = await getParticularService(key, id);
+    navigation.navigate('BookingSummary', response)
+  };
+
   return (
-    <Pressable onPress={() => navigation.navigate('BookingSummary')}>
+    <Pressable onPress={handlePress}>
       <View style={[styles.container, styles.shadow]}>
         <LinearGradient
           start={{x: 0, y: 0}}
@@ -67,15 +101,19 @@ export const PastServiceRecordDetails = ({navigation}) => {
               marginLeft: '5%',
               alignItems: 'center',
             }}>
-            <Text style={[styles.dateText, {color: '#1CB391'}]}>15</Text>
+            <Text style={[styles.dateText, {color: '#1CB391'}]}>
+              {data.slotDate.substring(8, 10)}
+            </Text>
             <View style={{marginLeft: '5%'}}>
-              <Text style={[styles.monthText, {color: '#1CB391'}]}>Nov</Text>
-              <Text style={[styles.yearText, {color: '#1CB391'}]}>2017</Text>
+              <Text style={[styles.monthText, {color: '#1CB391'}]}>{month1[data.slotDate.substring(5,7)]}</Text>
+              <Text style={[styles.yearText, {color: '#1CB391'}]}>
+                {data.slotDate.substring(0, 4)}
+              </Text>
             </View>
           </View>
           <View style={styles.line}></View>
           <View style={{justifyContent: 'flex-start', right: 20}}>
-            <Text style={styles.serviceText}>General Service</Text>
+            <Text style={styles.serviceText}>{data.serviceType}</Text>
             <Star rating={3} />
           </View>
         </View>
@@ -89,7 +127,7 @@ const styles = StyleSheet.create({
     shadowColor: 'rgba(175,170,170,0.5)',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 0,
     },
     shadowRadius: 8,
     shadowOpacity: 0.9,
@@ -99,6 +137,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 100,
     marginTop: 20,
+    // borderWidth: 1
   },
   shadow: {
     backgroundColor: '#FFFFFF',
@@ -159,4 +198,3 @@ const styles = StyleSheet.create({
     left: '5%',
   },
 });
-

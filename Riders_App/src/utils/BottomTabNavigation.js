@@ -1,15 +1,11 @@
-import {StyleSheet, Image} from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 import React from 'react';
 import CreateTrip from '../screens/CreateTripScreen';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 import MyGarageStack from './MyGarageStack';
-import AddBikeDetails from '../screens/AddBikeDetailsScreen';
-import { AddPersonalDetails } from '../screens/AddPersonalDetailsScreen';
-import AllTripList from '../components/AllTripList';
-import Profile from '../screens/Profile';
+import AllTrips from '../screens/IndividualTripScreen';
 import ProfileStack from './ProfileStack';
-
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomTabNavigation = () => {
@@ -145,5 +141,3 @@ const BottomTabNavigation = () => {
 };
 
 export default BottomTabNavigation;
-
-const styles = StyleSheet.create({});

@@ -7,31 +7,69 @@ import {
   Image,
   ImageBackground,
   Pressable,
-  FlatList,
+  ScrollView,
+  ActivityIndicator
 } from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
-import {useSelector} from 'react-redux';
+import {useSelector,useDispatch} from 'react-redux';
 import ActivityList from '../components/MyActivityList';
 import {getSortedTripDetails, profileData} from '../services/Auth';
 import {getVerifiedKeys, month} from '../utils/Functions';
+import ImagePicker from 'react-native-image-crop-picker';
+import { uploadProfileImage } from '../services/Auth';
+import { setLoading,deSetLoading } from '../redux/MileStoneSlice';
+import { setToken } from '../redux/AuthSlice';
+
 
 const Profile = ({navigation}) => {
   const [personData, setPersonData] = useState({});
   const [tripDetails, setTripDetails] = useState([]);
-  const userData = useSelector(state => state.auth.userData);
+  const userData = useSelector(state => state.auth.userCredentials);
   const token = useSelector(state => state.auth);
-  const state= useSelector(state=>state.milestone.initalState)
-  //userData is use for image and mobileNumber of user.
+  const state= useSelector(state=>state.milestone.initialState)
+  const dispatch= useDispatch()
+  const loading= useSelector(state=>state.milestone.isLoading)
+
+  function setImage(){
+    ImagePicker.openPicker({
+      width: 200,
+      height: 200,
+      cropping: true,
+    }).then(async image => {
+      const payload = new FormData();
+      payload.append('image', {
+        uri: image.path,
+        type: image.mime,
+        name: `${image.filename}.${image.mime.substring(
+          image.mime.indexOf('/') + 1,
+        )}`,
+      })
+      let cred= await getVerifiedKeys(token.userToken)
+      dispatch(setToken(cred))
+      const resp = await uploadProfileImage(payload,cred)
+    })
+  }
+
   useEffect(() => {
     setTimeout(async () => {
+      dispatch(deSetLoading())
       const cred= await getVerifiedKeys(token.userToken)
+      dispatch(setToken(cred))
       const data = await profileData(cred,userData.mobile);
       setPersonData(data);
       const tripdata = await getSortedTripDetails(cred);
       setTripDetails(tripdata);
+      dispatch(setLoading())
     }, 500);
   }, [state]);
+
+  if(loading){
+      return(
+        <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+              <ActivityIndicator size= "large" color="orange" />
+        </View>
+      )
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -45,29 +83,29 @@ const Profile = ({navigation}) => {
             source={require('../assets/images/profilebike.png')}
             resizeMode="cover"
             style={styles.backgroundImage}></ImageBackground>
-          <Pressable onPress={()=>navigation.navigate('updateProfile')}>
+          <Pressable onPress={()=>navigation.navigate('updateProfile',{
+            userName:personData.userDetails.userName,
+            aboutUser: personData.userDetails.aboutUser
+          })}>
             <Image
               source={require('../assets/images/edit.png')}
               style={styles.editIcon}
             />
           </Pressable>
           <View style={styles.profileContainer}>
-            {token.image !== '' ?(<Image
+            {token.image !== '' ?(<Pressable onPress={setImage}><Image
               source={{uri:token.image}}
               style={styles.profileImage}
-            />):<Image
+            /></Pressable>):<Pressable onPress={setImage}><Image
               source={require('../assets/images/photoless.png')}
               style={styles.profileImage}
-            />}
+            /></Pressable>}
             <Text style={styles.profileName}>
               {personData?.userDetails?.userName}
             </Text>
             <Text style={styles.bioText}>
               {personData?.userDetails?.aboutUser}
             </Text>
-            <View style={styles.followContainer}>
-              <Text style={styles.followText}>Follow</Text>
-            </View>
           </View>
         </LinearGradient>
         <View style={styles.detailContainer}>
@@ -143,7 +181,7 @@ const styles = StyleSheet.create({
 
   profileImage: {
     height: 120,
-    width: 150,
+    width: 120,
     borderRadius: 65,
     marginBottom: 10,
     borderColor: '#FFFFFF',

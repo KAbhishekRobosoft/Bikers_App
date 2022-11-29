@@ -1,27 +1,24 @@
-import {StyleSheet, Image, Platform} from 'react-native';
+import {Image} from 'react-native';
 import React from 'react';
-import CreateTrip from '../screens/CreateTripScreen';
+import AddBikeDetails from '../screens/AddBikeDetailsScreen';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 import MyGarageStack from './MyGarageStack';
-import UpcomingList from '../screens/AllTripScreen';
+import UpcomingList from '../screens/IndividualTripScreen';
 import Profile from '../screens/Profile';
 import ProfileStack from './ProfileStack';
-import {AddPersonalDetails} from '../screens/AddPersonalDetailsScreen';
-import AddBikeDetails from '../screens/AddBikeDetailsScreen';
-import LogoutScreen from '../screens/LogoutScreen';
-import pop, {BottomPopUpMenu} from '../components/PopUpMenu';
-import { logOut } from '../redux/AuthSlice';
-import LogoutStack from './LogoutStack';
+import AllUserTrip from '../screens/AllUserTrip';
+
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomTabLoginNavigation = () => {
   return (
     <Tab.Navigator
       shifting={true}
-      initialRouteName="Home"
+      initialRouteName="UpcomingList"
       activeColor="#ffffff"
-      barStyle={{backgroundColor: '#ED7E2B', height:Platform.OS==='ios'? 65:62}}>
+      barStyle={{backgroundColor: '#ED7E2B', height: 65}}>
+
       <Tab.Screen
         name="Trips"
         component={UpcomingList}
@@ -43,6 +40,7 @@ const BottomTabLoginNavigation = () => {
           },
         }}
       />
+
       <Tab.Screen
         name="Trip2"
         component={MyGarageStack}
@@ -64,9 +62,10 @@ const BottomTabLoginNavigation = () => {
           },
         }}
       />
+
       <Tab.Screen
-        name="Trip3"
-        component={UpcomingList}
+        name="All Trips"
+        component={AllUserTrip}
         options={{
           tabBarIcon: ({focused}) => {
             return (
@@ -83,6 +82,7 @@ const BottomTabLoginNavigation = () => {
           },
         }}
       />
+
       <Tab.Screen
       
         name="Profile"
@@ -103,6 +103,7 @@ const BottomTabLoginNavigation = () => {
           },
         }}
       />
+
       <Tab.Screen
         name="Logout"
         component={LogoutStack}
@@ -123,15 +124,15 @@ const BottomTabLoginNavigation = () => {
                   height: 22,
                   resizeMode: 'contain',
                 }}
-              />
+                />
             );
           },
         }}
-      />
+        />
     </Tab.Navigator>
   );
 };
 
 export default BottomTabLoginNavigation;
 
-const styles = StyleSheet.create({});
+

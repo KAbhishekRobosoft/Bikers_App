@@ -11,15 +11,22 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import {useRoute} from '@react-navigation/native';
 import {useRef} from 'react';
 import SearchServiceComponent from '../components/SearchServiceComponent';
 import {searchServiceCenter} from '../services/Auth';
-
+import { getVerifiedKeys } from '../utils/Functions';
+import { useDispatch, useSelector } from 'react-redux';
+import {setToken} from '../redux/AuthSlice'
 const SearchServiceScreen = ({navigation}) => {
+  const route = useRoute()
   const [text, setText] = useState('');
   const [data, setData] = useState([]);
   const [cross, setCross] = useState(false);
   const ref = useRef();
+  const authData= useSelector(state=>state.auth);
+  const dispatch = useDispatch();
+
   const search = async value => {
     if (value !== '') {
       setCross(true);
@@ -27,7 +34,9 @@ const SearchServiceScreen = ({navigation}) => {
       setCross(false);
     }
     setText(value);
-    const Data = await searchServiceCenter(value);
+    const key = await getVerifiedKeys(authData.userToken)
+    dispatch(setToken(key))
+    const Data = await searchServiceCenter(value, key);
     setData(Data);
   };
 
@@ -104,7 +113,7 @@ const SearchServiceScreen = ({navigation}) => {
         </View>
       </View>
       <ScrollView style={styles.scrollView}>
-        <SearchServiceComponent data={data} text={text} navigation={navigation}/>
+        <SearchServiceComponent data={data} text={text} navigation={navigation} route={route}/>
       </ScrollView>
     </SafeAreaView>
   );

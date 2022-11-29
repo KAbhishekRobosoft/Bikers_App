@@ -2,14 +2,30 @@ import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import { Star } from './StarComponent';
 
-const SearchServiceComponent = ({data, text,navigation}) => {
+const SearchServiceComponent = ({data, text,navigation,route}) => {
+
   return (
     <View>
       {data.length !== 0
         ? data.map(ele => {
             return (
               <TouchableOpacity  key={ele._id} onPress={()=>{
-                navigation.navigate('ServiceCenter',{ele})
+                const obj2 ={
+                  mobileNumber: route.params.mobileNumber,
+                  serviceType: route.params.serviceType,
+                  vehicleNumber: route.params.vehicleNumber,
+                  vehicleType: route.params.mobileNumber,
+                  comment: route.params.comment,
+                  dealerName: ele.dealerName,
+                  dealerPhoneNumber: ele.dealerPhoneNumber,
+                  dealerImage: ele.dealerImage,
+                  dealerRating: ele.dealerRating,
+                  dealerDescription: ele.dealerDescription,
+                  dealerDistance: ele.dealerDistance,
+                  dealerAddress: ele.dealerAddress,
+                  dealerCity: ele.dealerCity,
+                }
+                navigation.navigate('ServiceCenter',obj2)
               }}>
                 <View style={styles.serviceCenterView}>
                   <View style={styles.textView1}>

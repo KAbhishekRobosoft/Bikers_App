@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Star } from '../components/StarComponent';
+import {Star} from '../components/StarComponent';
 import ButtonLarge from '../components/Buttons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useRoute} from '@react-navigation/native';
@@ -26,11 +26,12 @@ const ServiceCenterScreen = ({navigation}) => {
   const [open2, setOpen2] = useState(false);
 
   const route = useRoute();
+
   return (
     <SafeAreaView style={styles.main}>
       <Image
         style={styles.img}
-        source={{uri: 'https' + route.params.ele.dealerImage.substring(4)}}
+        source={{uri: 'https' + route.params.dealerImage.substring(4)}}
       />
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Icon
@@ -42,28 +43,22 @@ const ServiceCenterScreen = ({navigation}) => {
       </TouchableOpacity>
       <ScrollView style={styles.scrollView}>
         <View style={styles.ratingComponent}>
-          <Star rating={Math.floor(route.params.ele.dealerRating)} />
+          <Star rating={Math.floor(route.params.dealerRating)} />
         </View>
 
         <View style={styles.textContainer}>
           <View style={styles.textView1}>
-            <Text style={styles.text1}>{route.params.ele.dealerName}</Text>
+            <Text style={styles.text1}>{route.params.dealerName}</Text>
             <Text style={styles.text2}>
-              {route.params.ele.dealerDistance
-                ? route.params.ele.dealerDistance
+              {route.params.dealerDistance
+                ? route.params.dealerDistance
                 : 0 + 'km'}
             </Text>
           </View>
-          <Text style={styles.text3}> {route.params.ele.dealerAddress}</Text>
-          <Text style={styles.text3}>
-   
-            {route.params.ele.dealerCity},Karnataka
-          </Text>
-          <Text style={styles.text4}>{route.params.ele.dealerDescription}</Text>
-          <Text style={styles.text4}>
-   
-            +91 {route.params.ele.dealerPhoneNumber}
-          </Text>
+          <Text style={styles.text3}> {route.params.dealerAddress}</Text>
+          <Text style={styles.text3}>{route.params.dealerCity},Karnataka</Text>
+          <Text style={styles.text4}>{route.params.dealerDescription}</Text>
+          <Text style={styles.text4}>+91 {route.params.dealerPhoneNumber}</Text>
         </View>
         <View style={styles.btn}>
           <ButtonLarge title="CHECK SLOT" onPress={() => setOpen1(true)} />
@@ -91,8 +86,19 @@ const ServiceCenterScreen = ({navigation}) => {
             onConfirm={value => {
               setTimer(value);
               setOpen2(false);
-              navigation.navigate('BookingDetails')
 
+              const obj3 = {
+                serviceType: route.params.serviceType,
+                vehicleNumber: route.params.vehicleNumber,
+                dealerName: route.params.dealerName,
+                dealerCity: route.params.dealerCity,
+                comment: route.params.comment,
+                slotDate: date.toLocaleDateString(),
+                time: time.toLocaleTimeString(),
+                mobileNumber: route.params.mobileNumber,
+                dealerPhoneNumber: route.params.dealerPhoneNumber
+              };
+              navigation.navigate('BookingDetails',obj3);
             }}
             onCancel={() => {
               setOpen2(false);
@@ -135,7 +141,6 @@ const styles = StyleSheet.create({
     height: 130,
     justifyContent: 'center',
     paddingHorizontal: 20,
-
   },
   ratingComponent: {
     paddingHorizontal: 22,

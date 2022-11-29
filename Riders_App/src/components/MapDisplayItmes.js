@@ -10,11 +10,19 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon1 from 'react-native-vector-icons/MaterialIcons';
+import GetLocation from 'react-native-get-location';
 
-export const MapNavBar = () => {
+export const MapNavBar = ({navigation}) => {
   return (
     <View style={styles.navBar}>
-      <Icon name="md-arrow-back" color={'grey'} size={25} style={styles.icon} />
+      <Pressable onPress={()=>navigation.goBack()}>
+        <Icon
+          name="md-arrow-back"
+          color={'grey'}
+          size={25}
+          style={styles.icon}
+        />
+      </Pressable>
       <Pressable>
         <Image
           source={require('../assets/images/insertcard.png')}
@@ -114,7 +122,23 @@ export const MapBottomBar = ({musicControlIcon, musicControl}) => {
       end={{x: 1, y: 0}}
       colors={['#ED7E2B', '#F4A264']}
       style={[styles.gradientCreateButton, {top}]}>
-      <Pressable onPress={musicControl}>
+      <Pressable
+        onPress={() => {
+          musicControl();
+          if (musicControlIcon === 'ios-play') {
+            GetLocation.getCurrentPosition({
+              enableHighAccuracy: true,
+              timeout: 15000,
+            })
+              .then(location => {
+                console.log(location);
+              })
+              .catch(error => {
+                const {code, message} = error;
+                console.warn(code, message);
+              });
+          }
+        }}>
         <Icon
           name={musicControlIcon}
           color={'white'}
@@ -128,7 +152,7 @@ export const MapBottomBar = ({musicControlIcon, musicControl}) => {
 
 export const MapChatButton = () => {
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? '50%' : '50%') : '275%';
+  const top = width > height ? (Platform.OS === 'ios' ? 80 : 80) : '275%';
   const left = width > height ? (Platform.OS === 'ios' ? '85%' : '85%') : '75%';
 
   return (

@@ -4,22 +4,24 @@ const authenticateSlice = createSlice({
   name: 'auth',
   initialState: {
     userData: {},
+    userCredentials: {},
     isLoading: true,
-    infoPage:true,
-    userToken:null,
-    otpVerified:false,
-    registered:false,
-    forgotPassword:false,
-    image:'',
-    haveBike:false,
+    infoPage: true,
+    userToken: null,
+    otpVerified: false,
+    registered: false,
+    forgotPassword: false,
+    image: '',
+    haveBike: false,
   },
 
   reducers: {
     login: (state, action) => {
-      state.userData = action.payload;
+      state.userCredentials = action.payload;
       state.isLoading = false;
       state.infoPage = false;
       state.otpVerified = true;
+      state.userToken = action.payload.token;
     },
 
     logOut: state => {
@@ -28,38 +30,32 @@ const authenticateSlice = createSlice({
       state.userToken = null;
     },
 
-    setImage:(state,action)=>{
-        state.image= action.payload
+    setImage: (state, action) => {
+      state.image = action.payload;
     },
 
-    setToken:(state,action)=>{
-      state.userToken= action.payload
-      state.isLoading= false
-    },
-    setMileStone: (state, action) => {
-      state.mileStone = action.payload;
-    },
-    setMileStoneData: (state, action) => {
-      state.mileStoneData.push(action.payload);
+    setToken: (state, action) => {
+      state.userToken = action.payload;
+      state.isLoading = false;
     },
     setOtpVerfied: state => {
       state.otpVerified = true;
     },
 
-    setUserData:(state,action)=>{
-      state.userData= action.payload
+    setUserData: (state, action) => {
+      state.userData = action.payload;
     },
 
-    setForgotPassword:(state)=>{
-      state.forgotPassword= true
+    setForgotPassword: state => {
+      state.forgotPassword = true;
     },
 
     deSetForgotPassword: state => {
       state.forgotPassword = false;
     },
 
-    setHaveBike:(state,action)=>{
-        state.haveBike= action.payload
+    setHaveBike: (state, action) => {
+      state.haveBike = action.payload;
     },
 
     setRegistered: state => {
@@ -69,8 +65,29 @@ const authenticateSlice = createSlice({
     deSetRegistered: state => {
       state.registered = false;
     },
+    updateUserCredentials: (state, action) => {
+      state.userCredentials =  {
+          mobile: action.payload.mobile,
+          email: action.payload.email,
+          userName: action.payload.userName,
+          haveBike: action.payload.haveBike,
+        };
+    },
   },
 });
 
-export const {login,logOut,setToken,setOtpVerfied,setRegistered,setHaveBike,deSetRegistered,setForgotPassword,deSetForgotPassword,setUserData,setImage} = authenticateSlice.actions;
+export const {
+  login,
+  logOut,
+  setToken,
+  setOtpVerfied,
+  setRegistered,
+  setHaveBike,
+  deSetRegistered,
+  setForgotPassword,
+  deSetForgotPassword,
+  setUserData,
+  setImage,
+  updateUserCredentials,
+} = authenticateSlice.actions;
 export default authenticateSlice.reducer;

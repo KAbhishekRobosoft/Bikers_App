@@ -20,41 +20,43 @@ import {createTrip} from '../services/Auth';
 import Toast from 'react-native-simple-toast';
 import MapView, {Marker} from 'react-native-maps';
 import {Polyline} from 'react-native-maps';
-import {calculateRoute} from '../services/Auth';
-import uuid from 'react-native-uuid';
+import {getParticularTrip} from '../services/Auth';
+import {month1} from '../utils/Functions';
+import { calculateRoute } from '../services/Auth';
 
-export const TripSummary = ({navigation}) => {
+export const GetParticularTripSummary = ({navigation, route}) => {
+  const [data, setData] = useState([]);
+  const [direction,setDirection]= useState([])
   const mapRef = useRef(null);
-  const tripDetails = useSelector(state => state.milestone.storeTrip);
-
   useEffect(() => {
     setTimeout(async () => {
-      const resp = await calculateRoute(
-        tripDetails.source[0].latitude,
-        tripDetails.source[0].longitude,
-        tripDetails.destination[0].latitude,
-        tripDetails.destination[0].longitude,
-      );
-      setRoute(resp.legs[0].points);
+      const key = await getVerifiedKeys(authData.userToken);
+      dispatch(setToken(key));
+      const resp = await getParticularTrip(key, route.params.tripName);
+      const dir= await calculateRoute(resp[0].source[0].latitude,resp[0].source[0].longitude,resp[0].destination[0].latitude,resp[0].destination[0].longitude)
+      console.log(dir)
+      setDirection(dir.legs[0].points)
+      setData(resp);
       mapRef.current.animateToRegion(
         {
-          latitude: tripDetails.source[0].latitude,
-          longitude: tripDetails.source[0].longitude,
-          latitudeDelta: 8,
+          latitude: resp[0].destination[0].latitude,
+          longitude: resp[0].destination[0].longitude,
+          latitudeDelta: 20,
           longitudeDelta: 10,
         },
         3 * 1000,
       );
-    }, 500);
+    }, 1000);
   }, []);
   const milestonedata = useSelector(state => state.milestone.milestoneData);
+  const tripDetails = useSelector(state => state.milestone.storeTrip);
   const contactsData = useSelector(state => state.contact);
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
-  const [route, setRoute] = useState([]);
+
   return (
     <SafeAreaView>
-      {route.length > 0 ? (
+      {data.length > 0 && direction.length > 0 ? (
         <View style={styles.mainView}>
           <View style={[styles.header]}>
             <View style={styles.subHeader}>
@@ -85,28 +87,28 @@ export const TripSummary = ({navigation}) => {
                 style={styles.mapStyle}
                 customMapStyle={mapStyle}>
                 <Polyline
-                  key={uuid.v4()}
-                  coordinates={route.map(ele => ({
+                  coordinates={direction.map(ele => ({
                     latitude: ele.latitude,
                     longitude: ele.longitude,
                   }))}
                   strokeColor={'blue'}
-                  strokeWidth={2}
+                  strokeWidth={5}
                   lineDashPattern={[1]}
                 />
+
                 <Marker
                   coordinate={{
-                    latitude: tripDetails.source[0].latitude,
-                    longitude: tripDetails.source[0].longitude,
-                    latitudeDelta: 0.01,
+                    latitude: parseFloat(data[0].source[0].latitude),
+                    longitude: parseFloat(data[0].source[0].longitude),
+                    latitudeDelta: 0.03,
                     longitudeDelta: 0.01,
                   }}
                 />
 
                 <Marker
                   coordinate={{
-                    latitude: tripDetails.destination[0].latitude,
-                    longitude: tripDetails.destination[0].longitude,
+                    latitude: parseFloat(data[0].destination[0].latitude),
+                    longitude: parseFloat(data[0].destination[0].longitude),
                     latitudeDelta: 0.03,
                     longitudeDelta: 0.01,
                   }}
@@ -114,30 +116,30 @@ export const TripSummary = ({navigation}) => {
               </MapView>
               <View style={styles.summaryView}>
                 <Image source={require('../assets/images/motorcycle.png')} />
-                <Text style={styles.tripName}>{tripDetails?.tripName}</Text>
+                <Text style={styles.tripName}>{data[0]?.tripName}</Text>
                 <Text style={styles.dateText}>
-                  {tripDetails?.startDate?.substring(8, 10)}
-                  {tripDetails?.startDate?.substring(4, 7)} -
-                  {tripDetails?.endDate?.substring(8, 10)}
-                  {tripDetails?.endDate?.substring(4, 7)}
-                  {tripDetails?.endDate?.substring(11, 15)}
+                  {data[0]?.startDate?.substring(8, 10)}{' '}
+                  {month1[data[0]?.startDate?.substring(5, 7)]} -
+                  {data[0]?.endDate?.substring(8, 10)}{' '}
+                  {month1[data[0]?.endDate?.substring(5, 7)]}{' '}
+                  {data[0]?.endDate?.substring(0, 4)}
                 </Text>
                 <Text style={styles.timeText}>
                   {tripDetails?.startTime?.substring(15, 21)}
                 </Text>
                 <View style={styles.fromToView}>
                   <Text style={styles.fromToText}>
-                    {tripDetails?.source[0]?.place}
+                    {data[0]?.source[0]?.place}
                   </Text>
                   <View style={styles.lineView}></View>
                   <Text style={styles.fromToText}>
-                    {tripDetails?.destination[0]?.place}
+                    {data[0]?.destination[0]?.place}
                   </Text>
                 </View>
               </View>
             </View>
             <View style={styles.listView}>
-              <TripSummaryList data={milestonedata} />
+              <TripSummaryList data={data[0].milestones} />
               <View style={styles.recommendationsView}>
                 <RecommendationTripSummary />
               </View>
@@ -150,24 +152,24 @@ export const TripSummary = ({navigation}) => {
                     />
                   </Pressable>
                 </View>
-                {contactsData.addTripContacts.length === 0 && (
+                {data[0].riders.length === 0 && (
                   <Text style={styles.text}>Invite other riders</Text>
                 )}
-                {contactsData.addTripContacts.length > 0 && (
+                {data[0].riders.length > 0 && (
                   <BikeImageComponent />
                 )}
               </View>
               <View style={styles.buttonView}>
                 <CreateButton
-                  onPress={async () => {
-                    const cred = await getVerifiedKeys(authData.userToken);
-                    dispatch(setToken(cred));
-                    const resp = await createTrip(tripDetails, cred);
-                    if (resp !== undefined)
-                      navigation.navigate('CreateTripSuccess');
-                    else Toast.show('Trip Creation Unsuccessfull');
+                  onPress={() => {
+                      navigation.navigate('MapDisplay',{
+                        latitude:data[0].source[0].latitude,
+                        longitude:data[0].source[0].longitude,
+                        latitude1:data[0].destination[0].latitude,
+                        longitude1:data[0].destination[0].longitude
+                      })
                   }}
-                  title="CREATE"
+                  title="GO"
                 />
               </View>
             </View>
@@ -178,10 +180,11 @@ export const TripSummary = ({navigation}) => {
   );
 };
 
+export default GetParticularTripSummary;
+
 const styles = StyleSheet.create({
   mainView: {
     backgroundColor: 'white',
-    // height: '100%',
   },
 
   container: {
