@@ -5,8 +5,9 @@ import { getVerifiedKeys } from '../utils/Functions';
 import { deleteTrip } from '../services/Auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { setInitialState } from '../redux/MileStoneSlice';
+import { month1 } from '../utils/Functions';
 
-const AllTripList = ({image,navigation, placeName, startDateText, statusText, endDateText, month,id,}) => {
+const AllTripList = ({image,navigation, placeName, startDateText, status, endDateText, id}) => {
   const state = useSelector(state => state.milestone.initialState)
   const [visible,setVisible]= useState(false)
   const authData= useSelector(state=>state.auth);
@@ -32,11 +33,11 @@ const AllTripList = ({image,navigation, placeName, startDateText, statusText, en
           <View style={styles.textContainer}>
             <Text style={styles.placeName}>{placeName}</Text>
             <View style={{flexDirection: 'row'}}>
-            <Text style={styles.dateText}>{startDateText.substring(8, 10)} - </Text>
-            <Text style={styles.dateText}>{endDateText.substring(8, 10)} {month.substring(4, 7)}</Text>
+            <Text style={styles.dateText}>{startDateText.substring(8, 10)} {month1[startDateText.substring(5,7)]} - </Text>
+            <Text style={styles.dateText}>{endDateText.substring(8, 10)} {month1[endDateText.substring(5,7)]}</Text>
             </View>
             <View style={styles.statusContainer}>
-              <Text style={styles.statusText}>{statusText}</Text>
+              <Text style={styles.statusText}>{status}</Text>
             </View>
           </View>
           <Pressable onPress={() => handleClose(id)}>

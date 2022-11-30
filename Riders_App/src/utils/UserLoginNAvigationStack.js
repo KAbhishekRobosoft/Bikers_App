@@ -39,13 +39,11 @@ function UserLoginStack() {
         name="BottomTabLoginNavigation"
         component={BottomTabLoginNavigation}
       />
-
       <Stack.Screen
         options={{headerShown: false}}
         name="CreateTrip"
         component={CreateTrip}
       />
-
       <Stack.Screen
         options={{headerShown: false}}
         name="Contacts"
@@ -77,7 +75,6 @@ function UserLoginStack() {
         name="MapDisplay"
         component={MapDisplayScreen}
       />
-
       <Stack.Screen
         options={{headerShown: false}}
         name="ChatScreen"
@@ -170,6 +167,6 @@ function UserLoginStack() {
       />
     </Stack.Navigator>
   );
-}
+};
 
 export default UserLoginStack;
