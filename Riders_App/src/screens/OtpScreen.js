@@ -8,15 +8,23 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useDispatch, useSelector} from 'react-redux';
 import {register} from '../services/Auth';
 import {setOtpVerfied} from '../redux/AuthSlice';
 import Toast from 'react-native-simple-toast';
-import Count from 'react-native-countdown-component';
 
 const OtpScreen = ({navigation}) => {
+  const [count, setCount] = useState(20);
+
+  useEffect(() => {
+    count > 0 &&
+      setTimeout(() => {
+        setCount(count - 1);
+      }, 1000);
+  }, [count]);
+
   const data = useSelector(state => state.auth);
   const [code, setCode] = useState('');
   const dispatch = useDispatch();
@@ -66,7 +74,6 @@ const OtpScreen = ({navigation}) => {
                       data.haveBike,
                     );
                     if (response !== undefined) {
-                      dispatch(setOtpVerfied());
                       navigation.navigate('Login');
                     } else {
                       Toast.show('User already exists');
@@ -91,19 +98,7 @@ const OtpScreen = ({navigation}) => {
             </Pressable>
           </View>
           <View style={styles.textView2}>
-              <Count
-                until={59}
-                size={14}
-                //onFinish={() => alert('Finished')}
-                digitStyle={{backgroundColor: '#FFF'}}
-                digitTxtStyle={{color: 'rgba(174,168,168,0.87)'}}
-                timeToShow={['S']}
-                timeLabels={{s: ''}}
-                style={{height: 1, width: 1,borderWidth:1,marginLeft:40}}
-              />
-            <Text style={styles.secondsText}>
-              seconds left
-            </Text>
+            <Text style={styles.secondsText}>{count} seconds left</Text>
           </View>
         </View>
       </ScrollView>
@@ -151,18 +146,12 @@ const styles = StyleSheet.create({
   },
   textView2: {
     marginTop: 30,
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   resendText: {
     color: '#F7931E',
   },
   secondsText: {
     color: 'rgba(174,168,168,0.87)',
-    width: 100,
-    marginLeft:4,
-    bottom:1
-
   },
 
   optView: {
