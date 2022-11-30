@@ -687,3 +687,14 @@ export const endTrip = async (tripId,token) => {
     console.log(err);
   }
 };
+export const uploadChatImage = async (payload, token) => {
+  let res = await fetch(`${BASE_URL}/chat/uploadChatImage`, {
+    method: 'post',
+    body: payload,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  let data = await res.json();
+  return data;
+}

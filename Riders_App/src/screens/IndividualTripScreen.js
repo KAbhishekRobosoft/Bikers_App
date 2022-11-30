@@ -29,23 +29,22 @@ const AllTrips = ({navigation}) => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const tripdata = await UserTrips(key);
-      console.log(tripdata)
+      console.log(tripdata);
       setTripDetails(tripdata);
     }, 500);
   }, [state]);
 
   const renderItem = details => {
     return (
-
-        <AllTripList
-          navigation= {navigation}
-          image={details.item.tripImage}
-          placeName={details.item.tripName}
-          startDateText={details.item.startDate.toString()}
-          endDateText={details.item.endDate.toString()}
-          id={details.item._id}
-          status= {details.item.tripStatus}
-        />
+      <AllTripList
+        navigation={navigation}
+        image={details.item.tripImage}
+        placeName={details.item.tripName}
+        startDateText={details.item.startDate.toString()}
+        endDateText={details.item.endDate.toString()}
+        id={details.item._id}
+        status={details.item.tripStatus}
+      />
     );
   };
   const handleSearch = async value => {
@@ -55,43 +54,35 @@ const AllTrips = ({navigation}) => {
   };
 
   return (
-    <>
-      {tripDetails.length == 0 ? (
-        <>
-          <WelcomeAboardScreen2/>
-        </>
-      ) : (
-        <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-          <View style={styles.searchView}>
-            <Image
-              source={require('../assets/images/search.png')}
-              style={styles.searchIcon}
-            />
-            <TextInput
-              name="Search a Trip"
-              placeholder="Search a Trip"
-              placeholderTextColor="rgba(166,166,166,0.87)"
-              fontFamily="Roboto-Medium"
-              fontSize={12}
-              alignSelf={'center'}
-              marginLeft={6}
-              onChangeText={text => handleSearch(text)}
-              style={styles.inputText}
-            />
-          </View>
-          <FlatList
-            data={tripDetails}
-            keyExtractor={details => details._id}
-            renderItem={renderItem}></FlatList>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <View style={styles.searchView}>
+        <Image
+          source={require('../assets/images/search.png')}
+          style={styles.searchIcon}
+        />
+        <TextInput
+          name="Search a Trip"
+          placeholder="Search a Trip"
+          placeholderTextColor="rgba(166,166,166,0.87)"
+          fontFamily="Roboto-Medium"
+          fontSize={12}
+          alignSelf={'center'}
+          marginLeft={6}
+          onChangeText={text => handleSearch(text)}
+          style={styles.inputText}
+        />
+      </View>
+      <FlatList
+        data={tripDetails}
+        keyExtractor={details => details._id}
+        renderItem={renderItem}></FlatList>
 
-          <Pressable
-            style={styles.addButton}
-            onPress={() => navigation.navigate('CreateTrip')}>
-            <Image source={require('../assets/images/addtrip.png')} />
-          </Pressable>
-        </SafeAreaView>
-      )}
-    </>
+      <Pressable
+        style={styles.addButton}
+        onPress={() => navigation.navigate('CreateTrip')}>
+        <Image source={require('../assets/images/addtrip.png')} />
+      </Pressable>
+    </SafeAreaView>
   );
 };
 

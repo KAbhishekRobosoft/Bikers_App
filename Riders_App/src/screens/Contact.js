@@ -26,7 +26,6 @@ export const ContactDisplay = ({navigation}) => {
   const dispatch = useDispatch();
   const data = useSelector(state => state.contact.contactsData);
   const [text, setText] = useState();
-
   useEffect(() => {
     getContactBook();
   }, []);
@@ -124,7 +123,6 @@ export const ContactDisplay = ({navigation}) => {
         <View style={[styles.header, styles.shadow]}>
           <Pressable
             onPress={() => {
-              dispatch(deleteContactsData())
               navigation.goBack();
             }}>
             <Icon

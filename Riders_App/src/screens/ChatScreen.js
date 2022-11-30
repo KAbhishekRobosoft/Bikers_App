@@ -16,10 +16,10 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {ReceiverContainer, SenderChatDetails} from '../components/chatDetails';
 import PopUpMenu from '../components/PopUpMenu';
 import Toast from 'react-native-simple-toast'
-
+import { uploadChatImage } from '../services/Auth';
 const ChatScreen = ({navigation,route}) => {
   const [refreshing, setRefreshing] = React.useState(false);
-
+  console.log(route)
   const onRefresh = React.useCallback(async() => {
     setRefreshing(true);
     if (chat.length > 2) {
@@ -59,6 +59,29 @@ const ChatScreen = ({navigation,route}) => {
       time: '2022-11-28T05:24:01.463Z',
     },
   ]);
+
+  const pickImage = () => {
+    ImagePicker.openPicker({
+      width: 200,
+      height: 200,
+      cropping: true,
+    }).then(async image => {
+      
+      const payload = new FormData();
+      payload.append('image', {
+        uri: image.path,
+        type: image.mime,
+        name: `${image.filename}.${image.mime.substring(
+          image.mime.indexOf('/') + 1,
+        )}`,
+      })
+      let cred= await getVerifiedKeys(authData.userToken)
+      const resp = await uploadChatImage(payload,cred)
+      // if(resp.hasOwnProperty('message')){
+      //     dispatch(setImage('https'+resp.url.substring(4)))
+      // }
+    })
+  };
 
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
@@ -129,10 +152,10 @@ const ChatScreen = ({navigation,route}) => {
             alignItems: 'center',
             marginRight: '2%',
           }}>
-          <Pressable>
+          <Pressable onPress={pickImage}>
             <Image
               source={require('../assets/images/document.png')}
-              style={{height: 27, width: 24, marginRight: 10}}
+              style={{height: 27, width: 24, marginRight: 10,}}
             />
           </Pressable>
           <Pressable>

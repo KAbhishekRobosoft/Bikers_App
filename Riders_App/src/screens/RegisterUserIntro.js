@@ -58,7 +58,7 @@ function RegisterUserIntro({navigation}) {
       }
     })
   };
-  console.log(authData.userData)
+  // console.log(authData.userData)
   const {width, height} = useWindowDimensions();
   const marginTop = height > width ? (Platform.OS === 'ios' ? 220 : 200) : 118;
   return (
