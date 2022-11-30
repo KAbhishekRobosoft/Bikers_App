@@ -13,7 +13,7 @@ import {selectMarked} from '../redux/ContactSlice';
 import {selectUnMarked} from '../redux/ContactSlice';
 import {addTripContacts} from '../redux/ContactSlice';
 import {deleteTripContacts} from '../redux/ContactSlice';
-import Toast from 'react-native-simple-toast'
+import Toast from 'react-native-simple-toast';
 
 export const ContactFlatList = () => {
   const dispatch = useDispatch();
@@ -70,14 +70,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     height: 65,
+    width: '90%',
+    alignSelf: 'center',
+    justifyContent: 'space-evenly'
   },
   tickImage: {
     width: 27,
     height: 27,
-    marginHorizontal: '5%',
   },
   contactName: {
-    marginHorizontal: 10,
+    marginLeft: 20,
     fontFamily: 'Roboto-Regular',
     fontSize: 14,
     color: 'rgba(0,0,0,0.87)',
@@ -89,6 +91,6 @@ const styles = StyleSheet.create({
     width: 41.04,
     height: 41,
     borderRadius: 20,
-    marginLeft: 60,
+    marginLeft: 40,
   },
 });

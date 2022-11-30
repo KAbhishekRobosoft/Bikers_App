@@ -1,5 +1,4 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BottomTabLoginNavigation from './BottomTabLoginNavigation';
 import CreateTrip from '../screens/CreateTripScreen';
@@ -39,13 +38,11 @@ function UserLoginStack() {
         name="BottomTabLoginNavigation"
         component={BottomTabLoginNavigation}
       />
-
       <Stack.Screen
         options={{headerShown: false}}
         name="CreateTrip"
         component={CreateTrip}
       />
-
       <Stack.Screen
         options={{headerShown: false}}
         name="Contacts"
@@ -77,7 +74,6 @@ function UserLoginStack() {
         name="MapDisplay"
         component={MapDisplayScreen}
       />
-
       <Stack.Screen
         options={{headerShown: false}}
         name="ChatScreen"
@@ -170,7 +166,6 @@ function UserLoginStack() {
       />
     </Stack.Navigator>
   );
-}
-('CP6eYa1nKYmvo3zE3e78a7xGH9rGQeZB');
+};
 
 export default UserLoginStack;

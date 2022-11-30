@@ -20,6 +20,7 @@ import {selectUnMarked} from '../redux/ContactSlice';
 import {filterContacts} from '../redux/ContactSlice';
 import {ContactFlatList} from '../components/ContactsFlatList';
 import {images} from '../components/StarComponent';
+import { deleteContactsData } from '../redux/ContactSlice';
 
 export const ContactDisplay = ({navigation}) => {
   const dispatch = useDispatch();
@@ -123,6 +124,7 @@ export const ContactDisplay = ({navigation}) => {
         <View style={[styles.header, styles.shadow]}>
           <Pressable
             onPress={() => {
+              dispatch(deleteContactsData())
               navigation.goBack();
             }}>
             <Icon

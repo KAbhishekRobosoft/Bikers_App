@@ -43,8 +43,6 @@ const AllTrips = ({navigation}) => {
           placeName={details.item.tripName}
           startDateText={details.item.startDate.toString()}
           endDateText={details.item.endDate.toString()}
-          statusText={details.item.tripStatus}
-          month={details.item.startTime.toString()}
           id={details.item._id}
           status= {details.item.tripStatus}
         />
