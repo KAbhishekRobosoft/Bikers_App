@@ -43,6 +43,7 @@ const AllUserTrip= ({navigation}) => {
         statusText={details.item.tripStatus}
         month={details.item.startTime.toString()}
         id={details.item._id}
+        navigation= {navigation}
       />
     );
   };

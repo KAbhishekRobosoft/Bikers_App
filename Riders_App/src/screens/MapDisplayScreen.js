@@ -25,6 +25,8 @@ const MapDisplayScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const loading = useSelector(state => state.milestone.isLoading);
   const [latitude, setLatitude] = useState(parseFloat(route.params.latitude));
+  const state= useSelector(state=>state.milestone.initialState)
+
   const [longitude, setLongitude] = useState(
     parseFloat(route.params.longitude),
   );
@@ -44,18 +46,19 @@ const MapDisplayScreen = ({navigation, route}) => {
         latitude1,
         longitude1,
       );
-      dispatch(setLoading());
-      mapRef.current.animateToRegion(
-        {
-          latitude: latitude,
-          longitude: longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.1,
-        },
-        3 * 1000,
-      );
-
       setDirection(dir.legs[0].points);
+      dispatch(setLoading());
+      setTimeout(()=>{
+        mapRef.current.animateToRegion(
+          {
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.2,
+          },
+          3 * 1000,
+        );
+      },500)
     }, 500);
   }, []);
 
@@ -224,6 +227,7 @@ const MapDisplayScreen = ({navigation, route}) => {
                 setLongitude={setLongitude}
                 navigation={navigation}
                 tripName={route.params.tripName}
+                id= {route.params.id}
               />
               <View style={[styles.bottomContainer, {top}]}>
                 <MapBottomBar

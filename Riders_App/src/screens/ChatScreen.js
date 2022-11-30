@@ -20,6 +20,10 @@ import Toast from 'react-native-simple-toast'
 const ChatScreen = ({navigation,route}) => {
   const [refreshing, setRefreshing] = React.useState(false);
 
+  const sendChat= async()=>{
+
+  }
+
   const onRefresh = React.useCallback(async() => {
     setRefreshing(true);
     if (chat.length > 2) {
@@ -135,7 +139,7 @@ const ChatScreen = ({navigation,route}) => {
               style={{height: 27, width: 24, marginRight: 10}}
             />
           </Pressable>
-          <Pressable>
+          <Pressable onPress= {sendChat}>
             <Image
               source={require('../assets/images/send.png')}
               style={{height: 48, width: 48}}
