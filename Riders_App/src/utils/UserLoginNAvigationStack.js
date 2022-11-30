@@ -1,5 +1,4 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BottomTabLoginNavigation from './BottomTabLoginNavigation';
 import CreateTrip from '../screens/CreateTripScreen';
@@ -27,6 +26,7 @@ import {Accessories} from '../screens/AccessoriesScreen';
 import LogoutScreen from '../screens/LogoutScreen';
 import AddBikeDetails from '../screens/AddBikeDetailsScreen';
 import ProfileUpdationScreen from '../screens/ProfileUpdationScreen';
+
 
 const Stack = createNativeStackNavigator();
 
@@ -171,6 +171,5 @@ function UserLoginStack() {
     </Stack.Navigator>
   );
 }
-('CP6eYa1nKYmvo3zE3e78a7xGH9rGQeZB');
 
 export default UserLoginStack;
