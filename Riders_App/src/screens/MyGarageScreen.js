@@ -69,13 +69,13 @@ export const MyGarage = ({navigation}) => {
             <GarageInputField
               text="Book a Service"
               source={require('../assets/images/telemarketer.png')}
-              onPress={() => navigation.navigate('BookServiceStack')}
+              onPress={() => navigation.navigate('BookService')}
               disabled={false}
             />
             <GarageInputField
               text="Service Records"
               source={require('../assets/images/folder.png')}
-              onPress={() => navigation.navigate('ServiceRecordStack')}
+              onPress={() => navigation.navigate('ServiceRecord')}
               disabled={false}
             />
             <GarageInputField
@@ -85,7 +85,7 @@ export const MyGarage = ({navigation}) => {
                 if (bikeType[0] === undefined) {
                   navigation.navigate('AddDetailsStack');
                 } else {
-                  navigation.navigate('OwnersManualStack');
+                  navigation.navigate('OwnerManual');
                 }
               }}
               disabled={false}

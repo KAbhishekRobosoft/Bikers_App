@@ -75,12 +75,6 @@ export const GetParticularTripSummary = ({navigation, route}) => {
               </Pressable>
               <Text style={styles.headerText}>TripSummary</Text>
             </View>
-            <Pressable>
-              <Image
-                source={require('../assets/images/ic_mode_edit_black.png')}
-                style={styles.editImage}
-              />
-            </Pressable>
           </View>
           <ScrollView style={styles.scrollView}>
             <View style={styles.mapView}>
@@ -140,7 +134,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                 </View>
               </View>
             </View>
-            <View style={styles.listView}>
+            {route.params.status === "upcoming" && <View style={styles.listView}>
               <TripSummaryList data={data[0].milestones} />
               <View style={styles.recommendationsView}>
                 <RecommendationTripSummary />
@@ -177,7 +171,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                   title="GO"
                 />
               </View>
-            </View>
+            </View>}
           </ScrollView>
         </View>
       ) : null}

@@ -105,8 +105,8 @@ const MapDisplayScreen = ({navigation, route}) => {
             customMapStyle={mapStyle}>
             <Polyline
               coordinates={direction.map(ele => ({
-                latitude: ele.latitude,
-                longitude: ele.longitude,
+                latitude: parseFloat(ele.latitude),
+                longitude: parseFloat(ele.longitude),
               }))}
               strokeColor={'blue'}
               strokeWidth={2}
@@ -206,8 +206,8 @@ const MapDisplayScreen = ({navigation, route}) => {
                 <Marker
                   key={uuid.v4()}
                   coordinate={{
-                    latitude: ele.destination[0].latitude,
-                    longitude: ele.destination[0].longitude,
+                    latitude: parseFloat(ele.destination[0].latitude),
+                    longitude: parseFloat(ele.destination[0].longitude),
                     latitudeDelta: 0.03,
                     longitudeDelta: 0.01,
                   }}
