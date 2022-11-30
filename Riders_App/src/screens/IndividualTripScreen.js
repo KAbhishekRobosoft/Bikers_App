@@ -16,6 +16,7 @@ import {UserTrips} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {SearchUserTrips} from '../services/Auth';
 import {setToken} from '../redux/AuthSlice';
+import WelcomeAboardScreen2 from './WelcomeAbroadScreen2';
 
 const AllTrips = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
@@ -23,12 +24,12 @@ const AllTrips = ({navigation}) => {
   const state = useSelector(state => state.milestone.initialState);
   const dispatch = useDispatch();
 
-
   useEffect(() => {
     setTimeout(async () => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const tripdata = await UserTrips(key);
+      console.log(tripdata)
       setTripDetails(tripdata);
     }, 500);
   }, [state]);
@@ -45,6 +46,7 @@ const AllTrips = ({navigation}) => {
           statusText={details.item.tripStatus}
           month={details.item.startTime.toString()}
           id={details.item._id}
+          status= {details.item.tripStatus}
         />
     );
   };
@@ -55,35 +57,43 @@ const AllTrips = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.searchView}>
-        <Image
-          source={require('../assets/images/search.png')}
-          style={styles.searchIcon}
-        />
-        <TextInput
-          name="Search a Trip"
-          placeholder="Search a Trip"
-          placeholderTextColor="rgba(166,166,166,0.87)"
-          fontFamily="Roboto-Medium"
-          fontSize={12}
-          alignSelf={'center'}
-          marginLeft={6}
-          onChangeText={text => handleSearch(text)}
-          style={styles.inputText}
-        />
-      </View>
-      <FlatList
-        data={tripDetails}
-        keyExtractor={details => details._id}
-        renderItem={renderItem}></FlatList>
+    <>
+      {tripDetails.length == 0 ? (
+        <>
+          <WelcomeAboardScreen2/>
+        </>
+      ) : (
+        <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+          <View style={styles.searchView}>
+            <Image
+              source={require('../assets/images/search.png')}
+              style={styles.searchIcon}
+            />
+            <TextInput
+              name="Search a Trip"
+              placeholder="Search a Trip"
+              placeholderTextColor="rgba(166,166,166,0.87)"
+              fontFamily="Roboto-Medium"
+              fontSize={12}
+              alignSelf={'center'}
+              marginLeft={6}
+              onChangeText={text => handleSearch(text)}
+              style={styles.inputText}
+            />
+          </View>
+          <FlatList
+            data={tripDetails}
+            keyExtractor={details => details._id}
+            renderItem={renderItem}></FlatList>
 
-      <Pressable
-        style={styles.addButton}
-        onPress={() => navigation.navigate('CreateTrip')}>
-        <Image source={require('../assets/images/addtrip.png')} />
-      </Pressable>
-    </SafeAreaView>
+          <Pressable
+            style={styles.addButton}
+            onPress={() => navigation.navigate('CreateTrip')}>
+            <Image source={require('../assets/images/addtrip.png')} />
+          </Pressable>
+        </SafeAreaView>
+      )}
+    </>
   );
 };
 
@@ -108,7 +118,7 @@ const styles = StyleSheet.create({
 
   inputText: {
     marginLeft: 10,
-    width: '70%'
+    width: '70%',
   },
 
   searchIcon: {

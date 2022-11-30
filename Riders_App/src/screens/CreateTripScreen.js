@@ -26,7 +26,7 @@ import {setLoading} from '../redux/MileStoneSlice';
 import {deSetLoading} from '../redux/MileStoneSlice';
 import {tripStore} from '../redux/MileStoneSlice';
 import {calculateRoute} from '../services/Auth';
-import Toast from 'react-native-simple-toast'
+import Toast from 'react-native-simple-toast';
 
 const CreateTrip = ({navigation}) => {
   useEffect(() => {
@@ -69,7 +69,6 @@ const CreateTrip = ({navigation}) => {
   const [endDate, setEndDate] = useState(new Date());
   const [time, setTimer] = useState(new Date());
   const [recommend, setRecommend] = useState(false);
-  const [go, setGo] = useState();
   const [from, setFrom] = useState();
   const [tripName, settripName] = useState();
   const [placeholder1, setPlaceholder1] = useState('Where do you want to go?');
@@ -173,18 +172,30 @@ const CreateTrip = ({navigation}) => {
         </View>
         <View style={styles.calenderView}>
           <View style={styles.startDateView}>
-            <TextInput
-              style={styles.dateText}
-              placeholderTextColor={'#4F504F'}
-              placeholder="Start date"
-              value={date.toLocaleDateString()}
-            />
+            <View
+              style={{
+                height: 40,
+                justifyContent: 'space-evenly',
+                paddingBottom: 5,
+              }}>
+              {date ? (
+                <>
+                  <Text style={styles.placeholderText2}>Start Date</Text>
+                </>
+              ) : null}
+              <TextInput
+                style={styles.dateText}
+                placeholderTextColor={'#4F504F'}
+                placeholder="Start date"
+                value={date.toLocaleDateString()}
+              />
+            </View>
             <Pressable
               onPress={() => {
                 setOpen1(true);
               }}>
               <Image
-                style={styles.calenderImg}
+                style={styles.calenderImg2}
                 source={require('../assets/images/calenderImg.png')}
               />
               <DatePicker
@@ -202,12 +213,24 @@ const CreateTrip = ({navigation}) => {
             </Pressable>
           </View>
           <View style={styles.startDateView}>
-            <TextInput
-              style={styles.dateText}
-              placeholderTextColor={'#4F504F'}
-              placeholder="End date"
-              value={endDate.toLocaleDateString()}
-            />
+            <View
+              style={{
+                height: 40,
+                justifyContent: 'space-evenly',
+                paddingBottom: 5,
+              }}>
+              {date ? (
+                <>
+                  <Text style={styles.placeholderText2}>End Date</Text>
+                </>
+              ) : null}
+              <TextInput
+                style={styles.dateText}
+                placeholderTextColor={'#4F504F'}
+                placeholder="End date"
+                value={endDate.toLocaleDateString()}
+              />
+            </View>
             <Pressable
               onPress={() => {
                 setOpen2(true);
@@ -226,18 +249,29 @@ const CreateTrip = ({navigation}) => {
                 onCancel={() => setOpen2(false)}
               />
               <Image
-                style={styles.calenderImg}
+                style={styles.calenderImg2}
                 source={require('../assets/images/calenderImg.png')}
               />
             </Pressable>
           </View>
           <View style={styles.timeView}>
-            <TextInput
-              style={styles.dateText}
-              placeholderTextColor={'#4F504F'}
-              placeholder="Start time"
-              value={time.toLocaleTimeString()}
-            />
+            <View style={{
+                height: 40,
+                justifyContent: 'space-evenly',
+                paddingBottom: 5,
+              }}>
+              {time ? (
+                <>
+                  <Text style={styles.placeholderText2}>Start Time</Text>
+                </>
+              ) : null}
+              <TextInput
+                style={styles.dateText}
+                placeholderTextColor={'#4F504F'}
+                placeholder="Start time"
+                value={time.toLocaleTimeString()}
+              />
+            </View>
             <Pressable
               onPress={() => {
                 setOpen3(true);
@@ -254,7 +288,7 @@ const CreateTrip = ({navigation}) => {
                 onCancel={() => setOpen3(false)}
               />
               <Image
-                style={styles.calenderImg}
+                style={styles.calenderImg2}
                 source={require('../assets/images/clock.png')}
               />
             </Pressable>
@@ -348,9 +382,8 @@ const CreateTrip = ({navigation}) => {
                   };
                   dispatch(tripStore(obj));
                   navigation.navigate('TripSummary');
-                }
-                else{
-                  Toast.show('Enter proper location')
+                } else {
+                  Toast.show('Enter proper location');
                 }
               }}
               title="Done"
@@ -462,7 +495,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingBottom: Platform.OS === 'ios' ? 3 : 0,
     alignItems: 'center',
-
   },
   timeView: {
     borderBottomWidth: 1,
@@ -471,7 +503,7 @@ const styles = StyleSheet.create({
     width: '40%',
     justifyContent: 'space-between',
     paddingBottom: Platform.OS === 'ios' ? 3 : 0,
-    marginTop: 50,
+    marginTop: 35,
     alignItems: 'center',
   },
 
@@ -485,6 +517,12 @@ const styles = StyleSheet.create({
     width: 22,
     height: 22,
     resizeMode: 'contain',
+  },
+  calenderImg2: {
+    width: 22,
+    height: 22,
+    resizeMode: 'contain',
+    marginTop: 17,
   },
   addUserView: {
     flexDirection: 'row',
@@ -541,5 +579,11 @@ const styles = StyleSheet.create({
   },
   placeholder: {
     paddingBottom: 5,
+  },
+  placeholderText2: {
+    color: '#9F9F9F',
+    fontSize: 14,
+    letterSpacing: 0.29,
+    paddingBottom: 15,
   },
 });

@@ -7,6 +7,7 @@ import {
   Image,
   Pressable,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
@@ -16,43 +17,44 @@ import {useSelector, useDispatch} from 'react-redux';
 import BikeImageComponent from '../components/BikeImageComponent';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setToken} from '../redux/AuthSlice';
-import {createTrip} from '../services/Auth';
-import Toast from 'react-native-simple-toast';
 import MapView, {Marker} from 'react-native-maps';
 import {Polyline} from 'react-native-maps';
 import {getParticularTrip} from '../services/Auth';
 import {month1} from '../utils/Functions';
 import { calculateRoute } from '../services/Auth';
+import { deSetLoading } from '../redux/MileStoneSlice';
+import { setLoading } from '../redux/MileStoneSlice';
 
 export const GetParticularTripSummary = ({navigation, route}) => {
   const [data, setData] = useState([]);
   const [direction,setDirection]= useState([])
   const mapRef = useRef(null);
+  const tripDetails = useSelector(state => state.milestone.storeTrip);
+  const authData = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  const loading= useSelector(state=>state.milestone.isLoading)
+
   useEffect(() => {
+    dispatch(deSetLoading())
     setTimeout(async () => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const resp = await getParticularTrip(key, route.params.tripName);
+      console.log(resp)
       const dir= await calculateRoute(resp[0].source[0].latitude,resp[0].source[0].longitude,resp[0].destination[0].latitude,resp[0].destination[0].longitude)
-      console.log(dir)
       setDirection(dir.legs[0].points)
       setData(resp);
-      mapRef.current.animateToRegion(
-        {
-          latitude: resp[0].destination[0].latitude,
-          longitude: resp[0].destination[0].longitude,
-          latitudeDelta: 20,
-          longitudeDelta: 10,
-        },
-        3 * 1000,
-      );
+      dispatch(setLoading())
     }, 1000);
   }, []);
-  const milestonedata = useSelector(state => state.milestone.milestoneData);
-  const tripDetails = useSelector(state => state.milestone.storeTrip);
-  const contactsData = useSelector(state => state.contact);
-  const authData = useSelector(state => state.auth);
-  const dispatch = useDispatch();
+
+  if(loading){
+    return(
+      <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+            <ActivityIndicator size= "large" color="orange" />
+      </View>
+    )
+  }
 
   return (
     <SafeAreaView>
@@ -73,12 +75,6 @@ export const GetParticularTripSummary = ({navigation, route}) => {
               </Pressable>
               <Text style={styles.headerText}>TripSummary</Text>
             </View>
-            <Pressable>
-              <Image
-                source={require('../assets/images/ic_mode_edit_black.png')}
-                style={styles.editImage}
-              />
-            </Pressable>
           </View>
           <ScrollView style={styles.scrollView}>
             <View style={styles.mapView}>
@@ -92,7 +88,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                     longitude: ele.longitude,
                   }))}
                   strokeColor={'blue'}
-                  strokeWidth={5}
+                  strokeWidth={2}
                   lineDashPattern={[1]}
                 />
 
@@ -138,7 +134,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                 </View>
               </View>
             </View>
-            <View style={styles.listView}>
+            {route.params.status === "upcoming" && <View style={styles.listView}>
               <TripSummaryList data={data[0].milestones} />
               <View style={styles.recommendationsView}>
                 <RecommendationTripSummary />
@@ -166,13 +162,16 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                         latitude:data[0].source[0].latitude,
                         longitude:data[0].source[0].longitude,
                         latitude1:data[0].destination[0].latitude,
-                        longitude1:data[0].destination[0].longitude
+                        longitude1:data[0].destination[0].longitude,
+                        destination:data[0].milestones,
+                        id:data[0]._id,
+                        tripName:data[0].tripName
                       })
                   }}
                   title="GO"
                 />
               </View>
-            </View>
+            </View>}
           </ScrollView>
         </View>
       ) : null}

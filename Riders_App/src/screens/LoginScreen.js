@@ -53,6 +53,7 @@ const LoginScreen = ({navigation}) => {
         dispatch(setImage(image));
       }
       dispatch(login(response));
+      Toast.show('Logged in Successfully!');
     } else {
       Toast.show('User Does not exist');
     }

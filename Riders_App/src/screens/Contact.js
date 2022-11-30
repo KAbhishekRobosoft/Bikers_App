@@ -55,41 +55,65 @@ export const ContactDisplay = ({navigation}) => {
           console.log(err);
         });
     } else if (Platform.OS === 'android') {
-      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
-        title: 'Contacts',
-        message: 'Rider app would like to view your contacts.',
-      });
-      // PermissionsAndroid.requestMultiple(
-      //   [
-      //     PermissionsAndroid.PERMISSIONS.WRITE_CONTACTS,
-      //     PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-      //   ],
-      //   {
+      //   PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
       //     title: 'Contacts',
       //     message: 'Rider app would like to view your contacts.',
-      //     'buttonPositive': 'Please accept bare mortal'
-      //   },
-      // );
-      Contacts.getAll()
-        .then(contacts => {
-          const trimmedContacts = contacts
-            .sort((a, b) => a.givenName.localeCompare(b.givenName))
-            .filter(c => c.phoneNumbers.length > 0)
-            .map(c => {
-              return {
-                givenName: c.givenName,
-                recordID: c.recordID,
-                phoneNumbers: c.phoneNumbers,
-                marked: false,
-              };
-            });
-          if (data.length === 0) {
-            dispatch(selectContacts(trimmedContacts));
-          }
+      //   });
+      //   // PermissionsAndroid.requestMultiple(
+      //   //   [
+      //   //     PermissionsAndroid.PERMISSIONS.WRITE_CONTACTS,
+      //   //     PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+      //   //   ],
+      //   //   {
+      //   //     title: 'Contacts',
+      //   //     message: 'Rider app would like to view your contacts.',
+      //   //     'buttonPositive': 'Please accept bare mortal'
+      //   //   },
+      //   // );
+      //   Contacts.getAll((err, contacts))
+      //     .then(contacts => {
+      //       const trimmedContacts = contacts
+      //         .sort((a, b) => a.givenName.localeCompare(b.givenName))
+      //         .filter(c => c.phoneNumbers.length > 0)
+      //         .map(c => {
+      //           return {
+      //             givenName: c.givenName,
+      //             recordID: c.recordID,
+      //             phoneNumbers: c.phoneNumbers,
+      //             marked: false,
+      //           };
+      //         });
+      //       if (data.length === 0) {
+      //         dispatch(selectContacts(trimmedContacts));
+      //       }
+      //     })
+      //     .catch(err => {
+      //       console.log(err);
+      //     });
+      // }
+      PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.WRITE_CONTACTS,
+        PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
+      ])
+        .then(() => {
+          Contacts.getAll().then(contacts => {
+            const trimmedContacts = contacts
+              .sort((a, b) => a.givenName.localeCompare(b.givenName))
+              .filter(c => c.phoneNumbers.length > 0)
+              .map(c => {
+                return {
+                  givenName: c.givenName,
+                  recordID: c.recordID,
+                  phoneNumbers: c.phoneNumbers,
+                  marked: false,
+                };
+              });
+            if (data.length === 0) {
+              dispatch(selectContacts(trimmedContacts));
+            }
+          });
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(err => console.log(err));
     }
   };
 
@@ -134,6 +158,7 @@ export const ContactDisplay = ({navigation}) => {
     </SafeAreaView>
   );
 };
+
 const styles = StyleSheet.create({
   header: {
     // flex: 1,
@@ -192,13 +217,27 @@ const styles = StyleSheet.create({
   },
   flatView: {flex: 1, marginTop: 30},
 });
-
-{
-  /* //   const openContact = contact => {
-  //     Contacts.openExistingContact(contact);
-  //   }; */
-}
-// Contacts.getAll().then(contacts => {
-//   contacts.sort((a, b) => a.givenName.localeCompare(b.givenName));
-//   setContact(contacts);
+// .then(() => {
+//   Contacts.getAll((err, contacts) => {
+//     if (err) {
+//       console.log(err, 'failed to fetch contacts');
+//     } else {
+//       const trimmedContacts = contacts
+//         .sort((a, b) => a.givenName.localeCompare(b.givenName))
+//         .filter(c => c.phoneNumbers.length > 0)
+//         .map(c => {
+//           return {
+//             givenName: c.givenName,
+//             recordID: c.recordID,
+//             phoneNumbers: c.phoneNumbers,
+//             marked: false,
+//           };
+//         });
+//       if (data.length === 0) {
+//         dispatch(selectContacts(trimmedContacts));
+//       }
+//     }
+//   });
+// }).catch((err) => {
+//   console.log("error in accessing contacts",err)
 // })

@@ -41,15 +41,15 @@ export const TripSummaryList = ({data}) => {
                     </Text>
                     <View style={styles.lineView1}></View>
                     <View style={styles.fromToView}>
-                      <Text style={styles.textUdupi}>{item.source[0].place}</Text>
+                      <TextInput style={styles.textUdupi}>{item.source[0].place}</TextInput>
                       <View
                         style={{flexDirection: 'column', paddingHorizontal: 6}}>
                         <Text style={styles.descriptionOverLine}>
-                          {item.destination[0].distance}{' '}km{' '}{item.destination[0].duration}hr
+                          {item.distance}{' '}km{' '}{item.duration}hr
                         </Text>
                         <View style={styles.lineView2}></View>
                       </View>
-                      <Text style={styles.textUdupi}>{item.destination[0].place}</Text>
+                      <TextInput style={styles.textUdupi}>{item.destination[0].place}</TextInput>
                     </View>
                   </LinearGradient>
                 </View>

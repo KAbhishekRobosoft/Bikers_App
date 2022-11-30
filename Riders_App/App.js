@@ -1,16 +1,23 @@
-import * as React from 'react';
+import React,{useEffect} from 'react';
+import {View,Text} from 'react-native'
 import store from './src/redux/store';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
 import {NavigationContainer} from '@react-navigation/native';
 import NavigationFunctionality from './src/utils/NavigationFunctionality';
-import ChatScreen from './src/screens/ChatScreen'
+import {getNearbyPlaces} from './src/services/Auth'
 
 let persistor = persistStore(store);
 
 const App = () => {
+    // useEffect(()=>{
+    //   setTimeout(async() => {
+    //       const res= await getNearbyPlaces("atm","13.3409","74.7421")
+    //   },500);
+    // })
   return (
+
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <NavigationContainer>

@@ -62,7 +62,7 @@ const AddBikeDetails = ({navigation}) => {
     dispatch(addBikeData(response)); // <-----------Redux
     resetForm({initialValues});
 
-    navigation.navigate('Garage');
+    navigation.navigate('Garage')
   };
 
   return (

@@ -6,6 +6,7 @@ import { deleteAllTripContacts } from '../redux/ContactSlice';
 import { deleteMilestonesData } from '../redux/MileStoneSlice';
 import { deleteStoreTrip } from '../redux/MileStoneSlice';
 import { setInitialState } from '../redux/MileStoneSlice';
+import { emptySetTo } from '../redux/MileStoneSlice';
 export const CreateTripSuccess = ({navigation}) => {
   const data = useSelector(state => state.contact.contactsData);
   const auth = useSelector(state => state.auth)
@@ -22,6 +23,7 @@ export const CreateTripSuccess = ({navigation}) => {
         dispatch(deleteMilestonesData());
         if(!auth.registered){
           dispatch(setInitialState(state))
+          dispatch(emptySetTo())
           navigation.navigate('BottomTabLoginNavigation')
         }
       }}

@@ -9,7 +9,8 @@ import {
   ToastAndroid,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Icon2 from 'react-native-vector-icons/FontAwesome';
 import {useDispatch} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
 import {setMileStoneData} from '../redux/MileStoneSlice';
@@ -69,15 +70,15 @@ export const Milestone = () => {
                           place: to,
                           latitude: resp1.lat,
                           longitude: resp1.lon,
-                          distance: dist.summary.lengthInMeters / 1000,
-                          duration: Math.round(
+                        },
+                      ],
+                      distance: dist.summary.lengthInMeters / 1000,
+                      duration: Math.round(
                             Math.abs(
                               new Date(dist.summary.arrivalTime) -
                                 new Date(dist.summary.departureTime),
                             ) / msInHour,
-                          ),
-                        },
-                      ],
+                          )
                     };
                     dispatch(setMileStoneData(obj));
                     dispatch(setMileStone(false));
@@ -90,7 +91,7 @@ export const Milestone = () => {
                 }
               }}>
               <Icon
-                name="times"
+                name="close"
                 size={20}
                 color={'#A4A4A4'}
                 style={styles.times}
@@ -109,7 +110,7 @@ export const Milestone = () => {
             />
           </View>
           <View style={styles.locationView}>
-            <Icon
+            <Icon2
               name="map-marker"
               color="#A4A4A4"
               style={styles.locationImage}
@@ -181,8 +182,12 @@ const styles = StyleSheet.create({
     width: 285,
   },
   textFrom: {
-    height: 24,
+    // height: 24,
     alignSelf: 'flex-start',
+    width: '60%',
+    color: 'black',
+    borderWidth: 1,
+    // marginTop: 10
   },
   locationView: {
     height: 48,

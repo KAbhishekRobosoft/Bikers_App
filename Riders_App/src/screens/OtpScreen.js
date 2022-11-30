@@ -1,3 +1,4 @@
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -69,10 +70,7 @@ const OtpScreen = ({navigation}) => {
                     data.registered === true &&
                     data.forgotPassword === false
                   ) {
-                    const response = await register(
-                      data.userData,
-                      data.haveBike,
-                    );
+                    const response = await register(data.userData,data.haveBike);
                     if (response !== undefined) {
                       navigation.navigate('Login');
                     } else {
