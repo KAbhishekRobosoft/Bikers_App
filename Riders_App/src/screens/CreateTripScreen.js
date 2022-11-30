@@ -313,7 +313,7 @@ const CreateTrip = ({navigation}) => {
             {contactsData.addTripContacts.length === 0 && (
               <Text style={styles.text}>Invite other riders</Text>
             )}
-            {contactsData.addTripContacts.length > 0 && <BikeImageComponent />}
+            {contactsData.addTripContacts.length > 0 && <BikeImageComponent data={contactsData.addTripContacts.length} />}
           </View>
           {mileStones ? (
             <View style={styles.mileStone}>

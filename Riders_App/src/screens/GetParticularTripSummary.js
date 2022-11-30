@@ -153,7 +153,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                   <Text style={styles.text}>Invite other riders</Text>
                 )}
                 {data[0].riders.length > 0 && (
-                  <BikeImageComponent />
+                  <BikeImageComponent data={data[0].riders.length}/>
                 )}
               </View>
               <View style={styles.buttonView}>

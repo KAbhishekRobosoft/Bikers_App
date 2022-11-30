@@ -21,6 +21,8 @@ import {setToken} from '../redux/AuthSlice';
 import {setInitialState} from '../redux/MileStoneSlice';
 import {getChat} from '../services/Auth';
 import { sendChat } from '../services/Auth';
+import {uploadChatImage} from '../services/Auth';
+import ImagePicker from 'react-native-image-crop-picker';
 
 const ChatScreen = ({navigation, route}) => {
   const auth = useSelector(state => state.auth);
@@ -28,13 +30,13 @@ const ChatScreen = ({navigation, route}) => {
   const state = useSelector(state => state.milestone.initialState);
   const dispatch = useDispatch();
   const [chat, setChat] = useState([]);
+  const [modal1, setmodal1] = useState(false);
 
   useEffect(() => {
     setTimeout(async () => {
       const cred = await getVerifiedKeys(auth.userToken);
       dispatch(setToken(cred));
       const resp = await getChat(cred, route.params.id);
-      console.log(resp)
       setChat(resp.chatDetails);
       if (resp !== undefined) {
         Toast.show('Getting Chats');
@@ -43,6 +45,48 @@ const ChatScreen = ({navigation, route}) => {
       }
     }, 500);
   }, [state]);
+
+  const pickImage = () => {
+    console.log(route.params.id);
+    ImagePicker.openPicker({
+      width: 200,
+      height: 200,
+      cropping: true,
+    }).then(async image => {
+      console.log(image.path);
+
+      const payload = new FormData();
+      const file = [
+        {key: 'id', value: route.params.id},
+        {
+          key: 'image',
+          value: {
+            uri: image.path,
+            type: image.mime,
+            name: `${image.filename}.${image.mime.substring(
+              image.mime.indexOf('/') + 1,
+            )}`,
+          },
+        },
+      ];
+      file.map(ele => {
+        payload.append(ele.key, ele.value);
+      });
+      let cred = await getVerifiedKeys(authData.userToken);
+      const resp = await uploadChatImage(payload, cred);
+      if (resp !== undefined) {
+        Toast.show('Image Posted');
+      }
+    });
+  };
+
+  const handleToggle1 = () => {
+    console.log('haii');
+    setmodal1(true);
+    console.log('modl', modal1);
+
+  };
+
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
 
@@ -118,7 +162,7 @@ const ChatScreen = ({navigation, route}) => {
             alignItems: 'center',
             marginRight: '2%',
           }}>
-          <Pressable>
+          <Pressable onPress={pickImage}>
             <Image
               source={require('../assets/images/document.png')}
               style={{height: 27, width: 24, marginRight: 10}}
@@ -140,8 +184,8 @@ const ChatScreen = ({navigation, route}) => {
             />
           </Pressable>
         </View>
-      </View>
-    </SafeAreaView>
+        </View>
+      </SafeAreaView>
   );
 };
 
@@ -242,4 +286,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatScreen;
+export default ChatScreen

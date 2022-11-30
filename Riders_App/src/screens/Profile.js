@@ -8,7 +8,8 @@ import {
   ImageBackground,
   Pressable,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  ToastAndroid
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector,useDispatch} from 'react-redux';
@@ -19,7 +20,8 @@ import ImagePicker from 'react-native-image-crop-picker';
 import { uploadProfileImage } from '../services/Auth';
 import { setLoading,deSetLoading } from '../redux/MileStoneSlice';
 import { setToken } from '../redux/AuthSlice';
-
+import { setInitialState } from '../redux/MileStoneSlice';
+import Toast from 'react-native-simple-toast'
 
 const Profile = ({navigation}) => {
   const [personData, setPersonData] = useState({});
@@ -47,6 +49,10 @@ const Profile = ({navigation}) => {
       let cred= await getVerifiedKeys(token.userToken)
       dispatch(setToken(cred))
       const resp = await uploadProfileImage(payload,cred)
+      if(resp !== undefined){
+        Toast.show('Profile image updated succesfully')
+        dispatch(setInitialState(state))
+      }
     })
   }
 
@@ -74,7 +80,8 @@ const Profile = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={{flex: 1}}>
-        <LinearGradient
+        
+        { JSON.stringify(personData) !== "{}" && <LinearGradient
           start={{x: 0, y: 0}}
           end={{x: 1, y: 0}}
           colors={['#ED7E2C', '#F7B557']}
@@ -93,8 +100,8 @@ const Profile = ({navigation}) => {
             />
           </Pressable>
           <View style={styles.profileContainer}>
-            {token.image !== '' ?(<Pressable onPress={setImage}><Image
-              source={{uri:token.image}}
+            {personData.userDetails.profileImage !== '' ?(<Pressable onPress={setImage}><Image
+              source={{uri:'https'+personData.userDetails.profileImage.substring(4)}}
               style={styles.profileImage}
             /></Pressable>):<Pressable onPress={setImage}><Image
               source={require('../assets/images/photoless.png')}
@@ -107,7 +114,7 @@ const Profile = ({navigation}) => {
               {personData?.userDetails?.aboutUser}
             </Text>
           </View>
-        </LinearGradient>
+        </LinearGradient>}
         <View style={styles.detailContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.detailText}>Rides</Text>

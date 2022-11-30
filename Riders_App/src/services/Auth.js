@@ -727,3 +727,15 @@ export const getChat = async (token,groupId) => {
     console.log(err);
   }
 };
+export const uploadChatImage = async (payload, token) => {
+  let res = await fetch(`${BASE_URL}/chat/uploadChatImage`, {
+    method: 'post',
+    body: payload,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  let data = await res.json();
+  console.log('response in auth upload chat image',data)
+  return data;
+}
