@@ -165,7 +165,8 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                         longitude1:data[0].destination[0].longitude,
                         destination:data[0].milestones,
                         id:data[0]._id,
-                        tripName:data[0].tripName
+                        tripName:data[0].tripName,
+                        riders: data[0].riders
                       })
                   }}
                   title="GO"

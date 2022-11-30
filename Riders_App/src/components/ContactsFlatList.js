@@ -25,7 +25,7 @@ export const ContactFlatList = () => {
       dispatch(selectMarked(contacts));
       const obj= {id:contacts.recordID,riderName:contacts.givenName,riderPhoneNumber:contacts.phoneNumbers[0].number}
       dispatch(addTripContacts(obj));
-      dispatch(addGroupContacts(obj))
+      // dispatch(addGroupContacts(obj))
   };
 
   const handleUnTick = contacts => {

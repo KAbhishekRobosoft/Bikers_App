@@ -20,6 +20,7 @@ import {deSetLoading} from '../redux/MileStoneSlice';
 import {useDispatch, useSelector} from 'react-redux';
 
 const MapDisplayScreen = ({navigation, route}) => {
+  console.log('routeee',route.params.riders)
   const [direction, setDirection] = useState([]);
   const mapRef = useRef(null);
   const dispatch = useDispatch();
@@ -228,6 +229,7 @@ const MapDisplayScreen = ({navigation, route}) => {
                 navigation={navigation}
                 tripName={route.params.tripName}
                 id= {route.params.id}
+                rider={route.params.riders}
               />
               <View style={[styles.bottomContainer, {top}]}>
                 <MapBottomBar
