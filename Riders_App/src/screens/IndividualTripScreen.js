@@ -16,7 +16,7 @@ import {UserTrips} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {SearchUserTrips} from '../services/Auth';
 import {setToken} from '../redux/AuthSlice';
-import WelcomeAboardScreen2 from './WelcomeAbroadScreen2';
+import WelcomeAboardScreen from './WelcomeAboardScreen';
 
 const AllTrips = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
@@ -29,7 +29,6 @@ const AllTrips = ({navigation}) => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const tripdata = await UserTrips(key);
-      console.log(tripdata);
       setTripDetails(tripdata);
     }, 500);
   }, [state]);
@@ -72,6 +71,9 @@ const AllTrips = ({navigation}) => {
           style={styles.inputText}
         />
       </View>
+      {tripDetails.length === 0 ? (
+        <Text style={styles.displayText}>create a trip to display here.</Text>
+      ) : null}
       <FlatList
         data={tripDetails}
         keyExtractor={details => details._id}
@@ -126,6 +128,12 @@ const styles = StyleSheet.create({
     height: 65,
     paddingBottom: 15,
   },
+  displayText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 16,
+    alignSelf: 'center',
+    marginTop: 50,
+  }
 });
 
 export default AllTrips;

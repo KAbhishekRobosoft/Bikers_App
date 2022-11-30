@@ -13,10 +13,10 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon1 from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const PopUpMenu = ({color,options,size}) => {
+const PopUpMenu = ({color, options, size}) => {
   const [visible, setVisible] = useState(false);
   const scale = useRef(new Animated.Value(0)).current;
-
+  const [modal1, setmodal1] = React.useState(false);
   const {height, width} = useWindowDimensions();
   const left = width > height ? (Platform.OS === 'ios' ? '85%' : '80%') : '71%';
 
@@ -60,6 +60,7 @@ const PopUpMenu = ({color,options,size}) => {
             ))}
           </Animated.View>
         </SafeAreaView>
+        
       </Modal>
     </View>
   );

@@ -696,5 +696,6 @@ export const uploadChatImage = async (payload, token) => {
     },
   });
   let data = await res.json();
+  console.log('response in auth upload chat image',data)
   return data;
 }

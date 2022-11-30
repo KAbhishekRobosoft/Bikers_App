@@ -24,7 +24,7 @@ export const CreateTripSuccess = ({navigation}) => {
         if(!auth.registered){
           dispatch(setInitialState(state))
           dispatch(emptySetTo())
-          navigation.navigate('BottomTabLoginNavigation')
+          // navigation.navigate('BottomTabLoginNavigation')
         }
       }}
     />

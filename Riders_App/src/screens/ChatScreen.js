@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useCallback, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,17 +10,29 @@ import {
   ImageBackground,
   useWindowDimensions,
   FlatList,
-  RefreshControl
+  RefreshControl,
+  Button,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ReceiverContainer, SenderChatDetails} from '../components/chatDetails';
 import PopUpMenu from '../components/PopUpMenu';
-import Toast from 'react-native-simple-toast'
-import { uploadChatImage } from '../services/Auth';
-const ChatScreen = ({navigation,route}) => {
-  const [refreshing, setRefreshing] = React.useState(false);
-  console.log(route)
-  const onRefresh = React.useCallback(async() => {
+import Toast from 'react-native-simple-toast';
+import {uploadChatImage} from '../services/Auth';
+import ImagePicker from 'react-native-image-crop-picker';
+import {getVerifiedKeys} from '../utils/Functions';
+import {useSelector} from 'react-redux';
+import Modal from 'react-native-modal';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {GroupInfoModal} from '../components/Modals';
+const ChatScreen = ({navigation, route}) => {
+  // console.log('id', route.params.id);
+  const [refreshing, setRefreshing] = useState(false);
+  const [modal1, setmodal1] = useState(false);
+  const sendChat = async () => {};
+  const authData = useSelector(state => state.auth);
+  const groupContact = useSelector(state => state.contact.groupContacts);
+  // console.log('group contacts', groupContact);
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
     if (chat.length > 2) {
       try {
@@ -30,18 +42,17 @@ const ChatScreen = ({navigation,route}) => {
         let responseJson = await response.json();
         console.log(responseJson);
         setListData(responseJson.result.concat(chat));
-        setRefreshing(false)
+        setRefreshing(false);
       } catch (error) {
         console.error(error);
       }
-    }
-    else{
+    } else {
       Toast.show('No more new data available');
-      setRefreshing(false)
+      setRefreshing(false);
     }
   }, [refreshing]);
 
-  const [chat, setChat] = React.useState([
+  const [chat, setChat] = useState([
     {
       id: 1,
       groupId: '21',
@@ -61,112 +72,150 @@ const ChatScreen = ({navigation,route}) => {
   ]);
 
   const pickImage = () => {
+    console.log(route.params.id);
     ImagePicker.openPicker({
       width: 200,
       height: 200,
       cropping: true,
     }).then(async image => {
-      
+      console.log(image.path);
+
       const payload = new FormData();
-      payload.append('image', {
-        uri: image.path,
-        type: image.mime,
-        name: `${image.filename}.${image.mime.substring(
-          image.mime.indexOf('/') + 1,
-        )}`,
-      })
-      let cred= await getVerifiedKeys(authData.userToken)
-      const resp = await uploadChatImage(payload,cred)
-      // if(resp.hasOwnProperty('message')){
-      //     dispatch(setImage('https'+resp.url.substring(4)))
-      // }
-    })
+      const file = [
+        {key: 'id', value: route.params.id},
+        {
+          key: 'image',
+          value: {
+            uri: image.path,
+            type: image.mime,
+            name: `${image.filename}.${image.mime.substring(
+              image.mime.indexOf('/') + 1,
+            )}`,
+          },
+        },
+      ];
+      file.map(ele => {
+        payload.append(ele.key, ele.value);
+      });
+      let cred = await getVerifiedKeys(authData.userToken);
+      const resp = await uploadChatImage(payload, cred);
+      if (resp !== undefined) {
+        Toast.show('Image Posted');
+      }
+    });
+  };
+
+  const handleToggle1 = () => {
+    console.log('haii');
+    setmodal1(true);
+    console.log('modl', modal1);
+    // <GroupInfoModal isVisible={modal1}/>
   };
 
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={[styles.header, styles.shadow]}>
-        <Pressable
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Icon
-            name="md-arrow-back"
-            color={'white'}
-            size={25}
-            style={styles.icon}
+    <>
+      <SafeAreaView style={{flex: 1}}>
+        <View style={[styles.header, styles.shadow]}>
+          <Pressable
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Icon
+              name="md-arrow-back"
+              color={'white'}
+              size={25}
+              style={styles.icon}
+            />
+          </Pressable>
+          <Text style={styles.headerText}>{route.params.tripName}</Text>
+          <PopUpMenu
+            options={[
+              {
+                title: 'Group Info',
+                action: () => {
+                  setmodal1(!modal1);
+                },
+              },
+              {
+                title: 'Notifications',
+                action: () => {
+                  alert('bye');
+                },
+              },
+              {
+                title: 'Clear Chat',
+                action: () => {
+                  alert('cleaned');
+                },
+              },
+            ]}
+            color="white"
+            size={30}
           />
-        </Pressable>
-        <Text style={styles.headerText}>{route.params.tripName}</Text>
-        <PopUpMenu  options={[
-          {
-            title: 'Group Info',
-            action: ()=>alert("hello")
-          },
-          {
-            title: 'Notifications',
-            action: () => {alert("bye")},
-          },
-          {
-            title:"Clear Chat",
-            action:()=>{alert("cleaned")}
-          }
-        ]}
-        color= "white"
-        size={30}
-          />
-      </View>
+        </View>
 
-      <ImageBackground
-        source={require('../assets/images/chat.png')}
-        style={styles.image}></ImageBackground>
-      <FlatList
-        data={chat}
-        renderItem={({item}) => {
-          if (item.phoneNumber === '8197781176') {
-            return <SenderChatDetails chat={item} />;
-          } else {
-            return <ReceiverContainer chat={item} />;
+        <ImageBackground
+          source={require('../assets/images/chat.png')}
+          style={styles.image}></ImageBackground>
+        <FlatList
+          data={chat}
+          renderItem={({item}) => {
+            if (item.phoneNumber === '8197781176') {
+              return <SenderChatDetails chat={item} />;
+            } else {
+              return <ReceiverContainer chat={item} />;
+            }
+          }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-        }}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      />
-      <View style={[styles.bottomContainer, styles.bottomshadow, {top}]}>
-        <View style={styles.iconContainer}>
-          <Pressable>
-            <Image
-              source={require('../assets/images/smile.png')}
-              style={{height: 30, width: 30}}
-            />
-          </Pressable>
-          <TextInput style={styles.input} placeholder="Type a Message" />
+        />
+        <View style={[styles.bottomContainer, styles.bottomshadow, {top}]}>
+          <View style={styles.iconContainer}>
+            <Pressable>
+              <Image
+                source={require('../assets/images/smile.png')}
+                style={{height: 30, width: 30}}
+              />
+            </Pressable>
+            <TextInput style={styles.input} placeholder="Type a Message" />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginRight: '2%',
+            }}>
+            <Pressable onPress={pickImage}>
+              <Image
+                source={require('../assets/images/document.png')}
+                style={{height: 27, width: 24, marginRight: 10}}
+              />
+            </Pressable>
+            <Pressable>
+              <Image
+                source={require('../assets/images/send.png')}
+                style={{height: 48, width: 48}}
+              />
+            </Pressable>
+          </View>
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginRight: '2%',
-          }}>
-          <Pressable onPress={pickImage}>
-            <Image
-              source={require('../assets/images/document.png')}
-              style={{height: 27, width: 24, marginRight: 10,}}
-            />
-          </Pressable>
-          <Pressable>
-            <Image
-              source={require('../assets/images/send.png')}
-              style={{height: 48, width: 48}}
-            />
-          </Pressable>
-        </View>
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+      {modal1 ? (
+        // <Modal isVisible={true}>
+        //   {console.log('modal opened')}
+        //   <Pressable onPress={handleToggle1}>
+        //     <View>
+        //       <Text>yghh</Text>
+        //     </View>
+        //   </Pressable>
+        // </Modal>
+        <Text>jsdfgdjg</Text>
+      ) : null}
+    </>
   );
 };
 

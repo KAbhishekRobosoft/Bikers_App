@@ -20,7 +20,7 @@ import {setLoading} from '../redux/MileStoneSlice';
 import PopUpMenu from './PopUpMenu';
 import { endTrip } from '../services/Auth';
 import Toast from 'react-native-simple-toast'
-import { setInitialState } from '../redux/MileStoneSlice';
+
 
 export const MapNavBar = ({
   navigation,
@@ -38,7 +38,6 @@ export const MapNavBar = ({
 }) => {
   const dispatch = useDispatch();
   const auth= useSelector(state=>state.auth)
-  const state= useSelector(state=>state.milestone.initialState)
 
   return (
     <View style={styles.navBar}>
@@ -326,11 +325,13 @@ export const MapChatButton = ({
   setLongitude,
   navigation,
   tripName,
+  id
 }) => {
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? 80 : 80) : '275%';
   const left = width > height ? (Platform.OS === 'ios' ? '85%' : '85%') : '75%';
-
+  const state= useSelector(state=>state.milestone.initialState)
+  const dispatch= useDispatch()
   return (
     <View
       style={[
@@ -352,6 +353,7 @@ export const MapChatButton = ({
               const {code, message} = error;
               console.warn(code, message);
             });
+
         }}>
         <View style={styles.indicatorContiner}>
           <Icon1 name="gps-fixed" color={'#A4A4A4'} size={25} />
@@ -361,6 +363,7 @@ export const MapChatButton = ({
         onPress={() => {
           navigation.navigate('ChatScreen', {
             tripName: tripName,
+            id:id
           });
         }}>
         <Image source={require('../assets/images/wechat.png')} />

@@ -44,7 +44,6 @@ export const ContactDisplay = ({navigation}) => {
                 recordID: c.recordID,
                 phoneNumbers: c.phoneNumbers,
                 marked: false,
-                image1: '',
               };
             });
           if (data.length === 0) {
