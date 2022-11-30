@@ -78,7 +78,7 @@ const contactSlice = createSlice({
         ele => ele.id !== action.payload.id,
       );
     },
-    deleteAllTripContacts: (state, action) => {
+    deleteAllTripContacts: (state) => {
       state.addTripContacts = [];
     },
   },
