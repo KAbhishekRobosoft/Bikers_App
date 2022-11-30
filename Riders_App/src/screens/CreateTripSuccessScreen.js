@@ -4,11 +4,10 @@ import {Success} from '../components/SuccessComponent';
 import {deSetRegistered} from '../redux/AuthSlice';
 import { deleteAllTripContacts } from '../redux/ContactSlice';
 import { deleteMilestonesData } from '../redux/MileStoneSlice';
-import { deleteStoreTrip } from '../redux/MileStoneSlice';
 import { setInitialState } from '../redux/MileStoneSlice';
 import { emptySetTo } from '../redux/MileStoneSlice';
+import { deleteContactsData } from '../redux/ContactSlice';
 export const CreateTripSuccess = ({navigation}) => {
-  const data = useSelector(state => state.contact.contactsData);
   const auth = useSelector(state => state.auth)
   const state = useSelector(state => state.milestone.initialState)
 
@@ -19,8 +18,9 @@ export const CreateTripSuccess = ({navigation}) => {
       text2="You have created a new trip"
       onPress={() => {
         dispatch(deSetRegistered());
-        // dispatch(deleteAllTripContacts());
+        dispatch(deleteAllTripContacts());
         dispatch(deleteMilestonesData());
+        dispatch(deleteContactsData())
         if(!auth.registered){
           dispatch(setInitialState(state))
           dispatch(emptySetTo())

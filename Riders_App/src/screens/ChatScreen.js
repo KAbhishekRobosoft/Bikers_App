@@ -78,7 +78,23 @@ const ChatScreen = ({navigation,route}) => {
           />
         </Pressable>
         <Text style={styles.headerText}>{route.params.tripName}</Text>
-        <PopUpMenu />
+        <PopUpMenu  options={[
+          {
+            title: 'Group Info',
+            action: ()=>alert("hello")
+          },
+          {
+            title: 'Notifications',
+            action: () => {alert("bye")},
+          },
+          {
+            title:"Clear Chat",
+            action:()=>{alert("cleaned")}
+          }
+        ]}
+        color= "white"
+        size={30}
+          />
       </View>
 
       <ImageBackground

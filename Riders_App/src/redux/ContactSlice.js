@@ -78,9 +78,12 @@ const contactSlice = createSlice({
         ele => ele.id !== action.payload.id,
       );
     },
-    deleteAllTripContacts: (state, action) => {
+    deleteAllTripContacts: (state) => {
       state.addTripContacts = [];
     },
+    deleteContactsData: (state, action) => {
+      state.contactsData = [];
+    }
   },
 });
 
@@ -92,6 +95,7 @@ export const {
   addTripContacts,
   deleteTripContacts,
   deleteAllTripContacts,
+  deleteContactsData,
 } = contactSlice.actions;
 
 export default contactSlice.reducer;
