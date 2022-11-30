@@ -2,7 +2,7 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LogoutScreen from '../screens/LogoutScreen';
 import AddBikeDetails from '../screens/AddBikeDetailsScreen';
-import MyGarageStack from './MyGarageStack';
+// import MyGarageStack from './MyGarageStack';
 
 
 const Stack = createNativeStackNavigator();
@@ -20,11 +20,11 @@ function LogoutStack() {
           name="AddBikeDetails"
           component={AddBikeDetails}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           options={{headerShown: false}}
           name="Garage"
           component={MyGarageStack}
-        />
+        /> */}
       </Stack.Navigator>
   );
 }

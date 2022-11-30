@@ -3,13 +3,12 @@ import React from 'react';
 import AddBikeDetails from '../screens/AddBikeDetailsScreen';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
-import MyGarageStack from './MyGarageStack';
+// import MyGarageStack from './MyGarageStack';
 import UpcomingList from '../screens/IndividualTripScreen';
-import Profile from '../screens/Profile';
 import LogoutStack from '../utils/LogoutStack'
-import ProfileStack from './ProfileStack';
+import Profile from '../screens/Profile'
 import AllUserTrip from '../screens/AllUserTrip';
-
+import {MyGarage} from '../screens/MyGarageScreen'
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomTabLoginNavigation = () => {
@@ -43,8 +42,8 @@ const BottomTabLoginNavigation = () => {
       />
 
       <Tab.Screen
-        name="Trip2"
-        component={MyGarageStack}
+        name="Garage"
+        component={MyGarage}
         options={{
           title: 'My Garage',
           tabBarIcon: ({focused}) => {
@@ -87,7 +86,7 @@ const BottomTabLoginNavigation = () => {
       <Tab.Screen
       
         name="Profile"
-        component={ProfileStack}
+        component={Profile}
         options={{
           tabBarIcon: ({focused}) => {
             return (

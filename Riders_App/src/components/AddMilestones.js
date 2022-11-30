@@ -182,9 +182,12 @@ const styles = StyleSheet.create({
     width: 285,
   },
   textFrom: {
-    height: 24,
+    // height: 24,
     alignSelf: 'flex-start',
-    width: '60%'
+    width: '60%',
+    color: 'black',
+    borderWidth: 1,
+    // marginTop: 10
   },
   locationView: {
     height: 48,

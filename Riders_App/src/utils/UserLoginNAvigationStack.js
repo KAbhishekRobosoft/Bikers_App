@@ -1,7 +1,4 @@
 import React from 'react';
-import RegisterUserIntro from '../screens/RegisterUserIntro';
-import ImageSuccessPage from '../screens/ImageSuccessPage';
-import NewUserSubStack from './NewUserSubStack';
 import {useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BottomTabLoginNavigation from './BottomTabLoginNavigation';
@@ -13,6 +10,23 @@ import {SearchCity} from '../screens/SearchCityScreen';
 import GetParticularTripSummary from '../screens/GetParticularTripSummary';
 import MapDisplayScreen from '../screens/MapDisplayScreen';
 import ChatScreen from '../screens/ChatScreen';
+import {BookService} from '../screens/BookServiceScreen';
+import SearchServiceScreen from '../screens/SearchServiceScreen';
+import {BookingSuccess} from '../screens/BookingSuccessScreen';
+import ServiceCenterScreen from '../screens/ServiceCenterScreen';
+import BookingDetails from '../screens/BookingDetailsScreen';
+import ServiceRecord from '../screens/ServiceRecordScreen';
+import BookingSummary from '../screens/BookingSummaryScreen';
+import Invoice from '../screens/Invoice';
+import OwnersManualScreen from '../screens/OwnersManualScreen';
+import OwnersManualDetailScreen from '../screens/OwnersManualDetailScreen';
+import OwnerManualEdit from '../screens/OwnerManualEditableScreen';
+import AddDetailsStack from './AddDetailsStack';
+import {ToolKit} from '../screens/ToolKitScreen';
+import {Accessories} from '../screens/AccessoriesScreen';
+import LogoutScreen from '../screens/LogoutScreen';
+import AddBikeDetails from '../screens/AddBikeDetailsScreen';
+import ProfileUpdationScreen from '../screens/ProfileUpdationScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -69,9 +83,94 @@ function UserLoginStack() {
         name="ChatScreen"
         component={ChatScreen}
       />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="BookService"
+        component={BookService}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="SearchService"
+        component={SearchServiceScreen}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="ServiceCenter"
+        component={ServiceCenterScreen}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="BookingDetails"
+        component={BookingDetails}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="BookingSuccess"
+        component={BookingSuccess}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="ServiceRecord"
+        component={ServiceRecord}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="BookingSummary"
+        component={BookingSummary}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Invoice"
+        component={Invoice}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="OwnerManual"
+        component={OwnersManualScreen}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="OwnersManualDetail"
+        component={OwnersManualDetailScreen}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="OwnerManualEdit"
+        component={OwnerManualEdit}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="ToolKit"
+        component={ToolKit}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="Accessories"
+        component={Accessories}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="AddDetailsStack"
+        component={AddDetailsStack}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="LogoutScreen"
+        component={LogoutScreen}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="AddBikeDetails"
+        component={AddBikeDetails}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="updateProfile"
+        component={ProfileUpdationScreen}
+      />
     </Stack.Navigator>
   );
 }
-'CP6eYa1nKYmvo3zE3e78a7xGH9rGQeZB'
+('CP6eYa1nKYmvo3zE3e78a7xGH9rGQeZB');
 
 export default UserLoginStack;

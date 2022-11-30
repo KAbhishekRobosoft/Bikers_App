@@ -73,12 +73,6 @@ export const GetParticularTripSummary = ({navigation, route}) => {
               </Pressable>
               <Text style={styles.headerText}>TripSummary</Text>
             </View>
-            <Pressable>
-              <Image
-                source={require('../assets/images/ic_mode_edit_black.png')}
-                style={styles.editImage}
-              />
-            </Pressable>
           </View>
           <ScrollView style={styles.scrollView}>
             <View style={styles.mapView}>

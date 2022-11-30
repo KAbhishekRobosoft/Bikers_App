@@ -3,10 +3,12 @@ import React from 'react';
 import CreateTrip from '../screens/CreateTripScreen';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
-import MyGarageStack from './MyGarageStack';
+// import MyGarageStack from './MyGarageStack';
 import AllTrips from '../screens/IndividualTripScreen';
-import ProfileStack from './ProfileStack';
+import Profile from '../screens/Profile'
 import LogoutStack from './LogoutStack';
+import {MyGarage} from '../screens/MyGarageScreen'
+
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomTabNavigation = () => {
@@ -40,7 +42,7 @@ const BottomTabNavigation = () => {
       />
       <Tab.Screen
         name="Garage"
-        component={MyGarageStack}
+        component={MyGarage}
         // listeners={{
         //   tabPress: e => {
         //     e.preventDefault();
@@ -94,7 +96,7 @@ const BottomTabNavigation = () => {
         //     e.preventDefault();
         //   },
         // }}
-        component={ProfileStack}
+        component={Profile}
         options={{
           tabBarIcon: ({focused}) => {
             return (

@@ -30,7 +30,7 @@ const OwnersManualScreen = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: 'white'}}>
       <View style={[styles.header, styles.shadow]}>
         <Pressable
           onPress={() => {
