@@ -6,7 +6,7 @@ import { deleteTrip } from '../services/Auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { setInitialState } from '../redux/MileStoneSlice';
 
-const AllTripList = ({image,navigation, placeName, startDateText, statusText, endDateText, month,id}) => {
+const AllTripList = ({image,navigation, placeName, startDateText, statusText, endDateText, month,id,status}) => {
   const state = useSelector(state => state.milestone.initialState)
   const [visible,setVisible]= useState(false)
   const authData= useSelector(state=>state.auth);
@@ -20,7 +20,8 @@ const AllTripList = ({image,navigation, placeName, startDateText, statusText, en
   return (
     <View>
     <Pressable onPress={()=>navigation.navigate('particularTrip',{
-      'tripName':placeName
+      tripName:placeName,
+      status:status
     })}>
     <View style={styles.container}>
       <ImageBackground

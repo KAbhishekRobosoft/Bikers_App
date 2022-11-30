@@ -635,12 +635,54 @@ export const calculateRoute = async (
   }
 };
 
-export const nearbyPlace = async (query, lat, lon) => {
+export const getNearbyPlaces = async (query,lat,lon) => {
+  const options = {
+    method: 'GET',
+    url: 'https://api.foursquare.com/v3/places/nearby',
+    params: {query: query, ll: `${lat},${lon}`},
+    headers: {
+      accept: 'application/json',
+      Authorization: 'fsq3bs1KJk7+sul9f1yrbZnFuyGX1D8+TIWyM0HzJ+3ZbxU=',
+    },
+  };
+  const response = await axios.request(options);
+  return response.data
+};
+
+export const shareLocation = async (tripId,arrayObj,token) => {
   try {
-    const response = await axios.get(
-      `https://api.foursquare.com/v3/places/nearby?ll=${lat}%2C${lon}&query=${query}`,
+    const response = await axios.patch(
+      BASE_URL+'/trip/currentLocation',
+      {
+        _id:tripId,
+        currentLocation:arrayObj
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
     );
-    console.log(response.data);
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const endTrip = async (tripId,token) => {
+  try {
+    const response = await axios.patch(
+      BASE_URL+'/trip/updateTripStatus',
+      {
+        _id:tripId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
   } catch (err) {
     console.log(err);
   }

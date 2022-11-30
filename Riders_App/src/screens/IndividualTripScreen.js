@@ -29,22 +29,25 @@ const AllTrips = ({navigation}) => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const tripdata = await UserTrips(key);
+      console.log(tripdata)
       setTripDetails(tripdata);
     }, 500);
   }, [state]);
 
   const renderItem = details => {
     return (
-      <AllTripList
-        navigation={navigation}
-        image={details.item.tripImage}
-        placeName={details.item.tripName}
-        startDateText={details.item.startDate.toString()}
-        endDateText={details.item.endDate.toString()}
-        statusText={details.item.tripStatus}
-        month={details.item.startTime.toString()}
-        id={details.item._id}
-      />
+
+        <AllTripList
+          navigation= {navigation}
+          image={details.item.tripImage}
+          placeName={details.item.tripName}
+          startDateText={details.item.startDate.toString()}
+          endDateText={details.item.endDate.toString()}
+          statusText={details.item.tripStatus}
+          month={details.item.startTime.toString()}
+          id={details.item._id}
+          status= {details.item.tripStatus}
+        />
     );
   };
   const handleSearch = async value => {
