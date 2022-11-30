@@ -8,29 +8,28 @@ import {
   ImageBackground,
   Pressable,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {useSelector,useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import ActivityList from '../components/MyActivityList';
 import {getSortedTripDetails, profileData} from '../services/Auth';
 import {getVerifiedKeys, month} from '../utils/Functions';
 import ImagePicker from 'react-native-image-crop-picker';
-import { uploadProfileImage } from '../services/Auth';
-import { setLoading,deSetLoading } from '../redux/MileStoneSlice';
-import { setToken } from '../redux/AuthSlice';
-
+import {uploadProfileImage} from '../services/Auth';
+import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
+import {setToken} from '../redux/AuthSlice';
 
 const Profile = ({navigation}) => {
   const [personData, setPersonData] = useState({});
   const [tripDetails, setTripDetails] = useState([]);
   const userData = useSelector(state => state.auth.userCredentials);
   const token = useSelector(state => state.auth);
-  const state= useSelector(state=>state.milestone.initialState)
-  const dispatch= useDispatch()
-  const loading= useSelector(state=>state.milestone.isLoading)
+  const state = useSelector(state => state.milestone.initialState);
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.milestone.isLoading);
 
-  function setImage(){
+  function setImage() {
     ImagePicker.openPicker({
       width: 200,
       height: 200,
@@ -43,32 +42,32 @@ const Profile = ({navigation}) => {
         name: `${image.filename}.${image.mime.substring(
           image.mime.indexOf('/') + 1,
         )}`,
-      })
-      let cred= await getVerifiedKeys(token.userToken)
-      dispatch(setToken(cred))
-      const resp = await uploadProfileImage(payload,cred)
-    })
+      });
+      let cred = await getVerifiedKeys(token.userToken);
+      dispatch(setToken(cred));
+      const resp = await uploadProfileImage(payload, cred);
+    });
   }
 
   useEffect(() => {
+    dispatch(deSetLoading());
     setTimeout(async () => {
-      dispatch(deSetLoading())
-      const cred= await getVerifiedKeys(token.userToken)
-      dispatch(setToken(cred))
-      const data = await profileData(cred,userData.mobile);
+      const cred = await getVerifiedKeys(token.userToken);
+      dispatch(setToken(cred));
+      const data = await profileData(cred, userData.mobile);
       setPersonData(data);
       const tripdata = await getSortedTripDetails(cred);
       setTripDetails(tripdata);
-      dispatch(setLoading())
+      dispatch(setLoading());
     }, 500);
   }, [state]);
 
-  if(loading){
-      return(
-        <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-              <ActivityIndicator size= "large" color="orange" />
-        </View>
-      )
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="orange" />
+      </View>
+    );
   }
 
   return (
@@ -83,23 +82,34 @@ const Profile = ({navigation}) => {
             source={require('../assets/images/profilebike.png')}
             resizeMode="cover"
             style={styles.backgroundImage}></ImageBackground>
-          <Pressable onPress={()=>navigation.navigate('updateProfile',{
-            userName:personData.userDetails.userName,
-            aboutUser: personData.userDetails.aboutUser
-          })}>
+          <Pressable
+            onPress={() =>
+              navigation.navigate('updateProfile', {
+                userName: personData.userDetails.userName,
+                aboutUser: personData.userDetails.aboutUser,
+              })
+            }>
             <Image
               source={require('../assets/images/edit.png')}
               style={styles.editIcon}
             />
           </Pressable>
           <View style={styles.profileContainer}>
-            {token.image !== '' ?(<Pressable onPress={setImage}><Image
-              source={{uri:token.image}}
-              style={styles.profileImage}
-            /></Pressable>):<Pressable onPress={setImage}><Image
-              source={require('../assets/images/photoless.png')}
-              style={styles.profileImage}
-            /></Pressable>}
+            {token.image !== '' ? (
+              <Pressable onPress={setImage}>
+                <Image
+                  source={{uri: token.image}}
+                  style={styles.profileImage}
+                />
+              </Pressable>
+            ) : (
+              <Pressable onPress={setImage}>
+                <Image
+                  source={require('../assets/images/photoless.png')}
+                  style={styles.profileImage}
+                />
+              </Pressable>
+            )}
             <Text style={styles.profileName}>
               {personData?.userDetails?.userName}
             </Text>

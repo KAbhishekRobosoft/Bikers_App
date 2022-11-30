@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     width: '60%',
     color: 'black',
-    borderWidth: 1,
+
     // marginTop: 10
   },
   locationView: {
