@@ -20,6 +20,7 @@ import {setLoading} from '../redux/MileStoneSlice';
 import PopUpMenu from './PopUpMenu';
 import { endTrip } from '../services/Auth';
 import Toast from 'react-native-simple-toast'
+import { setInitialState } from '../redux/MileStoneSlice';
 
 
 export const MapNavBar = ({
@@ -38,6 +39,7 @@ export const MapNavBar = ({
 }) => {
   const dispatch = useDispatch();
   const auth= useSelector(state=>state.auth)
+  const state= useSelector(state=>state.milestone.initialState)
 
   return (
     <View style={styles.navBar}>
@@ -181,6 +183,7 @@ export const MapNavBar = ({
               dispatch(setToken(cred))
               const resp= await endTrip(id,cred)
               if(resp !== undefined){
+                dispatch(setInitialState(state))
                 navigation.navigate('BottomTabLoginNavigation')
                 Toast.show('Trip Ended')
               }
@@ -270,7 +273,7 @@ export const MapBottomBar = ({
   id,
 }) => {
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? '1%' : '1%') : '900%';
+  const top = width > height ? (Platform.OS === 'ios' ? '1%' : '1%') : 0;
   const dispatch = useDispatch();
 
   return (

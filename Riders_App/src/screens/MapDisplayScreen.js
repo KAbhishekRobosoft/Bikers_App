@@ -72,7 +72,7 @@ const MapDisplayScreen = ({navigation, route}) => {
 
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? '8%' : '8%') : '300%';
-  const top1 = width > height ? (Platform.OS === 'ios' ? 50 : '8%') : 550;
+  const top1 = width > height ? (Platform.OS === 'ios' ? 50 : 30) : 540;
   const musicControl = () => {
     setMusicControlState(!musicControlState);
   };
@@ -204,7 +204,7 @@ const MapDisplayScreen = ({navigation, route}) => {
                 );
               })}
 
-            {route.params.destination.map(ele => {
+            {route.params.milestones.map(ele => {
               return (
                 <Marker
                   key={uuid.v4()}
