@@ -1,9 +1,7 @@
-import {StyleSheet, Text, View, Image} from 'react-native';
+import {Image} from 'react-native';
 import React from 'react';
-import CreateTrip from '../screens/CreateTripScreen';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
-// import MyGarageStack from './MyGarageStack';
 import AllTrips from '../screens/IndividualTripScreen';
 import Profile from '../screens/Profile'
 import LogoutStack from './LogoutStack';

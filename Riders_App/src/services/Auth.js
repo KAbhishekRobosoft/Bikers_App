@@ -687,3 +687,43 @@ export const endTrip = async (tripId,token) => {
     console.log(err);
   }
 };
+
+export const sendChat = async (token,groupId,chat) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/chat/createChat',
+      {
+        groupId:groupId,
+        chat:chat,
+        isImage:false
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getChat = async (token,groupId) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/chat/getChatDetails',
+      {
+        groupId:groupId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};

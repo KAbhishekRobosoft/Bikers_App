@@ -22,7 +22,7 @@ const AllTripList = ({image,navigation, placeName, startDateText, status, endDat
     <View>
     <Pressable onPress={()=>navigation.navigate('particularTrip',{
       tripName:placeName,
-      status:statusText
+      status:status
     })}>
     <View style={styles.container}>
       <ImageBackground

@@ -1,5 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {AccessoriesData} from '../assets/data';
 
 const asseccoriesSlice = createSlice({
   name: 'shop',

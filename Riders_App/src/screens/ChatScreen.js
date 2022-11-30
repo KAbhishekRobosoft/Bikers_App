@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,60 +10,39 @@ import {
   ImageBackground,
   useWindowDimensions,
   FlatList,
-  RefreshControl
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ReceiverContainer, SenderChatDetails} from '../components/chatDetails';
 import PopUpMenu from '../components/PopUpMenu';
-import Toast from 'react-native-simple-toast'
+import Toast from 'react-native-simple-toast';
+import {getVerifiedKeys} from '../utils/Functions';
+import {useDispatch, useSelector} from 'react-redux';
+import {setToken} from '../redux/AuthSlice';
+import {setInitialState} from '../redux/MileStoneSlice';
+import {getChat} from '../services/Auth';
+import { sendChat } from '../services/Auth';
 
-const ChatScreen = ({navigation,route}) => {
-  const [refreshing, setRefreshing] = React.useState(false);
+const ChatScreen = ({navigation, route}) => {
+  const auth = useSelector(state => state.auth);
+  const [text, setText] = useState('');
+  const state = useSelector(state => state.milestone.initialState);
+  const dispatch = useDispatch();
+  const [chat, setChat] = useState([]);
 
-  const sendChat= async()=>{
-
-  }
-
-  const onRefresh = React.useCallback(async() => {
-    setRefreshing(true);
-    if (chat.length > 2) {
-      try {
-        let response = await fetch(
-          'http://www.mocky.io/v2/5e3315753200008abe94d3d8?mocky-delay=2000ms',
-        );
-        let responseJson = await response.json();
-        console.log(responseJson);
-        setListData(responseJson.result.concat(chat));
-        setRefreshing(false)
-      } catch (error) {
-        console.error(error);
+  useEffect(() => {
+    setTimeout(async () => {
+      const cred = await getVerifiedKeys(auth.userToken);
+      dispatch(setToken(cred));
+      const resp = await getChat(cred, route.params.id);
+      console.log(resp)
+      setChat(resp.chatDetails);
+      if (resp !== undefined) {
+        Toast.show('Getting Chats');
+      } else {
+        Toast.show('Unable to get chats');
       }
-    }
-    else{
-      Toast.show('No more new data available');
-      setRefreshing(false)
-    }
-  }, [refreshing]);
-
-  const [chat, setChat] = React.useState([
-    {
-      id: 1,
-      groupId: '21',
-      senderName: 'sumukh',
-      chat: 'boom boom',
-      phoneNumber: '8197781176',
-      time: '2022-11-28T05:24:01.463Z',
-    },
-    {
-      id: 2,
-      groupId: '22',
-      senderName: 'prabhal',
-      chat: 'boom boom',
-      phoneNumber: '8197781175',
-      time: '2022-11-28T05:24:01.463Z',
-    },
-  ]);
-
+    }, 500);
+  }, [state]);
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
 
@@ -82,23 +61,28 @@ const ChatScreen = ({navigation,route}) => {
           />
         </Pressable>
         <Text style={styles.headerText}>{route.params.tripName}</Text>
-        <PopUpMenu  options={[
-          {
-            title: 'Group Info',
-            action: ()=>alert("hello")
-          },
-          {
-            title: 'Notifications',
-            action: () => {alert("bye")},
-          },
-          {
-            title:"Clear Chat",
-            action:()=>{alert("cleaned")}
-          }
-        ]}
-        color= "white"
-        size={30}
-          />
+        <PopUpMenu
+          options={[
+            {
+              title: 'Group Info',
+              action: () => alert('hello'),
+            },
+            {
+              title: 'Notifications',
+              action: () => {
+                alert('bye');
+              },
+            },
+            {
+              title: 'Clear Chat',
+              action: () => {
+                alert('cleaned');
+              },
+            },
+          ]}
+          color="white"
+          size={30}
+        />
       </View>
 
       <ImageBackground
@@ -107,15 +91,12 @@ const ChatScreen = ({navigation,route}) => {
       <FlatList
         data={chat}
         renderItem={({item}) => {
-          if (item.phoneNumber === '8197781176') {
+          if (item.memberNumber === auth.userCredentials.mobile) {
             return <SenderChatDetails chat={item} />;
           } else {
             return <ReceiverContainer chat={item} />;
           }
         }}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
       />
       <View style={[styles.bottomContainer, styles.bottomshadow, {top}]}>
         <View style={styles.iconContainer}>
@@ -125,7 +106,11 @@ const ChatScreen = ({navigation,route}) => {
               style={{height: 30, width: 30}}
             />
           </Pressable>
-          <TextInput style={styles.input} placeholder="Type a Message" />
+          <TextInput
+            style={styles.input}
+            onChangeText={val => setText(val)}
+            placeholder="Type a Message"
+          />
         </View>
         <View
           style={{
@@ -139,7 +124,16 @@ const ChatScreen = ({navigation,route}) => {
               style={{height: 27, width: 24, marginRight: 10}}
             />
           </Pressable>
-          <Pressable onPress= {sendChat}>
+          <Pressable
+            onPress={async () => {
+              const cred = await getVerifiedKeys(auth.userToken);
+              dispatch(setToken(cred));
+              const resp = await sendChat(cred, route.params.id, text);
+              if (resp.message === 'chat saved successfully!!') {
+                Toast.show('Refreshing');
+                dispatch(setInitialState(state));
+              }
+            }}>
             <Image
               source={require('../assets/images/send.png')}
               style={{height: 48, width: 48}}

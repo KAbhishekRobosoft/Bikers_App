@@ -48,16 +48,17 @@ export const TripSummary = ({navigation}) => {
       );
       setRoute(resp.legs[0].points);
       dispatch(setLoading());
-      mapRef.current.animateToRegion(
-        {
-          latitude: tripDetails.source[0].latitude,
-          longitude: tripDetails.source[0].longitude,
-          latitudeDelta: 0.03,
-          longitudeDelta: 0.1,
-        },
-        3 * 1000,
-      );
-      
+      setTimeout(()=>{
+        mapRef.current.animateToRegion(
+          {
+            latitude: parseFloat(tripDetails.source[0].latitude),
+            longitude: parseFloat(tripDetails.source[0].longitude),
+            latitudeDelta: 0.03,
+            longitudeDelta: 0.1,
+          },
+          3 * 1000,
+        );
+      },500)
     }, 500);
   }, []);
   if (loading) {
@@ -115,8 +116,8 @@ export const TripSummary = ({navigation}) => {
                 />
                 <Marker
                   coordinate={{
-                    latitude: tripDetails.source[0].latitude,
-                    longitude: tripDetails.source[0].longitude,
+                    latitude: parseFloat(tripDetails.source[0].latitude),
+                    longitude: parseFloat(tripDetails.source[0].longitude),
                     latitudeDelta: 0.01,
                     longitudeDelta: 0.01,
                   }}
@@ -124,8 +125,8 @@ export const TripSummary = ({navigation}) => {
 
                 <Marker
                   coordinate={{
-                    latitude: tripDetails.destination[0].latitude,
-                    longitude: tripDetails.destination[0].longitude,
+                    latitude: parseFloat(tripDetails.destination[0].latitude),
+                    longitude: parseFloat(tripDetails.destination[0].longitude),
                     latitudeDelta: 0.03,
                     longitudeDelta: 0.01,
                   }}
