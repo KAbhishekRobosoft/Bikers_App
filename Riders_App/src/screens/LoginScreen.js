@@ -85,7 +85,7 @@ const LoginScreen = ({navigation}) => {
                     <Field
                       component={Input}
                       name="number"
-                      source={require('../assets/images/user.png')}
+                      source={require('../assets/images/user1.png')}
                       placeholderTextColor="grey"
                       placeholder="Mobile Number/Email id"
                       styleUser={styles.userLogo}
@@ -191,6 +191,8 @@ const styles = StyleSheet.create({
   userLogo: {
     width: 18,
     height: 24,
+ 
+    
   },
   lockImg: {
     width: 20,

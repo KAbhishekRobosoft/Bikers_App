@@ -87,7 +87,7 @@ const Register = ({navigation}) => {
                   name="userName"
                   placeholder="Name"
                   value={values.userName}
-                  source={require('../assets/images/user.png')}
+                  source={require('../assets/images/user1.png')}
                   styleUser={styles.name}
                   keyboardType="default"
                   secureTextEntry={false}

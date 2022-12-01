@@ -98,7 +98,7 @@ const ChatScreen = ({navigation, route}) => {
         dispatch(setInitialState(state));
         Toast.show('Image Posted');
       }
-    }).catch(err => Toast.show('User Cancelled Selection'));
+    })
   };
 
   const handleToggle1 = () => {
