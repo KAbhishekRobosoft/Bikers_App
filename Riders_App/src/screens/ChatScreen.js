@@ -60,9 +60,6 @@ const ChatScreen = ({navigation, route}) => {
     }, 500);
   }, [state]);
 
-  const wait = timeout => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
-  };
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);

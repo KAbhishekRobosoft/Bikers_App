@@ -758,6 +758,7 @@ export const getParticularPhoto = async (token,id) => {
     console.log(err);
   }
 };
+
 export const addLike = async (token,id) => {
   try {
     const response = await axios.post(
@@ -765,6 +766,68 @@ export const addLike = async (token,id) => {
       
       {
         id:id
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addComments = async (token,id,comment) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/chat/addComments',
+      
+      {
+        id:id,
+        comments:comment
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deleteComment = async (token,id,commentId) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/chat/deleteComment',
+      
+      {
+        id:id,
+        commentId:commentId
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const followRider = async (token,mobile) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/follow',
+      
+      {
+        wantToFollow:mobile,
       },
       {
         headers: {

@@ -9,43 +9,72 @@ import {
   ScrollView,
   Animated,
   useWindowDimensions,
+  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import Icons from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
-import {deSetLoading, setLoading} from '../redux/MileStoneSlice';
+import {
+  deSetLoading,
+  setInitialState,
+  setLoading,
+} from '../redux/MileStoneSlice';
 import {addLike, getParticularPhoto} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
+import {setToken} from '../redux/AuthSlice';
+import {addComments} from '../services/Auth';
+import Toast from 'react-native-simple-toast';
+import {deleteComment} from '../services/Auth';
 
 const ImageLikeCommentScreen = ({navigation, route}) => {
   const [comments, Setcomments] = useState(false);
   const [like, setLike] = useState(false);
   const [likeView, setLikeView] = useState(false);
   const [imgData, setImgData] = useState({});
+  const state = useSelector(state => state.milestone.initialState);
+  const {height, width} = useWindowDimensions();
+  const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
+  const loading = useSelector(state => state.milestone.isLoading);
+  const authData = useSelector(state => state.auth);
+  const [commentText, setCommentText] = useState('');
+  const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(deSetLoading());
     setTimeout(async () => {
       const cred = await getVerifiedKeys(authData.userToken);
       const response = await getParticularPhoto(cred, route.params.id);
-      console.log('response-----', response);
       setImgData(response);
       dispatch(setLoading());
-      // console.log('response-----', imgData);
     });
-  }, []);
-  const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
-  const loading = useSelector(state => state.milestone.isLoading);
-  const authData = useSelector(state => state.auth);
-  const dispatch = useDispatch();
+  }, [state]);
 
   const likeAdd = async () => {
     const cred = await getVerifiedKeys(authData.userToken);
-    await addLike(cred, imgData.photos._id);
+    dispatch(setToken(cred));
+    const resp = await addLike(cred, imgData.photos._id);
+    if (resp !== undefined) {
+      Toast.show('You liked the Image');
+      dispatch(setInitialState(state));
+    } else {
+      Toast.show("Couldn't like the Image");
+    }
   };
-  // console.log('&&&&&-----', imgData.photos?.likedBy.map(e=>e.));
+
+  async function comment() {
+    const cred = await getVerifiedKeys(authData.userToken);
+    dispatch(setToken(cred));
+    const resp = await addComments(cred, imgData.photos._id, commentText);
+    if (resp !== undefined) {
+      Toast.show('Comment added successfully');
+      dispatch(setInitialState(state));
+    } else {
+      Toast.show('Failed to add a comment');
+    }
+  }
 
   if (loading) {
     return (
@@ -98,7 +127,6 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                 <View
                   style={{
                     flexDirection: 'row',
-                    //borderWidth: 1,
                     width: 68,
                     justifyContent: 'space-between',
                   }}>
@@ -114,21 +142,11 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
 
                   {imgData.liked ? (
                     <Pressable onPress={() => likeAdd()}>
-                      <Icons
-                        name="heart"
-                        color="red"
-                        size={18}
-                        //style={styles.icon}
-                      />
+                      <Icons name="heart" color="red" size={18} />
                     </Pressable>
                   ) : (
                     <Pressable onPress={() => likeAdd()}>
-                      <Icons
-                        name="heart-o"
-                        color="grey"
-                        size={18}
-                        //style={styles.icon}
-                      />
+                      <Icons name="heart-o" color="grey" size={18} />
                     </Pressable>
                   )}
                 </View>
@@ -144,18 +162,12 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                       borderWidth: 0,
                       justifyContent: 'space-around',
                       alignItems: 'center',
-                      //borderWidth:1
                     }}>
                     <Text style={styles.text}>
                       {' '}
                       {imgData.photos.commentCount} Comments
                     </Text>
-                    <Icons
-                      name="comment"
-                      color="grey"
-                      size={18}
-                      //style={styles.icon}
-                    />
+                    <Icons name="comment" color="grey" size={18} />
                   </View>
                 </Pressable>
               </View>
@@ -164,7 +176,6 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                   style={[
                     {
                       height: 200,
-                      // borderWidth: 1,
                       width: '100%',
                       alignSelf: 'center',
                       transform: [
@@ -189,46 +200,90 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                     styles.bottomshadow,
                   ]}>
                   <ScrollView
-                    style={{padding: 5, borderWidth: 0}}
-                    showsVerticalScrollIndicator={false}
-                    showsHorizontalScrollIndicator={false}>
-                    {imgData.photos.distinctComment?.length > 0 &&
-                      imgData.photos.distinctComment.map(item => {
+                    style={{padding: 5}}
+                    showsVerticalScrollIndicator={false}>
+                    {imgData.photos.commentData?.length > 0 &&
+                      imgData.photos.commentData.map(item => {
                         return (
                           <View
+                            key={item._id}
                             style={{
                               flexDirection: 'row',
-                              borderBottomWidth: 1,
-                              margin: 10,
-                              height: 45,
-                              paddingHorizontal: 10,
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
                             }}>
-                            <Image
-                              style={{
-                                height: 40,
-                                width: 40,
-                                borderRadius: 30,
-                              }}
-                              source={require('../assets/images/card.jpg')}
-                              // source={{uri:"https"+item.profileImage.substring(4)}}
-                            />
-                            <View style={{marginLeft: 20}}>
+                            <View>
+                              <Pressable onPress={()=>{
+                                if(authData.userCredentials.mobile !== item.commentedNumber)
+                                navigation.navigate('viewProfile',{
+                                  mobile:item.commentedNumber
+                                })
+                              }}>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    height: 45,
+                                    paddingHorizontal: 10,
+                                  }}>
+                                  <Image
+                                    style={{
+                                      height: 25,
+                                      width: 25,
+                                      borderRadius: 30,
+                                    }}
+                                    source={{
+                                      uri:
+                                        'https' +
+                                        item.commentedUserImage.substring(4),
+                                    }}
+                                  />
+
+                                  <Text
+                                    style={{
+                                      fontWeight: 'bold',
+                                      fontFamily: 'Roboto-Regular',
+                                      color: '#ED7E2B',
+                                      marginLeft: 10,
+                                      fontSize: 15,
+                                    }}>
+                                    {item.commentedBy}
+                                  </Text>
+                                </View>
+                              </Pressable>
                               <Text
                                 style={{
+                                  fontFamily: 'Roboto-Regular',
                                   fontWeight: 'bold',
-                                  fontFamily: 'Roboto-Regular',
-                                  color: '#ED7E2B',
+                                  left: 45,
                                 }}>
-                                {/* //Name{item.userName} */}
-                              </Text>
-                              <Text
-                                style={{
-                                  fontFamily: 'Roboto-Regular',
-                                  color: '#ED7E2B',
-                                }}>
-                                {/* // Comment by {item.userName} */}
+                                {item.commented}
                               </Text>
                             </View>
+                            <TouchableOpacity
+                              onPress={async () => {
+                                const cred = await getVerifiedKeys(
+                                  authData.userToken,
+                                );
+                                dispatch(setToken(cred));
+                                const resp = await deleteComment(
+                                  cred,
+                                  imgData.photos._id,
+                                  item._id,
+                                );
+                                if (resp !== undefined) {
+                                  Toast.show('Comment deleted successfully');
+                                  dispatch(setInitialState(state));
+                                } else {
+                                  Toast.show('Failed to delete a comment');
+                                }
+                              }}>
+                              <Icon1
+                                style={{marginRight: 10}}
+                                name="trash"
+                                size={18}
+                              />
+                            </TouchableOpacity>
                           </View>
                         );
                       })}
@@ -261,19 +316,40 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                     styles.bottomshadow,
                   ]}>
                   <ScrollView
-                    style={{paddingHorizontal: 10, }}
+                    style={{paddingHorizontal: 10}}
                     showsVerticalScrollIndicator={false}
                     showsHorizontalScrollIndicator={false}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        top: 10,
+                      }}>
+                      <Icons
+                        name="heart"
+                        color="red"
+                        size={18}
+                        //style={styles.icon}
+                      />
+                      <Text
+                        style={{
+                          fontWeight: 'bold',
+                          fontFamily: 'Roboto-Regular',
+                          marginLeft: 10,
+                          fontSize: 16,
+                          color: '#ED7E2B',
+                          textAlign: 'center',
+                        }}>
+                        Liked By
+                      </Text>
+                    </View>
                     {imgData.photos.likedBy?.length > 0
                       ? imgData.photos.likedBy.map(item => {
                           return (
                             <View
                               key={item._id}
                               style={{
-                                flexDirection: 'row',
-                                borderBottomWidth: 1,
                                 margin: 5,
-                                alignItems: 'center',
                                 height: 45,
                                 paddingHorizontal: 10,
                               }}>
@@ -281,7 +357,9 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                                 style={{
                                   fontWeight: 'bold',
                                   fontFamily: 'Roboto-Regular',
+                                  fontSize: 15,
                                   marginLeft: 20,
+                                  top: 20,
                                   color: '#ED7E2B',
                                 }}>
                                 {item.likedName}
@@ -311,6 +389,9 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                   style={styles.input}
                   placeholder="Comment"
                   placeholderTextColor="grey"
+                  onChangeText={val => {
+                    setCommentText(val);
+                  }}
                 />
               </View>
               <View
@@ -319,7 +400,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                   alignItems: 'center',
                   marginRight: '2%',
                 }}>
-                <Pressable>
+                <Pressable onPress={() => comment()}>
                   <Image
                     source={require('../assets/images/send.png')}
                     style={{height: 48, width: 48}}
@@ -350,7 +431,6 @@ const styles = StyleSheet.create({
     width: '70%',
     alignItems: 'center',
     alignSelf: 'center',
-    //borderWidth: 1,
   },
   img: {
     height: '66%',
@@ -383,12 +463,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'space-between',
-    // borderWidth: 1,
     marginBottom: 140,
-    //marginTop: 100,
-    //position: 'absolute',
-    //top:500
-    //bottom:0
   },
   bottomshadow: {
     backgroundColor: '#FFFFFF',

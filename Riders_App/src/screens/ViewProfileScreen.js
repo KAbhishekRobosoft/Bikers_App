@@ -11,81 +11,122 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {useSelector,useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import ActivityList from '../components/MyActivityList';
 import {getSortedTripDetails, profileData} from '../services/Auth';
 import {getVerifiedKeys, month} from '../utils/Functions';
 import ImagePicker from 'react-native-image-crop-picker';
-import { uploadProfileImage } from '../services/Auth';
-import { setLoading,deSetLoading } from '../redux/MileStoneSlice';
-import { setToken } from '../redux/AuthSlice';
-import { setInitialState } from '../redux/MileStoneSlice';
-import Toast from 'react-native-simple-toast'
+import {uploadProfileImage} from '../services/Auth';
+import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
+import {setToken} from '../redux/AuthSlice';
+import {setInitialState} from '../redux/MileStoneSlice';
+import Toast from 'react-native-simple-toast';
+import {followRider} from '../services/Auth';
 
-const ViewProfileScreen = ({navigation,route}) => {
+const ViewProfileScreen = ({navigation, route}) => {
   const [personData, setPersonData] = useState({});
   const token = useSelector(state => state.auth);
-  const state= useSelector(state=>state.milestone.initialState)
-  const dispatch= useDispatch()
-  const loading= useSelector(state=>state.milestone.isLoading)
+  const state = useSelector(state => state.milestone.initialState);
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.milestone.isLoading);
 
   useEffect(() => {
     setTimeout(async () => {
-      dispatch(deSetLoading())
-      const cred= await getVerifiedKeys(token.userToken)
-      dispatch(setToken(cred))
-      const data = await profileData(cred,route.params.mobile);
+      dispatch(deSetLoading());
+      const cred = await getVerifiedKeys(token.userToken);
+      dispatch(setToken(cred));
+      const data = await profileData(cred, route.params.mobile);
       setPersonData(data);
-      dispatch(setLoading())
+      dispatch(setLoading());
     }, 500);
   }, [state]);
 
-  if(loading){
-      return(
-        <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-              <ActivityIndicator size= "large" color="orange" />
-        </View>
-      )
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="orange" />
+      </View>
+    );
   }
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={{flex: 1}}>
-        
-        { JSON.stringify(personData) !== "{}" && <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          colors={['#ED7E2C', '#F7B557']}
-          style={styles.gradientCreateButton}>
-          <ImageBackground
-            source={require('../assets/images/profilebike.png')}
-            resizeMode="cover"
-            style={styles.backgroundImage}></ImageBackground>
-          <Pressable onPress={()=>navigation.navigate('updateProfile',{
-            userName:personData.userDetails.userName,
-            aboutUser: personData.userDetails.aboutUser
-          })}>
-            <Image
-              source={require('../assets/images/edit.png')}
-              style={styles.editIcon}
-            />
-          </Pressable>
-          <View style={styles.profileContainer}>
-            {personData.userDetails.profileImage !== '' ?(<Pressable onPress={setImage}><Image
-              source={{uri:'https'+personData.userDetails.profileImage.substring(4)}}
-              style={styles.profileImage}
-            /></Pressable>):<Pressable onPress={setImage}><Image
-              source={require('../assets/images/photoless.png')}
-              style={styles.profileImage}
-            /></Pressable>}
-            <Text style={styles.profileName}>
-              {personData?.userDetails?.userName}
-            </Text>
-            <Text style={styles.bioText}>
-              {personData?.userDetails?.aboutUser}
-            </Text>
-          </View>
-        </LinearGradient>}
+        {JSON.stringify(personData) !== '{}' && (
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            colors={['#ED7E2C', '#F7B557']}
+            style={styles.gradientCreateButton}>
+            <ImageBackground
+              source={require('../assets/images/profilebike.png')}
+              resizeMode="cover"
+              style={styles.backgroundImage}></ImageBackground>
+            <Pressable
+              onPress={() =>
+                navigation.navigate('updateProfile', {
+                  userName: personData.userDetails.userName,
+                  aboutUser: personData.userDetails.aboutUser,
+                })
+              }>
+              <Image
+                source={require('../assets/images/edit.png')}
+                style={styles.editIcon}
+              />
+            </Pressable>
+            <View style={styles.profileContainer}>
+              {personData.userDetails.profileImage !== '' ? (
+                <Pressable onPress={setImage}>
+                  <Image
+                    source={{
+                      uri:
+                        'https' +
+                        personData.userDetails.profileImage.substring(4),
+                    }}
+                    style={styles.profileImage}
+                  />
+                </Pressable>
+              ) : (
+                <Pressable onPress={setImage}>
+                  <Image
+                    source={require('../assets/images/photoless.png')}
+                    style={styles.profileImage}
+                  />
+                </Pressable>
+              )}
+              <Text style={styles.profileName}>
+                {personData?.userDetails?.userName}
+              </Text>
+              <Text style={styles.bioText}>
+                {personData?.userDetails?.aboutUser}
+              </Text>
+              {personData.userDetails.followers.filter(ele=>
+              ele.followingPhone === token.userCredentials.mobile).length ===
+              0 ?
+              (<Pressable
+                onPress={async () => {
+                  const resp = await followRider(route.params.mobile);
+                  if(resp !== undefined){
+                    dispatch(setInitialState(state))
+                    Toast.show("Following"+" "+personData.userDetails.userName)
+                  }
+                  else{
+                    Toast.show("Error Occurred")
+                  }
+                }}>
+                <View style={styles.followContainer}>
+                  <Text style={styles.followText}>Follow</Text>
+                </View>
+              </Pressable>)
+              :
+              (<Pressable>
+                <View style={styles.followContainer}>
+                  <Text style={styles.followText}>Following</Text>
+                </View>
+              </Pressable>)}
+            </View>
+          </LinearGradient>
+        )}
         <View style={styles.detailContainer}>
           <View style={styles.textContainer}>
             <Text style={styles.detailText}>Rides</Text>

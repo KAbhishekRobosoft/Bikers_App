@@ -9,6 +9,7 @@ import {
   ScrollView,
   ActivityIndicator,
   FlatList,
+  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
@@ -18,14 +19,14 @@ import {useSelector, useDispatch} from 'react-redux';
 import BikeImageComponent from '../components/BikeImageComponent';
 import MapView, {Marker} from 'react-native-maps';
 import {Polyline} from 'react-native-maps';
-import {getImagePreview, getParticularTrip} from '../services/Auth';
+import {getImagePreview} from '../services/Auth';
 import {getVerifiedKeys, month1} from '../utils/Functions';
 import {calculateRoute} from '../services/Auth';
 import {deSetLoading} from '../redux/MileStoneSlice';
 import {setLoading} from '../redux/MileStoneSlice';
 import uuid from 'react-native-uuid';
-
 import {setToken} from '../redux/AuthSlice';
+import Toast from 'react-native-simple-toast'
 
 export const GetParticularTripSummary = ({navigation, route}) => {
   const [direction, setDirection] = useState([]);
@@ -33,20 +34,10 @@ export const GetParticularTripSummary = ({navigation, route}) => {
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.milestone.isLoading);
-  const [users, setUsers] = useState([]);
   const [images, setImages] = useState([]);
-  //const [currentPage, setCurrentPage] = useState(1);
-  //const [isLoading, setIsLoading] = useState(false);
-  // const [enableScrollViewScroll, setEnableScrollViewScroll] = useState(true);
-
-  // useEffect(() => {
-  //   getUsers();
-  // }, [currentPage]);
 
   useEffect(() => {
     dispatch(deSetLoading());
-    //getUsers();
-    // if (currentPage === 1) {
     setTimeout(async () => {
       const dir = await calculateRoute(
         route.params.data.source[0].latitude,
@@ -55,16 +46,13 @@ export const GetParticularTripSummary = ({navigation, route}) => {
         route.params.data.destination[0].longitude,
       );
       setDirection(dir.legs[0].points);
-
       const cred = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(cred));
       const response = await getImagePreview(cred, route.params.data._id);
       setImages(response);
-   
-
       dispatch(setLoading());
-
       setTimeout(() => {
+        try{
         mapRef.current.animateToRegion(
           {
             latitude: parseFloat(route.params.data.source[0].latitude),
@@ -74,54 +62,15 @@ export const GetParticularTripSummary = ({navigation, route}) => {
           },
           3 * 1000,
         );
+        }
+        catch{
+            Toast.show("Failed to animate direction")
+        }
       }, 1000);
 
-      //dispatch(setLoading());
     }, 500);
-    // }
-    // getMovies()
   }, []);
-  //console.log('aa', route.params.data._id);
-  // const getUsers = () => {
-  //   setIsLoading(true);
-  //   axios
-  //     .get(`https://randomuser.me/api/?page=${currentPage}&results=4`)
-  //     .then(res => {
-  //       setUsers([...users, ...res.data.results]);
-  //       setIsLoading(false);
-  //     });
-  // };
-  // console.log(route.params.data);
-  // if (loading) {
-  //   return (
-  //     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-  //       <ActivityIndicator size="large" color="orange" />
-  //     </View>
-  //   );
-  // }
 
-  // const renderItem = ({item}) => {
-  //   return (
-  //     <View style={{flexDirection: 'row', borderColor: 'red'}}>
-  //       <Image
-  //         style={styles.itemImageStyle}
-  //         source={{uri: item.picture.large}}
-  //       />
-  //     </View>
-  //   );
-  // };
-
-  // const renderLoader = () => {
-  //   return isLoading ? (
-  //     <View style={styles.loaderStyle}>
-  //       <ActivityIndicator size="large" color="orange" />
-  //     </View>
-  //   ) : null;
-  // };
-
-  // const loadMoreItem = () => {
-  //   setCurrentPage(currentPage + 1);
-  // };
 
   if (loading) {
     return (
@@ -164,7 +113,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                     longitude: ele.longitude,
                   }))}
                   strokeColor={'blue'}
-                  strokeWidth={2}
+                  strokeWidth={3}
                   lineDashPattern={[1]}
                 />
 
@@ -185,7 +134,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                       route.params.data.destination[0].latitude,
                     ),
                     longitude: parseFloat(
-                      route.params.data.destination[0].latitude,
+                      route.params.data.destination[0].longitude,
                     ),
                     latitudeDelta: 0.03,
                     longitudeDelta: 0.01,
@@ -263,8 +212,6 @@ export const GetParticularTripSummary = ({navigation, route}) => {
       {route.params.data.tripStatus === 'completed' &&
         (images.length > 0 ? (
           <ScrollView
-          //onScrollEndDrag={loadMoreItem}
-          //  onTouchEnd={renderLoader}
           >
             <View style={styles.mainView}>
               <View style={[styles.header]}>
@@ -319,7 +266,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                         route.params.data.destination[0].latitude,
                       ),
                       longitude: parseFloat(
-                        route.params.data.destination[0].latitude,
+                        route.params.data.destination[0].longitude,
                       ),
                       latitudeDelta: 0.03,
                       longitudeDelta: 0.01,
