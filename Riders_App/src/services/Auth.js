@@ -709,6 +709,7 @@ export const getChat = async (token,groupId) => {
     console.log(err);
   }
 };
+
 export const uploadChatImage = async (payload, token) => {
   let res = await fetch(`${BASE_URL}/chat/uploadChatImage`, {
     method: 'post',
@@ -720,3 +721,61 @@ export const uploadChatImage = async (payload, token) => {
   let data = await res.json();
   return data;
 }
+export const getImagePreview = async (token,groupId) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/chat/getImagePreview',
+      {
+        groupId:groupId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const getParticularPhoto = async (token,id) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/chat/getParticularPhoto',
+      
+      {
+        _id:id
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const addLike = async (token,id) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/chat/addLikes',
+      
+      {
+        id:id
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+

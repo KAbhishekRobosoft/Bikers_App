@@ -22,7 +22,7 @@ export const SenderChatDetails = ({chat}) => {
           )}
           {chat.chat.includes('https') && (
             <Image
-              style={{height: 200, width: 150}}
+              style={{height: 200, width: 150,borderRadius:10}}
               source={{uri: chat.chat}}
             />
           )}
@@ -53,7 +53,15 @@ export const ReceiverContainer = ({chat}) => {
           <Text style={styles.riderName}>{chat.senderName}</Text>
         </View>
         <View style={styles.recivercontainer}>
-          <Text style={styles.senderText}>{chat.chat}</Text>
+        {!chat.chat.includes('https') && (
+            <Text style={styles.senderText}>{chat.chat}</Text>
+          )}
+          {chat.chat.includes('https') && (
+            <Image
+              style={{height: 200, width: 150,borderRadius:10}}
+              source={{uri: chat.chat}}
+            />
+          )}
         </View>
         <View
           style={{

@@ -13,7 +13,6 @@ import {selectMarked} from '../redux/ContactSlice';
 import {selectUnMarked} from '../redux/ContactSlice';
 import {addTripContacts} from '../redux/ContactSlice';
 import {deleteTripContacts} from '../redux/ContactSlice';
-import { addGroupContacts } from '../redux/ContactSlice';
 import Toast from 'react-native-simple-toast';
 
 export const ContactFlatList = () => {
@@ -25,7 +24,6 @@ export const ContactFlatList = () => {
       dispatch(selectMarked(contacts));
       const obj= {id:contacts.recordID,riderName:contacts.givenName,riderPhoneNumber:contacts.phoneNumbers[0].number}
       dispatch(addTripContacts(obj));
-      dispatch(addGroupContacts(obj))
   };
 
   const handleUnTick = contacts => {

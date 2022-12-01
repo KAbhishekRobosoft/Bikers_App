@@ -120,6 +120,8 @@ const ChatScreen = ({navigation, route}) => {
     setmodal1(true);
   };
 
+//console.log(route.params.id);
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={[styles.header, styles.shadow]}>
@@ -190,6 +192,7 @@ const ChatScreen = ({navigation, route}) => {
             style={styles.input}
             onChangeText={val => setText(val)}
             placeholder="Type a Message"
+            placeholderTextColor='grey'
           />
         </View>
         <View

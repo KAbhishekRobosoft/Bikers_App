@@ -78,6 +78,7 @@ const BottomTabLoginNavigation = () => {
                   width: 35,
                   height: 22,
                   resizeMode: 'contain',
+                  opacity:0.9
                 }}
               />
             );
@@ -98,6 +99,7 @@ const BottomTabLoginNavigation = () => {
                   width: 35,
                   height: 22,
                   resizeMode: 'contain',
+                  opacity:0.8
                 }}
               />
             );
