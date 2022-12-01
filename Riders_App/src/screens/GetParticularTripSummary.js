@@ -21,40 +21,91 @@ import MapView, {Marker} from 'react-native-maps';
 import {Polyline} from 'react-native-maps';
 import {getParticularTrip} from '../services/Auth';
 import {month1} from '../utils/Functions';
-import { calculateRoute } from '../services/Auth';
-import { deSetLoading } from '../redux/MileStoneSlice';
-import { setLoading } from '../redux/MileStoneSlice';
+import {calculateRoute} from '../services/Auth';
+import {deSetLoading} from '../redux/MileStoneSlice';
+import {setLoading} from '../redux/MileStoneSlice';
+//import axios from 'axios';
 
 export const GetParticularTripSummary = ({navigation, route}) => {
   const [data, setData] = useState([]);
-  const [direction,setDirection]= useState([])
+  const [direction, setDirection] = useState([]);
   const mapRef = useRef(null);
   const tripDetails = useSelector(state => state.milestone.storeTrip);
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
-  const loading= useSelector(state=>state.milestone.isLoading)
+  const loading = useSelector(state => state.milestone.isLoading);
+  // const [users, setUsers] = useState([]);
+  //  const [currentPage, setCurrentPage] = useState(1);
+  //  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    dispatch(deSetLoading())
+    dispatch(deSetLoading());
     setTimeout(async () => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const resp = await getParticularTrip(key, route.params.tripName);
-      console.log(resp)
-      const dir= await calculateRoute(resp[0].source[0].latitude,resp[0].source[0].longitude,resp[0].destination[0].latitude,resp[0].destination[0].longitude)
-      setDirection(dir.legs[0].points)
+      console.log(resp);
+      const dir = await calculateRoute(
+        resp[0].source[0].latitude,
+        resp[0].source[0].longitude,
+        resp[0].destination[0].latitude,
+        resp[0].destination[0].longitude,
+      );
+      setDirection(dir.legs[0].points);
       setData(resp);
-      dispatch(setLoading())
+      dispatch(setLoading());
     }, 1000);
   }, []);
 
-  if(loading){
-    return(
-      <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-            <ActivityIndicator size= "large" color="orange" />
-      </View>
-    )
-  }
+  
+  //   useEffect(() => {
+  //     getUsers();
+  //   }, [currentPage]);
+  
+  // if (loading) {
+  //   return (
+  //     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+  //       <ActivityIndicator size="large" color="orange" />
+  //     </View>
+  //   );
+  // }
+
+
+
+
+
+  // const getUsers = () => {
+  //   setIsLoading(true);
+  //   axios
+  //     .get(`https://randomuser.me/api/?page=${currentPage}&results=5`)
+  //     .then(res => {
+  //       setUsers([...users, ...res.data.results]);
+  //       setIsLoading(false);
+  //     });
+  // };
+
+  // const renderItem = ({item}) => {
+  //   return (
+  //     <View style={{flexDirection: 'row', borderColor: 'red'}}>
+  //       <Image
+  //         style={styles.itemImageStyle}
+  //         source={{uri: item.picture.large}}
+  //       />
+  //     </View>
+  //   );
+  // };
+
+  // const renderLoader = () => {
+  //   return isLoading ? (
+  //     <View style={styles.loaderStyle}>
+  //       <ActivityIndicator size="large" color="orange" />
+  //     </View>
+  //   ) : null;
+  // };
+
+  // const loadMoreItem = () => {
+  //   setCurrentPage(currentPage + 1);
+  // };
 
   return (
     <SafeAreaView>
@@ -134,45 +185,64 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                 </View>
               </View>
             </View>
-            {route.params.status === "upcoming" && <View style={styles.listView}>
-              <TripSummaryList data={data[0].milestones} />
-              <View style={styles.recommendationsView}>
-                <RecommendationTripSummary />
-              </View>
-              <View style={styles.addUserView}>
-                <View style={styles.addUserImgView}>
-                  <Pressable>
-                    <Image
-                      style={styles.calenderImg}
-                      source={require('../assets/images/adduser.png')}
-                    />
-                  </Pressable>
+            {route.params.status === 'upcoming' && (
+              <View style={styles.listView}>
+                <TripSummaryList data={data[0].milestones} />
+                <View style={styles.recommendationsView}>
+                  <RecommendationTripSummary />
                 </View>
-                {data[0].riders.length === 0 && (
-                  <Text style={styles.text}>Invite other riders</Text>
-                )}
-                {data[0].riders.length > 0 && (
-                  <BikeImageComponent />
-                )}
+                <View style={styles.addUserView}>
+                  <View style={styles.addUserImgView}>
+                    <Pressable>
+                      <Image
+                        style={styles.calenderImg}
+                        source={require('../assets/images/adduser.png')}
+                      />
+                    </Pressable>
+                  </View>
+                  {data[0].riders.length === 0 && (
+                    <Text style={styles.text}>Invite other riders</Text>
+                  )}
+                  {data[0].riders.length > 0 && <BikeImageComponent />}
+                </View>
+                <View style={styles.buttonView}>
+                  <CreateButton
+                    onPress={() => {
+                      navigation.navigate('MapDisplay', {
+                        latitude: data[0].source[0].latitude,
+                        longitude: data[0].source[0].longitude,
+                        latitude1: data[0].destination[0].latitude,
+                        longitude1: data[0].destination[0].longitude,
+                        destination: data[0].milestones,
+                        id: data[0]._id,
+                        tripName: data[0].tripName,
+                      });
+                    }}
+                    title="GO"
+                  />
+                </View>
               </View>
-              <View style={styles.buttonView}>
-                <CreateButton
-                  onPress={() => {
-                      navigation.navigate('MapDisplay',{
-                        latitude:data[0].source[0].latitude,
-                        longitude:data[0].source[0].longitude,
-                        latitude1:data[0].destination[0].latitude,
-                        longitude1:data[0].destination[0].longitude,
-                        destination:data[0].milestones,
-                        id:data[0]._id,
-                        tripName:data[0].tripName
-                      })
-                  }}
-                  title="GO"
-                />
-              </View>
-            </View>}
+            )}
           </ScrollView>
+          {/* {route.params.status === 'completed' && (
+            <View style={styles.imageView}>
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={users}
+                numColumns={2}
+                renderItem={renderItem}
+                keyExtractor={item => item.email}
+                ListFooterComponent={renderLoader}
+                onEndReached={loadMoreItem}
+                onEndReachedThreshold={0}
+                //style={styles.imageView}
+                //horizontal={true}
+                // contentContainerStyle={{
+                //   alignItems: "flex-start",
+                // }}
+              />
+            </View>
+          )} */}
         </View>
       ) : null}
     </SafeAreaView>
@@ -344,6 +414,22 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     marginLeft: 10,
   },
+  // imageView: {
+  //   borderWidth: 3,
+  //   width: '90%',
+  //   //flexDirection: "row",
+  //   height: '80%',
+  //   //flexWrap: "wrap",
+  //   //alignItems: "center",
+  //   // justifyContent:'center'
+  // },
+
+  // itemImageStyle: {
+  //   width: 160,
+  //   height: 300,
+  //   // marginRight: 16,
+  //   //borderWidth: 1,
+  // },
 });
 
 const mapStyle = [
