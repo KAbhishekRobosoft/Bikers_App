@@ -29,6 +29,7 @@ const AllUserTrip = ({navigation}) => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const tripdata = await SearchAllUserTrips(key);
+      console.log('tripdata',tripdata)
       setTripDetails(tripdata);
     }, 500);
   }, [state]);

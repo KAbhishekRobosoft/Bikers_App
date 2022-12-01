@@ -24,6 +24,7 @@ import {month1} from '../utils/Functions';
 import { calculateRoute } from '../services/Auth';
 import { deSetLoading } from '../redux/MileStoneSlice';
 import { setLoading } from '../redux/MileStoneSlice';
+import uuid from 'react-native-uuid'
 
 export const GetParticularTripSummary = ({navigation, route}) => {
   const [data, setData] = useState([]);
@@ -33,19 +34,19 @@ export const GetParticularTripSummary = ({navigation, route}) => {
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const loading= useSelector(state=>state.milestone.isLoading)
-
+  
   useEffect(() => {
     dispatch(deSetLoading())
     setTimeout(async () => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
-      const resp = await getParticularTrip(key, route.params.tripName);
-      console.log(resp)
+      
+      const resp = await getParticularTrip(key,route.params.tripName);
       const dir= await calculateRoute(resp[0].source[0].latitude,resp[0].source[0].longitude,resp[0].destination[0].latitude,resp[0].destination[0].longitude)
       setDirection(dir.legs[0].points)
       setData(resp);
       dispatch(setLoading())
-    }, 1000);
+    }, 500);
   }, []);
 
   if(loading){
@@ -83,6 +84,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                 style={styles.mapStyle}
                 customMapStyle={mapStyle}>
                 <Polyline
+                  key={uuid.v4()}
                   coordinates={direction.map(ele => ({
                     latitude: ele.latitude,
                     longitude: ele.longitude,

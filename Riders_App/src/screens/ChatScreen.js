@@ -1,4 +1,4 @@
-import {React, useCallback, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,66 +10,44 @@ import {
   ImageBackground,
   useWindowDimensions,
   FlatList,
-  RefreshControl,
-  Button,
+  Modal,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ReceiverContainer, SenderChatDetails} from '../components/chatDetails';
 import PopUpMenu from '../components/PopUpMenu';
 import Toast from 'react-native-simple-toast';
+import {getVerifiedKeys} from '../utils/Functions';
+import {useDispatch, useSelector} from 'react-redux';
+import {setToken} from '../redux/AuthSlice';
+import {setInitialState} from '../redux/MileStoneSlice';
+import {getChat} from '../services/Auth';
+import {sendChat} from '../services/Auth';
 import {uploadChatImage} from '../services/Auth';
 import ImagePicker from 'react-native-image-crop-picker';
-import {getVerifiedKeys} from '../utils/Functions';
-import {useSelector} from 'react-redux';
-import Modal from 'react-native-modal';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {GroupInfoModal} from '../components/Modals';
-const ChatScreen = ({navigation, route}) => {
-  // console.log('id', route.params.id);
-  const [refreshing, setRefreshing] = useState(false);
-  const [modal1, setmodal1] = useState(false);
-  const sendChat = async () => {};
-  const authData = useSelector(state => state.auth);
-  const groupContact = useSelector(state => state.contact.groupContacts);
-  // console.log('group contacts', groupContact);
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    if (chat.length > 2) {
-      try {
-        let response = await fetch(
-          'http://www.mocky.io/v2/5e3315753200008abe94d3d8?mocky-delay=2000ms',
-        );
-        let responseJson = await response.json();
-        console.log(responseJson);
-        setListData(responseJson.result.concat(chat));
-        setRefreshing(false);
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      Toast.show('No more new data available');
-      setRefreshing(false);
-    }
-  }, [refreshing]);
 
-  const [chat, setChat] = useState([
-    {
-      id: 1,
-      groupId: '21',
-      senderName: 'sumukh',
-      chat: 'boom boom',
-      phoneNumber: '8197781176',
-      time: '2022-11-28T05:24:01.463Z',
-    },
-    {
-      id: 2,
-      groupId: '22',
-      senderName: 'prabhal',
-      chat: 'boom boom',
-      phoneNumber: '8197781175',
-      time: '2022-11-28T05:24:01.463Z',
-    },
-  ]);
+const ChatScreen = ({navigation, route}) => {
+  const auth = useSelector(state => state.auth);
+  const [text, setText] = useState('');
+  const state = useSelector(state => state.milestone.initialState);
+  const dispatch = useDispatch();
+  const [chat, setChat] = useState([]);
+  const [modal1, setmodal1] = useState(false);
+  const authData = useSelector(state => state.auth);
+
+  useEffect(() => {
+    setTimeout(async () => {
+      const cred = await getVerifiedKeys(auth.userToken);
+      dispatch(setToken(cred));
+      const resp = await getChat(cred, route.params.id);
+      setChat(resp.chatDetails);
+      if (resp !== undefined) {
+        Toast.show('Getting Chats');
+      } else {
+        Toast.show('Unable to get chats');
+      }
+    }, 500);
+  }, [state]);
 
   const pickImage = () => {
     console.log(route.params.id);
@@ -105,19 +83,19 @@ const ChatScreen = ({navigation, route}) => {
     });
   };
 
-  const handleToggle1 = () => {
+  const handleToggle = () => {
     console.log('haii');
-    setmodal1(true);
-    console.log('modl', modal1);
-    // <GroupInfoModal isVisible={modal1}/>
+    setmodal1(!modal1);
+    console.log(modal1);
+    return <GroupInfoModal isVisible={modal1} />;
   };
 
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
 
   return (
-    <>
-      <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
+      <Pressable onPress={handleToggle}>
         <View style={[styles.header, styles.shadow]}>
           <Pressable
             onPress={() => {
@@ -135,9 +113,7 @@ const ChatScreen = ({navigation, route}) => {
             options={[
               {
                 title: 'Group Info',
-                action: () => {
-                  setmodal1(!modal1);
-                },
+                action: () => {},
               },
               {
                 title: 'Notifications',
@@ -156,66 +132,65 @@ const ChatScreen = ({navigation, route}) => {
             size={30}
           />
         </View>
+      </Pressable>
 
-        <ImageBackground
-          source={require('../assets/images/chat.png')}
-          style={styles.image}></ImageBackground>
-        <FlatList
-          data={chat}
-          renderItem={({item}) => {
-            if (item.phoneNumber === '8197781176') {
-              return <SenderChatDetails chat={item} />;
-            } else {
-              return <ReceiverContainer chat={item} />;
-            }
-          }}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      <ImageBackground
+        source={require('../assets/images/chat.png')}
+        style={styles.image}></ImageBackground>
+      <FlatList
+        data={chat}
+        renderItem={({item}) => {
+          if (item.memberNumber === auth.userCredentials.mobile) {
+            return <SenderChatDetails chat={item} />;
+          } else {
+            return <ReceiverContainer chat={item} />;
           }
-        />
-        <View style={[styles.bottomContainer, styles.bottomshadow, {top}]}>
-          <View style={styles.iconContainer}>
-            <Pressable>
-              <Image
-                source={require('../assets/images/smile.png')}
-                style={{height: 30, width: 30}}
-              />
-            </Pressable>
-            <TextInput style={styles.input} placeholder="Type a Message" />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginRight: '2%',
-            }}>
-            <Pressable onPress={pickImage}>
-              <Image
-                source={require('../assets/images/document.png')}
-                style={{height: 27, width: 24, marginRight: 10}}
-              />
-            </Pressable>
-            <Pressable>
-              <Image
-                source={require('../assets/images/send.png')}
-                style={{height: 48, width: 48}}
-              />
-            </Pressable>
-          </View>
+        }}
+      />
+      <View style={[styles.bottomContainer, styles.bottomshadow, {top}]}>
+        <View style={styles.iconContainer}>
+          <Pressable>
+            <Image
+              source={require('../assets/images/smile.png')}
+              style={{height: 30, width: 30}}
+            />
+          </Pressable>
+          <TextInput
+            style={styles.input}
+            onChangeText={val => setText(val)}
+            placeholder="Type a Message"
+          />
         </View>
-      </SafeAreaView>
-      {modal1 ? (
-        // <Modal isVisible={true}>
-        //   {console.log('modal opened')}
-        //   <Pressable onPress={handleToggle1}>
-        //     <View>
-        //       <Text>yghh</Text>
-        //     </View>
-        //   </Pressable>
-        // </Modal>
-        <Text>jsdfgdjg</Text>
-      ) : null}
-    </>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginRight: '2%',
+          }}>
+          <Pressable onPress={pickImage}>
+            <Image
+              source={require('../assets/images/document.png')}
+              style={{height: 27, width: 24, marginRight: 10}}
+            />
+          </Pressable>
+          <Pressable
+            onPress={async () => {
+              const cred = await getVerifiedKeys(auth.userToken);
+              dispatch(setToken(cred));
+              const resp = await sendChat(cred, route.params.id, text);
+              if (resp.message === 'chat saved successfully!!') {
+                Toast.show('Refreshing');
+                dispatch(setInitialState(state));
+              }
+            }}>
+            <Image
+              source={require('../assets/images/send.png')}
+              style={{height: 48, width: 48}}
+            />
+          </Pressable>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 };
 

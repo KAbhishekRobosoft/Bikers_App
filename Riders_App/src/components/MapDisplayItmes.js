@@ -55,7 +55,6 @@ export const MapNavBar = ({
           setSleep(false);
           setFuel(false);
           setFood(false);
-          dispatch(deSetLoading());
           GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
@@ -72,7 +71,6 @@ export const MapNavBar = ({
               const {code, message} = error;
               console.warn(code, message);
             });
-          dispatch(setLoading());
         }}>
         <Image
           source={require('../assets/images/insertcard.png')}
@@ -88,7 +86,6 @@ export const MapNavBar = ({
           setSleep(false);
           setFuel(true);
           setFood(false);
-          dispatch(deSetLoading());
           GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
@@ -105,7 +102,6 @@ export const MapNavBar = ({
               const {code, message} = error;
               console.warn(code, message);
             });
-          dispatch(setLoading());
         }}>
         <Image
           source={require('../assets/images/gasstation.png')}
@@ -121,7 +117,6 @@ export const MapNavBar = ({
           setSleep(true);
           setFuel(false);
           setFood(false);
-          dispatch(deSetLoading());
           GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
@@ -138,7 +133,6 @@ export const MapNavBar = ({
               const {code, message} = error;
               console.warn(code, message);
             });
-          dispatch(setLoading());
         }}>
         <Image
           source={require('../assets/images/bed.png')}
@@ -154,7 +148,6 @@ export const MapNavBar = ({
           setSleep(false);
           setFuel(false);
           setFood(true);
-          dispatch(deSetLoading());
           GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
@@ -171,7 +164,6 @@ export const MapNavBar = ({
               const {code, message} = error;
               console.warn(code, message);
             });
-          dispatch(setLoading());
         }}>
         <Image
           source={require('../assets/images/restaurant.png')}
@@ -189,7 +181,7 @@ export const MapNavBar = ({
               dispatch(setToken(cred))
               const resp= await endTrip(id,cred)
               if(resp !== undefined){
-                dispatch(setInitialState(state))
+                navigation.navigate('BottomTabLoginNavigation')
                 Toast.show('Trip Ended')
               }
               else{

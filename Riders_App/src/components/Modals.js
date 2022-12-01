@@ -24,15 +24,11 @@ import {useSelector} from 'react-redux';
 import Modal from 'react-native-modal';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-export const GroupInfoModal = (props) => {
-    console.log(props.isVisible)
-    return (
-        <SafeAreaView>
-            <Modal isVisible={props.isVisible}>
-                <View>
-                    <Text>i am modal</Text>
-                </View>
-            </Modal>
-        </SafeAreaView>
-    );
-}
+export const GroupInfoModal = props => {
+  console.log('component', props.isVisible);
+  return (
+    <Modal isVisible={props.isVisible}>
+      <Text>i am modal</Text>
+    </Modal>
+  );
+};
