@@ -5,7 +5,6 @@ import {
   StyleSheet,
   useWindowDimensions,
   View,
-  Text,
 } from 'react-native';
 import MapView, {Polyline} from 'react-native-maps';
 import {Marker} from 'react-native-maps';
