@@ -113,7 +113,7 @@ const ChatScreen = ({navigation, route}) => {
         dispatch(setInitialState(state));
         Toast.show('Image Posted');
       }
-    });
+    }).catch(er=>console.log(er))
   };
 
   const handleToggle1 = () => {
