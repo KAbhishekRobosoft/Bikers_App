@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Image} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 
 export const SenderChatDetails = ({chat}) => {
+
   return (
     <View>
       <View
@@ -25,7 +26,8 @@ export const SenderChatDetails = ({chat}) => {
           <Text style={styles.timeText}>{chat.time.substring(11,16)}</Text>
         </View>
         <View style={styles.senderContainer}>
-          <Text style={styles.senderText}>{chat.chat}</Text>
+          {!chat.isImage && <Text style={styles.senderText}>{chat.chat}</Text>}
+          {chat.isImage && <Image source= {{uri:'https'+chat.chat.substring(4)}} />}
         </View>
       </View>
     </View>

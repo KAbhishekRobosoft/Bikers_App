@@ -8,26 +8,26 @@ import {
   Pressable,
   FlatList,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AllTripList from '../components/AllTripList';
-import { SearchAllUserInputTrips } from '../services/Auth';
-import { getVerifiedKeys } from '../utils/Functions';
-import { SearchAllUserTrips } from '../services/Auth';
-import { setToken } from '../redux/AuthSlice';
+import {SearchAllUserInputTrips} from '../services/Auth';
+import {getVerifiedKeys} from '../utils/Functions';
+import {SearchAllUserTrips} from '../services/Auth';
+import {setToken} from '../redux/AuthSlice';
+import WelcomeAboardScreen2 from './WelcomeAbroadScreen2';
 
-
-const AllUserTrip= ({navigation}) => {
+const AllUserTrip = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
-  const authData= useSelector(state=>state.auth);
-  const state = useSelector(state => state.milestone.initialState)
-  const dispatch= useDispatch()
+  const authData = useSelector(state => state.auth);
+  const state = useSelector(state => state.milestone.initialState);
+  const dispatch = useDispatch();
 
   //console.log(authData.userData);
 
   useEffect(() => {
     setTimeout(async () => {
-      const key = await getVerifiedKeys(authData.userToken)
-      dispatch(setToken(key))
+      const key = await getVerifiedKeys(authData.userToken);
+      dispatch(setToken(key));
       const tripdata = await SearchAllUserTrips(key);
       setTripDetails(tripdata);
     }, 500);
@@ -36,51 +36,53 @@ const AllUserTrip= ({navigation}) => {
   const renderItem = details => {
     return (
       <AllTripList
-        image={details.item.tripImage}
-        placeName={details.item.tripName}
-        startDateText={details.item.startDate.toString()}
-        endDateText={details.item.endDate.toString()}
-        statusText={details.item.tripStatus}
-        month={details.item.startTime.toString()}
-        id={details.item._id}
+        data= {details.item}
+        navigation= {navigation}
       />
     );
   };
-  const handleSearch = async (value) => {
-    const key = await getVerifiedKeys(authData.userToken)
-    const response = await SearchAllUserInputTrips(key,value);
+  const handleSearch = async value => {
+    const key = await getVerifiedKeys(authData.userToken);
+    const response = await SearchAllUserInputTrips(key, value);
     setTripDetails(response);
-
-  }
+  };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.searchView}>
-        <Image
-          source={require('../assets/images/search.png')}
-          style={styles.searchIcon}
-        />
-        <TextInput
-          name="Search a Trip"
-          placeholder="Search a Trip"
-          placeholderTextColor="rgba(166,166,166,0.87)"
-          fontFamily="Roboto-Medium"
-          fontSize={12}
-          alignSelf={'center'}
-          marginLeft={6}
-          onChangeText={text => handleSearch(text)}
-          style={styles.inputText}
-        />
-      </View>
-      <FlatList
-        data={tripDetails}
-        keyExtractor={details => details._id}
-        renderItem={renderItem}></FlatList>
+    <>
+      {tripDetails.length === 0 ? (
+        <WelcomeAboardScreen2 />
+      ) : (
+        <SafeAreaView style={{flex: 1}}>
+          <View style={styles.searchView}>
+            <Image
+              source={require('../assets/images/search.png')}
+              style={styles.searchIcon}
+            />
+            <TextInput
+              name="Search a Trip"
+              placeholder="Search a Trip"
+              placeholderTextColor="rgba(166,166,166,0.87)"
+              fontFamily="Roboto-Medium"
+              fontSize={12}
+              alignSelf={'center'}
+              marginLeft={6}
+              onChangeText={text => handleSearch(text)}
+              style={styles.inputText}
+            />
+          </View>
+          <FlatList
+            data={tripDetails}
+            keyExtractor={details => details._id}
+            renderItem={renderItem}></FlatList>
 
-      <Pressable style={styles.addButton} onPress={() => navigation.navigate('CreateTrip')}>
-        <Image source={require('../assets/images/addtrip.png')} />
-      </Pressable>
-    </SafeAreaView>
+          <Pressable
+            style={styles.addButton}
+            onPress={() => navigation.navigate('CreateTrip')}>
+            <Image source={require('../assets/images/addtrip.png')} />
+          </Pressable>
+        </SafeAreaView>
+      )}
+    </>
   );
 };
 

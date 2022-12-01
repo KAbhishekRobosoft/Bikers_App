@@ -72,6 +72,7 @@ const OtpScreen = ({navigation}) => {
                   ) {
                     const response = await register(data.userData,data.haveBike);
                     if (response !== undefined) {
+                      dispatch(setOtpVerfied())
                       navigation.navigate('Login');
                     } else {
                       Toast.show('User already exists');

@@ -26,7 +26,6 @@ export const ContactDisplay = ({navigation}) => {
   const dispatch = useDispatch();
   const data = useSelector(state => state.contact.contactsData);
   const [text, setText] = useState();
-
   useEffect(() => {
     getContactBook();
   }, []);
@@ -45,7 +44,6 @@ export const ContactDisplay = ({navigation}) => {
                 recordID: c.recordID,
                 phoneNumbers: c.phoneNumbers,
                 marked: false,
-                image1: '',
               };
             });
           if (data.length === 0) {
@@ -124,7 +122,6 @@ export const ContactDisplay = ({navigation}) => {
         <View style={[styles.header, styles.shadow]}>
           <Pressable
             onPress={() => {
-              dispatch(deleteContactsData())
               navigation.goBack();
             }}>
             <Icon

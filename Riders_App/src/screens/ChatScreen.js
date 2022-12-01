@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,58 +10,110 @@ import {
   ImageBackground,
   useWindowDimensions,
   FlatList,
-  RefreshControl
+  RefreshControl,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ReceiverContainer, SenderChatDetails} from '../components/chatDetails';
 import PopUpMenu from '../components/PopUpMenu';
-import Toast from 'react-native-simple-toast'
+import Toast from 'react-native-simple-toast';
+import {getVerifiedKeys} from '../utils/Functions';
+import {useDispatch, useSelector} from 'react-redux';
+import {setToken} from '../redux/AuthSlice';
+import {setInitialState} from '../redux/MileStoneSlice';
+import {getChat} from '../services/Auth';
+import {sendChat} from '../services/Auth';
+import {uploadChatImage} from '../services/Auth';
+import ImagePicker from 'react-native-image-crop-picker';
 
-const ChatScreen = ({navigation,route}) => {
+const ChatScreen = ({navigation, route}) => {
+  const textRef = useRef(null);
+  const auth = useSelector(state => state.auth);
+  const [text, setText] = useState('');
+  const state = useSelector(state => state.milestone.initialState);
+  const dispatch = useDispatch();
+  const [chat, setChat] = useState([]);
+  const [modal1, setmodal1] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const onRefresh = React.useCallback(async() => {
-    setRefreshing(true);
-    if (chat.length > 2) {
-      try {
-        let response = await fetch(
-          'http://www.mocky.io/v2/5e3315753200008abe94d3d8?mocky-delay=2000ms',
-        );
-        let responseJson = await response.json();
-        console.log(responseJson);
-        setListData(responseJson.result.concat(chat));
-        setRefreshing(false)
-      } catch (error) {
-        console.error(error);
+  useEffect(() => {
+    setTimeout(async () => {
+      const cred = await getVerifiedKeys(auth.userToken);
+      dispatch(setToken(cred));
+      const resp = await getChat(cred, route.params.id);
+      console.log(resp)
+      setChat(resp.chatDetails);
+      if (resp !== undefined) {
+        Toast.show('Getting Chats');
+      } else {
+        Toast.show('Unable to get chats');
       }
-    }
-    else{
-      Toast.show('No more new data available');
-      setRefreshing(false)
-    }
-  }, [refreshing]);
+    }, 500);
+  }, [state]);
 
-  const [chat, setChat] = React.useState([
-    {
-      id: 1,
-      groupId: '21',
-      senderName: 'sumukh',
-      chat: 'boom boom',
-      phoneNumber: '8197781176',
-      time: '2022-11-28T05:24:01.463Z',
-    },
-    {
-      id: 2,
-      groupId: '22',
-      senderName: 'prabhal',
-      chat: 'boom boom',
-      phoneNumber: '8197781175',
-      time: '2022-11-28T05:24:01.463Z',
-    },
-  ]);
+  const wait = timeout => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  };
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    const cred = await getVerifiedKeys(auth.userToken);
+    dispatch(setToken(cred));
+    const resp = await getChat(cred, route.params.id);
+    if (resp !== undefined) {
+      Toast.show('Getting Chats');
+      setChat(resp.chatDetails);
+    } else {
+      Toast.show('Unable to get chats');
+    }
+      setRefreshing(false)
+  }, []);
+
+  const pickImage = () => {
+    ImagePicker.openPicker({
+      width: 200,
+      height: 200,
+      cropping: true,
+    }).then(async image => {
+      const payload = new FormData();
+      const file = [
+        {key: 'id', value: route.params.id},
+        {
+          key: 'image',
+          value: {
+            uri: image.path,
+            type: image.mime,
+            name: `${image.filename}.${image.mime.substring(
+              image.mime.indexOf('/') + 1,
+            )}`,
+          },
+        },
+      ];
+      file.map(ele => {
+        payload.append(ele.key, ele.value);
+      });
+      let cred = await getVerifiedKeys(auth.userToken);
+      const resp = await uploadChatImage(payload, cred);
+      if (resp !== undefined) {
+        const resp = await sendChat(cred, route.params.id, 'https'+resp.url.substring(4));
+        dispatch(setInitialState(state));
+        Toast.show('Image Posted');
+      }
+    }).catch(err => Toast.show('User Cancelled Selection'));
+  };
+
+  const handleToggle1 = () => {
+    setmodal1(true);
+  };
 
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
+  const top =
+    width > height
+      ? Platform.OS === 'ios'
+        ? '80%'
+        : '80%'
+      : Platform.OS === 'ios'
+      ? '95%'
+      : '90%';
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -78,23 +130,28 @@ const ChatScreen = ({navigation,route}) => {
           />
         </Pressable>
         <Text style={styles.headerText}>{route.params.tripName}</Text>
-        <PopUpMenu  options={[
-          {
-            title: 'Group Info',
-            action: ()=>alert("hello")
-          },
-          {
-            title: 'Notifications',
-            action: () => {alert("bye")},
-          },
-          {
-            title:"Clear Chat",
-            action:()=>{alert("cleaned")}
-          }
-        ]}
-        color= "white"
-        size={30}
-          />
+        <PopUpMenu
+          options={[
+            {
+              title: 'Group Info',
+              action: () => alert('hello'),
+            },
+            {
+              title: 'Notifications',
+              action: () => {
+                alert('bye');
+              },
+            },
+            {
+              title: 'Clear Chat',
+              action: () => {
+                alert('cleaned');
+              },
+            },
+          ]}
+          color="white"
+          size={30}
+        />
       </View>
 
       <ImageBackground
@@ -103,7 +160,7 @@ const ChatScreen = ({navigation,route}) => {
       <FlatList
         data={chat}
         renderItem={({item}) => {
-          if (item.phoneNumber === '8197781176') {
+          if (item.memberNumber === auth.userCredentials.mobile) {
             return <SenderChatDetails chat={item} />;
           } else {
             return <ReceiverContainer chat={item} />;
@@ -118,10 +175,15 @@ const ChatScreen = ({navigation,route}) => {
           <Pressable>
             <Image
               source={require('../assets/images/smile.png')}
-              style={{height: 30, width: 30}}
+              style={{height: 30, width: 30, top: 10}}
             />
           </Pressable>
-          <TextInput style={styles.input} placeholder="Type a Message" />
+          <TextInput
+            ref={textRef}
+            style={styles.input}
+            onChangeText={val => setText(val)}
+            placeholder="Type a Message"
+          />
         </View>
         <View
           style={{
@@ -129,13 +191,23 @@ const ChatScreen = ({navigation,route}) => {
             alignItems: 'center',
             marginRight: '2%',
           }}>
-          <Pressable>
+          <Pressable onPress={pickImage}>
             <Image
               source={require('../assets/images/document.png')}
               style={{height: 27, width: 24, marginRight: 10}}
             />
           </Pressable>
-          <Pressable>
+          <Pressable
+            onPress={async () => {
+              const cred = await getVerifiedKeys(auth.userToken);
+              dispatch(setToken(cred));
+              const resp = await sendChat(cred, route.params.id, text);
+              if (resp.message === 'chat saved successfully!!') {
+                Toast.show('Refreshing');
+                textRef.current.clear();
+                dispatch(setInitialState(state));
+              }
+            }}>
             <Image
               source={require('../assets/images/send.png')}
               style={{height: 48, width: 48}}

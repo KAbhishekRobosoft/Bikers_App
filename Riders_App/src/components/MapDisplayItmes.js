@@ -22,6 +22,7 @@ import { endTrip } from '../services/Auth';
 import Toast from 'react-native-simple-toast'
 import { setInitialState } from '../redux/MileStoneSlice';
 
+
 export const MapNavBar = ({
   navigation,
   atm,
@@ -56,7 +57,6 @@ export const MapNavBar = ({
           setSleep(false);
           setFuel(false);
           setFood(false);
-          dispatch(deSetLoading());
           GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
@@ -73,7 +73,6 @@ export const MapNavBar = ({
               const {code, message} = error;
               console.warn(code, message);
             });
-          dispatch(setLoading());
         }}>
         <Image
           source={require('../assets/images/insertcard.png')}
@@ -89,7 +88,6 @@ export const MapNavBar = ({
           setSleep(false);
           setFuel(true);
           setFood(false);
-          dispatch(deSetLoading());
           GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
@@ -106,7 +104,6 @@ export const MapNavBar = ({
               const {code, message} = error;
               console.warn(code, message);
             });
-          dispatch(setLoading());
         }}>
         <Image
           source={require('../assets/images/gasstation.png')}
@@ -122,7 +119,6 @@ export const MapNavBar = ({
           setSleep(true);
           setFuel(false);
           setFood(false);
-          dispatch(deSetLoading());
           GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
@@ -139,7 +135,6 @@ export const MapNavBar = ({
               const {code, message} = error;
               console.warn(code, message);
             });
-          dispatch(setLoading());
         }}>
         <Image
           source={require('../assets/images/bed.png')}
@@ -155,7 +150,6 @@ export const MapNavBar = ({
           setSleep(false);
           setFuel(false);
           setFood(true);
-          dispatch(deSetLoading());
           GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
@@ -172,7 +166,6 @@ export const MapNavBar = ({
               const {code, message} = error;
               console.warn(code, message);
             });
-          dispatch(setLoading());
         }}>
         <Image
           source={require('../assets/images/restaurant.png')}
@@ -191,6 +184,7 @@ export const MapNavBar = ({
               const resp= await endTrip(id,cred)
               if(resp !== undefined){
                 dispatch(setInitialState(state))
+                navigation.navigate('BottomTabLoginNavigation')
                 Toast.show('Trip Ended')
               }
               else{
@@ -279,7 +273,7 @@ export const MapBottomBar = ({
   id,
 }) => {
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? '1%' : '1%') : '900%';
+  const top = width > height ? (Platform.OS === 'ios' ? '1%' : '1%') : 0;
   const dispatch = useDispatch();
 
   return (
@@ -326,11 +320,13 @@ export const MapChatButton = ({
   setLongitude,
   navigation,
   tripName,
+  id
 }) => {
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? 80 : 80) : '275%';
   const left = width > height ? (Platform.OS === 'ios' ? '85%' : '85%') : '75%';
-
+  const state= useSelector(state=>state.milestone.initialState)
+  const dispatch= useDispatch()
   return (
     <View
       style={[
@@ -352,6 +348,7 @@ export const MapChatButton = ({
               const {code, message} = error;
               console.warn(code, message);
             });
+
         }}>
         <View style={styles.indicatorContiner}>
           <Icon1 name="gps-fixed" color={'#A4A4A4'} size={25} />
@@ -361,6 +358,7 @@ export const MapChatButton = ({
         onPress={() => {
           navigation.navigate('ChatScreen', {
             tripName: tripName,
+            id:id
           });
         }}>
         <Image source={require('../assets/images/wechat.png')} />

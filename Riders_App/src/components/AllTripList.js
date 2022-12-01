@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setInitialState } from '../redux/MileStoneSlice';
 import { month1 } from '../utils/Functions';
 
-const AllTripList = ({image,navigation, placeName, startDateText, status, endDateText, id}) => {
+const AllTripList = ({navigation,data}) => {
   const state = useSelector(state => state.milestone.initialState)
   const [visible,setVisible]= useState(false)
   const authData= useSelector(state=>state.auth);
@@ -21,31 +21,30 @@ const AllTripList = ({image,navigation, placeName, startDateText, status, endDat
   return (
     <View>
     <Pressable onPress={()=>navigation.navigate('particularTrip',{
-      tripName:placeName,
-      status:status
+        data:data
     })}>
     <View style={styles.container}>
       <ImageBackground
-        source={{uri: 'https' + image.substring(4)}}
+        source={{uri: 'https' + data.tripImage.substring(4)}}
         resizeMode="cover"
         style={styles.image}>
         <View style={styles.listContainer}>
           <View style={styles.textContainer}>
-            <Text style={styles.placeName}>{placeName}</Text>
+            <Text style={styles.placeName}>{data.tripName}</Text>
             <View style={{flexDirection: 'row'}}>
-            <Text style={styles.dateText}>{startDateText.substring(8, 10)} {month1[startDateText.substring(5,7)]} - </Text>
-            <Text style={styles.dateText}>{endDateText.substring(8, 10)} {month1[endDateText.substring(5,7)]}</Text>
+            <Text style={styles.dateText}>{data.startDate.substring(8, 10)} {month1[data.startDate.substring(5,7)]} - </Text>
+            <Text style={styles.dateText}>{data.endDate.substring(8, 10)} {month1[data.endDate.substring(5,7)]}</Text>
             </View>
             <View style={styles.statusContainer}>
-              <Text style={styles.statusText}>{status}</Text>
+              <Text style={styles.statusText}>{data.tripStatus}</Text>
             </View>
           </View>
-          <Pressable onPress={() => handleClose(id)}>
+          {authData.userCredentials.mobile === data.mobile && <Pressable onPress={() => handleClose(data._id)}>
             <Image
               source={require('../assets/images/close.png')}
               style={styles.closeImage}
             />
-          </Pressable>
+          </Pressable>}
         </View>
       </ImageBackground>
     </View>

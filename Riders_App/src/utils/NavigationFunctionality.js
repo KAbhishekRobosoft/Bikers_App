@@ -11,7 +11,6 @@ import {getVerifiedKeys} from './Functions';
 function NavigationFunctionality() {
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
-
   useEffect(() => {
     setTimeout(async () => {
       let userToken, cred;

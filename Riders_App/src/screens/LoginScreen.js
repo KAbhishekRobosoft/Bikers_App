@@ -76,7 +76,7 @@ const LoginScreen = ({navigation}) => {
                 number: '',
                 password: '',
               }}
-              onSubmit={async values => {
+              onSubmit={values => {
                 signIn(values);
               }}>
               {({values, handleSubmit, isValid}) => (
