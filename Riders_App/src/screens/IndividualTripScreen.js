@@ -36,12 +36,7 @@ const AllTrips = ({navigation}) => {
     return (
       <AllTripList
         navigation={navigation}
-        image={details.item.tripImage}
-        placeName={details.item.tripName}
-        startDateText={details.item.startDate.toString()}
-        endDateText={details.item.endDate.toString()}
-        id={details.item._id}
-        status={details.item.tripStatus}
+        data= {details.item}
       />
     );
   };

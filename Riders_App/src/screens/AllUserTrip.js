@@ -36,13 +36,7 @@ const AllUserTrip = ({navigation}) => {
   const renderItem = details => {
     return (
       <AllTripList
-        image={details.item.tripImage}
-        placeName={details.item.tripName}
-        startDateText={details.item.startDate.toString()}
-        endDateText={details.item.endDate.toString()}
-        status={details.item.tripStatus}
-        month={details.item.startTime.toString()}
-        id={details.item._id}
+        data= {details.item}
         navigation= {navigation}
       />
     );
@@ -55,7 +49,7 @@ const AllUserTrip = ({navigation}) => {
 
   return (
     <>
-      {tripDetails.length == 0 ? (
+      {tripDetails.length === 0 ? (
         <WelcomeAboardScreen2 />
       ) : (
         <SafeAreaView style={{flex: 1}}>

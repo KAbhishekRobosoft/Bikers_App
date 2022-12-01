@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -26,6 +26,7 @@ import {uploadChatImage} from '../services/Auth';
 import ImagePicker from 'react-native-image-crop-picker';
 
 const ChatScreen = ({navigation, route}) => {
+  const textRef = useRef(null);
   const auth = useSelector(state => state.auth);
   const [text, setText] = useState('');
   const state = useSelector(state => state.milestone.initialState);
@@ -49,9 +50,22 @@ const ChatScreen = ({navigation, route}) => {
     }, 500);
   }, [state]);
 
-  const onRefresh = React.useCallback(() => {
+  const wait = timeout => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  };
+
+  const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
+    const cred = await getVerifiedKeys(auth.userToken);
+    dispatch(setToken(cred));
+    const resp = await getChat(cred, route.params.id);
+    if (resp !== undefined) {
+      Toast.show('Getting Chats');
+      setChat(resp.chatDetails);
+    } else {
+      Toast.show('Unable to get chats');
+    }
+      setRefreshing(false)
   }, []);
 
   const pickImage = () => {
@@ -84,7 +98,7 @@ const ChatScreen = ({navigation, route}) => {
         dispatch(setInitialState(state));
         Toast.show('Image Posted');
       }
-    });
+    }).catch(err => Toast.show('User Cancelled Selection'));
   };
 
   const handleToggle1 = () => {
@@ -92,7 +106,14 @@ const ChatScreen = ({navigation, route}) => {
   };
 
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
+  const top =
+    width > height
+      ? Platform.OS === 'ios'
+        ? '80%'
+        : '80%'
+      : Platform.OS === 'ios'
+      ? '95%'
+      : '90%';
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -154,10 +175,11 @@ const ChatScreen = ({navigation, route}) => {
           <Pressable>
             <Image
               source={require('../assets/images/smile.png')}
-              style={{height: 30, width: 30}}
+              style={{height: 30, width: 30, top: 10}}
             />
           </Pressable>
           <TextInput
+            ref={textRef}
             style={styles.input}
             onChangeText={val => setText(val)}
             placeholder="Type a Message"
@@ -182,6 +204,7 @@ const ChatScreen = ({navigation, route}) => {
               const resp = await sendChat(cred, route.params.id, text);
               if (resp.message === 'chat saved successfully!!') {
                 Toast.show('Refreshing');
+                textRef.current.clear();
                 dispatch(setInitialState(state));
               }
             }}>
