@@ -9,10 +9,9 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
-  ToastAndroid
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {useSelector,useDispatch} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import ActivityList from '../components/MyActivityList';
 import {getSortedTripDetails, profileData} from '../services/Auth';
 import {getVerifiedKeys, month} from '../utils/Functions';
@@ -28,11 +27,11 @@ const Profile = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
   const userData = useSelector(state => state.auth.userCredentials);
   const token = useSelector(state => state.auth);
-  const state= useSelector(state=>state.milestone.initialState)
-  const dispatch= useDispatch()
-  const loading= useSelector(state=>state.milestone.isLoading)
+  const state = useSelector(state => state.milestone.initialState);
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.milestone.isLoading);
 
-  function setImage(){
+  function setImage() {
     ImagePicker.openPicker({
       width: 200,
       height: 200,
@@ -57,24 +56,24 @@ const Profile = ({navigation}) => {
   }
 
   useEffect(() => {
+    dispatch(deSetLoading());
     setTimeout(async () => {
-      dispatch(deSetLoading())
-      const cred= await getVerifiedKeys(token.userToken)
-      dispatch(setToken(cred))
-      const data = await profileData(cred,userData.mobile);
+      const cred = await getVerifiedKeys(token.userToken);
+      dispatch(setToken(cred));
+      const data = await profileData(cred, userData.mobile);
       setPersonData(data);
       const tripdata = await getSortedTripDetails(cred);
       setTripDetails(tripdata);
-      dispatch(setLoading())
+      dispatch(setLoading());
     }, 500);
   }, [state]);
 
-  if(loading){
-      return(
-        <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-              <ActivityIndicator size= "large" color="orange" />
-        </View>
-      )
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="orange" />
+      </View>
+    );
   }
 
   return (
@@ -91,10 +90,13 @@ const Profile = ({navigation}) => {
             source={require('../assets/images/profilebike.png')}
             resizeMode="cover"
             style={styles.backgroundImage}></ImageBackground>
-          <Pressable onPress={()=>navigation.navigate('updateProfile',{
-            userName:personData.userDetails.userName,
-            aboutUser: personData.userDetails.aboutUser
-          })}>
+          <Pressable
+            onPress={() =>
+              navigation.navigate('updateProfile', {
+                userName: personData.userDetails.userName,
+                aboutUser: personData.userDetails.aboutUser,
+              })
+            }>
             <Image
               source={require('../assets/images/edit.png')}
               style={styles.editIcon}

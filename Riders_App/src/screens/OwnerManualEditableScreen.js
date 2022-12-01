@@ -39,12 +39,12 @@ import { BikeDetails } from '../components/BikeDetailsComponent';
 
 const OwnerManualEdit = ({navigation}) => {
   const userDetails = useSelector(state => state.auth.userData);
-  console.log(userDetails);
+  //console.log(userDetails);
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
   //const bikeDetails = useSelector(state => state.shop.selectedBikeData);
   const bikedata = useSelector(state => state.shop.allBikeData);
-  console.log('0000', bikedata[0].engineNumber);
+  //console.log('0000', bikedata[0].engineNumber);
   // useEffect(() => {
   //   setTimeout(async () => {
   //     let cred = await getVerifiedKeys(authData.userToken);
@@ -56,6 +56,7 @@ const OwnerManualEdit = ({navigation}) => {
   // }, []);
 
   const update = async values => {
+   // console.log('hiiiiiiIIIII',values.licence);
     const obj = {
       city: values.city,
       state: values.state,
@@ -77,7 +78,7 @@ const OwnerManualEdit = ({navigation}) => {
       mobile: values.mobile,
       email: values.email,
     };
-
+    console.log('_____---',obj2);
     dispatch(setUserData(obj2));
     navigation.navigate('OwnersManualDetail');
   };

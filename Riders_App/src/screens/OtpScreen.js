@@ -9,7 +9,7 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useDispatch, useSelector} from 'react-redux';
 import {register} from '../services/Auth';
@@ -17,6 +17,15 @@ import {setOtpVerfied} from '../redux/AuthSlice';
 import Toast from 'react-native-simple-toast';
 
 const OtpScreen = ({navigation}) => {
+  const [count, setCount] = useState(20);
+
+  useEffect(() => {
+    count > 0 &&
+      setTimeout(() => {
+        setCount(count - 1);
+      }, 1000);
+  }, [count]);
+
   const data = useSelector(state => state.auth);
   const [code, setCode] = useState('');
   const dispatch = useDispatch();
@@ -88,7 +97,7 @@ const OtpScreen = ({navigation}) => {
             </Pressable>
           </View>
           <View style={styles.textView2}>
-            <Text style={styles.secondsText}>20 seconds left</Text>
+            <Text style={styles.secondsText}>{count} seconds left</Text>
           </View>
         </View>
       </ScrollView>

@@ -7,6 +7,7 @@ import {persistStore} from 'redux-persist';
 import {NavigationContainer} from '@react-navigation/native';
 import NavigationFunctionality from './src/utils/NavigationFunctionality';
 import {getNearbyPlaces} from './src/services/Auth'
+import ImageLikeCommentScreen from './src/screens/ImageLikeCommentScreen';
 
 let persistor = persistStore(store);
 
