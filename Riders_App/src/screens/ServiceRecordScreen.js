@@ -117,7 +117,7 @@ const ServiceRecord = ({navigation}) => {
                 ))
             ) : (
               <View>
-                <Text style={styles.alternateText}>no data found :(</Text>
+                <Text style={styles.alternateText}></Text>
               </View>
             )}
           </View>
@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 20,
     marginTop: 70,
+    color: '#ED7E2B'
   },
 });
 

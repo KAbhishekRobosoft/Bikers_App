@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,7 +10,7 @@ import {
   ImageBackground,
   useWindowDimensions,
   FlatList,
-  Modal,
+  RefreshControl,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ReceiverContainer, SenderChatDetails} from '../components/chatDetails';
@@ -24,17 +24,22 @@ import {getChat} from '../services/Auth';
 import {sendChat} from '../services/Auth';
 import {uploadChatImage} from '../services/Auth';
 import ImagePicker from 'react-native-image-crop-picker';
-import {GroupInfoModal} from '../components/Modals';
+import Modal from 'react-native-modal';
+import {ScrollView} from 'react-native-gesture-handler';
+import {clearChat} from '../services/Auth';
 
 const ChatScreen = ({navigation, route}) => {
+  const textRef = useRef(null);
   const auth = useSelector(state => state.auth);
   const [text, setText] = useState('');
   const state = useSelector(state => state.milestone.initialState);
   const dispatch = useDispatch();
   const [chat, setChat] = useState([]);
   const [modal1, setmodal1] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const number = useSelector(state => state.auth.userCredentials.mobile);
   const authData = useSelector(state => state.auth);
-
+  const [emoji, setEmoji] = useState(false);
   useEffect(() => {
     setTimeout(async () => {
       const cred = await getVerifiedKeys(auth.userToken);
@@ -49,53 +54,92 @@ const ChatScreen = ({navigation, route}) => {
     }, 500);
   }, [state]);
 
+  const wait = timeout => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  };
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    const cred = await getVerifiedKeys(auth.userToken);
+    dispatch(setToken(cred));
+    const resp = await getChat(cred, route.params.id);
+    if (resp !== undefined) {
+      Toast.show('Getting Chats');
+      setChat(resp.chatDetails);
+    } else {
+      Toast.show('Unable to get chats');
+    }
+    setRefreshing(false);
+  }, []);
+
   const pickImage = () => {
-    console.log(route.params.id);
     ImagePicker.openPicker({
       width: 200,
       height: 200,
       cropping: true,
-    }).then(async image => {
-      console.log(image.path);
+    })
+      .then(async image => {
+        console.log(image.path);
 
-      const payload = new FormData();
-      const file = [
-        {key: 'id', value: route.params.id},
-        {
-          key: 'image',
-          value: {
-            uri: image.path,
-            type: image.mime,
-            name: `${image.filename}.${image.mime.substring(
-              image.mime.indexOf('/') + 1,
-            )}`,
+        const payload = new FormData();
+        const file = [
+          {key: 'id', value: route.params.id},
+          {
+            key: 'image',
+            value: {
+              uri: image.path,
+              type: image.mime,
+              name: `${image.filename}.${image.mime.substring(
+                image.mime.indexOf('/') + 1,
+              )}`,
+            },
           },
-        },
-      ];
-      file.map(ele => {
-        payload.append(ele.key, ele.value);
-      });
-      let cred = await getVerifiedKeys(authData.userToken);
-      const resp = await uploadChatImage(payload, cred);
-      if (resp !== undefined) {
-        Toast.show('Image Posted');
-      }
-    });
+        ];
+        file.map(ele => {
+          payload.append(ele.key, ele.value);
+        });
+        let cred = await getVerifiedKeys(authData.userToken);
+        const resp = await uploadChatImage(payload, cred);
+        if (resp !== undefined) {
+          Toast.show('Image Posted');
+        }
+      })
+      .catch(err => Toast.show('User Cancelled Selection'));
   };
 
   const handleToggle = () => {
-    console.log('haii');
     setmodal1(!modal1);
-    console.log(modal1);
-    return <GroupInfoModal isVisible={modal1} />;
+  };
+  const handleEmoji = () => {
+    setEmoji(!emoji);
+  };
+
+  const handleClearChat = async () => {
+    let cred = await getVerifiedKeys(authData.userToken);
+    if (route.params.mobile === number) {
+      let response = await clearChat(route.params.id, cred);
+      if (response !== undefined) {
+        Toast.show('Chats Cleared');
+        dispatch(setInitialState(state));
+      }
+    } else {
+      Toast.show('You cannot clear the chat as you are not admin');
+    }
   };
 
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
+  const top =
+    width > height
+      ? Platform.OS === 'ios'
+        ? '80%'
+        : '80%'
+      : Platform.OS === 'ios'
+      ? '95%'
+      : '90%';
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Pressable onPress={handleToggle}>
+      <Pressable onPress={() => handleToggle()}>
         <View style={[styles.header, styles.shadow]}>
           <Pressable
             onPress={() => {
@@ -113,7 +157,9 @@ const ChatScreen = ({navigation, route}) => {
             options={[
               {
                 title: 'Group Info',
-                action: () => {},
+                action: () => {
+                  handleToggle();
+                },
               },
               {
                 title: 'Notifications',
@@ -124,7 +170,7 @@ const ChatScreen = ({navigation, route}) => {
               {
                 title: 'Clear Chat',
                 action: () => {
-                  alert('cleaned');
+                  handleClearChat();
                 },
               },
             ]}
@@ -137,16 +183,25 @@ const ChatScreen = ({navigation, route}) => {
       <ImageBackground
         source={require('../assets/images/chat.png')}
         style={styles.image}></ImageBackground>
-      <FlatList
-        data={chat}
-        renderItem={({item}) => {
-          if (item.memberNumber === auth.userCredentials.mobile) {
-            return <SenderChatDetails chat={item} />;
-          } else {
-            return <ReceiverContainer chat={item} />;
+
+      <View>
+        <FlatList
+          data={chat}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          renderItem={({item}) => {
+            if (item.memberNumber === auth.userCredentials.mobile) {
+              return <SenderChatDetails chat={item} />;
+            } else {
+              return <ReceiverContainer chat={item} />;
+            }
+          }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-        }}
-      />
+        />
+      </View>
+
       <View style={[styles.bottomContainer, styles.bottomshadow, {top}]}>
         <View style={styles.iconContainer}>
           <Pressable>
@@ -156,6 +211,7 @@ const ChatScreen = ({navigation, route}) => {
             />
           </Pressable>
           <TextInput
+            ref={textRef}
             style={styles.input}
             onChangeText={val => setText(val)}
             placeholder="Type a Message"
@@ -180,6 +236,7 @@ const ChatScreen = ({navigation, route}) => {
               const resp = await sendChat(cred, route.params.id, text);
               if (resp.message === 'chat saved successfully!!') {
                 Toast.show('Refreshing');
+                textRef.current.clear();
                 dispatch(setInitialState(state));
               }
             }}>
@@ -190,6 +247,44 @@ const ChatScreen = ({navigation, route}) => {
           </Pressable>
         </View>
       </View>
+      {modal1 ? (
+        <Modal
+          isVisible={true}
+          backdropOpacity={0.3}
+          avoidKeyboard={true}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}>
+          <Pressable onPress={() => handleToggle()}>
+            <View style={styles.modalView}>
+              <Image
+                source={require('../assets/images/appicon.png')}
+                style={styles.imageIcon}
+              />
+              <Text style={styles.GroupInfoText}>Group Info</Text>
+              <View style={{flexDirection: 'row', marginTop: 15}}>
+                <Text style={styles.adminText}>Admin</Text>
+                <Text style={styles.adminMobileText}>
+                  : {route.params.mobile}
+                </Text>
+              </View>
+              <ScrollView style={{marginTop: 10}}>
+                {route.params.riders.map(ele => {
+                  return (
+                    <View key={ele._id} style={styles.ridersView}>
+                      <Text style={styles.ridersNameText}>{ele.riderName}</Text>
+                      <Text style={styles.ridersNumberText}>
+                        : {ele.riderPhoneNumber}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </ScrollView>
+            </View>
+          </Pressable>
+        </Modal>
+      ) : (
+        <></>
+      )}
     </SafeAreaView>
   );
 };
@@ -250,9 +345,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '90%',
     flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
     justifyContent: 'space-between',
+    alignSelf: 'center',
   },
   bottomshadow: {
     backgroundColor: '#FFFFFF',
@@ -285,10 +379,55 @@ const styles = StyleSheet.create({
 
   iconContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    // justifyContent: 'flex-start',
     marginLeft: '3%',
     width: '72%',
+    alignItems: 'center',
+  },
+  GroupInfoText: {
+    fontFamily: 'roboto-Medium',
+    fontSize: 18,
+  },
+  modalView: {
+    backgroundColor: 'white',
+    height: 200,
+    width: '100%',
+    padding: 10,
+    borderRadius: 10,
+  },
+  adminText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+    width: '20%',
+    color: '#ED7E2B',
+  },
+  adminMobileText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+    color: '#ED7E2B',
+  },
+  ridersView: {
+    flexDirection: 'row',
+  },
+  ridersNameText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+    width: '20%',
+  },
+  ridersNumberText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+  },
+  imageIcon: {
+    resizeMode: 'contain',
+    width: 40,
+    height: 40,
+    alignSelf: 'center',
+    marginTop: 10,
   },
 });
 
 export default ChatScreen;
+
+// chat/clearChat
+//groupId

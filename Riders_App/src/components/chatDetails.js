@@ -38,7 +38,7 @@ export const ReceiverContainer = ({chat}) => {
             <View style={styles.container}>
               <View style={{top: 20}}>
                 <Image
-                  source={require('../assets/images/smile.png')}
+                  source={{uri: 'https'+ chat.senderImage.substring(4)}}
                   style={styles.profile}
                 />
                 <Text style={styles.riderName}>{chat.senderName}</Text>

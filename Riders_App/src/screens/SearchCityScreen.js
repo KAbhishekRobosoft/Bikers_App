@@ -10,7 +10,7 @@ import {
   Pressable,
   Platform,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {searchCity} from '../services/Auth';
 import uuid from 'react-native-uuid';
 import {whereTo} from '../redux/MileStoneSlice';
@@ -54,7 +54,14 @@ export const SearchCity = ({navigation}) => {
             onChangeText={value => search(value)}
             style={styles.textInput}
           />
-          <Icon name="times" size={20} color={'#A4A4A4'} style={styles.times} />
+
+            <Icon
+              name="close"
+              size={22}
+              color={'#A4A4A4'}
+              style={styles.times}
+            />
+
         </View>
       </View>
       {data.length !== 0
@@ -74,11 +81,8 @@ export const SearchCity = ({navigation}) => {
                     />
                     <View style={styles.cityView}>
                       <Text style={styles.cityName}>{ele.geo.name}</Text>
-                      <Text style={styles.cityCode}>Udupi - 576105</Text>
                     </View>
-                    <View style={styles.kmView}>
-                      <Text style={styles.km}>300 km</Text>
-                    </View>
+                    <View style={styles.kmView}></View>
                   </View>
                 </View>
               </Pressable>
@@ -112,7 +116,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   resultContainer: {
-    height: 70,
+    height: 45,
     borderBottomWidth: 1,
     marginHorizontal: 36,
     borderBottomColor: '#979797',
@@ -163,5 +167,9 @@ const styles = StyleSheet.create({
   },
   times: {
     marginHorizontal: '14%',
+    height: 21,
+    resizeMode: 'contain',
+    marginTop: Platform.OS === 'android' ? 15 : 0,
+
   },
 });

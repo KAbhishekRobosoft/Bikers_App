@@ -16,7 +16,6 @@ import {UserTrips} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {SearchUserTrips} from '../services/Auth';
 import {setToken} from '../redux/AuthSlice';
-import WelcomeAboardScreen from './WelcomeAboardScreen';
 
 const AllTrips = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
@@ -36,12 +35,7 @@ const AllTrips = ({navigation}) => {
     return (
       <AllTripList
         navigation={navigation}
-        image={details.item.tripImage}
-        placeName={details.item.tripName}
-        startDateText={details.item.startDate.toString()}
-        endDateText={details.item.endDate.toString()}
-        id={details.item._id}
-        status={details.item.tripStatus}
+        data= {details.item}
       />
     );
   };

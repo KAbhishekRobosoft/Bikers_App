@@ -560,6 +560,7 @@ export const updateMobileNumber = async (m, key) => {
         },
       },
     );
+    console.log('resd',response.data)
     return response.data;
   } catch (err) {
     console.log('error in update mobile number');
@@ -738,4 +739,23 @@ export const uploadChatImage = async (payload, token) => {
   let data = await res.json();
   console.log('response in auth upload chat image',data)
   return data;
+}
+
+export const clearChat = async (groupId, token) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/chat/clearChat',
+      {
+        groupId:groupId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log('error in clearing chat',err);
+  }
 }

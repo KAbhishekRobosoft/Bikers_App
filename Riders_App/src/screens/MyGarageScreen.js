@@ -33,7 +33,6 @@ export const MyGarage = ({navigation}) => {
       const BikeTypes = response.map(e => {
         return e.vehicleType;
       });
-      console.log('bike tpyes', BikeTypes);
       dispatch(addBikeType(BikeTypes));
       dispatch(addBikeData(response));
       dispatch(setLoading());
@@ -69,13 +68,25 @@ export const MyGarage = ({navigation}) => {
             <GarageInputField
               text="Book a Service"
               source={require('../assets/images/telemarketer.png')}
-              onPress={() => navigation.navigate('BookService')}
+              onPress={() => {
+                if (bikeType[0] === undefined) {
+                  navigation.navigate('AddDetailsStack');
+                } else {
+                  navigation.navigate('BookService');
+                }
+              }}
               disabled={false}
             />
             <GarageInputField
               text="Service Records"
               source={require('../assets/images/folder.png')}
-              onPress={() => navigation.navigate('ServiceRecord')}
+              onPress={() => {
+                if (bikeType[0] === undefined) {
+                  navigation.navigate('AddDetailsStack');
+                } else {
+                  navigation.navigate('ServiceRecord');
+                }
+              }}
               disabled={false}
             />
             <GarageInputField

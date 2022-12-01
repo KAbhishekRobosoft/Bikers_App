@@ -10,13 +10,12 @@ import {
   Image,
   Pressable,
   ScrollView,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextField} from '../components/InputFields';
 import {DropDownInputField} from '../components/InputFields';
 import {DropDownInputField2} from '../components/InputFields';
-import {Dropdown} from 'react-native-material-dropdown';
-import SelectDropdown from 'react-native-select-dropdown';
 import InsetShadow from 'react-native-inset-shadow';
 import ButtonLarge from '../components/Buttons';
 import * as yup from 'yup';
@@ -27,15 +26,15 @@ import {setToken} from '../redux/AuthSlice';
 import {updateUserCredentials} from '../redux/AuthSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {attempts} from '../services/Auth';
+import Toast from 'react-native-simple-toast';
 
 export const BookService = ({navigation}) => {
   const phnumber = useSelector(state => state.auth.userCredentials);
   const [editable, seteditable] = useState(false);
-  const [no, setNo] = useState(phnumber.mobile);
   const [comment, setComment] = useState();
   const [selected, setSelected] = useState();
   const [selectedVehicle, setSelectedVehicle] = useState();
-  const [attempt, setAttempt] = useState()
+  const [attempt, setAttempt] = useState();
   const Data = useSelector(state => state.shop.bikeType);
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
@@ -65,7 +64,7 @@ export const BookService = ({navigation}) => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const response = await attempts(key);
-      setAttempt(response.attampts)
+      setAttempt(response.attampts);
     });
   });
   const handleEditNumber = async values => {
@@ -74,7 +73,6 @@ export const BookService = ({navigation}) => {
     const key = await getVerifiedKeys(authData.userToken);
     dispatch(setToken(key));
     const response = await updateMobileNumber(m, key);
-
     if (response !== undefined) {
       const obj = {
         mobile: values.mobileNumber,
@@ -85,11 +83,26 @@ export const BookService = ({navigation}) => {
       await AsyncStorage.setItem('token', response.accessToken);
       dispatch(setToken(response.accessToken));
       dispatch(updateUserCredentials(obj));
+      Toast.show('Number Updated successfully!');
     } else {
-      alert('failed to update the number');
+      Toast.show('Enter a proper 10 digit number');
     }
   };
-
+  const handleRight = values => {
+    Alert.alert('Confirm', 'Are you sure you want to update your number?', [
+      {
+        text: 'Yes',
+        onPress: () => handleEditNumber(values),
+      },
+      {
+        text: 'No',
+        onPress: () => handleEditable(),
+      },
+    ]);
+  };
+  const handleEditable = values => {
+    seteditable(!editable);
+  };
   return (
     <SafeAreaView style={{backgroundColor: '#FFFFFF', flex: 1}}>
       <View style={[styles.header, styles.shadow]}>
@@ -132,7 +145,7 @@ export const BookService = ({navigation}) => {
             };
             navigation.navigate('SearchService', obj);
           }}>
-          {({isValid, handleSubmit, values}) => (
+          {({isValid, handleSubmit, values, errors}) => (
             <>
               <View style={styles.firstInputField}>
                 <Field
@@ -140,15 +153,36 @@ export const BookService = ({navigation}) => {
                   name="mobileNumber"
                   placeholder="Mobile Number"
                   keyboardType="number-pad"
-                  value={values.mobileNumber}
-                  editable={true}
+                  defaultValue={values.mobileNumber}
+                  editable={editable}
                 />
-                <Pressable onPress={() => handleEditNumber(values)}>
-                  <Image
-                    source={require('../assets/images/edit.png')}
-                    style={styles.editImage}
-                  />
-                </Pressable>
+                {!editable ? (
+                  <Pressable onPress={() => handleEditable(values)}>
+                    <Image
+                      source={require('../assets/images/edit.png')}
+                      style={styles.editImage}
+                    />
+                  </Pressable>
+                ) : (
+                  <>
+                    <Pressable onPress={() => handleRight(values)}>
+                      <Icon
+                        name="checkmark"
+                        size={24}
+                        style={styles.editImage2}
+                        color="green"
+                      />
+                    </Pressable>
+                    <Pressable onPress={() => handleEditable(values)}>
+                      <Icon
+                        name="close"
+                        size={24}
+                        style={styles.editImage3}
+                        color="red"
+                      />
+                    </Pressable>
+                  </>
+                )}
               </View>
               <Text style={styles.alertText}>
                 You will have only {attempt} atempts to change your number
@@ -163,7 +197,6 @@ export const BookService = ({navigation}) => {
                 keyboardType="default"
                 value={values.vehicleNumber}
               />
-
               <DropDownInputField
                 data={data}
                 values={selected}
@@ -250,6 +283,16 @@ const styles = StyleSheet.create({
     marginLeft: -30,
     marginTop: 50,
   },
+  editImage2: {
+    resizeMode: 'contain',
+    marginLeft: -60,
+    marginTop: 45,
+  },
+  editImage3: {
+    resizeMode: 'contain',
+    marginLeft: -30,
+    marginTop: 45,
+  },
   dropDown: {
     backgroundColor: '#FFFFFF',
     width: '100%',
@@ -272,5 +315,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     color: '#D50000',
     fontSize: 12,
+  },
+  errorText: {
+    fontSize: 10,
+    color: 'red',
+    alignSelf: 'center',
+    marginTop: -15,
   },
 });

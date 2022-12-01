@@ -8,6 +8,7 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
+  FlatList,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
@@ -21,123 +22,159 @@ import MapView, {Marker} from 'react-native-maps';
 import {Polyline} from 'react-native-maps';
 import {getParticularTrip} from '../services/Auth';
 import {month1} from '../utils/Functions';
-import { calculateRoute } from '../services/Auth';
-import { deSetLoading } from '../redux/MileStoneSlice';
-import { setLoading } from '../redux/MileStoneSlice';
-import uuid from 'react-native-uuid'
+import {calculateRoute} from '../services/Auth';
+import {deSetLoading} from '../redux/MileStoneSlice';
+import {setLoading} from '../redux/MileStoneSlice';
+import uuid from 'react-native-uuid';
 
 export const GetParticularTripSummary = ({navigation, route}) => {
-  const [data, setData] = useState([]);
-  const [direction,setDirection]= useState([])
+  const [direction, setDirection] = useState([]);
   const mapRef = useRef(null);
-  const tripDetails = useSelector(state => state.milestone.storeTrip);
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
-  const loading= useSelector(state=>state.milestone.isLoading)
-  
+  const loading = useSelector(state => state.milestone.isLoading);
+
   useEffect(() => {
-    dispatch(deSetLoading())
+    dispatch(deSetLoading());
     setTimeout(async () => {
-      const key = await getVerifiedKeys(authData.userToken);
-      dispatch(setToken(key));
-      
-      const resp = await getParticularTrip(key,route.params.tripName);
-      const dir= await calculateRoute(resp[0].source[0].latitude,resp[0].source[0].longitude,resp[0].destination[0].latitude,resp[0].destination[0].longitude)
-      setDirection(dir.legs[0].points)
-      setData(resp);
-      dispatch(setLoading())
+      const dir = await calculateRoute(
+        route.params.data.source[0].latitude,
+        route.params.data.source[0].longitude,
+        route.params.data.destination[0].latitude,
+        route.params.data.destination[0].longitude,
+      );
+      setDirection(dir.legs[0].points);
+      setTimeout(() => {
+        mapRef.current.animateToRegion(
+          {
+            latitude: parseFloat(route.params.data.source[0].latitude),
+            longitude: parseFloat(route.params.data.source[0].longitude),
+            latitudeDelta: 0.03,
+            longitudeDelta: 0.1,
+          },
+          3 * 1000,
+        );
+      }, 500);
+      dispatch(setLoading());
     }, 500);
+    // getMovies()
   }, []);
 
-  if(loading){
-    return(
-      <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-            <ActivityIndicator size= "large" color="orange" />
+  // const [data,setData]= useState([])
+  // const [page,setPage]= useState(1)
+
+  // const getMovies= ()=>{
+  //   fetch(`https://api.unsplash.com/search/photos?client_id=${E6NDB43OBqrARXyTZljUf5JlbfXiBpfPEWijq9uX9rs}&query=code&page=${page}`,{
+  //     method:'GET',
+  //     headers:{
+  //       Accept:'application/json',
+  //       'Content-Type':'application/json'
+  //     }
+  //   }).then((response)=>response.json())
+  //   .then(json=>{
+  //     console.log("json=",json?.items)
+  //     console.log("data=>",data)
+  //     setData([...data,...json?.items])
+  //   })
+  //   .catch((error)=>{
+  //     console.log(error)
+  //   })
+  // }
+
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="orange" />
       </View>
-    )
+    );
   }
 
   return (
     <SafeAreaView>
-      {data.length > 0 && direction.length > 0 ? (
-        <View style={styles.mainView}>
-          <View style={[styles.header]}>
-            <View style={styles.subHeader}>
-              <Pressable
-                onPress={() => {
-                  navigation.goBack();
-                }}>
-                <Icon
-                  name="md-arrow-back"
-                  color={'white'}
-                  size={25}
-                  style={styles.icon}
-                />
-              </Pressable>
-              <Text style={styles.headerText}>TripSummary</Text>
-            </View>
+      <View style={styles.mainView}>
+        <View style={[styles.header]}>
+          <View style={styles.subHeader}>
+            <Pressable
+              onPress={() => {
+                navigation.goBack();
+              }}>
+              <Icon
+                name="md-arrow-back"
+                color={'white'}
+                size={25}
+                style={styles.icon}
+              />
+            </Pressable>
+            <Text style={styles.headerText}>Trip Summary</Text>
           </View>
-          <ScrollView style={styles.scrollView}>
-            <View style={styles.mapView}>
-              <MapView
-                ref={mapRef}
-                style={styles.mapStyle}
-                customMapStyle={mapStyle}>
-                <Polyline
-                  key={uuid.v4()}
-                  coordinates={direction.map(ele => ({
-                    latitude: ele.latitude,
-                    longitude: ele.longitude,
-                  }))}
-                  strokeColor={'blue'}
-                  strokeWidth={2}
-                  lineDashPattern={[1]}
-                />
+        </View>
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.mapView}>
+            <MapView
+              ref={mapRef}
+              style={styles.mapStyle}
+              customMapStyle={mapStyle}>
+              <Polyline
+                key={uuid.v4()}
+                coordinates={direction.map(ele => ({
+                  latitude: ele.latitude,
+                  longitude: ele.longitude,
+                }))}
+                strokeColor={'blue'}
+                strokeWidth={2}
+                lineDashPattern={[1]}
+              />
 
-                <Marker
-                  coordinate={{
-                    latitude: parseFloat(data[0].source[0].latitude),
-                    longitude: parseFloat(data[0].source[0].longitude),
-                    latitudeDelta: 0.03,
-                    longitudeDelta: 0.01,
-                  }}
-                />
+              <Marker
+                coordinate={{
+                  latitude: parseFloat(route.params.data.source[0].latitude),
+                  longitude: parseFloat(route.params.data.source[0].longitude),
+                  latitudeDelta: 0.03,
+                  longitudeDelta: 0.01,
+                }}
+              />
 
-                <Marker
-                  coordinate={{
-                    latitude: parseFloat(data[0].destination[0].latitude),
-                    longitude: parseFloat(data[0].destination[0].longitude),
-                    latitudeDelta: 0.03,
-                    longitudeDelta: 0.01,
-                  }}
-                />
-              </MapView>
-              <View style={styles.summaryView}>
-                <Image source={require('../assets/images/motorcycle.png')} />
-                <Text style={styles.tripName}>{data[0]?.tripName}</Text>
-                <Text style={styles.dateText}>
-                  {data[0]?.startDate?.substring(8, 10)}{' '}
-                  {month1[data[0]?.startDate?.substring(5, 7)]} -
-                  {data[0]?.endDate?.substring(8, 10)}{' '}
-                  {month1[data[0]?.endDate?.substring(5, 7)]}{' '}
-                  {data[0]?.endDate?.substring(0, 4)}
+              <Marker
+                coordinate={{
+                  latitude: parseFloat(
+                    route.params.data.destination[0].latitude,
+                  ),
+                  longitude: parseFloat(
+                    route.params.data.destination[0].latitude,
+                  ),
+                  latitudeDelta: 0.03,
+                  longitudeDelta: 0.01,
+                }}
+              />
+            </MapView>
+            <View style={styles.summaryView}>
+              <Image source={require('../assets/images/motorcycle.png')} />
+              <Text style={styles.tripName}>{route.params.data.tripName}</Text>
+              <Text style={styles.dateText}>
+                {route.params.data.startDate.substring(8, 10)}{' '}
+                {month1[route.params.data.startDate.substring(5, 7)]} -
+                {route.params.data.endDate.substring(8, 10)}{' '}
+                {month1[route.params.data.endDate?.substring(5, 7)]}{' '}
+                {route.params.data.endDate.substring(0, 4)}
+              </Text>
+              <Text style={styles.timeText}>
+                {route.params.data.startTime.substring(15, 21)}
+              </Text>
+              <View style={styles.fromToView}>
+                <Text style={styles.fromToText}>
+                  {route.params.data.source[0]?.place}
                 </Text>
-                <Text style={styles.timeText}>
-                  {tripDetails?.startTime?.substring(15, 21)}
+                <View style={styles.lineView}></View>
+                <Text style={styles.fromToText}>
+                  {route.params.data.destination[0].place}
                 </Text>
-                <View style={styles.fromToView}>
-                  <Text style={styles.fromToText}>
-                    {data[0]?.source[0]?.place}
-                  </Text>
-                  <View style={styles.lineView}></View>
-                  <Text style={styles.fromToText}>
-                    {data[0]?.destination[0]?.place}
-                  </Text>
-                </View>
               </View>
             </View>
-            {route.params.status === "upcoming" && <View style={styles.listView}>
-              <TripSummaryList data={data[0].milestones} />
+          </View>
+
+          {route.params.data.tripStatus === 'upcoming' && (
+            <View style={styles.listView}>
+              <TripSummaryList data={route.params.data.milestones} />
               <View style={styles.recommendationsView}>
                 <RecommendationTripSummary />
               </View>
@@ -150,34 +187,54 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                     />
                   </Pressable>
                 </View>
-                {data[0].riders.length === 0 && (
+                {route.params.data.riders.length === 0 && (
                   <Text style={styles.text}>Invite other riders</Text>
                 )}
-                {data[0].riders.length > 0 && (
-                  <BikeImageComponent data={data[0].riders.length}/>
+                {route.params.data.riders.length > 0 && (
+                  <BikeImageComponent data={route.params.data.riders.length} />
                 )}
               </View>
               <View style={styles.buttonView}>
                 <CreateButton
                   onPress={() => {
-                      navigation.navigate('MapDisplay',{
-                        latitude:data[0].source[0].latitude,
-                        longitude:data[0].source[0].longitude,
-                        latitude1:data[0].destination[0].latitude,
-                        longitude1:data[0].destination[0].longitude,
-                        destination:data[0].milestones,
-                        id:data[0]._id,
-                        tripName:data[0].tripName,
-                        riders: data[0].riders
-                      })
+                    navigation.navigate('MapDisplay', {
+                      latitude: route.params.data.source[0].latitude,
+                      longitude: route.params.data.source[0].longitude,
+                      latitude1: route.params.data.destination[0].latitude,
+                      longitude1: route.params.data.destination[0].longitude,
+                      milestones: route.params.data.milestones,
+                      id: route.params.data._id,
+                      tripName: route.params.data.tripName,
+                      mobile: route.params.data.mobile,
+                      riders: route.params.data.riders,
+                    });
                   }}
                   title="GO"
                 />
               </View>
-            </View>}
-          </ScrollView>
-        </View>
-      ) : null}
+            </View>
+          )}
+          {route.params.data.tripStatus === 'completed' ? (
+            <View style={styles.listView}></View>
+          ) : null}
+        </ScrollView>
+        {/* {route.params.data.tripStatus === 'completed' ? (
+          <View style={styles.listView}>
+            <FlatList
+              data={data}
+              renderItem={({item, index}) => {
+                return (
+                  <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+                    <Text>{item.name}</Text>
+                  </View>
+                );
+              }}
+              onEndReachedThreshold={0.5}
+              onEndReached={() => setPage(page + 1)}
+            />
+          </View>
+        ) : null} */}
+      </View>
     </SafeAreaView>
   );
 };

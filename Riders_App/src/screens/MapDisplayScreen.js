@@ -6,6 +6,7 @@ import {
   useWindowDimensions,
   View,
   Text,
+  Platform,
 } from 'react-native';
 import MapView, {Polyline} from 'react-native-maps';
 import {Marker} from 'react-native-maps';
@@ -20,7 +21,6 @@ import {deSetLoading} from '../redux/MileStoneSlice';
 import {useDispatch, useSelector} from 'react-redux';
 
 const MapDisplayScreen = ({navigation, route}) => {
-  console.log('routeee',route.params.riders)
   const [direction, setDirection] = useState([]);
   const mapRef = useRef(null);
   const dispatch = useDispatch();
@@ -73,7 +73,7 @@ const MapDisplayScreen = ({navigation, route}) => {
 
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? '8%' : '8%') : '300%';
-  const top1 = width > height ? (Platform.OS === 'ios' ? 50 : '8%') : 550;
+  const top1 = width > height ? (Platform.OS === 'ios' ? 50 : 30) : 540;
   const musicControl = () => {
     setMusicControlState(!musicControlState);
   };
@@ -205,7 +205,7 @@ const MapDisplayScreen = ({navigation, route}) => {
                 );
               })}
 
-            {route.params.destination.map(ele => {
+            {route.params.milestones.map(ele => {
               return (
                 <Marker
                   key={uuid.v4()}
@@ -229,9 +229,10 @@ const MapDisplayScreen = ({navigation, route}) => {
                 navigation={navigation}
                 tripName={route.params.tripName}
                 id= {route.params.id}
+                mobile= {route.params.mobile}
                 rider={route.params.riders}
               />
-              <View style={[styles.bottomContainer, {top}]}>
+              <View style={[styles.bottomContainer,]}>
                 <MapBottomBar
                   id={route.params.id}
                   musicControl={musicControl}
@@ -251,7 +252,7 @@ const MapDisplayScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   bottomContainer: {
     flex: 1,
-    marginTop: '30%',
+    marginTop: Platform.OS === 'android' ? "48.5%" : '30.1%',
   },
   mapStyle: {
     position: 'absolute',
