@@ -8,10 +8,7 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
-<<<<<<< HEAD
   FlatList,
-=======
->>>>>>> 69ae4ae1a12ed3f191c58e46a87f5cc671bbf9f4
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
