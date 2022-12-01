@@ -60,7 +60,7 @@ const MapDisplayScreen = ({navigation, route}) => {
         );
       },100)
     }, 500);
-  }, []);
+  }, [state]);
 
   const [atm, setAtm] = useState(false);
   const [fuel, setFuel] = useState(false);

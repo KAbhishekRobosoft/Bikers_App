@@ -11,6 +11,7 @@ import {
   useWindowDimensions,
   FlatList,
   RefreshControl,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ReceiverContainer, SenderChatDetails} from '../components/chatDetails';
@@ -34,13 +35,22 @@ const ChatScreen = ({navigation, route}) => {
   const [chat, setChat] = useState([]);
   const [modal1, setmodal1] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
+  const {height, width} = useWindowDimensions();
+  const top =
+    width > height
+      ? Platform.OS === 'ios'
+        ? '80%'
+        : '80%'
+      : Platform.OS === 'ios'
+      ? '95%'
+      : '90%';
+  const height2= width > height ? (Platform.OS === "ios" ? '60%' :'70%'):'80%'
 
   useEffect(() => {
     setTimeout(async () => {
       const cred = await getVerifiedKeys(auth.userToken);
       dispatch(setToken(cred));
       const resp = await getChat(cred, route.params.id);
-      console.log(resp)
       setChat(resp.chatDetails);
       if (resp !== undefined) {
         Toast.show('Getting Chats');
@@ -65,10 +75,11 @@ const ChatScreen = ({navigation, route}) => {
     } else {
       Toast.show('Unable to get chats');
     }
-      setRefreshing(false)
+    setRefreshing(false);
   }, []);
 
   const pickImage = () => {
+    let resp;
     ImagePicker.openPicker({
       width: 200,
       height: 200,
@@ -92,9 +103,13 @@ const ChatScreen = ({navigation, route}) => {
         payload.append(ele.key, ele.value);
       });
       let cred = await getVerifiedKeys(auth.userToken);
-      const resp = await uploadChatImage(payload, cred);
+      resp = await uploadChatImage(payload, cred);
       if (resp !== undefined) {
-        const resp = await sendChat(cred, route.params.id, 'https'+resp.url.substring(4));
+        let resp1 = await sendChat(
+          cred,
+          route.params.id,
+          'https' + resp.url.substring(4),
+        );
         dispatch(setInitialState(state));
         Toast.show('Image Posted');
       }
@@ -104,16 +119,6 @@ const ChatScreen = ({navigation, route}) => {
   const handleToggle1 = () => {
     setmodal1(true);
   };
-
-  const {height, width} = useWindowDimensions();
-  const top =
-    width > height
-      ? Platform.OS === 'ios'
-        ? '80%'
-        : '80%'
-      : Platform.OS === 'ios'
-      ? '95%'
-      : '90%';
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -157,19 +162,21 @@ const ChatScreen = ({navigation, route}) => {
       <ImageBackground
         source={require('../assets/images/chat.png')}
         style={styles.image}></ImageBackground>
-      <FlatList
-        data={chat}
-        renderItem={({item}) => {
-          if (item.memberNumber === auth.userCredentials.mobile) {
-            return <SenderChatDetails chat={item} />;
-          } else {
-            return <ReceiverContainer chat={item} />;
+      <View style={{height:height2}}>
+        <FlatList
+          data={chat}
+          renderItem={({item}) => {
+            if (item.memberNumber === auth.userCredentials.mobile) {
+              return <SenderChatDetails chat={item} />;
+            } else {
+              return <ReceiverContainer chat={item} />;
+            }
+          }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
-        }}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      />
+        />
+      </View>
       <View style={[styles.bottomContainer, styles.bottomshadow, {top}]}>
         <View style={styles.iconContainer}>
           <Pressable>

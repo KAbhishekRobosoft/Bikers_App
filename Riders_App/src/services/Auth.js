@@ -565,24 +565,6 @@ export const updateMobileNumber = async (m, key) => {
     console.log('error in update mobile number');
   }
 };
-export const getParticularTrip = async (token, tripName) => {
-  try {
-    const response = await axios.post(
-      BASE_URL + '/trip/getParticularTrip',
-      {
-        tripName: tripName,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    );
-    return response.data;
-  } catch (err) {
-    console.log('error in updating mobile number');
-  }
-};
 
 export const attempts = async token => {
   try {

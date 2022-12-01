@@ -26,12 +26,11 @@ import {Accessories} from '../screens/AccessoriesScreen';
 import LogoutScreen from '../screens/LogoutScreen';
 import AddBikeDetails from '../screens/AddBikeDetailsScreen';
 import ProfileUpdationScreen from '../screens/ProfileUpdationScreen';
-
+import ViewProfileScreen from '../screens/ViewProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
 function UserLoginStack() {
-
   return (
     <Stack.Navigator initialRouteName="BottomTabLoginNavigation">
       <Stack.Screen
@@ -165,8 +164,14 @@ function UserLoginStack() {
         name="updateProfile"
         component={ProfileUpdationScreen}
       />
+
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="viewProfile"
+        component={ViewProfileScreen}
+      />
     </Stack.Navigator>
   );
-};
+}
 
 export default UserLoginStack;

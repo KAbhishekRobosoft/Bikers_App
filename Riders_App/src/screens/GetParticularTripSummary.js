@@ -8,7 +8,10 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
+<<<<<<< HEAD
   FlatList,
+=======
+>>>>>>> 69ae4ae1a12ed3f191c58e46a87f5cc671bbf9f4
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
@@ -16,8 +19,6 @@ import {RecommendationTripSummary} from '../components/Recommendations';
 import {CreateButton} from '../components/Buttons';
 import {useSelector, useDispatch} from 'react-redux';
 import BikeImageComponent from '../components/BikeImageComponent';
-import {getVerifiedKeys} from '../utils/Functions';
-import {setToken} from '../redux/AuthSlice';
 import MapView, {Marker} from 'react-native-maps';
 import {Polyline} from 'react-native-maps';
 import {getParticularTrip} from '../services/Auth';

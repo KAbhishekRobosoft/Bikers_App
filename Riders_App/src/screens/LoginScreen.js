@@ -22,7 +22,6 @@ import {login} from '../redux/AuthSlice';
 import {setToken} from '../redux/AuthSlice';
 import {setForgotPassword} from '../redux/AuthSlice';
 import {setImage} from '../redux/AuthSlice';
-import { setUserCredentials } from '../redux/AuthSlice';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),
