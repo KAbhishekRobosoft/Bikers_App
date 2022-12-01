@@ -9,7 +9,6 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
-  ToastAndroid
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector,useDispatch} from 'react-redux';
@@ -23,48 +22,20 @@ import { setToken } from '../redux/AuthSlice';
 import { setInitialState } from '../redux/MileStoneSlice';
 import Toast from 'react-native-simple-toast'
 
-const Profile = ({navigation}) => {
+const ViewProfileScreen = ({navigation,route}) => {
   const [personData, setPersonData] = useState({});
-  const [tripDetails, setTripDetails] = useState([]);
-  const userData = useSelector(state => state.auth.userCredentials);
   const token = useSelector(state => state.auth);
   const state= useSelector(state=>state.milestone.initialState)
   const dispatch= useDispatch()
   const loading= useSelector(state=>state.milestone.isLoading)
-
-  function setImage(){
-    ImagePicker.openPicker({
-      width: 200,
-      height: 200,
-      cropping: true,
-    }).then(async image => {
-      const payload = new FormData();
-      payload.append('image', {
-        uri: image.path,
-        type: image.mime,
-        name: `${image.filename}.${image.mime.substring(
-          image.mime.indexOf('/') + 1,
-        )}`,
-      })
-      let cred= await getVerifiedKeys(token.userToken)
-      dispatch(setToken(cred))
-      const resp = await uploadProfileImage(payload,cred)
-      if(resp !== undefined){
-        Toast.show('Profile image updated succesfully')
-        dispatch(setInitialState(state))
-      }
-    })
-  }
 
   useEffect(() => {
     setTimeout(async () => {
       dispatch(deSetLoading())
       const cred= await getVerifiedKeys(token.userToken)
       dispatch(setToken(cred))
-      const data = await profileData(cred,userData.mobile);
+      const data = await profileData(cred,route.params.mobile);
       setPersonData(data);
-      const tripdata = await getSortedTripDetails(cred);
-      setTripDetails(tripdata);
       dispatch(setLoading())
     }, 500);
   }, [state]);
@@ -79,7 +50,6 @@ const Profile = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-    {JSON.stringify(personData) !== "{}" ? 
       <ScrollView style={{flex: 1}}>
         
         { JSON.stringify(personData) !== "{}" && <LinearGradient
@@ -101,7 +71,7 @@ const Profile = ({navigation}) => {
             />
           </Pressable>
           <View style={styles.profileContainer}>
-            {personData.userDetails.hasOwnProperty('profileImage') ?(<Pressable onPress={setImage}><Image
+            {personData.userDetails.profileImage !== '' ?(<Pressable onPress={setImage}><Image
               source={{uri:'https'+personData.userDetails.profileImage.substring(4)}}
               style={styles.profileImage}
             /></Pressable>):<Pressable onPress={setImage}><Image
@@ -136,26 +106,7 @@ const Profile = ({navigation}) => {
             </Text>
           </View>
         </View>
-        <View>
-          <Text style={styles.activitiText}>My Activities</Text>
-        </View>
-        <ScrollView style={{flex: 1}}>
-          {tripDetails.length > 0
-            ? tripDetails.map(details => (
-                <ActivityList
-                  key={details?._id}
-                  image={'https' + details?.tripImage?.substring(4)}
-                  placeName={details?.tripName}
-                  tripYear={details?.startDate?.substring(0, 4)}
-                  startDate={details?.startDate?.substring(8, 10)}
-                  endDate={details?.endDate?.substring(8, 10)}
-                  startMonth={month[details?.startDate?.substring(5, 7)]}
-                  endMonth={month[details?.endDate?.substring(5, 7)]}
-                />
-              ))
-            : null}
-        </ScrollView>
-      </ScrollView> : null}
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -304,4 +255,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default ViewProfileScreen;

@@ -28,6 +28,7 @@ const authenticateSlice = createSlice({
       state.userData = null;
       state.isLoading = false;
       state.userToken = null;
+      state.image= ''
     },
 
     setImage: (state, action) => {

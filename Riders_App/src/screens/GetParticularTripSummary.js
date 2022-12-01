@@ -8,7 +8,6 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
-  FlatList
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
@@ -16,16 +15,13 @@ import {RecommendationTripSummary} from '../components/Recommendations';
 import {CreateButton} from '../components/Buttons';
 import {useSelector, useDispatch} from 'react-redux';
 import BikeImageComponent from '../components/BikeImageComponent';
-import {getVerifiedKeys} from '../utils/Functions';
-import {setToken} from '../redux/AuthSlice';
 import MapView, {Marker} from 'react-native-maps';
 import {Polyline} from 'react-native-maps';
-import {getParticularTrip} from '../services/Auth';
-import {month1} from '../utils/Functions';
 import { calculateRoute } from '../services/Auth';
 import { deSetLoading } from '../redux/MileStoneSlice';
 import { setLoading } from '../redux/MileStoneSlice';
 import uuid from 'react-native-uuid'
+import { month1 } from '../utils/Functions';
 
 export const GetParticularTripSummary = ({navigation, route}) => {
   const [direction,setDirection]= useState([])
@@ -52,29 +48,8 @@ export const GetParticularTripSummary = ({navigation, route}) => {
       },500)
       dispatch(setLoading())
     }, 500);
-    // getMovies()
   }, []);
 
-  // const [data,setData]= useState([])
-  // const [page,setPage]= useState(1)
-
-  // const getMovies= ()=>{
-  //   fetch(`https://api.unsplash.com/search/photos?client_id=${E6NDB43OBqrARXyTZljUf5JlbfXiBpfPEWijq9uX9rs}&query=code&page=${page}`,{
-  //     method:'GET',
-  //     headers:{
-  //       Accept:'application/json',
-  //       'Content-Type':'application/json'
-  //     }
-  //   }).then((response)=>response.json())
-  //   .then(json=>{
-  //     console.log("json=",json?.items)
-  //     console.log("data=>",data)
-  //     setData([...data,...json?.items])
-  //   })
-  //   .catch((error)=>{
-  //     console.log(error)
-  //   })
-  // }
 
   if(loading){
     return(
@@ -181,7 +156,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                   <Text style={styles.text}>Invite other riders</Text>
                 )}
                 {route.params.data.riders.length > 0 && (
-                  <BikeImageComponent data={data[0].riders.length}/>
+                  <BikeImageComponent data={route.params.data.riders.length}/>
                 )}
               </View>
               <View style={styles.buttonView}>
@@ -206,22 +181,6 @@ export const GetParticularTripSummary = ({navigation, route}) => {
               </View>
             :null}
           </ScrollView>
-          {
-              route.params.data.tripStatus === "completed" ? <View style={styles.listView}>
-                  <FlatList data={data}
-                  renderItem= {({item,index})=>{
-                        return(
-                          <View style={{flexDirection:"row",flexWrap:"wrap"}}>
-
-                                <Text>{item.name}</Text>
-                          </View>
-                        )
-                  }}
-                    onEndReachedThreshold= {0.5}
-                    onEndReached= {()=>setPage(page+1)}
-                   />
-              </View>
-            :null}
         </View>
     </SafeAreaView>
   );

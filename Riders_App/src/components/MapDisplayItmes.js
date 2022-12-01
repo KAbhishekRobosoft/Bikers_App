@@ -275,6 +275,7 @@ export const MapBottomBar = ({
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? '1%' : '1%') : 0;
   const dispatch = useDispatch();
+  const authData= useSelector(state=>state.auth)
 
   return (
     <LinearGradient
@@ -297,7 +298,9 @@ export const MapBottomBar = ({
                 [{latitude: location.latitude, longitude: location.longitude}],
                 cred,
               );
-              console.log(resp);
+              if(resp === undefined){
+                Toast.show("Location updation unsuccessfull")
+              }
             })
             .catch(error => {
               const {code, message} = error;
@@ -343,6 +346,7 @@ export const MapChatButton = ({
             .then(async location => {
               setLatitude(location.latitude);
               setLongitude(location.longitude);
+              dispatch(setInitialState(state))
             })
             .catch(error => {
               const {code, message} = error;
