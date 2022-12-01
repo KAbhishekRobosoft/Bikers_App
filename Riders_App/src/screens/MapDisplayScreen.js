@@ -58,7 +58,7 @@ const MapDisplayScreen = ({navigation, route}) => {
           },
           3 * 1000,
         );
-      },500)
+      },100)
     }, 500);
   }, []);
 

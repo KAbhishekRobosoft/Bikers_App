@@ -10,6 +10,7 @@ import {
   ImageBackground,
   useWindowDimensions,
   FlatList,
+  RefreshControl,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ReceiverContainer, SenderChatDetails} from '../components/chatDetails';
@@ -20,7 +21,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setToken} from '../redux/AuthSlice';
 import {setInitialState} from '../redux/MileStoneSlice';
 import {getChat} from '../services/Auth';
-import { sendChat } from '../services/Auth';
+import {sendChat} from '../services/Auth';
 import {uploadChatImage} from '../services/Auth';
 import ImagePicker from 'react-native-image-crop-picker';
 
@@ -31,12 +32,14 @@ const ChatScreen = ({navigation, route}) => {
   const dispatch = useDispatch();
   const [chat, setChat] = useState([]);
   const [modal1, setmodal1] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   useEffect(() => {
     setTimeout(async () => {
       const cred = await getVerifiedKeys(auth.userToken);
       dispatch(setToken(cred));
       const resp = await getChat(cred, route.params.id);
+      console.log(resp)
       setChat(resp.chatDetails);
       if (resp !== undefined) {
         Toast.show('Getting Chats');
@@ -46,15 +49,17 @@ const ChatScreen = ({navigation, route}) => {
     }, 500);
   }, [state]);
 
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
+
   const pickImage = () => {
-    console.log(route.params.id);
     ImagePicker.openPicker({
       width: 200,
       height: 200,
       cropping: true,
     }).then(async image => {
-      console.log(image.path);
-
       const payload = new FormData();
       const file = [
         {key: 'id', value: route.params.id},
@@ -72,19 +77,18 @@ const ChatScreen = ({navigation, route}) => {
       file.map(ele => {
         payload.append(ele.key, ele.value);
       });
-      let cred = await getVerifiedKeys(authData.userToken);
+      let cred = await getVerifiedKeys(auth.userToken);
       const resp = await uploadChatImage(payload, cred);
       if (resp !== undefined) {
+        const resp = await sendChat(cred, route.params.id, 'https'+resp.url.substring(4));
+        dispatch(setInitialState(state));
         Toast.show('Image Posted');
       }
     });
   };
 
   const handleToggle1 = () => {
-    console.log('haii');
     setmodal1(true);
-    console.log('modl', modal1);
-
   };
 
   const {height, width} = useWindowDimensions();
@@ -141,6 +145,9 @@ const ChatScreen = ({navigation, route}) => {
             return <ReceiverContainer chat={item} />;
           }
         }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
       <View style={[styles.bottomContainer, styles.bottomshadow, {top}]}>
         <View style={styles.iconContainer}>
@@ -184,8 +191,8 @@ const ChatScreen = ({navigation, route}) => {
             />
           </Pressable>
         </View>
-        </View>
-      </SafeAreaView>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -286,4 +293,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatScreen
+export default ChatScreen;
