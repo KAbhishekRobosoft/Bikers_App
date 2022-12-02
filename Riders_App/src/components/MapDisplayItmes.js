@@ -286,6 +286,7 @@ export const MapBottomBar = ({
       <Pressable
         onPress={() => {
           musicControl();
+
           GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
@@ -304,7 +305,7 @@ export const MapBottomBar = ({
             })
             .catch(error => {
               const {code, message} = error;
-              console.warn(code, message);
+             Toast.show("Please turn on the location")
             });
         }}>
         <Icon
@@ -352,7 +353,7 @@ export const MapChatButton = ({
             })
             .catch(error => {
               const {code, message} = error;
-              console.warn(code, message);
+              Toast.show("Please turn on the location")
             });
             dispatch(setInitialState(state))
         }}>

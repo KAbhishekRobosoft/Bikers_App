@@ -27,10 +27,14 @@ const AllTrips = ({navigation}) => {
   const dispatch = useDispatch();
   useEffect(() => {
     setTimeout(async () => {
+      try{
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const tripdata = await UserTrips(key);
       setTripDetails(tripdata);
+      }catch(er){
+        Toast.show("Error Occurred")
+      }
     }, 500);
   }, [state]);
 

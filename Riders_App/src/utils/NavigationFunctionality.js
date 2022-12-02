@@ -7,6 +7,7 @@ import AppTourStack from './AppTourStack';
 import StackNavigation from './StackNavigation';
 import NewUserStack from './NewUserStack';
 import {getVerifiedKeys} from './Functions';
+import Toast from 'react-native-simple-toast'
 
 function NavigationFunctionality() {
   const authData = useSelector(state => state.auth);
@@ -26,6 +27,7 @@ function NavigationFunctionality() {
           dispatch(setToken(userToken))
         }
       } catch (e) {
+        Toast.show("Network Error")
         console.log(e);
       }
       if (userToken !== null) dispatch(setToken(cred));

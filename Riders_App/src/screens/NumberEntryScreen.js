@@ -16,6 +16,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import ButtonLarge from '../components/Buttons';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUserData} from '../redux/AuthSlice';
+import { deSetForgotPassword } from '../redux/AuthSlice';
 
 function NumberEntryScreen({navigation}) {
   const [text, setText] = useState('');
@@ -32,6 +33,7 @@ function NumberEntryScreen({navigation}) {
         <Pressable
           onPress={() => {
             navigation.goBack();
+            dispatch(deSetForgotPassword())
           }}>
           <Image
             style={styles.back_pic}

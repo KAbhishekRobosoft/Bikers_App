@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   FlatList,
   SafeAreaView,
@@ -19,6 +19,8 @@ import {useDispatch} from 'react-redux';
 export const SearchCity = ({navigation}) => {
   const [text, setText] = useState('');
   const [data, setData] = useState([]);
+  const [curLoc,setcurLoc]= useState('')
+
   const dispatch = useDispatch();
 
   const search = async value => {
@@ -54,14 +56,15 @@ export const SearchCity = ({navigation}) => {
             onChangeText={value => search(value)}
             style={styles.textInput}
           />
-
+          <Pressable  style={styles.times} onPress= {()=>{
+            navigation.navigate('CreateTrip')
+          }}>
             <Icon
               name="close"
               size={22}
               color={'#A4A4A4'}
-              style={styles.times}
             />
-
+          </Pressable>
         </View>
       </View>
       {data.length !== 0
@@ -170,6 +173,5 @@ const styles = StyleSheet.create({
     height: 21,
     resizeMode: 'contain',
     marginTop: Platform.OS === 'android' ? 15 : 0,
-
   },
 });

@@ -42,6 +42,7 @@ const MapDisplayScreen = ({navigation, route}) => {
   useEffect(() => {
     dispatch(deSetLoading());
     setTimeout(async () => {
+      try{
       const dir = await calculateRoute(
         latitude,
         longitude,
@@ -65,7 +66,10 @@ const MapDisplayScreen = ({navigation, route}) => {
         catch{
           Toast.show("Failed to animate direction")
         }
-      },100)
+      },100)}
+      catch(er){
+        Toast.show("Error Occurred")
+      }
     }, 500);
   }, [state]);
 

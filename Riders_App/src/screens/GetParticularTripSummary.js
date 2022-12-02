@@ -38,6 +38,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
   useEffect(() => {
     dispatch(deSetLoading());
     setTimeout(async () => {
+      try{
       const dir = await calculateRoute(
         route.params.data.source[0].latitude,
         route.params.data.source[0].longitude,
@@ -65,7 +66,10 @@ export const GetParticularTripSummary = ({navigation, route}) => {
         catch{
             Toast.show("Failed to animate direction")
         }
-      }, 1000);
+      }, 1000)}
+      catch(er){
+        Toast.show("Error occured")
+      }
 
     }, 500);
   }, [state]);
