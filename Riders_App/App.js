@@ -8,7 +8,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import NavigationFunctionality from './src/utils/NavigationFunctionality';
 import {getNearbyPlaces} from './src/services/Auth'
 import ImageLikeCommentScreen from './src/screens/ImageLikeCommentScreen';
-
+import RNBootSplash from "react-native-bootsplash";
 let persistor = persistStore(store);
 
 const App = () => {
@@ -21,7 +21,7 @@ const App = () => {
 
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <NavigationContainer>
+        <NavigationContainer onReady={() => RNBootSplash.hide()}>
           <NavigationFunctionality />
         </NavigationContainer>
       </PersistGate>
