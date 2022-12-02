@@ -6,7 +6,6 @@ const contactSlice = createSlice({
     contactsData: [],
     filterData: [],
     addTripContacts: [],
-
   },
 
   reducers: {

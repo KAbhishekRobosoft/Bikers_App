@@ -17,25 +17,38 @@ import {addBikeData, addBikeType} from '../redux/AccessoriesSlice';
 import {getBikeDetails} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
+import {getAllService} from '../services/Auth';
+import {addAllServices} from '../redux/AccessoriesSlice';
+
 export const MyGarage = ({navigation}) => {
   const hadBike = useSelector(state => state.auth.userCredentials);
-
-  //console.log(hadBike.haveBike)
   const dispatch = useDispatch();
   const bikeType = useSelector(state => state.shop.bikeType);
   const authData = useSelector(state => state.auth);
   const loading = useSelector(state => state.milestone.isLoading);
+  const serviceData = useSelector(state => state.shop.serviceData);
+  const [day, setDay] = useState();
   useEffect(() => {
     dispatch(deSetLoading());
     const get = async () => {
-      let cred = await getVerifiedKeys(authData.userToken);
-      const response = await getBikeDetails(cred);
-      const BikeTypes = response.map(e => {
-        return e.vehicleType;
-      });
-      console.log('bike tpyes', BikeTypes);
-      dispatch(addBikeType(BikeTypes));
-      dispatch(addBikeData(response));
+      try {
+        let cred = await getVerifiedKeys(authData.userToken);
+        const response = await getBikeDetails(cred);
+        const response2 = await getAllService(cred);
+        const time = response2[0].slotDate;
+        const time2 = Date.now();
+        const diffTime = new Date(time).getTime() - time2;
+        setDay(diffTime);
+        dispatch(addAllServices(response2));
+        const BikeTypes = response.map(e => {
+          return e.vehicleType;
+        });
+        dispatch(addBikeType(BikeTypes));
+        dispatch(addBikeData(response));
+      } catch (e) {
+        dispatch(addAllServices([]));
+      }
+
       dispatch(setLoading());
     };
     get();
@@ -53,29 +66,53 @@ export const MyGarage = ({navigation}) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
-        <View style={styles.serviceDueView}>
-          <Text style={styles.daysText}>15 Days</Text>
-          <Text style={styles.daysDescription}>Next Service due</Text>
-        </View>
+        {serviceData.length > 0 ? (
+          new Date(serviceData[0]?.slotDate) >= Date.now() ? (
+            <View style={styles.serviceDueView}>
+              <Text style={styles.daysText}>
+                {Math.floor(day / (1000 * 3600 * 24))} days
+              </Text>
+              <Text style={styles.daysDescription}>Next Service due</Text>
+            </View>
+          ) : (
+            <View style={styles.serviceDueView}>
+              <Text style={styles.daysText}>No service Due</Text>
+            </View>
+          )
+        ) : (
+          <View style={styles.serviceDueView}>
+            <Text style={styles.daysText}>No Services</Text>
+          </View>
+        )}
+
         <Image
           source={require('../assets/images/meter.png')}
           style={styles.meterImage}
         />
-        {
-         hadBike.haveBike
-      
-         ? (
+        {hadBike.haveBike ? (
           <View style={{marginTop: 30}}>
             <GarageInputField
               text="Book a Service"
               source={require('../assets/images/telemarketer.png')}
-              onPress={() => navigation.navigate('BookService')}
+              onPress={() => {
+                if (bikeType[0] === undefined) {
+                  navigation.navigate('AddDetailsStack');
+                } else {
+                  navigation.navigate('BookService');
+                }
+              }}
               disabled={false}
             />
             <GarageInputField
               text="Service Records"
               source={require('../assets/images/folder.png')}
-              onPress={() => navigation.navigate('ServiceRecord')}
+              onPress={() => {
+                if (bikeType[0] === undefined) {
+                  navigation.navigate('AddDetailsStack');
+                } else {
+                  navigation.navigate('ServiceRecord');
+                }
+              }}
               disabled={false}
             />
             <GarageInputField

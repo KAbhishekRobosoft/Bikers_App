@@ -8,8 +8,6 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
-  FlatList,
-  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
@@ -35,6 +33,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
   const dispatch = useDispatch();
   const loading = useSelector(state => state.milestone.isLoading);
   const [images, setImages] = useState([]);
+  const state= useSelector(state=>state.milestone.initialState)
 
   useEffect(() => {
     dispatch(deSetLoading());
@@ -67,7 +66,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
         }
       }, 1000);
     }, 500);
-  }, []);
+  }, [state]);
 
   if (loading) {
     return (
@@ -78,7 +77,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
   }
 
   return (
-    <SafeAreaView style={{backgroundColor: 'white'}}>
+    <SafeAreaView style={{backgroundColor: 'white',height: '100%'}}>
       {route.params.data.tripStatus === 'upcoming' && (
         <View style={styles.mainView}>
           <View style={[styles.header]}>
@@ -303,7 +302,6 @@ export const GetParticularTripSummary = ({navigation, route}) => {
               <View
                 style={{
                   marginTop: 160,
-                  //borderWidth: 1,
                   alignSelf: 'center',
                 }}>
                 <BikeImageComponent data={route.params.data.riders.length} />
@@ -315,9 +313,8 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                     fontFamily: 'Roboto-Regular',
                     color: 'rgba(58,57,57,0.87)',
                     lineHeight: 24,
-                    //marginRight: 20,
                     marginTop: 25,
-                    // borderWidth: 1,
+             
 
                     width: '80%',
                     alignSelf: 'center',
@@ -326,16 +323,9 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                 </Text>
               ) : null}
 
-              {/* <ScrollView
-                //onScrollEndDrag={loadMoreItem}
-                //onTouchEnd={loadMoreItem}
-                style={{borderWidth: 1}}> */}
-
               <View
                 style={{
-                  //borderWidth: 1,
                   flexWrap: 'wrap',
-                  // marginTop: 140,
                   flexDirection: 'row',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -360,27 +350,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                     })
                   : null}
               </View>
-
-              {/* <FlatList
-                
-                showsVerticalScrollIndicator={false}
-                data={users}
-                numColumns={2}
-                renderItem={renderItem}
-                keyExtractor={item => item.email}
-                ListFooterComponent={renderLoader}
-                onEndReached={loadMoreItem}
-                onEndReachedThreshold={0}
-                //style={styles.imageView}
-                //horizontal={true}
-                // contentContainerStyle={{
-                //   alignItems: "flex-start",
-                // }}
-              /> */}
-
-              {/* </ScrollView> */}
             </View>
-            {/* </View> */}
           </ScrollView>
         ) : null)}
     </SafeAreaView>

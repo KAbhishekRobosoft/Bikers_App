@@ -323,7 +323,9 @@ export const MapChatButton = ({
   setLongitude,
   navigation,
   tripName,
-  id
+  id,
+  mobile,
+  rider,
 }) => {
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? 80 : 80) : '275%';
@@ -346,13 +348,13 @@ export const MapChatButton = ({
             .then(async location => {
               setLatitude(location.latitude);
               setLongitude(location.longitude);
-              dispatch(setInitialState(state))
+           
             })
             .catch(error => {
               const {code, message} = error;
               console.warn(code, message);
             });
-
+            dispatch(setInitialState(state))
         }}>
         <View style={styles.indicatorContiner}>
           <Icon1 name="gps-fixed" color={'#A4A4A4'} size={25} />
@@ -362,7 +364,9 @@ export const MapChatButton = ({
         onPress={() => {
           navigation.navigate('ChatScreen', {
             tripName: tripName,
-            id:id
+            id:id,
+            mobile:mobile,
+            riders:rider
           });
         }}>
         <Image source={require('../assets/images/wechat.png')} />

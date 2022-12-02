@@ -49,7 +49,7 @@ const AddBikeDetails = ({navigation}) => {
       values.registerNumber &&
       values.model &&
       values.model &&
-      values.dealerCode !==''
+      values.dealerCode !== ''
     ) {
       const obj = {
         vehicleType: values.vehicleType,
@@ -72,8 +72,13 @@ const AddBikeDetails = ({navigation}) => {
       dispatch(addBikeType(BikeTypes));
       dispatch(addBikeData(response)); // <-----------Redux
       resetForm({initialValues});
-      Toast.show('Bike Details Added');
-      navigation.navigate('Garage');
+      if (authData.registered) {
+        Toast.show('To add more bikes, Create a trip first');
+        navigation.navigate('WelcomeAboardScreen');
+      } else {
+        Toast.show('Bike Details Added');
+        navigation.navigate('Garage');
+      }
     } else {
       Toast.show('Enter all the Details');
     }

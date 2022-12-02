@@ -109,7 +109,7 @@ export const Password = props => {
 
 export const PlaceholderTextField = props => {
   const {
-    field: {name, onBlur, onChange, value},
+    field: {name, onBlur, onChange, value, ref},
     form: {errors, touched, setFieldTouched},
     ...inputProps
   } = props;
@@ -120,7 +120,7 @@ export const PlaceholderTextField = props => {
     <View>
       <View style={styles.inputTextView2}>
         <View style={styles.placeholderView2}>
-          {props.value ? (
+          {props.defaultValue  || props.value ? (
             <View style={styles.commonPlaceholder}>
               <Text style={styles.text}>{props.placeholder}</Text>
             </View>
@@ -133,12 +133,16 @@ export const PlaceholderTextField = props => {
             style={styles.typedText}
             keyboardType={props.keyboardType}
             value={value}
+            defaultValue={props.default}
+            ref={ref}
+            selection={props.selection}
             onChangeText={text => onChange(name)(text)}
             onBlur={() => {
               setFieldTouched(name);
               onBlur(name);
             }}
             editable={props.editable}
+            selectTextOnFocus={props.selectTextOnFocus}
             
             {...inputProps}
           />
@@ -288,8 +292,6 @@ export const BookingDetailsInput = props => {
         name="mobile"
         value={props.value}
         onChangeText={props.onChangeText}
-        // values={values.mobile}
-        // defaultValue={route.params.mobileNumber}
       />
     </View>
   );
@@ -335,11 +337,12 @@ const styles = StyleSheet.create({
     width: '8%',
   },
   textInput: {
-    marginVertical: Platform.OS === 'android' ? -17 : -3,
+    marginVertical: Platform.OS === 'android' ? -28 : -8,
     fontSize: 16,
     marginLeft: 10,
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
+    height: Platform.OS === 'android' ? 65 : 30,
   },
   textPassword: {
     width: '90%',
@@ -474,13 +477,15 @@ const styles = StyleSheet.create({
   },
   textInputView: {
     marginHorizontal: 25,
-    paddingTop: 28,
+    paddingTop: Platform.OS === 'ios' ? 30 : 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingEnd: 3,
     marginTop: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',
+    // borderWidth: 1,
+    alignItems: 'center'
   },
   titleText: {
     paddingBottom: 5,
@@ -494,7 +499,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 14,
     color: '#4F504F',
-    width: '50%',
+    width: '60%',
     textAlign: 'left',
   },
 });

@@ -62,12 +62,7 @@ const BookingSummary = ({navigation}) => {
             />
           </Pressable>
         ) : (
-          <Pressable disabled={true}>
-            <Image
-              source={require('../assets/images/invoice.png')}
-              style={styles.invoiceImage}
-            />
-          </Pressable>
+          <></>
         )}
       </View>
       <ScrollView

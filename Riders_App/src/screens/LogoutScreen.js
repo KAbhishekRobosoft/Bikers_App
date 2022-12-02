@@ -28,6 +28,8 @@ const LogoutScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const hadBike = useSelector(state => state.auth.userCredentials);
   const userDetails = useSelector(state => state.auth.userData);
+  const authData = useSelector(state => state.auth);
+
   console.log(userDetails);
   return (
     <SafeAreaView style={styles.main}>
@@ -36,13 +38,13 @@ const LogoutScreen = ({navigation}) => {
           style={styles.img}
           source={require('../assets/images/logoutImg.jpg')}
         />
-        {hadBike.haveBike ? (
+        {hadBike.haveBike && !authData.registered ? (
           <View style={styles.btn1}>
             <ButtonLarge
               onPress={() => {
                 if (!userDetails.hasOwnProperty('lisenceNumber')) {
                   navigation.navigate('AddDetailsStack');
-                  Toast.show('Please Add Personal Details First')
+                  Toast.show('Please Add Personal Details First');
                 } else {
                   navigation.navigate('AddBikeDetails');
                 }
@@ -51,9 +53,31 @@ const LogoutScreen = ({navigation}) => {
             />
           </View>
         ) : (
-          <View style={styles.btn11}>
-            <ButtonLarge disabled={true} title="Add Bike Details" />
-          </View>
+          <>
+            <View style={styles.btn11}>
+              <ButtonLarge disabled={true} title="Add Bike Details" />
+            </View>
+
+        
+            {authData.registered && hadBike.haveBike && (
+              <View
+                style={{
+                  marginTop: 10,
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: '#F36870',
+                    fontSize: 13,
+                    fontFamily: 'Roboto-Regular',
+                    textAlign: 'center',
+                  }}>
+                  Please complete the Owner Manual Process {'\n'}
+                  (You can find Owner Manual in My Garage Section)
+                </Text>
+              </View>
+            )}
+          </>
         )}
 
         <View style={styles.btn2}>
@@ -105,7 +129,7 @@ const styles = StyleSheet.create({
   btn2: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 50,
+    marginTop: 40,
   },
   container: {
     shadowColor: 'rgba(126,118,118,0.5)',

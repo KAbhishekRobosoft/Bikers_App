@@ -16,9 +16,9 @@ import {SearchAllUserInputTrips} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {SearchAllUserTrips} from '../services/Auth';
 import {setToken} from '../redux/AuthSlice';
-import { setLoading } from '../redux/MileStoneSlice';
-import { deSetLoading } from '../redux/MileStoneSlice';
-import Toast from 'react-native-simple-toast'
+import {setLoading} from '../redux/MileStoneSlice';
+import {deSetLoading} from '../redux/MileStoneSlice';
+import Toast from 'react-native-simple-toast';
 
 const AllUserTrip = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
@@ -26,16 +26,17 @@ const AllUserTrip = ({navigation}) => {
   const state = useSelector(state => state.milestone.initialState);
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = React.useState(false);
-  const loading= useSelector(state=>state.milestone.isLoading)
+  const loading = useSelector(state => state.milestone.isLoading);
 
   useEffect(() => {
-    dispatch(deSetLoading())
+    dispatch(deSetLoading());
     setTimeout(async () => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const tripdata = await SearchAllUserTrips(key);
+      console.log("hello")
       setTripDetails(tripdata);
-      dispatch(setLoading())
+      dispatch(setLoading());
     }, 500);
   }, [state]);
 
@@ -58,21 +59,21 @@ const AllUserTrip = ({navigation}) => {
   };
   const handleSearch = async value => {
     const key = await getVerifiedKeys(authData.userToken);
-    const response = await SearchAllUserInputTrips(key, value);
+    const response = await SearchAllUserInputTrips(key,value);
     setTripDetails(response);
   };
 
-  if(loading){
-    return(
-      <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
-            <ActivityIndicator size="large" color="orange" />
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="orange" />
       </View>
-    )
+    );
   }
 
   return (
-        <SafeAreaView style={{flex: 1}}>
-        {tripDetails.length > 0 ?
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      {tripDetails.length > 0 ? (
         <>
           <View style={styles.searchView}>
             <Image
@@ -104,8 +105,10 @@ const AllUserTrip = ({navigation}) => {
             style={styles.addButton}
             onPress={() => navigation.navigate('CreateTrip')}>
             <Image source={require('../assets/images/addtrip.png')} />
-          </Pressable></> : null}
-        </SafeAreaView>
+          </Pressable>
+        </>
+      ) : null}
+    </SafeAreaView>
   );
 };
 
@@ -130,6 +133,7 @@ const styles = StyleSheet.create({
 
   inputText: {
     marginLeft: 10,
+    width: '100%',
   },
 
   searchIcon: {

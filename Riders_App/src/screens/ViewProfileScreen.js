@@ -22,6 +22,7 @@ import {setToken} from '../redux/AuthSlice';
 import {setInitialState} from '../redux/MileStoneSlice';
 import Toast from 'react-native-simple-toast';
 import {followRider} from '../services/Auth';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const ViewProfileScreen = ({navigation, route}) => {
   const [personData, setPersonData] = useState({});
@@ -48,7 +49,6 @@ const ViewProfileScreen = ({navigation, route}) => {
       </View>
     );
   }
-
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={{flex: 1}}>
@@ -66,34 +66,32 @@ const ViewProfileScreen = ({navigation, route}) => {
               resizeMode="cover"
               style={styles.backgroundImage}></ImageBackground>
             <Pressable
-              onPress={() =>
-                navigation.navigate('updateProfile', {
-                  userName: personData.userDetails.userName,
-                  aboutUser: personData.userDetails.aboutUser,
-                })
-              }>
-              <Image
-                source={require('../assets/images/edit.png')}
-                style={styles.editIcon}
+              onPress={() => {
+                navigation.goBack();
+                dispatch(setInitialState(state));
+              }}>
+              <Icon
+                name="md-arrow-back"
+                color="white"
+                size={25}
+                style={styles.icon}
               />
             </Pressable>
             <View style={styles.profileContainer}>
               {personData.userDetails.profileImage !== '' ? (
-                
-                  <Image
-                    source={{
-                      uri:
-                        'https' +
-                        personData.userDetails.profileImage.substring(4),
-                    }}
-                    style={styles.profileImage}
-                  />
-               
+                <Image
+                  source={{
+                    uri:
+                      'https' +
+                      personData.userDetails.profileImage.substring(4),
+                  }}
+                  style={styles.profileImage}
+                />
               ) : (
-                  <Image
-                    source={require('../assets/images/photoless.png')}
-                    style={styles.profileImage}
-                  />
+                <Image
+                  source={require('../assets/images/photoless.png')}
+                  style={styles.profileImage}
+                />
               )}
               <Text style={styles.profileName}>
                 {personData?.userDetails?.userName}
@@ -101,30 +99,43 @@ const ViewProfileScreen = ({navigation, route}) => {
               <Text style={styles.bioText}>
                 {personData?.userDetails?.aboutUser}
               </Text>
-              {personData.userDetails.followers.filter(ele=>
-              ele.followingPhone === token.userCredentials.mobile).length ===
-              0 ?
-              (<Pressable
-                onPress={async () => {
-                  const resp = await followRider(route.params.mobile);
-                  if(resp !== undefined){
-                    dispatch(setInitialState(state))
-                    Toast.show("Following"+" "+personData.userDetails.userName)
-                  }
-                  else{
-                    Toast.show("Error Occurred")
-                  }
-                }}>
-                <View style={styles.followContainer}>
-                  <Text style={styles.followText}>Follow</Text>
-                </View>
-              </Pressable>)
-              :
-              (<Pressable>
-                <View style={styles.followContainer}>
-                  <Text style={styles.followText}>Following</Text>
-                </View>
-              </Pressable>)}
+              {personData.userDetails.followers.filter(
+                ele => ele.followerPhone === token.userCredentials.mobile,
+              ).length === 0 ? (
+                <Pressable
+                  onPress={async () => {
+                    const cred = await getVerifiedKeys(token.userToken);
+                    dispatch(setToken(cred));
+                    const resp = await followRider(cred, route.params.mobile);
+                    if (resp !== undefined) {
+                      dispatch(setInitialState(state));
+                      Toast.show('Follow status updated');
+                    } else {
+                      Toast.show('Error Occurred');
+                    }
+                  }}>
+                  <View style={styles.followContainer}>
+                    <Text style={styles.followText}>Follow</Text>
+                  </View>
+                </Pressable>
+              ) : (
+                <Pressable
+                  onPress={async () => {
+                    const cred = await getVerifiedKeys(token.userToken);
+                    dispatch(setToken(cred));
+                    const resp = await followRider(cred, route.params.mobile);
+                    if (resp !== undefined) {
+                      dispatch(setInitialState(state));
+                      Toast.show('Follow status updated');
+                    } else {
+                      Toast.show('Error Occurred');
+                    }
+                  }}>
+                  <View style={styles.followContainer1}>
+                    <Text style={styles.followText}>Following</Text>
+                  </View>
+                </Pressable>
+              )}
             </View>
           </LinearGradient>
         )}
@@ -192,7 +203,7 @@ const styles = StyleSheet.create({
     height: 28,
     borderColor: '#FFFFFF',
     borderRadius: 15.5,
-    width: '30%',
+    width: 80,
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
@@ -285,6 +296,11 @@ const styles = StyleSheet.create({
     marginTop: '5%',
   },
 
+  icon: {
+    left: 20,
+    top: 10,
+  },
+
   activitiText: {
     color: '#616161',
     height: 28,
@@ -294,6 +310,16 @@ const styles = StyleSheet.create({
     lineHeight: 28,
     marginLeft: 21,
     bottom: 20,
+  },
+
+  followContainer1: {
+    height: 28,
+    borderColor: '#FFFFFF',
+    borderRadius: 15.5,
+    width: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
   },
 });
 

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {
-  FlatList,
   SafeAreaView,
   StyleSheet,
   TextInput,
@@ -9,14 +8,11 @@ import {
   Image,
   Pressable,
   ScrollView,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
-import {AccessoriesData} from '../assets/data';
 import {useDispatch, useSelector} from 'react-redux';
-import {selectLiked} from '../redux/AccessoriesSlice';
-import {selectUnLiked} from '../redux/AccessoriesSlice';
-import {filterAccessories} from '../redux/AccessoriesSlice';
 import {searchProducts} from '../services/Auth';
 import {LikeProducts} from '../services/Auth';
 import {addAccessoriesData} from '../redux/AccessoriesSlice';
@@ -120,7 +116,6 @@ export const Accessories = ({navigation}) => {
           style={{marginTop: 20}}>
           <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
             {accessories.length > 0 ? accessories.map(item => {
-              // console.log(item.likedBy)
               return (
                 <View style={styles.mainView} key={item._id}>
                   <View style={styles.subView}>
@@ -218,7 +213,7 @@ const styles = StyleSheet.create({
     color: '#4F504F',
     fontFamily: 'Roboto-Regular',
     fontSize: 16,
-    height: 21,
+    height: Platform.OS === 'ios' ? 21 : 30,
     width: '78%',
     paddingBottom: 3,
   },
@@ -239,7 +234,7 @@ const styles = StyleSheet.create({
   search: {
     marginHorizontal: '14%',
     tintColor: 'rgba(0,0,0,0.54)',
-    marginTop: -2,
+    marginTop: Platform.OS === 'ios' ? -2 : 8 , 
   },
   container: {
     marginHorizontal: 40,
