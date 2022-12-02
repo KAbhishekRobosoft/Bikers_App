@@ -13,10 +13,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
 import {logOut} from '../redux/AuthSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-simple-toast';
 
 const LogoutScreen = ({navigation}) => {
   async function checkOut() {
     try {
+      Toast.show('Logged Out');
       await AsyncStorage.removeItem('token');
     } catch (e) {
       console.log(e);
@@ -25,7 +27,8 @@ const LogoutScreen = ({navigation}) => {
 
   const dispatch = useDispatch();
   const hadBike = useSelector(state => state.auth.userCredentials);
-  console.log(hadBike.haveBike);
+  const userDetails = useSelector(state => state.auth.userData);
+  console.log(userDetails);
   return (
     <SafeAreaView style={styles.main}>
       <ScrollView style={{width: '100%'}}>
@@ -36,7 +39,14 @@ const LogoutScreen = ({navigation}) => {
         {hadBike.haveBike ? (
           <View style={styles.btn1}>
             <ButtonLarge
-              onPress={() => navigation.navigate('AddBikeDetails')}
+              onPress={() => {
+                if (!userDetails.hasOwnProperty('lisenceNumber')) {
+                  navigation.navigate('AddDetailsStack');
+                  Toast.show('Please Add Personal Details First')
+                } else {
+                  navigation.navigate('AddBikeDetails');
+                }
+              }}
               title="Add Bike Details"
             />
           </View>

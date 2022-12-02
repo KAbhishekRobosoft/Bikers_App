@@ -12,16 +12,17 @@ import ButtonLarge from '../components/Buttons';
 import {DropDownInputField} from '../components/InputFields';
 import {useDispatch, useSelector} from 'react-redux';
 import {fliteredBikeDetails} from '../redux/AccessoriesSlice';
+import Toast from 'react-native-simple-toast';
+
 
 const OwnersManualScreen = ({navigation}) => {
   useEffect(() => {}, [selected]);
   const Data = useSelector(state => state.shop.bikeType);
   const [selected, setSelected] = useState();
   const dispatch = useDispatch();
-
   const submit = () => {
     if (selected ===1) {
-      alert('Select Vehicle Type');
+     Toast.show('Select Vehicle Type')
     } else {
       dispatch(fliteredBikeDetails(selected));
       navigation.navigate('OwnersManualDetail');

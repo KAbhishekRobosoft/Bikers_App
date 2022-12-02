@@ -27,6 +27,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
+
 import {useSelector, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {setUserData} from '../redux/AuthSlice';
@@ -35,7 +36,8 @@ import pdf from 'react-native-html-to-pdf';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
 import {updateOwnerDetails} from '../services/Auth';
 import Share from 'react-native-share';
-import { BikeDetails } from '../components/BikeDetailsComponent';
+import {BikeDetails} from '../components/BikeDetailsComponent';
+import Toast from 'react-native-simple-toast';
 
 const OwnerManualEdit = ({navigation}) => {
   const userDetails = useSelector(state => state.auth.userData);
@@ -56,7 +58,7 @@ const OwnerManualEdit = ({navigation}) => {
   // }, []);
 
   const update = async values => {
-   // console.log('hiiiiiiIIIII',values.licence);
+    // console.log('hiiiiiiIIIII',values.licence);
     const obj = {
       city: values.city,
       state: values.state,
@@ -67,7 +69,7 @@ const OwnerManualEdit = ({navigation}) => {
     let cred = await getVerifiedKeys(authData.userToken);
 
     await updateOwnerDetails(obj, cred);
-   
+
     const obj2 = {
       city: values.city,
       state: values.state,
@@ -78,8 +80,8 @@ const OwnerManualEdit = ({navigation}) => {
       mobile: values.mobile,
       email: values.email,
     };
-    console.log('_____---',obj2);
     dispatch(setUserData(obj2));
+    Toast.show('Updated Successfully');
     navigation.navigate('OwnersManualDetail');
   };
 
@@ -103,7 +105,7 @@ const OwnerManualEdit = ({navigation}) => {
               </address>
             </header>
             <article>
-
+           
               <h1><span>Personal Details</span></h1>
               <table >
               <tr>
@@ -202,6 +204,7 @@ const OwnerManualEdit = ({navigation}) => {
     try {
       const shareResponse = await Share.open(shareOptions);
       console.log(JSON.stringify(shareResponse));
+      Toast.show('Shared Successfully');
     } catch (error) {
       console.log('error while sharing');
     }
@@ -271,6 +274,7 @@ const OwnerManualEdit = ({navigation}) => {
                       keyboardType="numeric"
                       value={values.licence}
                       editable={false}
+                      onTouchStart={() => Toast.show('Cant Be Edited')}
                     />
                     <Field
                       component={PlaceholderTextFieldOwnerManual}
@@ -280,6 +284,7 @@ const OwnerManualEdit = ({navigation}) => {
                       value={values.name}
                       editable={false}
                       defaultValue={userDetails.name}
+                      onTouchStart={() => Toast.show('Cant Be Edited')}
                     />
                     <Field
                       component={PlaceholderTextFieldOwnerManual}
@@ -316,6 +321,7 @@ const OwnerManualEdit = ({navigation}) => {
                       keyboardType="default"
                       value={values.mobile}
                       editable={false}
+                      onTouchStart={() => Toast.show('Cant Be Edited')}
                     />
                     <Field
                       component={PlaceholderTextFieldOwnerManual}
@@ -324,6 +330,7 @@ const OwnerManualEdit = ({navigation}) => {
                       keyboardType="default"
                       value={values.email}
                       editable={false}
+                      onTouchStart={() => Toast.show('Cant Be Edited')}
                     />
                   </View>
                 </>

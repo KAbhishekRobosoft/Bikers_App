@@ -290,14 +290,14 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 8,
   },
   dateText: {
-    fontFamily: 'Roboto Black',
+    fontFamily: 'Roboto-Black',
     fontSize: 43,
     fontWeight: '900',
     height: 50,
     lineHeight: 50,
   },
   monthText: {
-    fontFamily: 'Roboto Bold',
+    fontFamily: 'Roboto-Bold',
     fontSize: 18,
   },
 

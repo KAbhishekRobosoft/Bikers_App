@@ -58,6 +58,9 @@ const ViewProfileScreen = ({navigation, route}) => {
             end={{x: 1, y: 0}}
             colors={['#ED7E2C', '#F7B557']}
             style={styles.gradientCreateButton}>
+              
+
+              
             <ImageBackground
               source={require('../assets/images/profilebike.png')}
               resizeMode="cover"
@@ -76,7 +79,7 @@ const ViewProfileScreen = ({navigation, route}) => {
             </Pressable>
             <View style={styles.profileContainer}>
               {personData.userDetails.profileImage !== '' ? (
-                <Pressable onPress={setImage}>
+                
                   <Image
                     source={{
                       uri:
@@ -85,14 +88,12 @@ const ViewProfileScreen = ({navigation, route}) => {
                     }}
                     style={styles.profileImage}
                   />
-                </Pressable>
+               
               ) : (
-                <Pressable onPress={setImage}>
                   <Image
                     source={require('../assets/images/photoless.png')}
                     style={styles.profileImage}
                   />
-                </Pressable>
               )}
               <Text style={styles.profileName}>
                 {personData?.userDetails?.userName}
