@@ -7,6 +7,7 @@ import {
   ScrollView,
   Platform,
   Pressable,
+  KeyboardAvoidingView,
 } from 'react-native';
 import ButtonLarge from '../components/Buttons';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -14,7 +15,6 @@ import {Input} from '../components/InputFields';
 import {Password} from '../components/InputFields';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
-// import {register} from '../services/Auth';
 import {useDispatch, useSelector} from 'react-redux';
 import {setRegistered} from '../redux/AuthSlice';
 import {setUserData} from '../redux/AuthSlice';
@@ -44,29 +44,31 @@ const registerValidationSchema = yup.object().shape({
 const Register = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
   const dispatch = useDispatch();
-  const authData= useSelector(state=>state.auth)
-
+  const authData = useSelector(state => state.auth);
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 10 : 0;
   return (
-    <View>
-      <SafeAreaView>
-        <View style={[styles.header, styles.shadow]}>
-          <Pressable
-            onPress={() => {
-              navigation.goBack();
-            }}>
-            <Icon
-              name="md-arrow-back"
-              color={'white'}
-              size={25}
-              style={styles.icon}
-            />
-          </Pressable>
-          <Text style={styles.headerText}>Register</Text>
-        </View>
-        <ScrollView
-          style={styles.scrollview}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <View style={[styles.header, styles.shadow]}>
+        <Pressable
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <Icon
+            name="md-arrow-back"
+            color={'white'}
+            size={25}
+            style={styles.icon}
+          />
+        </Pressable>
+        <Text style={styles.headerText}>Register</Text>
+      </View>
+      <ScrollView
+        style={styles.scrollview}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'position' : 'height'}
+          style={{flex: 1}}>
           <Formik
             validationSchema={registerValidationSchema}
             initialValues={{
@@ -100,7 +102,7 @@ const Register = ({navigation}) => {
                   value={values.mobile}
                   source={require('../assets/images/phone-call.png')}
                   styleUser={styles.call}
-                  keyboardType="numeric"
+                  keyboardType="phone-pad"
                   secureTextEntry={false}
                   returnKey="next"
                 />
@@ -135,9 +137,10 @@ const Register = ({navigation}) => {
               </>
             )}
           </Formik>
-        </ScrollView>
-      </SafeAreaView>
-    </View>
+        </KeyboardAvoidingView>
+      </ScrollView>
+      {/* </KeyboardAvoidingView> */}
+    </SafeAreaView>
   );
 };
 
@@ -184,26 +187,23 @@ const styles = StyleSheet.create({
   name: {
     width: 18,
     height: 24,
-    // marginTop: 35,
   },
   call: {
     width: 23.78,
     height: 23.78,
-    // marginTop: 35,
   },
   email: {
     width: 24,
     height: 16,
-    // marginTop: 35,
   },
   lock: {
     width: 19.56,
     height: 24,
-    // marginTop: 35,
   },
   btnView: {
     alignItems: 'center',
-    marginVertical: Platform.OS === 'android' ? 100 : 80,
+    marginTop: Platform.OS === 'android' ? 100 : 60,
+    paddingBottom: 40,
   },
   scrollview: {
     height: '90%',
@@ -219,7 +219,6 @@ const styles = StyleSheet.create({
     height: 17,
     marginBottom: Platform.OS == 'ios' ? 10 : -2,
     color: Platform.OS == 'ios' ? '#7A7A7A' : '#7A7A7A',
-    // fontFamily: 'Proxima Nova
     fontSize: 14,
     letterSpacing: 0.29,
     lineHeight: 17,

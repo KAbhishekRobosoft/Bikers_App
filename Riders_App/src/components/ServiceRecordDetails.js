@@ -66,7 +66,7 @@ export const NewServiceRecordDetails = ({navigation, data}) => {
   );
 };
 export const PastServiceRecordDetails = ({navigation, data}) => {
-  console.log(data)
+
   const id = data._id;
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);

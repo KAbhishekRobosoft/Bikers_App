@@ -89,6 +89,7 @@ const LoginScreen = ({navigation}) => {
                       placeholder="Mobile Number/Email id"
                       styleUser={styles.userLogo}
                       value={values.number}
+                      keyboardType='number-pad'
                     />
                   </View>
                   <View style={styles.inputTextView2}>

@@ -9,7 +9,7 @@ import {
   Dimensions,
 } from 'react-native';
 import React, {useState} from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {Star} from '../components/StarComponent';
 import ButtonLarge from '../components/Buttons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -36,8 +36,8 @@ const ServiceCenterScreen = ({navigation}) => {
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Icon
           style={styles.backBtn}
-          name="arrow-left"
-          size={24}
+          name="md-arrow-back"
+          size={25}
           color="white"
         />
       </TouchableOpacity>

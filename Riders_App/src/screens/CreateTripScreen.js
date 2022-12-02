@@ -13,6 +13,7 @@ import {
 import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/MaterialIcons';
+import Icon3 from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
 import BikeImageComponent from '../components/BikeImageComponent';
 import DatePicker from 'react-native-date-picker';
@@ -95,7 +96,7 @@ const CreateTrip = ({navigation}) => {
             navigation.goBack();
             dispatch(deSetLoading());
           }}>
-          <Icon name="arrow-left" color={'white'} size={16} />
+          <Icon3 name="arrow-back" color={'white'} size={25} />
         </Pressable>
         <Text style={styles.headerText}>Create a trip</Text>
       </View>

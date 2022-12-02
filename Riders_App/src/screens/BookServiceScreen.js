@@ -11,6 +11,7 @@ import {
   Pressable,
   ScrollView,
   Alert,
+  KeyboardAvoidingView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextField} from '../components/InputFields';
@@ -38,6 +39,7 @@ export const BookService = ({navigation}) => {
   const Data = useSelector(state => state.shop.bikeType);
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 10 : 0;
   const data = [
     {
       key: 'Free service',
@@ -105,132 +107,137 @@ export const BookService = ({navigation}) => {
   };
   return (
     <SafeAreaView style={{backgroundColor: '#FFFFFF', flex: 1}}>
-      <View style={[styles.header, styles.shadow]}>
-        <Pressable
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Icon
-            name="md-arrow-back"
-            color={'white'}
-            size={25}
-            style={styles.icon}
-          />
-        </Pressable>
-        <Text style={styles.headerText}>Book a Service</Text>
-      </View>
-      <ScrollView
-        style={{
-          width: '80%',
-          alignSelf: 'center',
-        }}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}>
-        <Formik
-          validationSchema={BookServiceValidation}
-          initialValues={{
-            mobileNumber: phnumber.mobile,
-            vehicleType: '',
-            vehicleNumber: '',
-            serviceType: '',
-            comment: '',
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={keyboardVerticalOffset}
+        style={styles.container}>
+        <View style={[styles.header, styles.shadow]}>
+          <Pressable
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Icon
+              name="md-arrow-back"
+              color={'white'}
+              size={25}
+              style={styles.icon}
+            />
+          </Pressable>
+          <Text style={styles.headerText}>Book a Service</Text>
+        </View>
+        <ScrollView
+          style={{
+            width: '80%',
+            alignSelf: 'center',
           }}
-          onSubmit={values => {
-            const obj = {
-              mobileNumber: values.mobileNumber,
-              vehicleType: selectedVehicle,
-              vehicleNumber: values.vehicleNumber,
-              serviceType: selected,
-              comment: comment,
-            };
-            navigation.navigate('SearchService', obj);
-          }}>
-          {({isValid, handleSubmit, values, errors}) => (
-            <>
-              <View style={styles.firstInputField}>
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}>
+          <Formik
+            validationSchema={BookServiceValidation}
+            initialValues={{
+              mobileNumber: phnumber.mobile,
+              vehicleType: '',
+              vehicleNumber: '',
+              serviceType: '',
+              comment: '',
+            }}
+            onSubmit={values => {
+              const obj = {
+                mobileNumber: values.mobileNumber,
+                vehicleType: selectedVehicle,
+                vehicleNumber: values.vehicleNumber,
+                serviceType: selected,
+                comment: comment,
+              };
+              navigation.navigate('SearchService', obj);
+            }}>
+            {({isValid, handleSubmit, values, errors}) => (
+              <>
+                <View style={styles.firstInputField}>
+                  <Field
+                    component={PlaceholderTextField}
+                    name="mobileNumber"
+                    placeholder="Mobile Number"
+                    keyboardType="number-pad"
+                    defaultValue={values.mobileNumber}
+                    editable={editable}
+                  />
+                  {!editable ? (
+                    <Pressable onPress={() => handleEditable(values)}>
+                      <Image
+                        source={require('../assets/images/edit.png')}
+                        style={styles.editImage}
+                      />
+                    </Pressable>
+                  ) : (
+                    <>
+                      <Pressable onPress={() => handleRight(values)}>
+                        <Icon
+                          name="checkmark"
+                          size={24}
+                          style={styles.editImage2}
+                          color="green"
+                        />
+                      </Pressable>
+                      <Pressable onPress={() => handleEditable(values)}>
+                        <Icon
+                          name="close"
+                          size={24}
+                          style={styles.editImage3}
+                          color="red"
+                        />
+                      </Pressable>
+                    </>
+                  )}
+                </View>
+                <Text style={styles.alertText}>
+                  You will have only {attempt} atempts to change your number
+                </Text>
+                <Text style={styles.alertText}>
+                  The new number will be yor login id
+                </Text>
                 <Field
                   component={PlaceholderTextField}
-                  name="mobileNumber"
-                  placeholder="Mobile Number"
-                  keyboardType="number-pad"
-                  defaultValue={values.mobileNumber}
-                  editable={editable}
+                  name="vehicleNumber"
+                  placeholder="Vehicle number"
+                  keyboardType="default"
+                  value={values.vehicleNumber}
                 />
-                {!editable ? (
-                  <Pressable onPress={() => handleEditable(values)}>
-                    <Image
-                      source={require('../assets/images/edit.png')}
-                      style={styles.editImage}
+                <DropDownInputField
+                  data={data}
+                  values={selected}
+                  setSelected={value => setSelected(value)}
+                  placeholder="Service Type"
+                />
+                <DropDownInputField2
+                  data={Data}
+                  values={selectedVehicle}
+                  setSelected={value => setSelectedVehicle(value)}
+                  placeholder="Vehicle Type"
+                />
+                <Text style={styles.commentText}>Comments</Text>
+                <View style={styles.commentTextInputView}>
+                  <InsetShadow>
+                    <TextInput
+                      multiline={true}
+                      style={{padding: 10}}
+                      value={values}
+                      onChangeText={value => setComment(value)}
                     />
-                  </Pressable>
-                ) : (
-                  <>
-                    <Pressable onPress={() => handleRight(values)}>
-                      <Icon
-                        name="checkmark"
-                        size={24}
-                        style={styles.editImage2}
-                        color="green"
-                      />
-                    </Pressable>
-                    <Pressable onPress={() => handleEditable(values)}>
-                      <Icon
-                        name="close"
-                        size={24}
-                        style={styles.editImage3}
-                        color="red"
-                      />
-                    </Pressable>
-                  </>
-                )}
-              </View>
-              <Text style={styles.alertText}>
-                You will have only {attempt} atempts to change your number
-              </Text>
-              <Text style={styles.alertText}>
-                The new number will be yor login id
-              </Text>
-              <Field
-                component={PlaceholderTextField}
-                name="vehicleNumber"
-                placeholder="Vehicle number"
-                keyboardType="default"
-                value={values.vehicleNumber}
-              />
-              <DropDownInputField
-                data={data}
-                values={selected}
-                setSelected={value => setSelected(value)}
-                placeholder="Service Type"
-              />
-              <DropDownInputField2
-                data={Data}
-                values={selectedVehicle}
-                setSelected={value => setSelectedVehicle(value)}
-                placeholder="Vehicle Type"
-              />
-              <Text style={styles.commentText}>Comments</Text>
-              <View style={styles.commentTextInputView}>
-                <InsetShadow>
-                  <TextInput
-                    multiline={true}
-                    style={{padding: 10}}
-                    value={values}
-                    onChangeText={value => setComment(value)}
+                  </InsetShadow>
+                </View>
+                <View style={styles.btnView}>
+                  <ButtonLarge
+                    title="FIND A DEALER"
+                    //disabled={!isValid}
+                    onPress={handleSubmit}
                   />
-                </InsetShadow>
-              </View>
-              <View style={styles.btnView}>
-                <ButtonLarge
-                  title="FIND A DEALER"
-                  //disabled={!isValid}
-                  onPress={handleSubmit}
-                />
-              </View>
-            </>
-          )}
-        </Formik>
-      </ScrollView>
+                </View>
+              </>
+            )}
+          </Formik>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

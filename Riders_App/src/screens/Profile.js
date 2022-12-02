@@ -61,7 +61,6 @@ const Profile = ({navigation}) => {
       const cred = await getVerifiedKeys(token.userToken);
       dispatch(setToken(cred));
       const data = await profileData(cred, userData.mobile);
-      console.log(data)
       setPersonData(data);
       const tripdata = await getSortedTripDetails(cred);
       setTripDetails(tripdata);
