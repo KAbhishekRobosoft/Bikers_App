@@ -20,7 +20,6 @@ export async function getVerifiedKeys(key) {
   if (key) {
     if (isTokenExpired(key)) {
       let response = await refreshToken(key);
-      console.log(response)
       await AsyncStorage.setItem('token',response.access_token)
       return response.access_token;
     } else {

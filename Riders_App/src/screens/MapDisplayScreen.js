@@ -19,6 +19,7 @@ import uuid from 'react-native-uuid';
 import {setLoading} from '../redux/MileStoneSlice';
 import {deSetLoading} from '../redux/MileStoneSlice';
 import {useDispatch, useSelector} from 'react-redux';
+import Toast from 'react-native-simple-toast'
 
 const MapDisplayScreen = ({navigation, route}) => {
   const [direction, setDirection] = useState([]);
@@ -50,6 +51,7 @@ const MapDisplayScreen = ({navigation, route}) => {
       setDirection(dir.legs[0].points);
       dispatch(setLoading());
       setTimeout(()=>{
+        try{
         mapRef.current.animateToRegion(
           {
             latitude: latitude,
@@ -59,6 +61,10 @@ const MapDisplayScreen = ({navigation, route}) => {
           },
           3 * 1000,
         );
+        }
+        catch{
+          Toast.show("Failed to animate direction")
+        }
       },100)
     }, 500);
   }, [state]);

@@ -9,14 +9,80 @@ import {
   ScrollView,
   Animated,
   useWindowDimensions,
+  TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import Icons from 'react-native-vector-icons/FontAwesome';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  deSetLoading,
+  setInitialState,
+  setLoading,
+} from '../redux/MileStoneSlice';
+import {addLike, getParticularPhoto} from '../services/Auth';
+import {getVerifiedKeys} from '../utils/Functions';
+import {setToken} from '../redux/AuthSlice';
+import {addComments} from '../services/Auth';
+import Toast from 'react-native-simple-toast';
+import {deleteComment} from '../services/Auth';
 
-const ImageLikeCommentScreen = ({navigation}) => {
+const ImageLikeCommentScreen = ({navigation, route}) => {
+  const [comments, Setcomments] = useState(false);
+  const [like, setLike] = useState(false);
+  const [likeView, setLikeView] = useState(false);
+  const [imgData, setImgData] = useState({});
+  const state = useSelector(state => state.milestone.initialState);
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
+  const loading = useSelector(state => state.milestone.isLoading);
+  const authData = useSelector(state => state.auth);
+  const [commentText, setCommentText] = useState('');
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(deSetLoading());
+    setTimeout(async () => {
+      const cred = await getVerifiedKeys(authData.userToken);
+      const response = await getParticularPhoto(cred, route.params.id);
+      setImgData(response);
+      dispatch(setLoading());
+    });
+  }, [state]);
+
+  const likeAdd = async () => {
+    const cred = await getVerifiedKeys(authData.userToken);
+    dispatch(setToken(cred));
+    const resp = await addLike(cred, imgData.photos._id);
+    if (resp !== undefined) {
+      Toast.show('You liked the Image');
+      dispatch(setInitialState(state));
+    } else {
+      Toast.show("Couldn't like the Image");
+    }
+  };
+
+  async function comment() {
+    const cred = await getVerifiedKeys(authData.userToken);
+    dispatch(setToken(cred));
+    const resp = await addComments(cred, imgData.photos._id, commentText);
+    if (resp !== undefined) {
+      Toast.show('Comment added successfully');
+      dispatch(setInitialState(state));
+    } else {
+      Toast.show('Failed to add a comment');
+    }
+  }
+
+  if (loading) {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ActivityIndicator size="large" color="orange" />
+      </View>
+    );
+  }
 
   const position = new Animated.ValueXY({x: 0, y: 50});
   Animated.timing(position, {
@@ -31,249 +97,320 @@ const ImageLikeCommentScreen = ({navigation}) => {
     useNativeDriver: true,
   }).start();
 
-  const [comments, Setcomments] = useState(false);
-  const [like, setLike] = useState(false);
-  const [likeView, setLikeView] = useState(false);
-
   return (
     <SafeAreaView style={styles.main}>
-      <View style={styles.header}>
-        <Pressable
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Icon
-            name="md-arrow-back"
-            color="grey"
-            size={25}
-            style={styles.icon}
-          />
-        </Pressable>
-      </View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}>
-        <View style={styles.imgContainer}>
-          <Image
-            style={styles.img}
-            source={require('../assets/images/appicon.png')}
-            //source={uri:}
-          />
-          <View style={styles.likeCommentView}>
-            <View
-              style={{
-                flexDirection: 'row',
-                //borderWidth: 1,
-                width: 68,
-                justifyContent: 'space-between',
-              }}>
-              <Pressable
-                onPress={() => {
-                  setLikeView(!likeView);
-                  Setcomments(false);
-                }}>
-                <Text style={styles.text}>0 Likes</Text>
-              </Pressable>
-
-              {like ? (
-                <Pressable onPress={() => setLike(!like)}>
-                  <Icons
-                    name="heart"
-                    color="red"
-                    size={18}
-                    //style={styles.icon}
-                  />
-                </Pressable>
-              ) : (
-                <Pressable onPress={() => setLike(!like)}>
-                  <Icons
-                    name="heart-o"
-                    color="grey"
-                    size={18}
-                    //style={styles.icon}
-                  />
-                </Pressable>
-              )}
-            </View>
+      {JSON.stringify(imgData) !== '{}' ? (
+        <>
+          <View style={styles.header}>
             <Pressable
               onPress={() => {
-                Setcomments(!comments);
-                setLikeView(false);
+                navigation.goBack();
               }}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  width: 130,
-                  borderWidth: 0,
-                  justifyContent: 'space-around',
-                  alignItems: 'center',
-                   //borderWidth:1
-                }}>
-                <Text style={styles.text}> 10 Comments</Text>
-                <Icons
-                  name="comment"
-                  color="grey"
-                  size={18}
-                  //style={styles.icon}
-                />
-              </View>
-            </Pressable>
-          </View>
-          {comments ? (
-            <Animated.View
-              style={[
-                {
-                  height: 200,
-                  // borderWidth: 1,
-                  width: '100%',
-                  alignSelf: 'center',
-                  transform: [
-                    {translateX: position.x},
-                    {translateY: position.y},
-                  ],
-                  backgroundColor: 'black',
-                  borderRadius: 20,
-                  marginVertical: 15,
-                  shadowColor: 'rgba(142,142,142,0.5)',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowRadius: 4,
-                  shadowOpacity: 0.9,
-                  elevation: 4,
-                  opacity: 0.9,
-                  borderRadius: 20,
-                  marginVertical: 15,
-                },
-                styles.bottomshadow,
-              ]}>
-              <ScrollView
-                style={{padding: 5, borderWidth: 0}}
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    borderBottomWidth: 1,
-                    margin: 10,
-                    height: 45,
-                    paddingHorizontal: 10,
-                  }}>
-                  <Image
-                    style={{
-                      height: 40,
-                      width: 40,
-                      borderRadius: 30,
-                    }}
-                    source={require('../assets/images/card.jpg')}
-                  />
-                  <View style={{borderWidth: 0, marginLeft: 20}}>
-                    <Text
-                      style={{
-                        fontWeight: 'bold',
-                        fontFamily: 'Roboto-Regular',
-                        color: '#ED7E2B',
-                      }}>
-                      Name
-                    </Text>
-                    <Text
-                      style={{fontFamily: 'Roboto-Regular', color: '#ED7E2B'}}>
-                      Comment
-                    </Text>
-                  </View>
-                </View>
-              </ScrollView>
-            </Animated.View>
-          ) : null}
-          {likeView ? (
-            <Animated.View
-              style={[
-                {
-                  height: 200,
-                  width: '100%',
-                  alignSelf: 'center',
-                  transform: [
-                    {translateX: position.x},
-                    {translateY: position.y},
-                  ],
-                  shadowColor: 'rgba(142,142,142,0.5)',
-                  shadowOffset: {
-                    width: 0,
-                    height: 2,
-                  },
-                  shadowRadius: 4,
-                  shadowOpacity: 0.9,
-                  elevation: 4,
-                  opacity: 0.9,
-                  borderRadius: 20,
-                  marginVertical: 15,
-                },
-                styles.bottomshadow,
-              ]}>
-              <ScrollView
-                style={{paddingHorizontal: 10}}
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    borderBottomWidth: 1,
-                    margin: 5,
-                    alignItems: 'center',
-                    height: 45,
-                    paddingHorizontal: 10,
-                  }}>
-                  <Image
-                    style={{height: 40, width: 40, borderRadius: 30}}
-                    source={require('../assets/images/card.jpg')}
-                    //source={uri:}
-                  />
-                  <Text
-                    style={{
-                      fontWeight: 'bold',
-                      fontFamily: 'Roboto-Regular',
-                      marginLeft: 20,
-                      color: '#ED7E2B',
-                    }}>
-                    Name
-                  </Text>
-                </View>
-              </ScrollView>
-            </Animated.View>
-          ) : null}
-        </View>
-
-        <Animated.View
-          style={[
-            styles.bottomContainer,
-            styles.bottomshadow,
-            {
-              transform: [{translateX: position1.x}, {translateY: position1.y}],
-            },
-          ]}>
-          <View style={styles.iconContainer}>
-            <TextInput
-              style={styles.input}
-              placeholder="Comment"
-              placeholderTextColor="grey"
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginRight: '2%',
-            }}>
-            <Pressable>
-              <Image
-                source={require('../assets/images/send.png')}
-                style={{height: 48, width: 48}}
+              <Icon
+                name="md-arrow-back"
+                color="grey"
+                size={25}
+                style={styles.icon}
               />
             </Pressable>
           </View>
-        </Animated.View>
-      </ScrollView>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}>
+            <View style={styles.imgContainer}>
+              <Image
+                style={styles.img}
+                //source={require('../assets/images/appicon.png')}
+                source={{uri: route.params.image}}
+              />
+              <View style={styles.likeCommentView}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: 68,
+                    justifyContent: 'space-between',
+                  }}>
+                  <Pressable
+                    onPress={() => {
+                      setLikeView(!likeView);
+                      Setcomments(false);
+                    }}>
+                    <Text style={styles.text}>
+                      {imgData.photos.likeCount} Likes
+                    </Text>
+                  </Pressable>
+
+                  {imgData.liked ? (
+                    <Pressable onPress={() => likeAdd()}>
+                      <Icons name="heart" color="red" size={18} />
+                    </Pressable>
+                  ) : (
+                    <Pressable onPress={() => likeAdd()}>
+                      <Icons name="heart-o" color="grey" size={18} />
+                    </Pressable>
+                  )}
+                </View>
+                <Pressable
+                  onPress={() => {
+                    Setcomments(!comments);
+                    setLikeView(false);
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      width: 130,
+                      borderWidth: 0,
+                      justifyContent: 'space-around',
+                      alignItems: 'center',
+                    }}>
+                    <Text style={styles.text}>
+                      {' '}
+                      {imgData.photos.commentCount} Comments
+                    </Text>
+                    <Icons name="comment" color="grey" size={18} />
+                  </View>
+                </Pressable>
+              </View>
+              {comments ? (
+                <Animated.View
+                  style={[
+                    {
+                      height: 200,
+                      width: '100%',
+                      alignSelf: 'center',
+                      transform: [
+                        {translateX: position.x},
+                        {translateY: position.y},
+                      ],
+                      backgroundColor: 'black',
+                      borderRadius: 20,
+                      marginVertical: 15,
+                      shadowColor: 'rgba(142,142,142,0.5)',
+                      shadowOffset: {
+                        width: 0,
+                        height: 2,
+                      },
+                      shadowRadius: 4,
+                      shadowOpacity: 0.9,
+                      elevation: 4,
+                      opacity: 0.9,
+                      borderRadius: 20,
+                      marginVertical: 15,
+                    },
+                    styles.bottomshadow,
+                  ]}>
+                  <ScrollView
+                    style={{padding: 5}}
+                    showsVerticalScrollIndicator={false}>
+                    {imgData.photos.commentData?.length > 0 &&
+                      imgData.photos.commentData.map(item => {
+                        return (
+                          <View
+                            key={item._id}
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                            }}>
+                            <View>
+                              <Pressable onPress={()=>{
+                                if(authData.userCredentials.mobile !== item.commentedNumber)
+                                navigation.navigate('viewProfile',{
+                                  mobile:item.commentedNumber
+                                })
+                              }}>
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                    height: 45,
+                                    paddingHorizontal: 10,
+                                  }}>
+                                  <Image
+                                    style={{
+                                      height: 25,
+                                      width: 25,
+                                      borderRadius: 30,
+                                    }}
+                                    source={{
+                                      uri:
+                                        'https' +
+                                        item.commentedUserImage.substring(4),
+                                    }}
+                                  />
+
+                                  <Text
+                                    style={{
+                                      fontWeight: 'bold',
+                                      fontFamily: 'Roboto-Regular',
+                                      color: '#ED7E2B',
+                                      marginLeft: 10,
+                                      fontSize: 15,
+                                    }}>
+                                    {item.commentedBy}
+                                  </Text>
+                                </View>
+                              </Pressable>
+                              <Text
+                                style={{
+                                  fontFamily: 'Roboto-Regular',
+                                  fontWeight: 'bold',
+                                  left: 45,
+                                }}>
+                                {item.commented}
+                              </Text>
+                            </View>
+                            <TouchableOpacity
+                              onPress={async () => {
+                                const cred = await getVerifiedKeys(
+                                  authData.userToken,
+                                );
+                                dispatch(setToken(cred));
+                                const resp = await deleteComment(
+                                  cred,
+                                  imgData.photos._id,
+                                  item._id,
+                                );
+                                if (resp !== undefined) {
+                                  Toast.show('Comment deleted successfully');
+                                  dispatch(setInitialState(state));
+                                } else {
+                                  Toast.show('Failed to delete a comment');
+                                }
+                              }}>
+                              <Icon1
+                                style={{marginRight: 10}}
+                                name="trash"
+                                size={18}
+                              />
+                            </TouchableOpacity>
+                          </View>
+                        );
+                      })}
+                  </ScrollView>
+                </Animated.View>
+              ) : null}
+              {likeView ? (
+                <Animated.View
+                  style={[
+                    {
+                      height: 200,
+                      width: '100%',
+                      alignSelf: 'center',
+                      transform: [
+                        {translateX: position.x},
+                        {translateY: position.y},
+                      ],
+                      shadowColor: 'rgba(142,142,142,0.5)',
+                      shadowOffset: {
+                        width: 0,
+                        height: 2,
+                      },
+                      shadowRadius: 4,
+                      shadowOpacity: 0.9,
+                      elevation: 4,
+                      opacity: 0.9,
+                      borderRadius: 20,
+                      marginVertical: 15,
+                    },
+                    styles.bottomshadow,
+                  ]}>
+                  <ScrollView
+                    style={{paddingHorizontal: 10}}
+                    showsVerticalScrollIndicator={false}
+                    showsHorizontalScrollIndicator={false}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'center',
+                        top: 10,
+                      }}>
+                      <Icons
+                        name="heart"
+                        color="red"
+                        size={18}
+                        //style={styles.icon}
+                      />
+                      <Text
+                        style={{
+                          fontWeight: 'bold',
+                          fontFamily: 'Roboto-Regular',
+                          marginLeft: 10,
+                          fontSize: 16,
+                          color: '#ED7E2B',
+                          textAlign: 'center',
+                        }}>
+                        Liked By
+                      </Text>
+                    </View>
+                    {imgData.photos.likedBy?.length > 0
+                      ? imgData.photos.likedBy.map(item => {
+                          return (
+                            <View
+                              key={item._id}
+                              style={{
+                                margin: 5,
+                                height: 45,
+                                paddingHorizontal: 10,
+                              }}>
+                              <Text
+                                style={{
+                                  fontWeight: 'bold',
+                                  fontFamily: 'Roboto-Regular',
+                                  fontSize: 15,
+                                  marginLeft: 20,
+                                  top: 20,
+                                  color: '#ED7E2B',
+                                }}>
+                                {item.likedName}
+                              </Text>
+                            </View>
+                          );
+                        })
+                      : null}
+                  </ScrollView>
+                </Animated.View>
+              ) : null}
+            </View>
+
+            <Animated.View
+              style={[
+                styles.bottomContainer,
+                styles.bottomshadow,
+                {
+                  transform: [
+                    {translateX: position1.x},
+                    {translateY: position1.y},
+                  ],
+                },
+              ]}>
+              <View style={styles.iconContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Comment"
+                  placeholderTextColor="grey"
+                  onChangeText={val => {
+                    setCommentText(val);
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginRight: '2%',
+                }}>
+                <Pressable onPress={() => comment()}>
+                  <Image
+                    source={require('../assets/images/send.png')}
+                    style={{height: 48, width: 48}}
+                  />
+                </Pressable>
+              </View>
+            </Animated.View>
+          </ScrollView>
+        </>
+      ) : null}
     </SafeAreaView>
   );
 };
@@ -294,7 +431,6 @@ const styles = StyleSheet.create({
     width: '70%',
     alignItems: 'center',
     alignSelf: 'center',
-    //borderWidth: 1,
   },
   img: {
     height: '66%',
@@ -303,7 +439,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
     borderColor: 'grey',
-    resizeMode: 'contain',
+    //resizeMode: 'contain',
   },
   icon: {
     marginHorizontal: 20,
@@ -327,12 +463,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'space-between',
-    // borderWidth: 1,
     marginBottom: 140,
-    //marginTop: 100,
-    //position: 'absolute',
-    //top:500
-    //bottom:0
   },
   bottomshadow: {
     backgroundColor: '#FFFFFF',

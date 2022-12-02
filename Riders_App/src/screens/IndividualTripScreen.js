@@ -7,8 +7,8 @@ import {
   Image,
   Pressable,
   FlatList,
-  Modal,
   Text,
+  RefreshControl
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AllTripList from '../components/AllTripList';
@@ -16,11 +16,14 @@ import {UserTrips} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {SearchUserTrips} from '../services/Auth';
 import {setToken} from '../redux/AuthSlice';
+import Toast from 'react-native-simple-toast'
 
 const AllTrips = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
   const authData = useSelector(state => state.auth);
   const state = useSelector(state => state.milestone.initialState);
+  const [refreshing, setRefreshing] = React.useState(false);
+
   const dispatch = useDispatch();
   useEffect(() => {
     setTimeout(async () => {
@@ -30,6 +33,20 @@ const AllTrips = ({navigation}) => {
       setTripDetails(tripdata);
     }, 500);
   }, [state]);
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    const cred = await getVerifiedKeys(authData.userToken);
+    dispatch(setToken(cred));
+    const tripdata = await UserTrips(cred);
+    if (tripdata !== undefined) {
+      Toast.show('Loading Created Trips');
+      setTripDetails(tripdata);
+    } else {
+      Toast.show('Unable to Load Trips');
+    }
+    setRefreshing(false);
+  }, []);
 
   const renderItem = details => {
     return (
@@ -70,7 +87,12 @@ const AllTrips = ({navigation}) => {
       <FlatList
         data={tripDetails}
         keyExtractor={details => details._id}
-        renderItem={renderItem}></FlatList>
+        renderItem={renderItem} 
+        refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+
+        />
 
       <Pressable
         style={styles.addButton}

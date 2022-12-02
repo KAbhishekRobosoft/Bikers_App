@@ -66,9 +66,6 @@ const ChatScreen = ({navigation, route}) => {
     }, 500);
   }, [state]);
 
-  const wait = timeout => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
-  };
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
@@ -141,6 +138,8 @@ const ChatScreen = ({navigation, route}) => {
       Toast.show('You cannot clear the chat as you are not admin');
     }
   };
+
+//console.log(route.params.id);
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -219,6 +218,7 @@ const ChatScreen = ({navigation, route}) => {
             style={styles.input}
             onChangeText={val => setText(val)}
             placeholder="Type a Message"
+            placeholderTextColor='grey'
           />
         </View>
         <View

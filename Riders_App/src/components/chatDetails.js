@@ -22,7 +22,7 @@ export const SenderChatDetails = ({chat}) => {
           )}
           {chat.chat.includes('https') && (
             <Image
-              style={{height: 200, width: 150}}
+              style={{height: 200, width: 150,borderRadius:10}}
               source={{uri: chat.chat}}
             />
           )}
@@ -58,7 +58,7 @@ export const ReceiverContainer = ({chat}) => {
           )}
           {chat.chat.includes('https') && (
             <Image
-              style={{height: 200, width: 150}}
+              style={{height: 200, width: 150,borderRadius:10}}
               source={{uri: chat.chat}}
             />
           )}
