@@ -22,13 +22,12 @@ const AllUserTrip = ({navigation}) => {
   const state = useSelector(state => state.milestone.initialState);
   const dispatch = useDispatch();
 
-  //console.log(authData.userData);
-
   useEffect(() => {
     setTimeout(async () => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const tripdata = await SearchAllUserTrips(key);
+      console.log("hello")
       setTripDetails(tripdata);
     }, 500);
   }, [state]);
@@ -43,7 +42,7 @@ const AllUserTrip = ({navigation}) => {
   };
   const handleSearch = async value => {
     const key = await getVerifiedKeys(authData.userToken);
-    const response = await SearchAllUserInputTrips(key, value);
+    const response = await SearchAllUserInputTrips(key,value);
     setTripDetails(response);
   };
 
