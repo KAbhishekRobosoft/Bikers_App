@@ -8,7 +8,7 @@ import {
   Pressable,
   FlatList,
   Text,
-  RefreshControl
+  RefreshControl,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AllTripList from '../components/AllTripList';
@@ -16,7 +16,7 @@ import {UserTrips} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {SearchUserTrips} from '../services/Auth';
 import {setToken} from '../redux/AuthSlice';
-import Toast from 'react-native-simple-toast'
+import Toast from 'react-native-simple-toast';
 
 const AllTrips = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
@@ -49,12 +49,7 @@ const AllTrips = ({navigation}) => {
   }, []);
 
   const renderItem = details => {
-    return (
-      <AllTripList
-        navigation={navigation}
-        data= {details.item}
-      />
-    );
+    return <AllTripList navigation={navigation} data={details.item} />;
   };
   const handleSearch = async value => {
     const key = await getVerifiedKeys(authData.userToken);
@@ -81,18 +76,14 @@ const AllTrips = ({navigation}) => {
           style={styles.inputText}
         />
       </View>
-      {tripDetails.length === 0 ? (
-        <Text style={styles.displayText}>create a trip to display here.</Text>
-      ) : null}
       <FlatList
         data={tripDetails}
         keyExtractor={details => details._id}
-        renderItem={renderItem} 
+        renderItem={renderItem}
         refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-
-        />
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      />
 
       <Pressable
         style={styles.addButton}
@@ -148,7 +139,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     alignSelf: 'center',
     marginTop: 50,
-  }
+  },
 });
 
 export default AllTrips;
