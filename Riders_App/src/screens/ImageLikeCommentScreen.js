@@ -11,9 +11,8 @@ import {
   useWindowDimensions,
   TouchableOpacity,
   ActivityIndicator,
-  KeyboardAvoidingView,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import Icons from 'react-native-vector-icons/FontAwesome';
@@ -29,19 +28,21 @@ import {setToken} from '../redux/AuthSlice';
 import {addComments} from '../services/Auth';
 import Toast from 'react-native-simple-toast';
 import {deleteComment} from '../services/Auth';
-
+import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 
 const ImageLikeCommentScreen = ({navigation, route}) => {
   const [comments, Setcomments] = useState(false);
+  const [like, setLike] = useState(false);
   const [likeView, setLikeView] = useState(false);
   const [imgData, setImgData] = useState({});
   const state = useSelector(state => state.milestone.initialState);
+  const {height, width} = useWindowDimensions();
+  const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
   const loading = useSelector(state => state.milestone.isLoading);
   const authData = useSelector(state => state.auth);
   const [commentText, setCommentText] = useState('');
-  const keyboardVerticalOffset = Platform.OS === 'ios' ? 10 : 0
-  
   const dispatch = useDispatch();
+  const textRef = useRef(null);
 
   useEffect(() => {
     dispatch(deSetLoading());
@@ -70,6 +71,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
     dispatch(setToken(cred));
     const resp = await addComments(cred, imgData.photos._id, commentText);
     if (resp !== undefined) {
+      textRef.current.clear();
       Toast.show('Comment added successfully');
       dispatch(setInitialState(state));
     } else {
@@ -100,33 +102,28 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={styles.main}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'position' : 'height'}
-        keyboardVerticalOffset={keyboardVerticalOffset}
-        style={styles.container}>
-        {JSON.stringify(imgData) !== '{}' ? (
-          <>
-            <View style={styles.header}>
-              <Pressable
-                onPress={() => {
-                  navigation.goBack();
-                }}>
-                <Icon
-                  name="md-arrow-back"
-                  color="grey"
-                  size={25}
-                  style={styles.icon}
-                />
-              </Pressable>
-            </View>
+      {JSON.stringify(imgData) !== '{}' ? (
+        <>
+          <View style={styles.header}>
+            <Pressable
+              onPress={() => {
+                navigation.goBack();
+                dispatch(setInitialState(state));
+              }}>
+              <Icon
+                name="md-arrow-back"
+                color="grey"
+                size={25}
+                style={styles.icon}
+              />
+            </Pressable>
+          </View>
+          <View>
             <ScrollView
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}>
               <View style={styles.imgContainer}>
-                <Image
-                  style={styles.img}
-                  source={{uri: route.params.image}}
-                />
+                <Image style={styles.img} source={{uri: route.params.image}} />
                 <View style={styles.likeCommentView}>
                   <View
                     style={{
@@ -215,6 +212,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                                 flexDirection: 'row',
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
+                                paddingBottom: 6,
                               }}>
                               <View>
                                 <Pressable
@@ -337,6 +335,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                           name="heart"
                           color="red"
                           size={18}
+
                         />
                         <Text
                           style={{
@@ -394,6 +393,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                 <View style={styles.iconContainer}>
                   <TextInput
                     style={styles.input}
+                    ref={textRef}
                     placeholder="Comment"
                     placeholderTextColor="grey"
                     onChangeText={val => {
@@ -416,9 +416,9 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                 </View>
               </Animated.View>
             </ScrollView>
-          </>
-        ) : null}
-      </KeyboardAvoidingView>
+          </View>
+        </>
+      ) : null}
     </SafeAreaView>
   );
 };
@@ -427,11 +427,6 @@ export default ImageLikeCommentScreen;
 
 const styles = StyleSheet.create({
   main: {
-    flex: 1,
-    backgroundColor: 'white',
-    height: '50%'
-  },
-  container: {
     flex: 1,
   },
   header: {

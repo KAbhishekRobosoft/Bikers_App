@@ -8,8 +8,6 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
-  FlatList,
-  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
@@ -35,6 +33,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
   const dispatch = useDispatch();
   const loading = useSelector(state => state.milestone.isLoading);
   const [images, setImages] = useState([]);
+  const state= useSelector(state=>state.milestone.initialState)
 
   useEffect(() => {
     dispatch(deSetLoading());
@@ -69,7 +68,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
       }, 1000);
 
     }, 500);
-  }, []);
+  }, [state]);
 
 
   if (loading) {

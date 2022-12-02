@@ -855,6 +855,7 @@ export const followRider = async (token, mobile) => {
         },
       },
     );
+    console.log(response.data)
     return response.data;
   } catch (err) {
     console.log(err);
