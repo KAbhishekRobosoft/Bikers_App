@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {addOwnerDetails, getOwnerDetails} from '../services/Auth';
+import Toast from 'react-native-simple-toast';
 import {useDispatch, useSelector} from 'react-redux';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setUserData} from '../redux/AuthSlice';
@@ -31,7 +32,7 @@ export const PersonalDetails = () => {
       dispatch(setLoading());
       // setPin(response[0].pincode)
     }, 1000);
-  }, [userDetails.pincode]);
+  }, [userDetails?.pincode]);
   if (loading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -51,7 +52,7 @@ export const PersonalDetails = () => {
               placeholder="Licence"
               editable={false}
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.lisenceNumber}
+              defaultValue={userDetails?.lisenceNumber}
             />
           </View>
         </View>
@@ -64,7 +65,7 @@ export const PersonalDetails = () => {
               placeholder="Name"
               editable={false}
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.userName}
+              defaultValue={userDetails?.userName}
             />
           </View>
         </View>
@@ -77,7 +78,7 @@ export const PersonalDetails = () => {
               placeholder="Door"
               editable={false}
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.doorNumber}
+              defaultValue={userDetails?.doorNumber}
             />
           </View>
         </View>
@@ -90,7 +91,7 @@ export const PersonalDetails = () => {
               placeholder="City"
               editable={false}
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.city}
+              defaultValue={userDetails?.city}
             />
           </View>
         </View>
@@ -103,7 +104,7 @@ export const PersonalDetails = () => {
               placeholder="State"
               editable={false}
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.state}
+              defaultValue={userDetails?.state}
             />
           </View>
         </View>
@@ -116,7 +117,7 @@ export const PersonalDetails = () => {
               placeholder="Pincode"
               editable={false}
               placeholderTextColor="#4F504F"
-              defaultValue={JSON.stringify(userDetails.pincode)}
+             defaultValue={JSON.stringify(userDetails?.pincode)}
             />
           </View>
         </View>
@@ -130,7 +131,7 @@ export const PersonalDetails = () => {
               editable={false}
               keyboardType="numeric"
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.mobile}
+              defaultValue={userDetails?.mobile}
             />
           </View>
         </View>
@@ -143,7 +144,7 @@ export const PersonalDetails = () => {
               placeholder="Email"
               editable={false}
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.email}
+              defaultValue={userDetails?.email}
             />
           </View>
         </View>

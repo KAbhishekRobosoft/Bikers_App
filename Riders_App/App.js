@@ -6,7 +6,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {persistStore} from 'redux-persist';
 import {NavigationContainer} from '@react-navigation/native';
 import NavigationFunctionality from './src/utils/NavigationFunctionality';
-
+import RNBootSplash from "react-native-bootsplash";
 let persistor = persistStore(store);
 
 const App = () => {
@@ -14,7 +14,7 @@ const App = () => {
 
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <NavigationContainer>
+        <NavigationContainer onReady={() => RNBootSplash.hide()}>
           <NavigationFunctionality />
         </NavigationContainer>
       </PersistGate>

@@ -8,13 +8,126 @@ import {
   ImageBackground,
   Text,
   ScrollView,
+  Alert,
 } from 'react-native';
 import InvoiceItem from '../components/InvoiceItemPrice';
 import {useRoute} from '@react-navigation/native';
 import {month1} from '../utils/Functions';
-
+import Share from 'react-native-share';
+import pdf from 'react-native-html-to-pdf';
+import Icon from 'react-native-vector-icons/Ionicons';
+import FileViewer from 'react-native-file-viewer';
+import Toast from 'react-native-simple-toast';
 const Invoice = ({navigation}) => {
   const route = useRoute();
+  console.log('&&&&', route.params.date);
+  const htmlContent = `
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <title>INVOICE</title>
+      <link rel="license" href="https://www.opensource.org/licenses/mit-license/">
+      <style>
+      ${htmlStyles}
+      </style>
+    </head>
+    <body>
+      <header>
+        <h1>INVOICE</h1>
+        <address>
+          <p></p>
+          <p></p>
+          <p></p>
+        </address>
+      </header>
+      <article>
+
+        <h1><span>Personal Details</span></h1>
+        <table >
+        <tr>
+          <th><span>Date :-</span></th>
+          <td><span>${route.params.date.substring(8, 10)}, ${
+    month1[route.params.date.substring(5, 7)]
+  },
+          ${route.params.date.substring(0, 4)}
+        </span></td>
+        </tr>
+          <tr>
+            <th><span>Oil:- </span></th>
+            <td><span></span>1000/-</td>
+          </tr>
+       
+          <tr>
+            <th><span>Battery :- </span></th>
+            <td><span></span>1000/-</td>
+          </tr>
+       
+          <tr>
+            <th><span>Tyre Pressure:- </span></th>
+            <td><span></span>1000/-</td>
+          </tr>
+       
+          <tr>
+            <th><span>Indicator:- </span></th>
+            <td><span></span>1000/-</td>
+          </tr>
+          <tr>
+            <th><span>Total :- </span></th>
+            <td><span></span>4000/-</td>
+          </tr>
+       
+          
+        </table>
+
+      </article>
+        <h1><span></span></h1>
+        <table>
+      
+      
+      </table>
+
+    </body>
+  </html>
+`;
+
+  const createPDF = async () => {
+    let options = {
+      html: htmlContent,
+      fileName: 'test',
+      directory: 'Download',
+      base64: true,
+    };
+
+    let file = await pdf.convert(options);
+
+    Alert.alert(
+      'Succes',
+      'Path' + file.filePath,
+      [
+        {text: 'cancel', style: 'cancel'},
+        {text: 'open', onPress: () => openfile(file.filePath)},
+      ],
+      {cancelable: true},
+    );
+
+    const openfile = fileName => {
+      const path = fileName;
+
+      FileViewer.open(path)
+        .then(() => {
+          Toast.show('Downloded Successfully');
+        })
+        .catch(error => {
+          alert('error in downloading');
+        });
+    };
+    // shareOptions = {
+    //   message: 'PDF',
+    //   url: `data:application/pdf;base64,${file.base64}`,
+    // };
+
+    console.log(file.filePath);
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -24,12 +137,14 @@ const Invoice = ({navigation}) => {
             onPress={() => {
               navigation.goBack();
             }}>
-            <Image
-              source={require('../assets/images/back_arrow.png')}
-              style={styles.backicon}
+            <Icon
+              name="md-arrow-back"
+              color={'#ED7F2C'}
+              size={25}
+              style={styles.icon}
             />
           </Pressable>
-          <Pressable>
+          <Pressable onPress={createPDF}>
             <Image
               source={require('../assets/images/download.png')}
               style={styles.icon}
@@ -43,7 +158,11 @@ const Invoice = ({navigation}) => {
             <View style={styles.maintextContainer}>
               <View>
                 <Text style={styles.invoiceText}>Invoice</Text>
-                <Text style={styles.dateText}>{route.params.date.substring(8, 10)} {month1[route.params.date.substring(5, 7)]}, {route.params.date.substring(0, 4)}</Text>
+                <Text style={styles.dateText}>
+                  {route.params.date.substring(8, 10)}{' '}
+                  {month1[route.params.date.substring(5, 7)]},{' '}
+                  {route.params.date.substring(0, 4)}
+                </Text>
               </View>
               <Text style={styles.billNo}>#0162</Text>
             </View>
@@ -55,10 +174,17 @@ const Invoice = ({navigation}) => {
               />
               <Text style={styles.statusText}>Paid</Text>
             </View>
-            <Text style={styles.designtext}>
-              {' '}
-              ————————————————————————————————{' '}
-            </Text>
+        
+            <View
+              style={{
+                borderWidth: 0.7,
+                marginVertical: 20,
+                width: '90%',
+                //marginLeft: 35,
+                alignSelf:'center',
+                borderColor:'grey'
+
+              }}></View>
             <View style={styles.ProducttextContainer}>
               <Text style={styles.productText}>PRODUCT</Text>
               <View style={styles.unitContainer}>
@@ -75,10 +201,16 @@ const Invoice = ({navigation}) => {
               <Text style={styles.totalText}>TOTAL</Text>
               <Text style={styles.totalText}>4000/-</Text>
             </View>
-            <Text style={styles.designtext}>
-              {' '}
-              ————————————————————————————————{' '}
-            </Text>
+            <View
+              style={{
+                borderWidth: 0.7,
+                marginVertical: 20,
+                width: '90%',
+                //marginLeft: 35,
+                alignSelf:'center',
+                borderColor:'grey'
+              
+              }}></View>
           </ImageBackground>
         </View>
       </ScrollView>
@@ -100,8 +232,8 @@ const styles = StyleSheet.create({
   },
 
   backicon: {
-    tintColor: '#ED7F2C',
-    color: '#ED7F2C',
+    //tintColor: '#ED7F2C',
+    //color: '#red',
     height: 18,
     width: 18,
   },
@@ -251,3 +383,68 @@ const styles = StyleSheet.create({
 });
 
 export default Invoice;
+
+const htmlStyles = `
+*{
+  border: 10;
+  box-sizing: content-box;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  vertical-align: top;
+}
+h1 { font: bold 100% sans-serif; letter-spacing: 0.5em; alignitems:center;text-align: center; text-transform: uppercase; }
+/* table */
+table { font-size: 75%; table-layout: fixed; width: 100%; }
+table { border-collapse: separate; border-spacing: 2px; }
+th, td { border-width: 1px; padding: 0.5em; position: relative; text-align: center; }
+th, td { border-radius: 0.25em; border-style: solid; }
+th { background: #EEE; border-color: #BBB; }
+td { border-color: #DDD; }
+/* page */
+html { font: 16px/1 'Open Sans', sans-serif; overflow: auto; }
+html { background: #999; cursor: default; }
+body { box-sizing: border-box;margin: 0 auto; overflow: hidden; padding: 0.25in; }
+body { background: #FFF; border-radius: 1px; box-shadow: 0 0 1in -0.25in rgba(0, 0, 0, 0.5); }
+/* header */
+header { margin: 0 0 3em; }
+header:after { clear: both; content: ""; display: table; }
+header h1 { background: #000; border-radius: 0.25em; color: #FFF; margin: 0 0 1em; padding: 0.5em 0; }
+header address { float: left; font-size: 75%; font-style: normal; line-height: 1.25; margin: 0 1em 1em 0; }
+header address p { margin: 0 0 0.25em; }
+header span, header img { display: block; float: right; }
+header span { margin: 0 0 1em 1em; max-height: 25%; max-width: 60%; position: relative; }
+header img { max-height: 100%; max-width: 100%; }
+/* article */
+article, article address, table.meta, table.inventory { margin: 0 0 3em; }
+article:after { clear: both; content: ""; display: table; }
+article h1 { clip: rect(0 0 0 0); position: absolute; }
+article address { float: left; font-size: 125%; font-weight: bold; }
+/* table meta & balance */
+table.meta, table.balance { float: right; width: 36%; }
+table.meta:after, table.balance:after { clear: both; content: ""; display: table; }
+/* table meta */
+table.meta th { width: 40%; }
+table.meta td { width: 60%; }
+/* table items */
+table.inventory { clear: both; width: 100%; }
+table.inventory th { font-weight: bold; text-align: center; }
+table.inventory td:nth-child(1) { width: 26%; }
+table.inventory td:nth-child(2) { width: 38%; }
+table.inventory td:nth-child(3) { text-align: right; width: 12%; }
+table.inventory td:nth-child(4) { text-align: right; width: 12%; }
+table.inventory td:nth-child(5) { text-align: right; width: 12%; }
+/* table balance */
+table.balance th, table.balance td { width: 50%; }
+table.balance td { text-align: right; }
+/* aside */
+aside h1 { border: none; border-width: 0 0 1px; margin: 0 0 1em; }
+aside h1 { border-color: #999; border-bottom-style: solid; }
+`;

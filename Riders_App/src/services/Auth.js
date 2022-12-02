@@ -211,7 +211,6 @@ export const addBikeDetails = async (values, token) => {
     console.log(response.data);
   } catch (error) {
     console.log('Error Occured in adding Bike Details');
-    alert('Please Fill All The Details');
   }
 };
 

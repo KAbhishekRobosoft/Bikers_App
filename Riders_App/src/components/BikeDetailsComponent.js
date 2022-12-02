@@ -1,9 +1,18 @@
-import {View, Text, StyleSheet, ScrollView, TextInput, ActivityIndicator} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {getBikeDetails} from '../services/Auth';
 import {SelectedBike} from '../redux/AccessoriesSlice';
-import { deSetLoading, setLoading } from '../redux/MileStoneSlice';
+import {deSetLoading, setLoading} from '../redux/MileStoneSlice';
+
+import Toast from 'react-native-simple-toast';
 
 export const BikeDetails = ({
   header,
@@ -25,7 +34,7 @@ export const BikeDetails = ({
   const loading = useSelector(state => state.milestone.isLoading);
   const dispatch = useDispatch();
   //console.log('=====', BikeDetails[0].vehicleNumber);
-  
+
   // useEffect(() => {
   //   setTimeout(async () => {
   //     dispatch(deSetLoading());
@@ -95,6 +104,7 @@ export const BikeDetails = ({
               placeholderTextColor="#4F504F"
               onChangeText={engine}
               defaultValue={BikeDetails[0].engineNumber}
+              onTouchStart={() => Toast.show('Cant Be Edited')}
             />
           </View>
         </View>
@@ -109,6 +119,7 @@ export const BikeDetails = ({
               placeholderTextColor="#4F504F"
               onChangeText={frameNo}
               defaultValue={BikeDetails[0].frameNumber}
+              onTouchStart={() => Toast.show('Cant Be Edited')}
             />
           </View>
         </View>
@@ -124,6 +135,7 @@ export const BikeDetails = ({
               placeholderTextColor="#4F504F"
               onChangeText={batteryMake}
               defaultValue={BikeDetails[0].batteryMake}
+              onTouchStart={() => Toast.show('Cant Be Edited')}
             />
           </View>
         </View>
@@ -139,6 +151,7 @@ export const BikeDetails = ({
               placeholderTextColor="#4F504F"
               onChangeText={regNo}
               defaultValue={BikeDetails[0].registerNumber}
+              onTouchStart={() => Toast.show('Cant Be Edited')}
             />
           </View>
         </View>
@@ -154,6 +167,7 @@ export const BikeDetails = ({
               placeholderTextColor="#4F504F"
               onChangeText={model}
               defaultValue={BikeDetails[0].model}
+              onTouchStart={() => Toast.show('Cant Be Edited')}
             />
           </View>
         </View>
@@ -168,6 +182,7 @@ export const BikeDetails = ({
               placeholderTextColor="#4F504F"
               onChangeText={color}
               defaultValue={BikeDetails[0].color}
+              onTouchStart={() => Toast.show('Cant Be Edited')}
             />
           </View>
         </View>
@@ -184,6 +199,7 @@ export const BikeDetails = ({
               placeholderTextColor="#4F504F"
               onChangeText={dealerCode}
               defaultValue={BikeDetails[0].dealerCode}
+              onTouchStart={() => Toast.show('Cant Be Edited')}
             />
           </View>
         </View>

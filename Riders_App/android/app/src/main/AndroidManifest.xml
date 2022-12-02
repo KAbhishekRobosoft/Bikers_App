@@ -17,7 +17,7 @@
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
-      android:theme="@style/AppTheme">
+      android:theme="@style/BootTheme">
       <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyB-s2jn3DOH5EH0MWhqOMKoz4rZFoa2Xeg"/>
       <activity
         android:name=".MainActivity"

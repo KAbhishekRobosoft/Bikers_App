@@ -27,6 +27,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
+
 import {useSelector, useDispatch} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {setUserData} from '../redux/AuthSlice';
@@ -35,28 +36,19 @@ import pdf from 'react-native-html-to-pdf';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
 import {updateOwnerDetails} from '../services/Auth';
 import Share from 'react-native-share';
-import { BikeDetails } from '../components/BikeDetailsComponent';
+import {BikeDetails} from '../components/BikeDetailsComponent';
+import Toast from 'react-native-simple-toast';
+import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 
 const OwnerManualEdit = ({navigation}) => {
   const userDetails = useSelector(state => state.auth.userData);
   //console.log(userDetails);
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
-  //const bikeDetails = useSelector(state => state.shop.selectedBikeData);
-  const bikedata = useSelector(state => state.shop.allBikeData);
-  //console.log('0000', bikedata[0].engineNumber);
-  // useEffect(() => {
-  //   setTimeout(async () => {
-  //     let cred = await getVerifiedKeys(authData.userToken);
-  //     const response = await getbikedata(cred);
-  //     console.log(response);
-  //     const bikedata = response.filter(ele => ele.vehicleType === 'aa');
-  //     console.log(bikedata);
-  //   }, 1000);
-  // }, []);
 
+  const bikedata = useSelector(state => state.shop.allBikeData);
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 10 : 0;
   const update = async values => {
-   // console.log('hiiiiiiIIIII',values.licence);
     const obj = {
       city: values.city,
       state: values.state,
@@ -67,7 +59,7 @@ const OwnerManualEdit = ({navigation}) => {
     let cred = await getVerifiedKeys(authData.userToken);
 
     await updateOwnerDetails(obj, cred);
-   
+
     const obj2 = {
       city: values.city,
       state: values.state,
@@ -78,8 +70,8 @@ const OwnerManualEdit = ({navigation}) => {
       mobile: values.mobile,
       email: values.email,
     };
-    console.log('_____---',obj2);
     dispatch(setUserData(obj2));
+    Toast.show('Updated Successfully');
     navigation.navigate('OwnersManualDetail');
   };
 
@@ -103,7 +95,7 @@ const OwnerManualEdit = ({navigation}) => {
               </address>
             </header>
             <article>
-
+           
               <h1><span>Personal Details</span></h1>
               <table >
               <tr>
@@ -202,6 +194,7 @@ const OwnerManualEdit = ({navigation}) => {
     try {
       const shareResponse = await Share.open(shareOptions);
       console.log(JSON.stringify(shareResponse));
+      Toast.show('Shared Successfully');
     } catch (error) {
       console.log('error while sharing');
     }
@@ -209,6 +202,9 @@ const OwnerManualEdit = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{flex: 1}}>
       <View style={styles.mainView}>
         <View style={[styles.header]}>
           <View style={styles.subHeader}>
@@ -271,6 +267,7 @@ const OwnerManualEdit = ({navigation}) => {
                       keyboardType="numeric"
                       value={values.licence}
                       editable={false}
+                      onTouchStart={() => Toast.show('Cant Be Edited')}
                     />
                     <Field
                       component={PlaceholderTextFieldOwnerManual}
@@ -280,6 +277,7 @@ const OwnerManualEdit = ({navigation}) => {
                       value={values.name}
                       editable={false}
                       defaultValue={userDetails.name}
+                      onTouchStart={() => Toast.show('Cant Be Edited')}
                     />
                     <Field
                       component={PlaceholderTextFieldOwnerManual}
@@ -316,6 +314,7 @@ const OwnerManualEdit = ({navigation}) => {
                       keyboardType="default"
                       value={values.mobile}
                       editable={false}
+                      onTouchStart={() => Toast.show('Cant Be Edited')}
                     />
                     <Field
                       component={PlaceholderTextFieldOwnerManual}
@@ -324,6 +323,7 @@ const OwnerManualEdit = ({navigation}) => {
                       keyboardType="default"
                       value={values.email}
                       editable={false}
+                      onTouchStart={() => Toast.show('Cant Be Edited')}
                     />
                   </View>
                 </>
@@ -335,6 +335,7 @@ const OwnerManualEdit = ({navigation}) => {
           </View>
         </ScrollView>
       </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

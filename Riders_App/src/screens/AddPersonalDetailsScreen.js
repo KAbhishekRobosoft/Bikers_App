@@ -7,6 +7,7 @@ import {
   Pressable,
   ScrollView,
   Platform,
+  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
@@ -16,43 +17,54 @@ import {setUserData} from '../redux/AuthSlice';
 import ButtonLarge from '../components/Buttons';
 import {Field, Formik} from 'formik';
 import * as yup from 'yup';
-import { getVerifiedKeys } from '../utils/Functions';
+import {getVerifiedKeys} from '../utils/Functions';
+import Toast from 'react-native-simple-toast';
 
 export const AddPersonalDetails = ({navigation}) => {
   const useDetails = useSelector(state => state.auth.userData);
-  const authData= useSelector(state=>state.auth);
-  const userCredentials=useSelector(state=>state.auth.userCredentials)
-  console.log(userCredentials);
-   console.log(useDetails)
+  const authData = useSelector(state => state.auth);
+  const userCredentials = useSelector(state => state.auth.userCredentials);
+  // console.log(userCredentials);
+  // console.log(useDetails);
   const dispatch = useDispatch();
 
   const submitForm = async (values, {resetForm}) => {
-    console.log(values);
 
-    const obj = {
-      lisenceNumber: values.licence,
-      city: values.city,
-      state: values.state,
-      doorNumber: values.doorNumber,
-      pincode: values.pincode,
-    };
+    if (
+      values.city &&
+      values.doorNumber &&
+      values.licence &&
+      values.state &&
+      values.pincode !== ''
+    ) {
+      const obj = {
+        lisenceNumber: values.licence,
+        city: values.city,
+        state: values.state,
+        doorNumber: values.doorNumber,
+        pincode: values.pincode,
+      };
 
-    let cred = await getVerifiedKeys(authData.userToken);
+      let cred = await getVerifiedKeys(authData.userToken);
 
-   await addOwnerDetails(obj,cred);
-    const userData = {
-      lisenceNumber: values.licence,
-      city: values.city,
-      state: values.state,
-      doorNumber: values.doorNumber,
-      pincode: values.pincode,
-      name: userCredentials.userName,
-      mobile: userCredentials.mobile,
-      email: userCredentials.email,
-    };
-    dispatch(setUserData(userData));
-    resetForm((initialValues = ''));
-    navigation.navigate('AddBikeDetails');
+      await addOwnerDetails(obj, cred);
+      const userData = {
+        lisenceNumber: values.licence,
+        city: values.city,
+        state: values.state,
+        doorNumber: values.doorNumber,
+        pincode: values.pincode,
+        name: userCredentials.userName,
+        mobile: userCredentials.mobile,
+        email: userCredentials.email,
+      };
+      dispatch(setUserData(userData));
+      Toast.show('Personal Details Added');
+      resetForm((initialValues = ''));
+      navigation.navigate('AddBikeDetails');
+    } else {
+      Toast.show('Enter the Details');
+    }
   };
 
   return (

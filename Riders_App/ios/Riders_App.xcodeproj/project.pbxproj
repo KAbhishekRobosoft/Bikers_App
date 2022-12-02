@@ -26,6 +26,7 @@
 		ABFC30C32184437592EBAB36 /* Roboto-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 60070E08158447F892907B71 /* Roboto-LightItalic.ttf */; };
 		AEE00E97088D4111AF3D3178 /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1CFA4203E84648149CCC0924 /* Roboto-ThinItalic.ttf */; };
 		D1AB0CD642C144119A97482F /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EEC1F520D46B4709B847CC92 /* Roboto-Light.ttf */; };
+		DD8985AB293A186A00B39DDF /* BootSplash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD8985AA293A186A00B39DDF /* BootSplash.storyboard */; };
 		EA1B1B3A2A64469F81DDE4C0 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E4A186636D6445B94F57D54 /* Roboto-Bold.ttf */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Riders_App/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-Riders_App-Riders_AppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Riders_App-Riders_AppTests.release.xcconfig"; path = "Target Support Files/Pods-Riders_App-Riders_AppTests/Pods-Riders_App-Riders_AppTests.release.xcconfig"; sourceTree = "<group>"; };
 		BF57D1510CE443F99421BF26 /* Roboto-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Black.ttf"; path = "../assets/fonts/Roboto-Black.ttf"; sourceTree = "<group>"; };
+		DD8985AA293A186A00B39DDF /* BootSplash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = BootSplash.storyboard; path = Riders_App/BootSplash.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EEC1F520D46B4709B847CC92 /* Roboto-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Light.ttf"; path = "../assets/fonts/Roboto-Light.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -113,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
+				DD8985AA293A186A00B39DDF /* BootSplash.storyboard */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -300,6 +303,7 @@
 				D1AB0CD642C144119A97482F /* Roboto-Light.ttf in Resources */,
 				ABFC30C32184437592EBAB36 /* Roboto-LightItalic.ttf in Resources */,
 				2C17E64CE04C4651AF0CDEC2 /* Roboto-Medium.ttf in Resources */,
+				DD8985AB293A186A00B39DDF /* BootSplash.storyboard in Resources */,
 				7FE0F4E8C6CE400EBFF2C5FC /* Roboto-MediumItalic.ttf in Resources */,
 				319FB6A37C104F489417F78F /* Roboto-Regular.ttf in Resources */,
 				6EA4146A13DA455D96B8119E /* Roboto-Thin.ttf in Resources */,
