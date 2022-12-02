@@ -45,30 +45,30 @@ const Register = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
-  const keyboardVerticalOffset = Platform.OS === 'ios' ? 10 : 0;
+ 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <View style={[styles.header, styles.shadow]}>
-        <Pressable
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Icon
-            name="md-arrow-back"
-            color={'white'}
-            size={25}
-            style={styles.icon}
-          />
-        </Pressable>
-        <Text style={styles.headerText}>Register</Text>
-      </View>
-      <ScrollView
-        style={styles.scrollview}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'position' : 'height'}
-          style={{flex: 1}}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
+        <View style={[styles.header, styles.shadow]}>
+          <Pressable
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Icon
+              name="md-arrow-back"
+              color={'white'}
+              size={25}
+              style={styles.icon}
+            />
+          </Pressable>
+          <Text style={styles.headerText}>Register</Text>
+        </View>
+        <ScrollView
+          style={styles.scrollview}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}>
           <Formik
             validationSchema={registerValidationSchema}
             initialValues={{
@@ -137,9 +137,8 @@ const Register = ({navigation}) => {
               </>
             )}
           </Formik>
-        </KeyboardAvoidingView>
-      </ScrollView>
-      {/* </KeyboardAvoidingView> */}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

@@ -80,9 +80,6 @@ const AllTrips = ({navigation}) => {
           style={styles.inputText}
         />
       </View>
-      {tripDetails.length === 0 ? (
-        <Text style={styles.displayText}>create a trip to display here.</Text>
-      ) : null}
       <FlatList
         data={tripDetails}
         keyExtractor={details => details._id}

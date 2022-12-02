@@ -34,7 +34,7 @@ const AllUserTrip = ({navigation}) => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const tripdata = await SearchAllUserTrips(key);
-      console.log("hello")
+      console.log('hello');
       setTripDetails(tripdata);
       dispatch(setLoading());
     }, 500);
@@ -59,7 +59,7 @@ const AllUserTrip = ({navigation}) => {
   };
   const handleSearch = async value => {
     const key = await getVerifiedKeys(authData.userToken);
-    const response = await SearchAllUserInputTrips(key,value);
+    const response = await SearchAllUserInputTrips(key, value);
     setTripDetails(response);
   };
 
@@ -73,41 +73,36 @@ const AllUserTrip = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      {tripDetails.length > 0 ? (
-        <>
-          <View style={styles.searchView}>
-            <Image
-              source={require('../assets/images/search.png')}
-              style={styles.searchIcon}
-            />
-            <TextInput
-              name="Search a Trip"
-              placeholder="Search a Trip"
-              placeholderTextColor="rgba(166,166,166,0.87)"
-              fontFamily="Roboto-Medium"
-              fontSize={12}
-              alignSelf={'center'}
-              marginLeft={6}
-              onChangeText={text => handleSearch(text)}
-              style={styles.inputText}
-            />
-          </View>
-          <FlatList
-            data={tripDetails}
-            keyExtractor={details => details._id}
-            renderItem={renderItem}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          />
-
-          <Pressable
-            style={styles.addButton}
-            onPress={() => navigation.navigate('CreateTrip')}>
-            <Image source={require('../assets/images/addtrip.png')} />
-          </Pressable>
-        </>
-      ) : null}
+      <View style={styles.searchView}>
+        <Image
+          source={require('../assets/images/search.png')}
+          style={styles.searchIcon}
+        />
+        <TextInput
+          name="Search a Trip"
+          placeholder="Search a Trip"
+          placeholderTextColor="rgba(166,166,166,0.87)"
+          fontFamily="Roboto-Medium"
+          fontSize={12}
+          alignSelf={'center'}
+          marginLeft={6}
+          onChangeText={text => handleSearch(text)}
+          style={styles.inputText}
+        />
+      </View>
+      <FlatList
+        data={tripDetails}
+        keyExtractor={details => details._id}
+        renderItem={renderItem}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      />
+      <Pressable
+        style={styles.addButton}
+        onPress={() => navigation.navigate('CreateTrip')}>
+        <Image source={require('../assets/images/addtrip.png')} />
+      </Pressable>
     </SafeAreaView>
   );
 };

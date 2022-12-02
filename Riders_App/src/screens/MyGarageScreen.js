@@ -48,7 +48,6 @@ export const MyGarage = ({navigation}) => {
       } catch (e) {
         dispatch(addAllServices([]));
       }
-
       dispatch(setLoading());
     };
     get();
@@ -81,7 +80,7 @@ export const MyGarage = ({navigation}) => {
           )
         ) : (
           <View style={styles.serviceDueView}>
-            <Text style={styles.daysText}>No Services</Text>
+            <Text style={styles.daysText}>No Services Booked</Text>
           </View>
         )}
 

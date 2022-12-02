@@ -38,27 +38,17 @@ import {updateOwnerDetails} from '../services/Auth';
 import Share from 'react-native-share';
 import {BikeDetails} from '../components/BikeDetailsComponent';
 import Toast from 'react-native-simple-toast';
+import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 
 const OwnerManualEdit = ({navigation}) => {
   const userDetails = useSelector(state => state.auth.userData);
   //console.log(userDetails);
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
-  //const bikeDetails = useSelector(state => state.shop.selectedBikeData);
-  const bikedata = useSelector(state => state.shop.allBikeData);
-  //console.log('0000', bikedata[0].engineNumber);
-  // useEffect(() => {
-  //   setTimeout(async () => {
-  //     let cred = await getVerifiedKeys(authData.userToken);
-  //     const response = await getbikedata(cred);
-  //     console.log(response);
-  //     const bikedata = response.filter(ele => ele.vehicleType === 'aa');
-  //     console.log(bikedata);
-  //   }, 1000);
-  // }, []);
 
+  const bikedata = useSelector(state => state.shop.allBikeData);
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 10 : 0;
   const update = async values => {
-    // console.log('hiiiiiiIIIII',values.licence);
     const obj = {
       city: values.city,
       state: values.state,
@@ -212,6 +202,9 @@ const OwnerManualEdit = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{flex: 1}}>
       <View style={styles.mainView}>
         <View style={[styles.header]}>
           <View style={styles.subHeader}>
@@ -342,6 +335,7 @@ const OwnerManualEdit = ({navigation}) => {
           </View>
         </ScrollView>
       </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
