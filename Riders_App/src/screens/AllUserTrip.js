@@ -7,6 +7,8 @@ import {
   Image,
   Pressable,
   FlatList,
+  RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AllTripList from '../components/AllTripList';
@@ -14,31 +16,46 @@ import {SearchAllUserInputTrips} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {SearchAllUserTrips} from '../services/Auth';
 import {setToken} from '../redux/AuthSlice';
-import WelcomeAboardScreen2 from './WelcomeAbroadScreen2';
+import { setLoading } from '../redux/MileStoneSlice';
+import { deSetLoading } from '../redux/MileStoneSlice';
+import Toast from 'react-native-simple-toast'
 
 const AllUserTrip = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
   const authData = useSelector(state => state.auth);
   const state = useSelector(state => state.milestone.initialState);
   const dispatch = useDispatch();
+  const [refreshing, setRefreshing] = React.useState(false);
+  const loading= useSelector(state=>state.milestone.isLoading)
 
   useEffect(() => {
+    dispatch(deSetLoading())
     setTimeout(async () => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const tripdata = await SearchAllUserTrips(key);
       console.log("hello")
       setTripDetails(tripdata);
+      dispatch(setLoading())
     }, 500);
   }, [state]);
 
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    const cred = await getVerifiedKeys(authData.userToken);
+    dispatch(setToken(cred));
+    const tripdata = await SearchAllUserTrips(cred);
+    if (tripdata !== undefined) {
+      Toast.show('Loading All Trips');
+      setTripDetails(tripdata);
+    } else {
+      Toast.show('Unable to Load Trips');
+    }
+    setRefreshing(false);
+  }, []);
+
   const renderItem = details => {
-    return (
-      <AllTripList
-        data= {details.item}
-        navigation= {navigation}
-      />
-    );
+    return <AllTripList data={details.item} navigation={navigation} />;
   };
   const handleSearch = async value => {
     const key = await getVerifiedKeys(authData.userToken);
@@ -46,12 +63,18 @@ const AllUserTrip = ({navigation}) => {
     setTripDetails(response);
   };
 
+  if(loading){
+    return(
+      <View style={{flex:1,justifyContent:"center",alignItems:"center"}}>
+            <ActivityIndicator size="large" color="orange" />
+      </View>
+    )
+  }
+
   return (
-    <>
-      {tripDetails.length === 0 ? (
-        <WelcomeAboardScreen2 />
-      ) : (
         <SafeAreaView style={{flex: 1}}>
+        {tripDetails.length > 0 ?
+        <>
           <View style={styles.searchView}>
             <Image
               source={require('../assets/images/search.png')}
@@ -72,16 +95,18 @@ const AllUserTrip = ({navigation}) => {
           <FlatList
             data={tripDetails}
             keyExtractor={details => details._id}
-            renderItem={renderItem}></FlatList>
+            renderItem={renderItem}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          />
 
           <Pressable
             style={styles.addButton}
             onPress={() => navigation.navigate('CreateTrip')}>
             <Image source={require('../assets/images/addtrip.png')} />
-          </Pressable>
+          </Pressable></> : null}
         </SafeAreaView>
-      )}
-    </>
   );
 };
 

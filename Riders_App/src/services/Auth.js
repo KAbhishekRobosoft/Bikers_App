@@ -709,6 +709,7 @@ export const getChat = async (token,groupId) => {
     console.log(err);
   }
 };
+
 export const uploadChatImage = async (payload, token) => {
   let res = await fetch(`${BASE_URL}/chat/uploadChatImage`, {
     method: 'post',
@@ -720,3 +721,124 @@ export const uploadChatImage = async (payload, token) => {
   let data = await res.json();
   return data;
 }
+export const getImagePreview = async (token,groupId) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/chat/getImagePreview',
+      {
+        groupId:groupId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+export const getParticularPhoto = async (token,id) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/chat/getParticularPhoto',
+      
+      {
+        _id:id
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addLike = async (token,id) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/chat/addLikes',
+      
+      {
+        id:id
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addComments = async (token,id,comment) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/chat/addComments',
+      
+      {
+        id:id,
+        comments:comment
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const deleteComment = async (token,id,commentId) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/chat/deleteComment',
+      
+      {
+        id:id,
+        commentId:commentId
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const followRider = async (token,mobile) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/follow',
+      
+      {
+        wantToFollow:mobile,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+

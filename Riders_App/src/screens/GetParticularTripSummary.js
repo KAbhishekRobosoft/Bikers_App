@@ -9,6 +9,7 @@ import {
   ScrollView,
   ActivityIndicator,
   FlatList,
+  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
@@ -18,13 +19,14 @@ import {useSelector, useDispatch} from 'react-redux';
 import BikeImageComponent from '../components/BikeImageComponent';
 import MapView, {Marker} from 'react-native-maps';
 import {Polyline} from 'react-native-maps';
-import {getParticularTrip} from '../services/Auth';
-import {month1} from '../utils/Functions';
+import {getImagePreview} from '../services/Auth';
+import {getVerifiedKeys, month1} from '../utils/Functions';
 import {calculateRoute} from '../services/Auth';
 import {deSetLoading} from '../redux/MileStoneSlice';
 import {setLoading} from '../redux/MileStoneSlice';
 import uuid from 'react-native-uuid';
-import axios from 'axios';
+import {setToken} from '../redux/AuthSlice';
+import Toast from 'react-native-simple-toast'
 
 export const GetParticularTripSummary = ({navigation, route}) => {
   const [direction, setDirection] = useState([]);
@@ -32,84 +34,43 @@ export const GetParticularTripSummary = ({navigation, route}) => {
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.milestone.isLoading);
-  const [users, setUsers] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  // const [enableScrollViewScroll, setEnableScrollViewScroll] = useState(true);
-
-  useEffect(() => {
-    getUsers();
-  }, [currentPage]);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     dispatch(deSetLoading());
-    //getUsers();
-    if (currentPage === 1) {
-      setTimeout(async () => {
-        const dir = await calculateRoute(
-          route.params.data.source[0].latitude,
-          route.params.data.source[0].longitude,
-          route.params.data.destination[0].latitude,
-          route.params.data.destination[0].longitude,
+    setTimeout(async () => {
+      const dir = await calculateRoute(
+        route.params.data.source[0].latitude,
+        route.params.data.source[0].longitude,
+        route.params.data.destination[0].latitude,
+        route.params.data.destination[0].longitude,
+      );
+      setDirection(dir.legs[0].points);
+      const cred = await getVerifiedKeys(authData.userToken);
+      dispatch(setToken(cred));
+      const response = await getImagePreview(cred, route.params.data._id);
+      setImages(response);
+      dispatch(setLoading());
+      setTimeout(() => {
+        try{
+        mapRef.current.animateToRegion(
+          {
+            latitude: parseFloat(route.params.data.source[0].latitude),
+            longitude: parseFloat(route.params.data.source[0].longitude),
+            latitudeDelta: 0.03,
+            longitudeDelta: 0.1,
+          },
+          3 * 1000,
         );
-        setDirection(dir.legs[0].points);
-        setTimeout(() => {
-          mapRef.current.animateToRegion(
-            {
-              latitude: parseFloat(route.params.data.source[0].latitude),
-              longitude: parseFloat(route.params.data.source[0].longitude),
-              latitudeDelta: 0.03,
-              longitudeDelta: 0.1,
-            },
-            3 * 1000,
-          );
-        }, 500);
-        dispatch(setLoading());
-      }, 500);
-    }
-    // getMovies()
+        }
+        catch{
+            Toast.show("Failed to animate direction")
+        }
+      }, 1000);
+
+    }, 500);
   }, []);
 
-  const getUsers = () => {
-    setIsLoading(true);
-    axios
-      .get(`https://randomuser.me/api/?page=${currentPage}&results=4`)
-      .then(res => {
-        setUsers([...users, ...res.data.results]);
-        setIsLoading(false);
-      });
-  };
-  console.log(route.params.data);
-  if (loading) {
-    return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size="large" color="orange" />
-      </View>
-    );
-  }
-
-  // const renderItem = ({item}) => {
-  //   return (
-  //     <View style={{flexDirection: 'row', borderColor: 'red'}}>
-  //       <Image
-  //         style={styles.itemImageStyle}
-  //         source={{uri: item.picture.large}}
-  //       />
-  //     </View>
-  //   );
-  // };
-
-  // const renderLoader = () => {
-  //   return isLoading ? (
-  //     <View style={styles.loaderStyle}>
-  //       <ActivityIndicator size="large" color="orange" />
-  //     </View>
-  //   ) : null;
-  // };
-
-  const loadMoreItem = () => {
-    setCurrentPage(currentPage + 1);
-  };
 
   if (loading) {
     return (
@@ -152,7 +113,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                     longitude: ele.longitude,
                   }))}
                   strokeColor={'blue'}
-                  strokeWidth={2}
+                  strokeWidth={3}
                   lineDashPattern={[1]}
                 />
 
@@ -173,7 +134,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                       route.params.data.destination[0].latitude,
                     ),
                     longitude: parseFloat(
-                      route.params.data.destination[0].latitude,
+                      route.params.data.destination[0].longitude,
                     ),
                     latitudeDelta: 0.03,
                     longitudeDelta: 0.01,
@@ -248,125 +209,128 @@ export const GetParticularTripSummary = ({navigation, route}) => {
           </ScrollView>
         </View>
       )}
-      {route.params.data.tripStatus === 'completed' && (
-        <ScrollView
-          onScrollEndDrag={loadMoreItem}
-          //  onTouchEnd={renderLoader}
-        >
-          <View style={styles.mainView}>
-            <View style={[styles.header]}>
-              <View style={styles.subHeader}>
-                <Pressable
-                  onPress={() => {
-                    navigation.goBack();
-                  }}>
-                  <Icon
-                    name="md-arrow-back"
-                    color={'white'}
-                    size={25}
-                    style={styles.icon}
-                  />
-                </Pressable>
-                <Text style={styles.headerText}>Trip Summary</Text>
-              </View>
-            </View>
-
-            <View style={styles.mapView}>
-              <MapView
-                ref={mapRef}
-                style={styles.mapStyle}
-                customMapStyle={mapStyle}>
-                <Polyline
-                  key={uuid.v4()}
-                  coordinates={direction.map(ele => ({
-                    latitude: ele.latitude,
-                    longitude: ele.longitude,
-                  }))}
-                  strokeColor={'blue'}
-                  strokeWidth={2}
-                  lineDashPattern={[1]}
-                />
-
-                <Marker
-                  coordinate={{
-                    latitude: parseFloat(route.params.data.source[0].latitude),
-                    longitude: parseFloat(
-                      route.params.data.source[0].longitude,
-                    ),
-                    latitudeDelta: 0.03,
-                    longitudeDelta: 0.01,
-                  }}
-                />
-
-                <Marker
-                  coordinate={{
-                    latitude: parseFloat(
-                      route.params.data.destination[0].latitude,
-                    ),
-                    longitude: parseFloat(
-                      route.params.data.destination[0].latitude,
-                    ),
-                    latitudeDelta: 0.03,
-                    longitudeDelta: 0.01,
-                  }}
-                />
-              </MapView>
-              <View style={styles.summaryView}>
-                <Image source={require('../assets/images/motorcycle.png')} />
-                <Text style={styles.tripName}>
-                  {route.params.data.tripName}
-                </Text>
-                <Text style={styles.dateText}>
-                  {route.params.data.startDate.substring(8, 10)}{' '}
-                  {month1[route.params.data.startDate.substring(5, 7)]} -
-                  {route.params.data.endDate.substring(8, 10)}{' '}
-                  {month1[route.params.data.endDate?.substring(5, 7)]}{' '}
-                  {route.params.data.endDate.substring(0, 4)}
-                </Text>
-                <Text style={styles.timeText}>
-                  {route.params.data.startTime.substring(15, 21)}
-                </Text>
-                <View style={styles.fromToView}>
-                  <Text style={styles.fromToText}>
-                    {route.params.data.source[0]?.place}
-                  </Text>
-                  <View style={styles.lineView}></View>
-                  <Text style={styles.fromToText}>
-                    {route.params.data.destination[0].place}
-                  </Text>
+      {route.params.data.tripStatus === 'completed' &&
+        (images.length > 0 ? (
+          <ScrollView
+          >
+            <View style={styles.mainView}>
+              <View style={[styles.header]}>
+                <View style={styles.subHeader}>
+                  <Pressable
+                    onPress={() => {
+                      navigation.goBack();
+                    }}>
+                    <Icon
+                      name="md-arrow-back"
+                      color={'white'}
+                      size={25}
+                      style={styles.icon}
+                    />
+                  </Pressable>
+                  <Text style={styles.headerText}>Trip Summary</Text>
                 </View>
               </View>
-            </View>
-            <View
-              style={{
-                marginTop: 160,
-                //borderWidth: 1,
-                alignSelf: 'center',
-              }}>
-              <BikeImageComponent data={route.params.data.riders.length} />
-            </View>
 
-            <Text
-              style={{
-                fontSize: 18,
-                fontFamily: 'Roboto-Regular',
-                color: 'rgba(58,57,57,0.87)',
-                lineHeight: 24,
-                //marginRight: 20,
-                marginTop: 25,
-                // borderWidth: 1,
+              <View style={styles.mapView}>
+                <MapView
+                  ref={mapRef}
+                  style={styles.mapStyle}
+                  customMapStyle={mapStyle}>
+                  <Polyline
+                    key={uuid.v4()}
+                    coordinates={direction.map(ele => ({
+                      latitude: ele.latitude,
+                      longitude: ele.longitude,
+                    }))}
+                    strokeColor={'blue'}
+                    strokeWidth={2}
+                    lineDashPattern={[1]}
+                  />
 
-                width: '80%',
-                alignSelf: 'center',
-              }}>
-              Gallery
-            </Text>
-            {/* <ScrollView
-              //onScrollEndDrag={loadMoreItem}
-              //onTouchEnd={loadMoreItem}
-              style={{borderWidth: 1}}> */}
+                  <Marker
+                    coordinate={{
+                      latitude: parseFloat(
+                        route.params.data.source[0].latitude,
+                      ),
+                      longitude: parseFloat(
+                        route.params.data.source[0].longitude,
+                      ),
+                      latitudeDelta: 0.03,
+                      longitudeDelta: 0.01,
+                    }}
+                  />
 
-            <View
+                  <Marker
+                    coordinate={{
+                      latitude: parseFloat(
+                        route.params.data.destination[0].latitude,
+                      ),
+                      longitude: parseFloat(
+                        route.params.data.destination[0].longitude,
+                      ),
+                      latitudeDelta: 0.03,
+                      longitudeDelta: 0.01,
+                    }}
+                  />
+                </MapView>
+                <View style={styles.summaryView}>
+                  <Image source={require('../assets/images/motorcycle.png')} />
+                  <Text style={styles.tripName}>
+                    {route.params.data.tripName}
+                  </Text>
+                  <Text style={styles.dateText}>
+                    {route.params.data.startDate.substring(8, 10)}{' '}
+                    {month1[route.params.data.startDate.substring(5, 7)]} -
+                    {route.params.data.endDate.substring(8, 10)}{' '}
+                    {month1[route.params.data.endDate?.substring(5, 7)]}{' '}
+                    {route.params.data.endDate.substring(0, 4)}
+                  </Text>
+                  <Text style={styles.timeText}>
+                    {route.params.data.startTime.substring(15, 21)}
+                  </Text>
+                  <View style={styles.fromToView}>
+                    <Text style={styles.fromToText}>
+                      {route.params.data.source[0]?.place}
+                    </Text>
+                    <View style={styles.lineView}></View>
+                    <Text style={styles.fromToText}>
+                      {route.params.data.destination[0].place}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+              <View
+                style={{
+                  marginTop: 160,
+                  //borderWidth: 1,
+                  alignSelf: 'center',
+                }}>
+                <BikeImageComponent data={route.params.data.riders.length} />
+              </View>
+              {images.length > 0 ? (
+                <Text
+                  style={{
+                    fontSize: 18,
+                    fontFamily: 'Roboto-Regular',
+                    color: 'rgba(58,57,57,0.87)',
+                    lineHeight: 24,
+                    //marginRight: 20,
+                    marginTop: 25,
+                    // borderWidth: 1,
+
+                    width: '80%',
+                    alignSelf: 'center',
+                  }}>
+                  Gallery
+                </Text>
+              ) : null}
+
+              {/* <ScrollView
+                //onScrollEndDrag={loadMoreItem}
+                //onTouchEnd={loadMoreItem}
+                style={{borderWidth: 1}}> */}
+
+              <View
                 style={{
                   //borderWidth: 1,
                   flexWrap: 'wrap',
@@ -375,41 +339,49 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                {users.length !== 0
-                  ? users.map(item => {
+                {images.length !== 0
+                  ? images.map(item => {
                       return (
-                        <Image
-                          key={item.email}
-                          style={styles.itemImageStyle}
-                          source={{uri: item.picture.medium}}
-                        />
+                        <Pressable
+                          key={item._id}
+                          onPress={() =>
+                            navigation.navigate('ImageLikeComment', {
+                              id: item._id,
+                              image: 'https' + item.imageUrl.substring(4),
+                            })
+                          }>
+                          <Image
+                            style={styles.itemImageStyle}
+                            source={{uri: 'https' + item.imageUrl.substring(4)}}
+                          />
+                        </Pressable>
                       );
                     })
                   : null}
               </View>
 
-            {/* <FlatList
-              
-              showsVerticalScrollIndicator={false}
-              data={users}
-              numColumns={2}
-              renderItem={renderItem}
-              keyExtractor={item => item.email}
-              ListFooterComponent={renderLoader}
-              onEndReached={loadMoreItem}
-              onEndReachedThreshold={0}
-              //style={styles.imageView}
-              //horizontal={true}
-              // contentContainerStyle={{
-              //   alignItems: "flex-start",
-              // }}
-            /> */}
+              {/* <FlatList
+                
+                showsVerticalScrollIndicator={false}
+                data={users}
+                numColumns={2}
+                renderItem={renderItem}
+                keyExtractor={item => item.email}
+                ListFooterComponent={renderLoader}
+                onEndReached={loadMoreItem}
+                onEndReachedThreshold={0}
+                //style={styles.imageView}
+                //horizontal={true}
+                // contentContainerStyle={{
+                //   alignItems: "flex-start",
+                // }}
+              /> */}
 
-            {/* </ScrollView> */}
-          </View>
-          {/* </View> */}
-        </ScrollView>
-      )}
+              {/* </ScrollView> */}
+            </View>
+            {/* </View> */}
+          </ScrollView>
+        ) : null)}
     </SafeAreaView>
   );
 };
