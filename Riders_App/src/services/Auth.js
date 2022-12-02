@@ -824,7 +824,7 @@ export const deleteComment = async (token,id,commentId) => {
 export const followRider = async (token,mobile) => {
   try {
     const response = await axios.post(
-      BASE_URL + '/follow',
+      BASE_URL +'/follow',
       
       {
         wantToFollow:mobile,
@@ -835,6 +835,7 @@ export const followRider = async (token,mobile) => {
         },
       },
     );
+    console.log(response.data)
     return response.data;
   } catch (err) {
     console.log(err);

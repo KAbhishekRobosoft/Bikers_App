@@ -7,21 +7,21 @@ import {
   TextInput,
   Pressable,
   ToastAndroid,
+  Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Icon2 from 'react-native-vector-icons/FontAwesome';
+import Icon2 from 'react-native-vector-icons/MaterialIcons';
 import {useDispatch} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
 import {setMileStoneData} from '../redux/MileStoneSlice';
 import {useSelector} from 'react-redux';
 import {getCoordinates} from '../services/Auth';
 import {calculateRoute} from '../services/Auth';
-import Toast from 'react-native-simple-toast'
+import Toast from 'react-native-simple-toast';
 
 export const Milestone = () => {
   const mileStoneData = useSelector(state => state.milestone.milestoneData);
-  console.log('', mileStoneData);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
   const dispatch = useDispatch();
@@ -40,7 +40,6 @@ export const Milestone = () => {
             </Text>
             <Pressable
               onPress={async () => {
-
                 if ((from, to !== '')) {
                   const resp = await getCoordinates(from);
                   const resp1 = await getCoordinates(to);
@@ -74,17 +73,16 @@ export const Milestone = () => {
                       ],
                       distance: dist.summary.lengthInMeters / 1000,
                       duration: Math.round(
-                            Math.abs(
-                              new Date(dist.summary.arrivalTime) -
-                                new Date(dist.summary.departureTime),
-                            ) / msInHour,
-                          )
+                        Math.abs(
+                          new Date(dist.summary.arrivalTime) -
+                            new Date(dist.summary.departureTime),
+                        ) / msInHour,
+                      ),
                     };
                     dispatch(setMileStoneData(obj));
                     dispatch(setMileStone(false));
-                  }
-                  else{
-                    Toast.show('Enter proper location')
+                  } else {
+                    Toast.show('Enter proper location');
                   }
                 } else {
                   dispatch(setMileStone(false));
@@ -111,10 +109,13 @@ export const Milestone = () => {
           </View>
           <View style={styles.locationView}>
             <Icon2
-              name="map-marker"
+              name="gps-fixed"
               color="#A4A4A4"
-              style={styles.locationImage}
-              size={16}
+              style={{
+                marginLeft: 10,
+                marginTop: 6,
+              }}
+              size={22}
             />
             <View style={styles.locationNamesView}>
               <Text style={styles.textUdupi}>Udupi</Text>
@@ -144,8 +145,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.1,
     elevation: 5,
-    // backgroundColor: 'white',
-    height: 230,
+    height: Platform.OS === 'ios' ? 230 : 270,
     width: 321,
     alignSelf: 'center',
     borderRadius: 13,

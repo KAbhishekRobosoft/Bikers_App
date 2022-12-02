@@ -12,7 +12,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import Icons from 'react-native-vector-icons/FontAwesome';
@@ -28,6 +28,7 @@ import {setToken} from '../redux/AuthSlice';
 import {addComments} from '../services/Auth';
 import Toast from 'react-native-simple-toast';
 import {deleteComment} from '../services/Auth';
+import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 
 const ImageLikeCommentScreen = ({navigation, route}) => {
   const [comments, Setcomments] = useState(false);
@@ -41,6 +42,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
   const authData = useSelector(state => state.auth);
   const [commentText, setCommentText] = useState('');
   const dispatch = useDispatch();
+  const textRef= useRef(null)
 
   useEffect(() => {
     dispatch(deSetLoading());
@@ -69,6 +71,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
     dispatch(setToken(cred));
     const resp = await addComments(cred, imgData.photos._id, commentText);
     if (resp !== undefined) {
+      textRef.current.clear()
       Toast.show('Comment added successfully');
       dispatch(setInitialState(state));
     } else {
@@ -98,6 +101,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
   }).start();
 
   return (
+    
     <SafeAreaView style={styles.main}>
       {JSON.stringify(imgData) !== '{}' ? (
         <>
@@ -105,6 +109,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
             <Pressable
               onPress={() => {
                 navigation.goBack();
+                dispatch(setInitialState(state))
               }}>
               <Icon
                 name="md-arrow-back"
@@ -114,13 +119,13 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
               />
             </Pressable>
           </View>
+          <View>
           <ScrollView
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}>
             <View style={styles.imgContainer}>
               <Image
                 style={styles.img}
-                //source={require('../assets/images/appicon.png')}
                 source={{uri: route.params.image}}
               />
               <View style={styles.likeCommentView}>
@@ -199,8 +204,9 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                     },
                     styles.bottomshadow,
                   ]}>
+             
                   <ScrollView
-                    style={{padding: 5}}
+                    style={{padding:5}}
                     showsVerticalScrollIndicator={false}>
                     {imgData.photos.commentData?.length > 0 &&
                       imgData.photos.commentData.map(item => {
@@ -211,6 +217,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                               flexDirection: 'row',
                               alignItems: 'center',
                               justifyContent: 'space-between',
+                              paddingBottom:6
                             }}>
                             <View>
                               <Pressable onPress={()=>{
@@ -387,6 +394,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
               <View style={styles.iconContainer}>
                 <TextInput
                   style={styles.input}
+                  ref={textRef}
                   placeholder="Comment"
                   placeholderTextColor="grey"
                   onChangeText={val => {
@@ -408,8 +416,10 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                 </Pressable>
               </View>
             </Animated.View>
+         
           </ScrollView>
-        </>
+          </View>
+          </>
       ) : null}
     </SafeAreaView>
   );
@@ -420,7 +430,6 @@ export default ImageLikeCommentScreen;
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    backgroundColor: 'white',
   },
   header: {
     height: 40,
