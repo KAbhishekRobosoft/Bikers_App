@@ -12,11 +12,6 @@ import ImageLikeCommentScreen from './src/screens/ImageLikeCommentScreen';
 let persistor = persistStore(store);
 
 const App = () => {
-    // useEffect(()=>{
-    //   setTimeout(async() => {
-    //       const res= await getNearbyPlaces("atm","13.3409","74.7421")
-    //   },500);
-    // })
   return (
 
     <Provider store={store}>
