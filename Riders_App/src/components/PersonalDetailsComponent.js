@@ -1,29 +1,35 @@
-import {View, Text, StyleSheet, ScrollView, TextInput, ActivityIndicator} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TextInput,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {addOwnerDetails, getOwnerDetails} from '../services/Auth';
-import { useDispatch, useSelector } from 'react-redux';
-import { getVerifiedKeys } from '../utils/Functions';
-import { setUserData } from '../redux/AuthSlice';
-import { deSetLoading, setLoading } from '../redux/MileStoneSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {getVerifiedKeys} from '../utils/Functions';
+import {setUserData} from '../redux/AuthSlice';
+import {deSetLoading, setLoading} from '../redux/MileStoneSlice';
 
 export const PersonalDetails = () => {
-  const dispatch=useDispatch()
-  const userDetails=useSelector(state=>state.auth.userData)
-  const authData= useSelector(state=>state.auth);
+  const dispatch = useDispatch();
+  const userDetails = useSelector(state => state.auth.userData);
+  const authData = useSelector(state => state.auth);
   const loading = useSelector(state => state.milestone.isLoading);
 
-// console.log('personal details-----',userDetails);
-  
+  //console.log('personal details-----',userDetails.lisenceNumber);
+
   useEffect(() => {
+    dispatch(deSetLoading());
     setTimeout(async () => {
-      dispatch(deSetLoading());
       let cred = await getVerifiedKeys(authData.userToken);
       const response = await getOwnerDetails(cred);
-      // console.log('response',response[0]);
-      dispatch(setUserData(response[0]))
+     console.log('response',response[0]);
+      dispatch(setUserData(response[0]));
       dispatch(setLoading());
       // setPin(response[0].pincode)
-
     }, 1000);
   }, [userDetails.pincode]);
   if (loading) {
@@ -42,10 +48,10 @@ export const PersonalDetails = () => {
             <Text style={{}}>:</Text>
             <TextInput
               style={styles.inputText}
-              placeholder='Licence'
+              placeholder="Licence"
               editable={false}
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.lisenceNumber} 
+              defaultValue={userDetails.lisenceNumber}
             />
           </View>
         </View>
@@ -58,8 +64,7 @@ export const PersonalDetails = () => {
               placeholder="Name"
               editable={false}
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.userName} 
-
+              defaultValue={userDetails.userName}
             />
           </View>
         </View>
@@ -72,7 +77,7 @@ export const PersonalDetails = () => {
               placeholder="Door"
               editable={false}
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.doorNumber} 
+              defaultValue={userDetails.doorNumber}
             />
           </View>
         </View>
@@ -85,7 +90,7 @@ export const PersonalDetails = () => {
               placeholder="City"
               editable={false}
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.city} 
+              defaultValue={userDetails.city}
             />
           </View>
         </View>
@@ -98,8 +103,7 @@ export const PersonalDetails = () => {
               placeholder="State"
               editable={false}
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.state} 
-
+              defaultValue={userDetails.state}
             />
           </View>
         </View>
@@ -112,7 +116,7 @@ export const PersonalDetails = () => {
               placeholder="Pincode"
               editable={false}
               placeholderTextColor="#4F504F"
-             defaultValue={JSON.stringify(userDetails.pincode) } 
+              defaultValue={JSON.stringify(userDetails.pincode)}
             />
           </View>
         </View>
@@ -124,10 +128,9 @@ export const PersonalDetails = () => {
               style={styles.inputText}
               placeholder="Mobile"
               editable={false}
-              keyboardType='numeric'
+              keyboardType="numeric"
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.mobile} 
-
+              defaultValue={userDetails.mobile}
             />
           </View>
         </View>
@@ -140,8 +143,7 @@ export const PersonalDetails = () => {
               placeholder="Email"
               editable={false}
               placeholderTextColor="#4F504F"
-              defaultValue={userDetails.email} 
-
+              defaultValue={userDetails.email}
             />
           </View>
         </View>

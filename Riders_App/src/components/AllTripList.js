@@ -6,6 +6,7 @@ import {
   ImageBackground,
   Image,
   Modal,
+  ToastAndroid,
 } from 'react-native';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {getVerifiedKeys} from '../utils/Functions';
@@ -13,6 +14,7 @@ import {deleteTrip} from '../services/Auth';
 import {useDispatch, useSelector} from 'react-redux';
 import {setInitialState} from '../redux/MileStoneSlice';
 import {month1} from '../utils/Functions';
+import Toast from 'react-native-simple-toast';
 
 const AllTripList = ({navigation, data}) => {
   const state = useSelector(state => state.milestone.initialState);
@@ -23,6 +25,7 @@ const AllTripList = ({navigation, data}) => {
   const handleClose = async id => {
     const key = await getVerifiedKeys(authData.userToken);
     const reponse = await deleteTrip(id, key);
+    Toast.show('trip deleted successfully');
     dispatch(setInitialState(state));
   };
   return (

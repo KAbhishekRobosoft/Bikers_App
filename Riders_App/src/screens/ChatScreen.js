@@ -11,6 +11,7 @@ import {
   useWindowDimensions,
   FlatList,
   RefreshControl,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ReceiverContainer, SenderChatDetails} from '../components/chatDetails';
@@ -40,6 +41,17 @@ const ChatScreen = ({navigation, route}) => {
   const number = useSelector(state => state.auth.userCredentials.mobile);
   const authData = useSelector(state => state.auth);
   const [emoji, setEmoji] = useState(false);
+  const {height, width} = useWindowDimensions();
+  const top =
+    width > height
+      ? Platform.OS === 'ios'
+        ? '80%'
+        : '80%'
+      : Platform.OS === 'ios'
+      ? '95%'
+      : '90%';
+  const height2= width > height ? (Platform.OS === "ios" ? '60%' :'70%'):'80%'
+
   useEffect(() => {
     setTimeout(async () => {
       const cred = await getVerifiedKeys(auth.userToken);
@@ -73,38 +85,41 @@ const ChatScreen = ({navigation, route}) => {
   }, []);
 
   const pickImage = () => {
+    let resp;
     ImagePicker.openPicker({
       width: 200,
       height: 200,
       cropping: true,
-    })
-      .then(async image => {
-        console.log(image.path);
-
-        const payload = new FormData();
-        const file = [
-          {key: 'id', value: route.params.id},
-          {
-            key: 'image',
-            value: {
-              uri: image.path,
-              type: image.mime,
-              name: `${image.filename}.${image.mime.substring(
-                image.mime.indexOf('/') + 1,
-              )}`,
-            },
+    }).then(async image => {
+      const payload = new FormData();
+      const file = [
+        {key: 'id', value: route.params.id},
+        {
+          key: 'image',
+          value: {
+            uri: image.path,
+            type: image.mime,
+            name: `${image.filename}.${image.mime.substring(
+              image.mime.indexOf('/') + 1,
+            )}`,
           },
-        ];
-        file.map(ele => {
-          payload.append(ele.key, ele.value);
-        });
-        let cred = await getVerifiedKeys(authData.userToken);
-        const resp = await uploadChatImage(payload, cred);
-        if (resp !== undefined) {
-          Toast.show('Image Posted');
-        }
-      })
-      .catch(err => Toast.show('User Cancelled Selection'));
+        },
+      ];
+      file.map(ele => {
+        payload.append(ele.key, ele.value);
+      });
+      let cred = await getVerifiedKeys(auth.userToken);
+      resp = await uploadChatImage(payload, cred);
+      if (resp !== undefined) {
+        let resp1 = await sendChat(
+          cred,
+          route.params.id,
+          'https' + resp.url.substring(4),
+        );
+        dispatch(setInitialState(state));
+        Toast.show('Image Posted');
+      }
+    }).catch(er=>console.log(er))
   };
 
   const handleToggle = () => {
@@ -126,16 +141,6 @@ const ChatScreen = ({navigation, route}) => {
       Toast.show('You cannot clear the chat as you are not admin');
     }
   };
-
-  const {height, width} = useWindowDimensions();
-  const top =
-    width > height
-      ? Platform.OS === 'ios'
-        ? '80%'
-        : '80%'
-      : Platform.OS === 'ios'
-      ? '95%'
-      : '90%';
 
   return (
     <SafeAreaView style={{flex: 1}}>
@@ -184,7 +189,7 @@ const ChatScreen = ({navigation, route}) => {
         source={require('../assets/images/chat.png')}
         style={styles.image}></ImageBackground>
 
-      <View>
+      <View style={{height: '80%'}}>
         <FlatList
           data={chat}
           showsHorizontalScrollIndicator={false}
@@ -201,7 +206,6 @@ const ChatScreen = ({navigation, route}) => {
           }
         />
       </View>
-
       <View style={[styles.bottomContainer, styles.bottomshadow, {top}]}>
         <View style={styles.iconContainer}>
           <Pressable>

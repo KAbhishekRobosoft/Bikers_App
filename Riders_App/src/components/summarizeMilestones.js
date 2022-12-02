@@ -13,18 +13,19 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { useSelector } from 'react-redux';
 import {summaryData} from '../assets/data';
+import uuid from 'react-native-uuid'
 
 export const TripSummaryList = ({data}) => {
   
   return (
-    <View>
+    <View key={uuid.v4()}>
       {data !== 0
         ? data.map(item => {
-          {console.log(item)}
+          
             return (
               <View
                 style={styles.mainView}
-                key={item.id}>
+                key={uuid.v4()}>
                 <View style={styles.dotView}>
                   <View>
                     <Image source={require('../assets/images/Oval.png')} />

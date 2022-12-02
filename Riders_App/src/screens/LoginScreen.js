@@ -22,7 +22,6 @@ import {login} from '../redux/AuthSlice';
 import {setToken} from '../redux/AuthSlice';
 import {setForgotPassword} from '../redux/AuthSlice';
 import {setImage} from '../redux/AuthSlice';
-import { setUserCredentials } from '../redux/AuthSlice';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),
@@ -85,7 +84,7 @@ const LoginScreen = ({navigation}) => {
                     <Field
                       component={Input}
                       name="number"
-                      source={require('../assets/images/user.png')}
+                      source={require('../assets/images/user1.png')}
                       placeholderTextColor="grey"
                       placeholder="Mobile Number/Email id"
                       styleUser={styles.userLogo}
@@ -191,6 +190,8 @@ const styles = StyleSheet.create({
   userLogo: {
     width: 18,
     height: 24,
+ 
+    
   },
   lockImg: {
     width: 20,

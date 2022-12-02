@@ -5,25 +5,28 @@ import {createMaterialBottomTabNavigator} from '@react-navigation/material-botto
 import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 // import MyGarageStack from './MyGarageStack';
 import UpcomingList from '../screens/IndividualTripScreen';
-import LogoutStack from '../utils/LogoutStack'
-import Profile from '../screens/Profile'
+import LogoutStack from '../utils/LogoutStack';
+import Profile from '../screens/Profile';
 import AllUserTrip from '../screens/AllUserTrip';
-import {MyGarage} from '../screens/MyGarageScreen'
+import {MyGarage} from '../screens/MyGarageScreen';
 const Tab = createMaterialBottomTabNavigator();
 
 const BottomTabLoginNavigation = () => {
   return (
     <Tab.Navigator
-      shifting={true}
+      // shifting={true}
+      //labeled={false}
       initialRouteName="UpcomingList"
       activeColor="#ffffff"
+      inactiveColor="blue"
+      
       barStyle={{backgroundColor: '#ED7E2B', height: 65}}>
-
       <Tab.Screen
         name="Trips"
         component={UpcomingList}
         options={{
           tabBarLabel: 'Trips',
+         
           tabBarIcon: ({focused}) => {
             return (
               <Image
@@ -33,7 +36,6 @@ const BottomTabLoginNavigation = () => {
                   width: 35,
                   height: 22,
                   resizeMode: 'contain',
-                  opacity: 0.7,
                 }}
               />
             );
@@ -64,7 +66,7 @@ const BottomTabLoginNavigation = () => {
       />
 
       <Tab.Screen
-        name="All Trips"
+        name="Activities"
         component={AllUserTrip}
         options={{
           tabBarIcon: ({focused}) => {
@@ -84,7 +86,6 @@ const BottomTabLoginNavigation = () => {
       />
 
       <Tab.Screen
-      
         name="Profile"
         component={Profile}
         options={{
@@ -124,15 +125,13 @@ const BottomTabLoginNavigation = () => {
                   height: 22,
                   resizeMode: 'contain',
                 }}
-                />
+              />
             );
           },
         }}
-        />
+      />
     </Tab.Navigator>
   );
 };
 
 export default BottomTabLoginNavigation;
-
-

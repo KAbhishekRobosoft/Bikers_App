@@ -1,7 +1,5 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
-
 export const SenderChatDetails = ({chat}) => {
   return (
     <View>
@@ -12,20 +10,22 @@ export const SenderChatDetails = ({chat}) => {
           alignItems: 'center',
           marginLeft: '35%',
         }}>
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            top: '2%',
-          }}>
-          <Image
-            source={require('../assets/images/checkmark.png')}
-            style={{height: 13, width: 13}}
-          />
-          <Text style={styles.timeText}>{chat.time.substring(11,16)}</Text>
-        </View>
+        <Image
+          source={require('../assets/images/checkmark.png')}
+          style={{height: 13, width: 13}}
+        />
+        <Text style={styles.timeText}>{chat.time.substring(11, 16)}</Text>
+
         <View style={styles.senderContainer}>
-          <Text style={styles.senderText}>{chat.chat}</Text>
+          {!chat.chat.includes('https') && (
+            <Text style={styles.senderText}>{chat.chat}</Text>
+          )}
+          {chat.chat.includes('https') && (
+            <Image
+              style={{height: 200, width: 150}}
+              source={{uri: chat.chat}}
+            />
+          )}
         </View>
       </View>
     </View>
@@ -35,30 +35,47 @@ export const SenderChatDetails = ({chat}) => {
 export const ReceiverContainer = ({chat}) => {
   return (
     <View>
-            <View style={styles.container}>
-              <View style={{top: 20}}>
-                <Image
-                  source={{uri: 'https'+ chat.senderImage.substring(4)}}
-                  style={styles.profile}
-                />
-                <Text style={styles.riderName}>{chat.senderName}</Text>
-              </View>
-              <View style={styles.recivercontainer}>
-                <Text style={styles.senderText}>{chat.chat}</Text>
-              </View>
-              <View
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginLeft: '3%',
-                }}>
-                <Image
-                  source={require('../assets/images/checkmark.png')}
-                  style={{height: 13, width: 13}}
-                />
-                <Text style={styles.timeText}>{chat.time.substring(11,16)}</Text>
-              </View>
-            </View>
+      <View style={styles.container}>
+        <View style={{top: 20}}>
+          {chat.senderImage === '' && (
+            <Image
+              source={require('../assets/images/smile.png')}
+              style={styles.profile}
+            />
+          )}
+
+          {chat.senderImage !== '' && (
+            <Image
+              source={{uri:'https'+chat.senderImage.substring(4)}}
+              style={styles.profile}
+            />
+          )}
+          <Text style={styles.riderName}>{chat.senderName}</Text>
+        </View>
+        <View style={styles.recivercontainer}>
+        {!chat.chat.includes('https') && (
+            <Text style={styles.senderText}>{chat.chat}</Text>
+          )}
+          {chat.chat.includes('https') && (
+            <Image
+              style={{height: 200, width: 150}}
+              source={{uri: chat.chat}}
+            />
+          )}
+        </View>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginLeft: '3%',
+          }}>
+          <Image
+            source={require('../assets/images/checkmark.png')}
+            style={{height: 13, width: 13}}
+          />
+          <Text style={styles.timeText}>{chat.time.substring(11, 16)}</Text>
+        </View>
+      </View>
     </View>
   );
 };
