@@ -45,8 +45,8 @@ const ServiceRecord = ({navigation}) => {
     setTimeout(async () => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
-      const response = await getAllService(key);
-      dispatch(addAllServices(response));
+      // const response = await getAllService(key);
+      // dispatch(addAllServices(response));
     }, 500);
   }, []);
 

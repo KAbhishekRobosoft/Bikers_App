@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {
-  FlatList,
   SafeAreaView,
   StyleSheet,
   TextInput,
@@ -13,11 +12,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
-import {AccessoriesData} from '../assets/data';
 import {useDispatch, useSelector} from 'react-redux';
-import {selectLiked} from '../redux/AccessoriesSlice';
-import {selectUnLiked} from '../redux/AccessoriesSlice';
-import {filterAccessories} from '../redux/AccessoriesSlice';
 import {searchProducts} from '../services/Auth';
 import {LikeProducts} from '../services/Auth';
 import {addAccessoriesData} from '../redux/AccessoriesSlice';

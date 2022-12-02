@@ -291,8 +291,6 @@ export const BookingDetailsInput = props => {
         name="mobile"
         value={props.value}
         onChangeText={props.onChangeText}
-        // values={values.mobile}
-        // defaultValue={route.params.mobileNumber}
       />
     </View>
   );
@@ -338,12 +336,12 @@ const styles = StyleSheet.create({
     width: '8%',
   },
   textInput: {
-    marginVertical: Platform.OS === 'android' ? -28 : -3,
+    marginVertical: Platform.OS === 'android' ? -28 : -8,
     fontSize: 16,
     marginLeft: 10,
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
-    height: 65
+    height: Platform.OS === 'android' ? 65 : 30,
   },
   textPassword: {
     width: '90%',
@@ -478,13 +476,15 @@ const styles = StyleSheet.create({
   },
   textInputView: {
     marginHorizontal: 25,
-    paddingTop: 28,
+    paddingTop: Platform.OS === 'ios' ? 30 : 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingEnd: 3,
     marginTop: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',
+    // borderWidth: 1,
+    alignItems: 'center'
   },
   titleText: {
     paddingBottom: 5,
@@ -498,7 +498,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 14,
     color: '#4F504F',
-    width: '50%',
+    width: '60%',
     textAlign: 'left',
   },
 });
