@@ -31,19 +31,23 @@ export const MyGarage = ({navigation}) => {
   useEffect(() => {
     dispatch(deSetLoading());
     const get = async () => {
-      let cred = await getVerifiedKeys(authData.userToken);
-      const response = await getBikeDetails(cred);
-      const response2 = await getAllService(cred);
-      const time = response2[0].slotDate;
-      const time2 = Date.now();
-      const diffTime = new Date(time).getTime() - time2;
-      setDay(diffTime)
-      const BikeTypes = response.map(e => {
-        return e.vehicleType;
-      });
-      dispatch(addBikeType(BikeTypes));
-      dispatch(addBikeData(response));
-      dispatch(addAllServices(response2));
+      try {
+        let cred = await getVerifiedKeys(authData.userToken);
+        const response = await getBikeDetails(cred);
+        const response2 = await getAllService(cred);
+        const time = response2[0].slotDate;
+        const time2 = Date.now();
+        const diffTime = new Date(time).getTime() - time2;
+        setDay(diffTime);
+        dispatch(addAllServices(response2));
+        const BikeTypes = response.map(e => {
+          return e.vehicleType;
+        });
+        dispatch(addBikeType(BikeTypes));
+        dispatch(addBikeData(response));
+      } catch (e) {
+        dispatch(addAllServices([]));
+      }
       dispatch(setLoading());
     };
     get();
@@ -61,16 +65,20 @@ export const MyGarage = ({navigation}) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
-        {new Date(serviceData[0]?.slotDate) >= Date.now() ? (
+        {serviceData.length > 0 ? new Date(serviceData[0]?.slotDate) >= Date.now() ? (
           <View style={styles.serviceDueView}>
-            <Text style={styles.daysText}>{Math.floor(day/(1000*3600*24))} days</Text>
+            <Text style={styles.daysText}>
+              {Math.floor(day / (1000 * 3600 * 24))} days
+            </Text>
             <Text style={styles.daysDescription}>Next Service due</Text>
           </View>
         ) : (
           <View style={styles.serviceDueView}>
             <Text style={styles.daysText}>No service Due</Text>
           </View>
-        )}
+        ) : <View style={styles.serviceDueView}>
+        <Text style={styles.daysText}>No Services booked</Text>
+      </View>}
 
         <Image
           source={require('../assets/images/meter.png')}

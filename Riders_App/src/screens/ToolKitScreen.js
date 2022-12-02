@@ -26,11 +26,7 @@ export const ToolKit = ({navigation}) => {
 
   const search = async value => {
     setText(value);
-    // const Data = await searchCity(value);
-    // setData(Data);
   };
-
-  const handleRepairs = () => {};
 
   return (
     <SafeAreaView style={styles.safeareaView}>
@@ -80,19 +76,21 @@ export const ToolKit = ({navigation}) => {
           />
         </View>
       </View>
-      <FlatList
-        data={ToolkitData}
-        showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
-        renderItem={({item}) => (
-          <Pressable onPress={handleToggle}>
-            <View style={styles.flatView}>
-              <Image source={item.icon} style={styles.image} />
-              <Text style={styles.title}>{item.title}</Text>
-            </View>
-          </Pressable>
-        )}
-      />
+      <View style={{height: '80%'}}>
+        <FlatList
+          data={ToolkitData}
+          showsVerticalScrollIndicator={false}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({item}) => (
+            <Pressable onPress={handleToggle}>
+              <View style={styles.flatView}>
+                <Image source={item.icon} style={styles.image} />
+                <Text style={styles.title}>{item.title}</Text>
+              </View>
+            </Pressable>
+          )}
+        />
+      </View>
       <Modal isVisible={isModalVisible} style={{alignItems: 'center'}}>
         <View
           style={{
@@ -136,7 +134,7 @@ export const ToolKit = ({navigation}) => {
 const styles = StyleSheet.create({
   safeareaView: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   header: {
     flexDirection: 'row',
@@ -179,7 +177,7 @@ const styles = StyleSheet.create({
     color: '#4F504F',
     fontFamily: 'Roboto-Regular',
     fontSize: 16,
-    height: 21,
+    height: Platform.OS === 'ios' ? 21 : 30,
     width: '78%',
     paddingBottom: 3,
   },
@@ -200,7 +198,7 @@ const styles = StyleSheet.create({
   search: {
     marginHorizontal: '14%',
     tintColor: 'rgba(0,0,0,0.54)',
-    marginTop: -2,
+    marginTop: Platform.OS === 'ios' ? -2 : 8,
   },
   container: {
     marginHorizontal: 40,

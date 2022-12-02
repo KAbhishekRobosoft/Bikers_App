@@ -7,6 +7,7 @@ import {
   Text,
   View,
   ScrollView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import React, {useState} from 'react';
 import ButtonLarge from '../components/Buttons';
@@ -37,6 +38,7 @@ const registerValidationSchema = yup.object().shape({
 const LoginScreen = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
   const dispatch = useDispatch();
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 10 : 0;
 
   async function signIn(values) {
     let image = '';
@@ -60,96 +62,100 @@ const LoginScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.main}>
-      <ScrollView horizontal={false}>
-        <View style={styles.main}>
-          <View style={styles.logoView}>
-            <Image
-              source={require('../assets/images/appicon.png')}
-              style={styles.logo}
-            />
-          </View>
-          <View style={styles.loginContainer}>
-            <Formik
-              validationSchema={registerValidationSchema}
-              initialValues={{
-                number: '',
-                password: '',
-              }}
-              onSubmit={values => {
-                signIn(values);
-              }}>
-              {({values, handleSubmit, isValid}) => (
-                <>
-                  <View style={styles.inputTextView1}>
-                    <Field
-                      component={Input}
-                      name="number"
-                      source={require('../assets/images/user1.png')}
-                      placeholderTextColor="grey"
-                      placeholder="Mobile Number/Email id"
-                      styleUser={styles.userLogo}
-                      value={values.number}
-                      keyboardType='number-pad'
-                    />
-                  </View>
-                  <View style={styles.inputTextView2}>
-                    <Field
-                      component={Password}
-                      name="password"
-                      source={require('../assets/images/locked.png')}
-                      placeholderTextColor="grey"
-                      placeholder="Password"
-                      styleUser={styles.lockImg}
-                      value={values.password}
-                      secureTextEntry={secureText}
-                      onPress={() => setSecureText(!secureText)}
-                    />
-                  </View>
-                  <View style={styles.forgetTextView}>
-                    <Pressable
-                      onPress={() => {
-                        dispatch(setForgotPassword());
-                        navigation.navigate('NumberEntry');
-                      }}>
-                      <Text style={styles.forgetText}>Forgot Password</Text>
-                    </Pressable>
-                  </View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
+        <ScrollView horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+          <View style={styles.main}>
+            <View style={styles.logoView}>
+              <Image
+                source={require('../assets/images/appicon.png')}
+                style={styles.logo}
+              />
+            </View>
+            <View style={styles.loginContainer}>
+              <Formik
+                validationSchema={registerValidationSchema}
+                initialValues={{
+                  number: '',
+                  password: '',
+                }}
+                onSubmit={values => {
+                  signIn(values);
+                }}>
+                {({values, handleSubmit, isValid}) => (
+                  <>
+                    <View style={styles.inputTextView1}>
+                      <Field
+                        component={Input}
+                        name="number"
+                        source={require('../assets/images/user1.png')}
+                        placeholderTextColor="grey"
+                        placeholder="Mobile Number/Email id"
+                        styleUser={styles.userLogo}
+                        value={values.number}
+                        keyboardType="number-pad"
+                      />
+                    </View>
+                    <View style={styles.inputTextView2}>
+                      <Field
+                        component={Password}
+                        name="password"
+                        source={require('../assets/images/locked.png')}
+                        placeholderTextColor="grey"
+                        placeholder="Password"
+                        styleUser={styles.lockImg}
+                        value={values.password}
+                        secureTextEntry={secureText}
+                        onPress={() => setSecureText(!secureText)}
+                      />
+                    </View>
+                    <View style={styles.forgetTextView}>
+                      <Pressable
+                        onPress={() => {
+                          dispatch(setForgotPassword());
+                          navigation.navigate('NumberEntry');
+                        }}>
+                        <Text style={styles.forgetText}>Forgot Password</Text>
+                      </Pressable>
+                    </View>
 
-                  <View style={styles.buttonView}>
-                    <ButtonLarge
-                      disabled={!isValid}
-                      title="LOGIN"
-                      onPress={handleSubmit}
-                    />
-                  </View>
-                </>
-              )}
-            </Formik>
+                    <View style={styles.buttonView}>
+                      <ButtonLarge
+                        disabled={!isValid}
+                        title="LOGIN"
+                        onPress={handleSubmit}
+                      />
+                    </View>
+                  </>
+                )}
+              </Formik>
+            </View>
+            <View style={styles.bottomView}>
+              <ImageBackground
+                style={styles.bgImage}
+                source={require('../assets/images/BG.png')}>
+                <View style={styles.bottomImgView}>
+                  <Image
+                    style={styles.bottomImg1}
+                    source={require('../assets/images/fb.png')}
+                  />
+                  <Image
+                    style={styles.bottomImg2}
+                    source={require('../assets/images/g.png')}
+                  />
+                </View>
+                <View style={styles.bottomTextView}>
+                  <Text style={styles.bottomText1}>Don't have an account?</Text>
+                  <Pressable onPress={() => navigation.navigate('Confirm')}>
+                    <Text style={styles.bottomText2}> Register</Text>
+                  </Pressable>
+                </View>
+              </ImageBackground>
+            </View>
           </View>
-          <View style={styles.bottomView}>
-            <ImageBackground
-              style={styles.bgImage}
-              source={require('../assets/images/BG.png')}>
-              <View style={styles.bottomImgView}>
-                <Image
-                  style={styles.bottomImg1}
-                  source={require('../assets/images/fb.png')}
-                />
-                <Image
-                  style={styles.bottomImg2}
-                  source={require('../assets/images/g.png')}
-                />
-              </View>
-              <View style={styles.bottomTextView}>
-                <Text style={styles.bottomText1}>Don't have an account?</Text>
-                <Pressable onPress={() => navigation.navigate('Confirm')}>
-                  <Text style={styles.bottomText2}> Register</Text>
-                </Pressable>
-              </View>
-            </ImageBackground>
-          </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -181,18 +187,14 @@ const styles = StyleSheet.create({
   },
   inputTextView1: {
     width: '100%',
-
   },
   inputTextView2: {
     width: '100%',
     justifyContent: 'center',
-
   },
   userLogo: {
     width: 18,
     height: 24,
- 
-    
   },
   lockImg: {
     width: 20,
@@ -220,7 +222,7 @@ const styles = StyleSheet.create({
     //alignItems: 'center',
     // justifyContent: 'center',
     //paddingRight: '9%',
-  //  borderWidth:1
+    //  borderWidth:1
   },
   forgetText: {
     color: '#EF8B40',
@@ -230,7 +232,7 @@ const styles = StyleSheet.create({
     width: '80%',
     // borderWidth: 1,
     marginLeft: 40,
-    textAlign:'right'
+    textAlign: 'right',
   },
   buttonView: {
     marginTop: 30,
