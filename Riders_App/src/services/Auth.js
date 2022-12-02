@@ -560,6 +560,7 @@ export const updateMobileNumber = async (m, key) => {
         },
       },
     );
+    console.log('resd', response.data);
     return response.data;
   } catch (err) {
     console.log('error in update mobile number');
@@ -617,7 +618,7 @@ export const calculateRoute = async (
   }
 };
 
-export const getNearbyPlaces = async (query,lat,lon) => {
+export const getNearbyPlaces = async (query, lat, lon) => {
   const options = {
     method: 'GET',
     url: 'https://api.foursquare.com/v3/places/nearby',
@@ -628,16 +629,16 @@ export const getNearbyPlaces = async (query,lat,lon) => {
     },
   };
   const response = await axios.request(options);
-  return response.data
+  return response.data;
 };
 
-export const shareLocation = async (tripId,arrayObj,token) => {
+export const shareLocation = async (tripId, arrayObj, token) => {
   try {
     const response = await axios.patch(
-      BASE_URL+'/trip/currentLocation',
+      BASE_URL + '/trip/currentLocation',
       {
-        _id:tripId,
-        currentLocation:arrayObj
+        _id: tripId,
+        currentLocation: arrayObj,
       },
       {
         headers: {
@@ -651,12 +652,12 @@ export const shareLocation = async (tripId,arrayObj,token) => {
   }
 };
 
-export const endTrip = async (tripId,token) => {
+export const endTrip = async (tripId, token) => {
   try {
     const response = await axios.patch(
-      BASE_URL+'/trip/updateTripStatus',
+      BASE_URL + '/trip/updateTripStatus',
       {
-        _id:tripId,
+        _id: tripId,
       },
       {
         headers: {
@@ -670,14 +671,14 @@ export const endTrip = async (tripId,token) => {
   }
 };
 
-export const sendChat = async (token,groupId,chat) => {
+export const sendChat = async (token, groupId, chat) => {
   try {
     const response = await axios.post(
       BASE_URL + '/chat/createChat',
       {
-        groupId:groupId,
-        chat:chat,
-        isImage:false
+        groupId: groupId,
+        chat: chat,
+        isImage: false,
       },
       {
         headers: {
@@ -691,12 +692,12 @@ export const sendChat = async (token,groupId,chat) => {
   }
 };
 
-export const getChat = async (token,groupId) => {
+export const getChat = async (token, groupId) => {
   try {
     const response = await axios.post(
       BASE_URL + '/chat/getChatDetails',
       {
-        groupId:groupId,
+        groupId: groupId,
       },
       {
         headers: {
@@ -720,13 +721,32 @@ export const uploadChatImage = async (payload, token) => {
   });
   let data = await res.json();
   return data;
-}
-export const getImagePreview = async (token,groupId) => {
+};
+
+export const clearChat = async (groupId, token) => {
+  try {
+    const response = await axios.post(
+      BASE_URL + '/chat/clearChat',
+      {
+        groupId: groupId,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (err) {
+    console.log('error in clear chat');
+  }
+};
+export const getImagePreview = async (token, groupId) => {
   try {
     const response = await axios.post(
       BASE_URL + '/chat/getImagePreview',
       {
-        groupId:groupId,
+        groupId: groupId,
       },
       {
         headers: {
@@ -739,13 +759,13 @@ export const getImagePreview = async (token,groupId) => {
     console.log(err);
   }
 };
-export const getParticularPhoto = async (token,id) => {
+export const getParticularPhoto = async (token, id) => {
   try {
     const response = await axios.post(
       BASE_URL + '/chat/getParticularPhoto',
-      
+
       {
-        _id:id
+        _id: id,
       },
       {
         headers: {
@@ -759,13 +779,13 @@ export const getParticularPhoto = async (token,id) => {
   }
 };
 
-export const addLike = async (token,id) => {
+export const addLike = async (token, id) => {
   try {
     const response = await axios.post(
       BASE_URL + '/chat/addLikes',
-      
+
       {
-        id:id
+        id: id,
       },
       {
         headers: {
@@ -779,14 +799,14 @@ export const addLike = async (token,id) => {
   }
 };
 
-export const addComments = async (token,id,comment) => {
+export const addComments = async (token, id, comment) => {
   try {
     const response = await axios.post(
       BASE_URL + '/chat/addComments',
-      
+
       {
-        id:id,
-        comments:comment
+        id: id,
+        comments: comment,
       },
       {
         headers: {
@@ -800,14 +820,14 @@ export const addComments = async (token,id,comment) => {
   }
 };
 
-export const deleteComment = async (token,id,commentId) => {
+export const deleteComment = async (token, id, commentId) => {
   try {
     const response = await axios.post(
       BASE_URL + '/chat/deleteComment',
-      
+
       {
-        id:id,
-        commentId:commentId
+        id: id,
+        commentId: commentId,
       },
       {
         headers: {
@@ -821,13 +841,13 @@ export const deleteComment = async (token,id,commentId) => {
   }
 };
 
-export const followRider = async (token,mobile) => {
+export const followRider = async (token, mobile) => {
   try {
     const response = await axios.post(
-      BASE_URL +'/follow',
-      
+      BASE_URL + '/follow',
+
       {
-        wantToFollow:mobile,
+        wantToFollow: mobile,
       },
       {
         headers: {
@@ -841,5 +861,3 @@ export const followRider = async (token,mobile) => {
     console.log(err);
   }
 };
-
-

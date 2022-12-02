@@ -323,7 +323,9 @@ export const MapChatButton = ({
   setLongitude,
   navigation,
   tripName,
-  id
+  id,
+  mobile,
+  rider,
 }) => {
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? 80 : 80) : '275%';
@@ -362,7 +364,9 @@ export const MapChatButton = ({
         onPress={() => {
           navigation.navigate('ChatScreen', {
             tripName: tripName,
-            id:id
+            id:id,
+            mobile:mobile,
+            riders:rider
           });
         }}>
         <Image source={require('../assets/images/wechat.png')} />

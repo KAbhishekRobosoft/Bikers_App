@@ -8,6 +8,7 @@ import {
   Pressable,
   ToastAndroid,
   Platform,
+  Image,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -90,7 +91,7 @@ export const Milestone = () => {
               }}>
               <Icon
                 name="close"
-                size={20}
+                size={25}
                 color={'#A4A4A4'}
                 style={styles.times}
               />
@@ -108,15 +109,15 @@ export const Milestone = () => {
             />
           </View>
           <View style={styles.locationView}>
-            <Icon2
-              name="gps-fixed"
-              color="#A4A4A4"
-              style={{
-                marginLeft: 10,
-                marginTop: 6,
-              }}
-              size={22}
-            />
+          <Icon2
+                name="gps-fixed"
+                size={22}
+                color="#A4A4A4"
+                style={{
+                  marginLeft: 10,
+                  marginTop: 6
+                }}
+              />
             <View style={styles.locationNamesView}>
               <Text style={styles.textUdupi}>Udupi</Text>
               <Text style={styles.textCurrentLocation}>current location</Text>
@@ -144,8 +145,10 @@ const styles = StyleSheet.create({
       height: 3,
     },
     shadowOpacity: 0.1,
+    shadowRadius: 4,
     elevation: 5,
-    height: Platform.OS === 'ios' ? 230 : 270,
+    backgroundColor: 'white',
+    height: Platform.OS === 'ios' ? 230 : 260,
     width: 321,
     alignSelf: 'center',
     borderRadius: 13,
@@ -175,19 +178,15 @@ const styles = StyleSheet.create({
   },
   fromView: {
     marginHorizontal: 19,
-    marginVertical: 7,
+    marginTop: 12,
     borderColor: '#B4B3B3',
     borderBottomWidth: 1,
     alignItems: 'baseline',
     width: 285,
   },
   textFrom: {
-    // height: 24,
-    alignSelf: 'flex-start',
-    width: '60%',
-    color: 'black',
-
-    // marginTop: 10
+    width: '100%',
+    height: Platform.OS === 'android' ? 40 : 30,
   },
   locationView: {
     height: 48,
@@ -203,13 +202,19 @@ const styles = StyleSheet.create({
     elevation: 5,
     backgroundColor: 'white',
     marginHorizontal: 19,
+    marginTop: 12,
   },
   locationImage: {
-    marginHorizontal: 7,
-    marginVertical: 5,
+    height: 16,
+    width: 16,
+    marginLeft: 6,
+    tintColor: 'grey',
+    resizeMode: 'contain',
+    marginTop: 5,
   },
   locationNamesView: {
     flexDirection: 'column',
+    marginLeft: 8,
   },
   textUdupi: {
     fontFamily: 'Roboto-Regular',
@@ -225,7 +230,7 @@ const styles = StyleSheet.create({
   },
   toView: {
     marginHorizontal: 19,
-    marginVertical: 18,
+    marginTop: 12,
     borderColor: '#B4B3B3',
     borderBottomWidth: 1,
     alignItems: 'baseline',

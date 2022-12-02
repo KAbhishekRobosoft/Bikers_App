@@ -25,6 +25,9 @@ import {getChat} from '../services/Auth';
 import {sendChat} from '../services/Auth';
 import {uploadChatImage} from '../services/Auth';
 import ImagePicker from 'react-native-image-crop-picker';
+import Modal from 'react-native-modal';
+import {ScrollView} from 'react-native-gesture-handler';
+import {clearChat} from '../services/Auth';
 
 const ChatScreen = ({navigation, route}) => {
   const textRef = useRef(null);
@@ -35,6 +38,9 @@ const ChatScreen = ({navigation, route}) => {
   const [chat, setChat] = useState([]);
   const [modal1, setmodal1] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
+  const number = useSelector(state => state.auth.userCredentials.mobile);
+  const authData = useSelector(state => state.auth);
+  const [emoji, setEmoji] = useState(false);
   const {height, width} = useWindowDimensions();
   const top =
     width > height
@@ -113,57 +119,80 @@ const ChatScreen = ({navigation, route}) => {
     }).catch(er=>console.log(er))
   };
 
-  const handleToggle1 = () => {
-    setmodal1(true);
+  const handleToggle = () => {
+    setmodal1(!modal1);
+  };
+  const handleEmoji = () => {
+    setEmoji(!emoji);
+  };
+
+  const handleClearChat = async () => {
+    let cred = await getVerifiedKeys(authData.userToken);
+    if (route.params.mobile === number) {
+      let response = await clearChat(route.params.id, cred);
+      if (response !== undefined) {
+        Toast.show('Chats Cleared');
+        dispatch(setInitialState(state));
+      }
+    } else {
+      Toast.show('You cannot clear the chat as you are not admin');
+    }
   };
 
 //console.log(route.params.id);
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <View style={[styles.header, styles.shadow]}>
-        <Pressable
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Icon
-            name="md-arrow-back"
-            color={'white'}
-            size={25}
-            style={styles.icon}
+      <Pressable onPress={() => handleToggle()}>
+        <View style={[styles.header, styles.shadow]}>
+          <Pressable
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <Icon
+              name="md-arrow-back"
+              color={'white'}
+              size={25}
+              style={styles.icon}
+            />
+          </Pressable>
+          <Text style={styles.headerText}>{route.params.tripName}</Text>
+          <PopUpMenu
+            options={[
+              {
+                title: 'Group Info',
+                action: () => {
+                  handleToggle();
+                },
+              },
+              {
+                title: 'Notifications',
+                action: () => {
+                  alert('bye');
+                },
+              },
+              {
+                title: 'Clear Chat',
+                action: () => {
+                  handleClearChat();
+                },
+              },
+            ]}
+            color="white"
+            size={30}
           />
-        </Pressable>
-        <Text style={styles.headerText}>{route.params.tripName}</Text>
-        <PopUpMenu
-          options={[
-            {
-              title: 'Group Info',
-              action: () => alert('hello'),
-            },
-            {
-              title: 'Notifications',
-              action: () => {
-                alert('bye');
-              },
-            },
-            {
-              title: 'Clear Chat',
-              action: () => {
-                alert('cleaned');
-              },
-            },
-          ]}
-          color="white"
-          size={30}
-        />
-      </View>
+        </View>
+      </Pressable>
 
       <ImageBackground
         source={require('../assets/images/chat.png')}
         style={styles.image}></ImageBackground>
-      <View style={{height:height2}}>
+
+      <View style={{height: '80%'}}>
         <FlatList
           data={chat}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
           renderItem={({item}) => {
             if (item.memberNumber === auth.userCredentials.mobile) {
               return <SenderChatDetails chat={item} />;
@@ -181,7 +210,7 @@ const ChatScreen = ({navigation, route}) => {
           <Pressable>
             <Image
               source={require('../assets/images/smile.png')}
-              style={{height: 30, width: 30, top: 10}}
+              style={{height: 30, width: 30}}
             />
           </Pressable>
           <TextInput
@@ -222,6 +251,44 @@ const ChatScreen = ({navigation, route}) => {
           </Pressable>
         </View>
       </View>
+      {modal1 ? (
+        <Modal
+          isVisible={true}
+          backdropOpacity={0.3}
+          avoidKeyboard={true}
+          animationIn={'slideInUp'}
+          animationOut={'slideOutDown'}>
+          <Pressable onPress={() => handleToggle()}>
+            <View style={styles.modalView}>
+              <Image
+                source={require('../assets/images/appicon.png')}
+                style={styles.imageIcon}
+              />
+              <Text style={styles.GroupInfoText}>Group Info</Text>
+              <View style={{flexDirection: 'row', marginTop: 15}}>
+                <Text style={styles.adminText}>Admin</Text>
+                <Text style={styles.adminMobileText}>
+                  : {route.params.mobile}
+                </Text>
+              </View>
+              <ScrollView style={{marginTop: 10}}>
+                {route.params.riders.map(ele => {
+                  return (
+                    <View key={ele._id} style={styles.ridersView}>
+                      <Text style={styles.ridersNameText}>{ele.riderName}</Text>
+                      <Text style={styles.ridersNumberText}>
+                        : {ele.riderPhoneNumber}
+                      </Text>
+                    </View>
+                  );
+                })}
+              </ScrollView>
+            </View>
+          </Pressable>
+        </Modal>
+      ) : (
+        <></>
+      )}
     </SafeAreaView>
   );
 };
@@ -282,9 +349,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '90%',
     flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
     justifyContent: 'space-between',
+    alignSelf: 'center',
   },
   bottomshadow: {
     backgroundColor: '#FFFFFF',
@@ -317,10 +383,55 @@ const styles = StyleSheet.create({
 
   iconContainer: {
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    // justifyContent: 'flex-start',
     marginLeft: '3%',
     width: '72%',
+    alignItems: 'center',
+  },
+  GroupInfoText: {
+    fontFamily: 'roboto-Medium',
+    fontSize: 18,
+  },
+  modalView: {
+    backgroundColor: 'white',
+    height: 200,
+    width: '100%',
+    padding: 10,
+    borderRadius: 10,
+  },
+  adminText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+    width: '20%',
+    color: '#ED7E2B',
+  },
+  adminMobileText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+    color: '#ED7E2B',
+  },
+  ridersView: {
+    flexDirection: 'row',
+  },
+  ridersNameText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+    width: '20%',
+  },
+  ridersNumberText: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 15,
+  },
+  imageIcon: {
+    resizeMode: 'contain',
+    width: 40,
+    height: 40,
+    alignSelf: 'center',
+    marginTop: 10,
   },
 });
 
 export default ChatScreen;
+
+// chat/clearChat
+//groupId

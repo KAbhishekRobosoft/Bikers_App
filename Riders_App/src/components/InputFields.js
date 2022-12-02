@@ -109,7 +109,7 @@ export const Password = props => {
 
 export const PlaceholderTextField = props => {
   const {
-    field: {name, onBlur, onChange, value},
+    field: {name, onBlur, onChange, value, ref},
     form: {errors, touched, setFieldTouched},
     ...inputProps
   } = props;
@@ -120,7 +120,7 @@ export const PlaceholderTextField = props => {
     <View>
       <View style={styles.inputTextView2}>
         <View style={styles.placeholderView2}>
-          {props.value ? (
+          {props.defaultValue  || props.value ? (
             <View style={styles.commonPlaceholder}>
               <Text style={styles.text}>{props.placeholder}</Text>
             </View>
@@ -133,12 +133,16 @@ export const PlaceholderTextField = props => {
             style={styles.typedText}
             keyboardType={props.keyboardType}
             value={value}
+            defaultValue={props.default}
+            ref={ref}
+            selection={props.selection}
             onChangeText={text => onChange(name)(text)}
             onBlur={() => {
               setFieldTouched(name);
               onBlur(name);
             }}
             editable={props.editable}
+            selectTextOnFocus={props.selectTextOnFocus}
             
             {...inputProps}
           />

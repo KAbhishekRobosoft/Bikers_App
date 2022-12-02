@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon2 from 'react-native-vector-icons/MaterialIcons';
 import ButtonLarge from '../components/Buttons';
 import BikeImageComponent from '../components/BikeImageComponent';
 import DatePicker from 'react-native-date-picker';
@@ -141,11 +142,15 @@ const CreateTrip = ({navigation}) => {
               setOpen(false);
             }}>
             <View style={styles.locationNamesView}>
-              <Image
-                style={{height: 20, width: 20, marginLeft: 10}}
-                source={require('../assets/images/pin.png')}
+              <Icon2
+                name="gps-fixed"
+                size={22}
+                color="#A4A4A4"
+                style={{
+                  marginLeft: 10,
+                }}
               />
-              <View>
+              <View style={{marginLeft: -10}}>
                 <Text style={styles.textUdupi}>{currLoc}</Text>
                 <Text style={styles.textCurrentLocation}>current location</Text>
               </View>
@@ -255,7 +260,8 @@ const CreateTrip = ({navigation}) => {
             </Pressable>
           </View>
           <View style={styles.timeView}>
-            <View style={{
+            <View
+              style={{
                 height: 40,
                 justifyContent: 'space-evenly',
                 paddingBottom: 5,
@@ -313,7 +319,9 @@ const CreateTrip = ({navigation}) => {
             {contactsData.addTripContacts.length === 0 && (
               <Text style={styles.text}>Invite other riders</Text>
             )}
-            {contactsData.addTripContacts.length > 0 && <BikeImageComponent data={contactsData.addTripContacts.length} />}
+            {contactsData.addTripContacts.length > 0 && (
+              <BikeImageComponent data={contactsData.addTripContacts.length} />
+            )}
           </View>
           {mileStones ? (
             <View style={styles.mileStone}>

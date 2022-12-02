@@ -5,6 +5,8 @@ import {
   StyleSheet,
   useWindowDimensions,
   View,
+  Text,
+  Platform,
 } from 'react-native';
 import MapView, {Polyline} from 'react-native-maps';
 import {Marker} from 'react-native-maps';
@@ -233,8 +235,10 @@ const MapDisplayScreen = ({navigation, route}) => {
                 navigation={navigation}
                 tripName={route.params.tripName}
                 id= {route.params.id}
+                mobile= {route.params.mobile}
+                rider={route.params.riders}
               />
-              <View style={[styles.bottomContainer, {top}]}>
+              <View style={[styles.bottomContainer,]}>
                 <MapBottomBar
                   id={route.params.id}
                   musicControl={musicControl}
@@ -254,7 +258,7 @@ const MapDisplayScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   bottomContainer: {
     flex: 1,
-    marginTop: '30%',
+    marginTop: Platform.OS === 'android' ? "48.5%" : '30.1%',
   },
   mapStyle: {
     position: 'absolute',
