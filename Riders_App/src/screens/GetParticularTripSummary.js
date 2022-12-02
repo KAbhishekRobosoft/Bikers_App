@@ -81,7 +81,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: 'white',height: '100%'}}>
       {route.params.data.tripStatus === 'upcoming' && (
         <View style={styles.mainView}>
           <View style={[styles.header]}>

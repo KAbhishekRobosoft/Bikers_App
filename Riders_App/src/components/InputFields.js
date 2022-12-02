@@ -338,11 +338,12 @@ const styles = StyleSheet.create({
     width: '8%',
   },
   textInput: {
-    marginVertical: Platform.OS === 'android' ? -17 : -3,
+    marginVertical: Platform.OS === 'android' ? -28 : -3,
     fontSize: 16,
     marginLeft: 10,
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
+    height: 65
   },
   textPassword: {
     width: '90%',
