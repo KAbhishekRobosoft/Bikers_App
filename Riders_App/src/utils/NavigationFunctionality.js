@@ -38,7 +38,7 @@ function NavigationFunctionality() {
   if (authData.isLoading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator color="green" size="large" />
+        <ActivityIndicator color="orange" size="large" />
       </View>
     );
   }
