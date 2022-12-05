@@ -11,12 +11,14 @@ import React, {useState} from 'react';
 import ButtonLarge from '../components/Buttons';
 import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
-import {logOut} from '../redux/AuthSlice';
+import {deSetRegistered, logOut} from '../redux/AuthSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Toast from 'react-native-simple-toast';
 
 const LogoutScreen = ({navigation}) => {
   async function checkOut() {
     try {
+      Toast.show('Logged Out');
       await AsyncStorage.removeItem('token');
     } catch (e) {
       console.log(e);
@@ -25,7 +27,9 @@ const LogoutScreen = ({navigation}) => {
 
   const dispatch = useDispatch();
   const hadBike = useSelector(state => state.auth.userCredentials);
-  console.log(hadBike.haveBike);
+  const userDetails = useSelector(state => state.auth.userData);
+  const authData = useSelector(state => state.auth);
+
   return (
     <SafeAreaView style={styles.main}>
       <ScrollView style={{width: '100%'}}>
@@ -33,17 +37,46 @@ const LogoutScreen = ({navigation}) => {
           style={styles.img}
           source={require('../assets/images/logoutImg.jpg')}
         />
-        {hadBike.haveBike ? (
+        {hadBike.haveBike && !authData.registered ? (
           <View style={styles.btn1}>
             <ButtonLarge
-              onPress={() => navigation.navigate('AddBikeDetails')}
+              onPress={() => {
+                if (!userDetails.hasOwnProperty('lisenceNumber')) {
+                  navigation.navigate('AddDetailsStack');
+                  Toast.show('Please Add Personal Details First');
+                } else {
+                  navigation.navigate('AddBikeDetails');
+                }
+              }}
               title="Add Bike Details"
             />
           </View>
         ) : (
-          <View style={styles.btn11}>
-            <ButtonLarge disabled={true} title="Add Bike Details" />
-          </View>
+          <>
+            <View style={styles.btn11}>
+              <ButtonLarge disabled={true} title="Add Bike Details" />
+            </View>
+
+        
+            {authData.registered && hadBike.haveBike && (
+              <View
+                style={{
+                  marginTop: 10,
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: '#F36870',
+                    fontSize: 13,
+                    fontFamily: 'Roboto-Regular',
+                    textAlign: 'center',
+                  }}>
+                  Please complete the Owner Manual Process {'\n'}
+                  (You can find Owner Manual in My Garage Section)
+                </Text>
+              </View>
+            )}
+          </>
         )}
 
         <View style={styles.btn2}>
@@ -51,6 +84,7 @@ const LogoutScreen = ({navigation}) => {
             onPress={() => {
               checkOut();
               dispatch(logOut());
+              dispatch(deSetRegistered())
             }}>
             <View style={styles.container}>
               <LinearGradient
@@ -95,7 +129,7 @@ const styles = StyleSheet.create({
   btn2: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 50,
+    marginTop: 40,
   },
   container: {
     shadowColor: 'rgba(126,118,118,0.5)',

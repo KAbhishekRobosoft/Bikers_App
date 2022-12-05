@@ -177,6 +177,7 @@ export const PlaceholderTextFieldOwnerManual = props => {
             keyboardType={props.keyboardType}
             value={props.value}
             editable={props.editable}
+            onTouchStart={props.onTouchStart}
             defaultValue={props.defaultValue}
             onChangeText={text => onChange(name)(text)}
             onBlur={() => {
@@ -226,7 +227,7 @@ export const DropDownInputField = props => {
       </View>
       <View style={{marginTop: -38}}>
         <SelectList
-       
+        
           defaultOption={props.defaultOption}
           data={props.data}
           setSelected={props.setSelected}

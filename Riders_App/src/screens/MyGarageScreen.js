@@ -3,11 +3,9 @@ import {
   FlatList,
   SafeAreaView,
   StyleSheet,
-  TextInput,
   View,
   Text,
   Image,
-  Pressable,
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
@@ -66,20 +64,24 @@ export const MyGarage = ({navigation}) => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
-        {serviceData.length > 0 ? new Date(serviceData[0]?.slotDate) >= Date.now() ? (
-          <View style={styles.serviceDueView}>
-            <Text style={styles.daysText}>
-              {Math.floor(day / (1000 * 3600 * 24))} days
-            </Text>
-            <Text style={styles.daysDescription}>Next Service due</Text>
-          </View>
+        {serviceData.length > 0 ? (
+          new Date(serviceData[0]?.slotDate) >= Date.now() ? (
+            <View style={styles.serviceDueView}>
+              <Text style={styles.daysText}>
+                {Math.floor(day / (1000 * 3600 * 24))} days
+              </Text>
+              <Text style={styles.daysDescription}>Next Service due</Text>
+            </View>
+          ) : (
+            <View style={styles.serviceDueView}>
+              <Text style={styles.daysText}>No service Due</Text>
+            </View>
+          )
         ) : (
           <View style={styles.serviceDueView}>
-            <Text style={styles.daysText}>No service Due</Text>
+            <Text style={styles.daysText}>No Services Booked</Text>
           </View>
-        ) : <View style={styles.serviceDueView}>
-        <Text style={styles.daysText}>No Services booked</Text>
-      </View>}
+        )}
 
         <Image
           source={require('../assets/images/meter.png')}

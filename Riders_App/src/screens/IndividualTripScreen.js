@@ -12,11 +12,12 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AllTripList from '../components/AllTripList';
-import {UserTrips} from '../services/Auth';
+import {addOwnerDetails, getBikeDetails, getOwnerDetails, UserTrips} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {SearchUserTrips} from '../services/Auth';
-import {setToken} from '../redux/AuthSlice';
+import {setToken, setUserData} from '../redux/AuthSlice';
 import Toast from 'react-native-simple-toast';
+import { addBikeData, addBikeType } from '../redux/AccessoriesSlice';
 
 const AllTrips = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
@@ -27,10 +28,17 @@ const AllTrips = ({navigation}) => {
   const dispatch = useDispatch();
   useEffect(() => {
     setTimeout(async () => {
+      try{
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
+      const response = await getOwnerDetails(key);
+      console.log('%%%%',response[0])
+      dispatch(setUserData(response[0]));
       const tripdata = await UserTrips(key);
       setTripDetails(tripdata);
+      }catch(er){
+        Toast.show("Error Occurred")
+      }
     }, 500);
   }, [state]);
 

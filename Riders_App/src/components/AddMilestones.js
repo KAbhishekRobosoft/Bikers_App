@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   Text,
   SafeAreaView,
@@ -20,8 +20,31 @@ import {useSelector} from 'react-redux';
 import {getCoordinates} from '../services/Auth';
 import {calculateRoute} from '../services/Auth';
 import Toast from 'react-native-simple-toast';
+import GetLocation from 'react-native-get-location';
+import { getLocationName } from '../services/Auth';
 
 export const Milestone = () => {
+  const [curLoc,setcurLoc]= useState('')
+
+  useEffect(() => {
+    setTimeout(async () => {
+      GetLocation.getCurrentPosition({
+        enableHighAccuracy: true,
+        timeout: 15000,
+      })
+        .then(async location => {
+          const resp = await getLocationName(
+            location.latitude,
+            location.longitude,
+          );
+          setcurLoc(resp.name);
+        })
+        .catch(error => {
+          const {code, message} = error;
+          console.warn(code, message);
+        });
+    }, 500);
+  }, []);
   const mileStoneData = useSelector(state => state.milestone.milestoneData);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
@@ -42,6 +65,7 @@ export const Milestone = () => {
             <Pressable
               onPress={async () => {
                 if ((from, to !== '')) {
+                  try{
                   const resp = await getCoordinates(from);
                   const resp1 = await getCoordinates(to);
                   const dist = await calculateRoute(
@@ -51,11 +75,7 @@ export const Milestone = () => {
                     resp1.lon,
                   );
                   const msInHour = 1000 * 60 * 60;
-                  if (
-                    resp !== undefined &&
-                    resp1 !== undefined &&
-                    dist !== undefined
-                  ) {
+                 
                     const obj = {
                       id: mileStoneData.length + 1,
                       source: [
@@ -82,10 +102,12 @@ export const Milestone = () => {
                     };
                     dispatch(setMileStoneData(obj));
                     dispatch(setMileStone(false));
-                  } else {
-                    Toast.show('Enter proper location');
+                    Toast.show("Milestone added")
+                  }catch(er){
+                    Toast.show("Please enter valid location")
                   }
-                } else {
+                } 
+                else {
                   dispatch(setMileStone(false));
                 }
               }}>
@@ -119,7 +141,7 @@ export const Milestone = () => {
                 }}
               />
             <View style={styles.locationNamesView}>
-              <Text style={styles.textUdupi}>Udupi</Text>
+              <Text style={styles.textUdupi}>{curLoc}</Text>
               <Text style={styles.textCurrentLocation}>current location</Text>
             </View>
           </View>

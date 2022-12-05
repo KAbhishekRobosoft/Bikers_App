@@ -49,17 +49,19 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
     setTimeout(async () => {
       const cred = await getVerifiedKeys(authData.userToken);
       const response = await getParticularPhoto(cred, route.params.id);
+      // console.log("resp,",response);
       setImgData(response);
       dispatch(setLoading());
     });
   }, [state]);
-
+  console.log(authData.userCredentials.mobile);
   const likeAdd = async () => {
     const cred = await getVerifiedKeys(authData.userToken);
     dispatch(setToken(cred));
     const resp = await addLike(cred, imgData.photos._id);
+
     if (resp !== undefined) {
-      Toast.show('You liked the Image');
+      Toast.show('Like Status Changed');
       dispatch(setInitialState(state));
     } else {
       Toast.show("Couldn't like the Image");
@@ -87,6 +89,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
     );
   }
 
+  // console.log(route.params.id);
   const position = new Animated.ValueXY({x: 0, y: 50});
   Animated.timing(position, {
     toValue: {x: 0, y: 0},
@@ -120,6 +123,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
           </View>
           <View>
             <ScrollView
+              bounces={false}
               showsVerticalScrollIndicator={false}
               showsHorizontalScrollIndicator={false}>
               <View style={styles.imgContainer}>
@@ -160,7 +164,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                       style={{
                         flexDirection: 'row',
                         width: 130,
-                        borderWidth: 0,
+                      
                         justifyContent: 'space-around',
                         alignItems: 'center',
                       }}>
@@ -200,100 +204,128 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                       },
                       styles.bottomshadow,
                     ]}>
-                    <ScrollView
-                      style={{padding: 5}}
-                      showsVerticalScrollIndicator={false}>
-                      {imgData.photos.commentData?.length > 0 &&
-                        imgData.photos.commentData.map(item => {
-                          return (
-                            <View
-                              key={item._id}
-                              style={{
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                paddingBottom: 6,
-                              }}>
-                              <View>
-                                <Pressable
-                                  onPress={() => {
-                                    if (
-                                      authData.userCredentials.mobile !==
-                                      item.commentedNumber
-                                    )
-                                      navigation.navigate('viewProfile', {
-                                        mobile: item.commentedNumber,
-                                      });
-                                  }}>
-                                  <View
-                                    style={{
-                                      flexDirection: 'row',
-                                      alignItems: 'center',
-                                      height: 45,
-                                      paddingHorizontal: 10,
-                                    }}>
-                                    <Image
-                                      style={{
-                                        height: 25,
-                                        width: 25,
-                                        borderRadius: 30,
-                                      }}
-                                      source={{
-                                        uri:
-                                          'https' +
-                                          item.commentedUserImage.substring(4),
-                                      }}
-                                    />
+                    {imgData.photos.commentData?.length === 0 ? (
+                      <View
+                        style={{
+                          justifyContent: 'center',
 
-                                    <Text
-                                      style={{
-                                        fontWeight: 'bold',
-                                        fontFamily: 'Roboto-Regular',
-                                        color: '#ED7E2B',
-                                        marginLeft: 10,
-                                        fontSize: 15,
-                                      }}>
-                                      {item.commentedBy}
-                                    </Text>
-                                  </View>
-                                </Pressable>
-                                <Text
-                                  style={{
-                                    fontFamily: 'Roboto-Regular',
-                                    fontWeight: 'bold',
-                                    left: 45,
-                                  }}>
-                                  {item.commented}
-                                </Text>
-                              </View>
-                              <TouchableOpacity
-                                onPress={async () => {
-                                  const cred = await getVerifiedKeys(
-                                    authData.userToken,
-                                  );
-                                  dispatch(setToken(cred));
-                                  const resp = await deleteComment(
-                                    cred,
-                                    imgData.photos._id,
-                                    item._id,
-                                  );
-                                  if (resp !== undefined) {
-                                    Toast.show('Comment deleted successfully');
-                                    dispatch(setInitialState(state));
-                                  } else {
-                                    Toast.show('Failed to delete a comment');
-                                  }
+                          alignItems: 'center',
+                          height: 200,
+                        }}>
+                        <Text style={{fontWeight: 'bold', color: 'black'}}>
+                          No Comments
+                        </Text>
+                      </View>
+                    ) : (
+                      <ScrollView
+                        style={{padding: 5}}
+                        showsVerticalScrollIndicator={false}>
+                        {imgData.photos.commentData?.length > 0 &&
+                          imgData.photos.commentData.map(item => {
+                            return (
+                              <View
+                                key={item._id}
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                  paddingBottom: 3,
                                 }}>
-                                <Icon1
-                                  style={{marginRight: 10}}
-                                  name="trash"
-                                  size={18}
-                                />
-                              </TouchableOpacity>
-                            </View>
-                          );
-                        })}
-                    </ScrollView>
+                                <View>
+                                  <Pressable
+                                    onPress={() => {
+                                      if (
+                                        authData.userCredentials.mobile !==
+                                        item.commentedNumber
+                                      )
+                                        navigation.navigate('viewProfile', {
+                                          mobile: item.commentedNumber,
+                                        });
+                                    }}>
+                                    <View
+                                      style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        height: 45,
+                                        paddingHorizontal: 10,
+                                      }}>
+                                      <Image
+                                        style={{
+                                          height: 25,
+                                          width: 25,
+                                          borderRadius: 30,
+                                        }}
+                                        source={{
+                                          uri:
+                                            'https' +
+                                            item.commentedUserImage.substring(
+                                              4,
+                                            ),
+                                        }}
+                                      />
+
+                                      <Text
+                                        style={{
+                                          fontWeight: 'bold',
+                                          fontFamily: 'Roboto-Regular',
+                                          color: '#ED7E2B',
+                                          marginLeft: 10,
+                                          fontSize: 15,
+                                        }}>
+                                        {item.commentedNumber ===
+                                        authData.userCredentials.mobile
+                                          ? 'You'
+                                          : item.commentedBy}
+                                      </Text>
+                                    </View>
+                                  </Pressable>
+                                  <Text
+                                    style={{
+                                      fontFamily: 'Roboto-Regular',
+                                      fontWeight: 'bold',
+                                      left: 45,
+                                      color: 'black',
+                                    }}>
+                                    {item.commented}
+                                  </Text>
+                                </View>
+                                {item.commentedNumber ===
+                                authData.userCredentials.mobile ? (
+                                  <TouchableOpacity
+                                    onPress={async () => {
+                                      const cred = await getVerifiedKeys(
+                                        authData.userToken,
+                                      );
+                                      dispatch(setToken(cred));
+                                      const resp = await deleteComment(
+                                        cred,
+                                        imgData.photos._id,
+                                        item._id,
+                                      );
+                                      if (resp !== undefined) {
+                                        Toast.show(
+                                          'Comment deleted successfully',
+                                        );
+                                        dispatch(setInitialState(state));
+                                      } else {
+                                        Toast.show(
+                                          'Failed to delete a comment',
+                                        );
+                                      }
+                                    }}>
+                                    <Icon1
+                                      style={{marginRight: 10}}
+                                      name="trash"
+                                      size={18}
+                                      color="black"
+                                    />
+                                  </TouchableOpacity>
+                                ) : null}
+                              </View>
+                            );
+                          })}
+                      </ScrollView>
+                    )}
                   </Animated.View>
                 ) : null}
                 {likeView ? (
@@ -321,60 +353,78 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                       },
                       styles.bottomshadow,
                     ]}>
-                    <ScrollView
-                      style={{paddingHorizontal: 10}}
-                      showsVerticalScrollIndicator={false}
-                      showsHorizontalScrollIndicator={false}>
+                    {imgData.photos.likedBy?.length === 0 ? (
                       <View
                         style={{
-                          flexDirection: 'row',
                           justifyContent: 'center',
-                          top: 10,
-                        }}>
-                        <Icons
-                          name="heart"
-                          color="red"
-                          size={18}
 
-                        />
-                        <Text
-                          style={{
-                            fontWeight: 'bold',
-                            fontFamily: 'Roboto-Regular',
-                            marginLeft: 10,
-                            fontSize: 16,
-                            color: '#ED7E2B',
-                            textAlign: 'center',
-                          }}>
-                          Liked By
+                          alignItems: 'center',
+                          height: 200,
+                        }}>
+                        <Text style={{fontWeight: 'bold', color: 'black'}}>
+                          No Likes
                         </Text>
                       </View>
-                      {imgData.photos.likedBy?.length > 0
-                        ? imgData.photos.likedBy.map(item => {
-                            return (
-                              <View
-                                key={item._id}
-                                style={{
-                                  margin: 5,
-                                  height: 45,
-                                  paddingHorizontal: 10,
-                                }}>
-                                <Text
+                    ) : (
+                      <ScrollView
+                        style={{paddingHorizontal: 10}}
+                        showsVerticalScrollIndicator={false}
+                        showsHorizontalScrollIndicator={false}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            top: 10,
+                          }}>
+                          <Icons
+                            name="heart"
+                            color="red"
+                            size={18}
+                            //style={styles.icon}
+                          />
+                          <Text
+                            style={{
+                              fontWeight: 'bold',
+                              fontFamily: 'Roboto-Regular',
+                              marginLeft: 10,
+                              fontSize: 16,
+                              color: '#ED7E2B',
+                              textAlign: 'center',
+                            }}>
+                            Liked By
+                          </Text>
+                        </View>
+                        {imgData.photos.likedBy?.length > 0
+                          ? imgData.photos.likedBy.map(item => {
+                              return (
+                                <View
+                                  key={item._id}
                                   style={{
-                                    fontWeight: 'bold',
-                                    fontFamily: 'Roboto-Regular',
-                                    fontSize: 15,
-                                    marginLeft: 20,
-                                    top: 20,
-                                    color: '#ED7E2B',
+                                    margin: 5,
+                                    height: 20,
+                                    paddingHorizontal: 10,
+                                    //borderWidth:1
                                   }}>
-                                  {item.likedName}
-                                </Text>
-                              </View>
-                            );
-                          })
-                        : null}
-                    </ScrollView>
+                                  <Text
+                                    style={{
+                                      fontWeight: 'bold',
+                                      fontFamily: 'Roboto-Regular',
+                                      fontSize: 15,
+                                      top: 8,
+                                      color: '#ED7E2B',
+                                      //borderWidth:1
+                                    }}>
+                                    {item.likedNumber ===
+                                    authData.userCredentials.mobile
+                                      ? 'You'
+                                      : item.likedName}
+                                  </Text>
+                                </View>
+                              );
+                            })
+                          : null}
+                      </ScrollView>
+                    )}
                   </Animated.View>
                 ) : null}
               </View>

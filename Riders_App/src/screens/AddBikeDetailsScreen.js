@@ -16,13 +16,14 @@ import {addBikeDetails, getBikeDetails} from '../services/Auth';
 import {useDispatch, useSelector} from 'react-redux';
 import {addBikeType, addBikeData} from '../redux/AccessoriesSlice';
 import {Formik, Field} from 'formik';
+import Toast from 'react-native-simple-toast';
+
 import {getVerifiedKeys} from '../utils/Functions';
 
 import * as yup from 'yup';
 import {PlaceholderTextField} from '../components/InputFields';
 
 const AddBikeDetails = ({navigation}) => {
-
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
@@ -39,30 +40,48 @@ const AddBikeDetails = ({navigation}) => {
   };
 
   const submit = async (values, {resetForm}) => {
-    const obj = {
-      vehicleType: values.vehicleType,
-      vehicleNumber: values.vehicleNumber,
-      engineNumber: values.engineNumber,
-      frameNumber: values.frameNumber,
-      batteryMake: values.batteryMake,
-      registerNumber: values.registerNumber,
-      model: values.model,
-      color: values.color,
-      dealerCode: values.dealerCode,
-    };
-    let cred = await getVerifiedKeys(authData.userToken);
-    await addBikeDetails(obj, cred); // <-----------API  CAll
-    const response = await getBikeDetails(cred);
-    const BikeTypes = response.map(e => {
-      return e.vehicleType;
-    });
+    if (
+      values.vehicleType &&
+      values.vehicleNumber &&
+      values.engineNumber &&
+      values.frameNumber &&
+      values.batteryMake &&
+      values.registerNumber &&
+      values.model &&
+      values.model &&
+      values.dealerCode !== ''
+    ) {
+      const obj = {
+        vehicleType: values.vehicleType,
+        vehicleNumber: values.vehicleNumber,
+        engineNumber: values.engineNumber,
+        frameNumber: values.frameNumber,
+        batteryMake: values.batteryMake,
+        registerNumber: values.registerNumber,
+        model: values.model,
+        color: values.model,
+        dealerCode: values.dealerCode,
+      };
+      let cred = await getVerifiedKeys(authData.userToken);
+      await addBikeDetails(obj, cred); // <-----------API  CAll
+      const response = await getBikeDetails(cred);
+      const BikeTypes = response.map(e => {
+        return e.vehicleType;
+      });
 
-    console.log('res', BikeTypes);
-    dispatch(addBikeType(BikeTypes));
-    dispatch(addBikeData(response)); // <-----------Redux
-    resetForm({initialValues});
-
-    navigation.navigate('Garage')
+      dispatch(addBikeType(BikeTypes));
+      dispatch(addBikeData(response)); // <-----------Redux
+      resetForm({initialValues});
+      if (authData.registered) {
+        Toast.show('To add more bikes, Create a trip first');
+        navigation.navigate('WelcomeAboardScreen');
+      } else {
+        Toast.show('Bike Details Added');
+        navigation.navigate('Garage');
+      }
+    } else {
+      Toast.show('Enter all the Details');
+    }
   };
 
   return (
@@ -83,7 +102,9 @@ const AddBikeDetails = ({navigation}) => {
           <Text style={styles.headerText}>Add Bike Details</Text>
         </View>
       </View>
-      <ScrollView style={{backgroundColor: 'white', height: '91%'}}>
+      <ScrollView
+        style={{backgroundColor: 'white', height: '91%'}}
+        showsVerticalScrollIndicator={false}>
         <Formik
           initialValues={initialValues}
           onSubmit={(values, {resetForm}) => {

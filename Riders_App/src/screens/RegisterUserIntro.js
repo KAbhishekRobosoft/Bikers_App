@@ -63,29 +63,6 @@ function RegisterUserIntro({navigation}) {
     });
   };
 
-  const takeImage = () => {
-    ImagePicker.openCamera({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then(async image => {
-      const payload = new FormData();
-      payload.append('image', {
-        uri: image.path,
-        type: image.mime,
-        name: `${image.filename}.${image.mime.substring(
-          image.mime.indexOf('/') + 1,
-        )}`,
-      });
-      let cred = await getVerifiedKeys(authData.userToken);
-      const resp = await uploadImage(payload, cred);
-      if (resp.hasOwnProperty('message')) {
-        dispatch(setImage('https' + resp.url.substring(4)));
-        navigation.navigate('ImageSuccess');
-      }
-    });
-  };
-
   const {width, height} = useWindowDimensions();
   const marginTop = height > width ? (Platform.OS === 'ios' ? 220 : 200) : 118;
 
@@ -131,9 +108,7 @@ function RegisterUserIntro({navigation}) {
                 <Text style={styles.galleryText}>Gallery</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={()=>{
-                  takeImage()
-            }} style={styles.rUserOptions2}>
+            <TouchableOpacity style={styles.rUserOptions2}>
               <View>
                 <Image
                   style={styles.galleryImg}

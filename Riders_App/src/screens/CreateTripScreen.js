@@ -11,7 +11,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/MaterialIcons';
 import Icon3 from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
@@ -55,7 +54,6 @@ const CreateTrip = ({navigation}) => {
   }, []);
 
   const mileStones = useSelector(state => state.milestone.mileStone);
-  const authData = useSelector(state => state.auth.userData);
   const milesonesData = useSelector(state => state.milestone.milestoneData);
   const loading = useSelector(state => state.milestone.isLoading);
   const dispatch = useDispatch();
@@ -346,6 +344,7 @@ const CreateTrip = ({navigation}) => {
           <View style={styles.btn}>
             <ButtonLarge
               onPress={async () => {
+                try{
                 const resp = await getCoordinates(from);
                 const resp1 = await getCoordinates(whereto);
                 const dist = await calculateRoute(
@@ -355,11 +354,6 @@ const CreateTrip = ({navigation}) => {
                   resp1.lon,
                 );
                 const msInHour = 1000 * 60 * 60;
-                if (
-                  resp !== undefined &&
-                  resp1 !== undefined &&
-                  dist !== undefined
-                ) {
                   const obj = {
                     tripName: tripName,
                     source: [
@@ -391,8 +385,8 @@ const CreateTrip = ({navigation}) => {
                   };
                   dispatch(tripStore(obj));
                   navigation.navigate('TripSummary');
-                } else {
-                  Toast.show('Enter proper location');
+                } catch(er){
+                  Toast.show('Please Enter requested details');
                 }
               }}
               title="Done"

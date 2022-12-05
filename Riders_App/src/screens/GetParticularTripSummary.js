@@ -24,7 +24,7 @@ import {deSetLoading} from '../redux/MileStoneSlice';
 import {setLoading} from '../redux/MileStoneSlice';
 import uuid from 'react-native-uuid';
 import {setToken} from '../redux/AuthSlice';
-import Toast from 'react-native-simple-toast'
+import Toast from 'react-native-simple-toast';
 
 export const GetParticularTripSummary = ({navigation, route}) => {
   const [direction, setDirection] = useState([]);
@@ -38,6 +38,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
   useEffect(() => {
     dispatch(deSetLoading());
     setTimeout(async () => {
+      try{
       const dir = await calculateRoute(
         route.params.data.source[0].latitude,
         route.params.data.source[0].longitude,
@@ -51,25 +52,26 @@ export const GetParticularTripSummary = ({navigation, route}) => {
       setImages(response);
       dispatch(setLoading());
       setTimeout(() => {
-        try{
-        mapRef.current.animateToRegion(
-          {
-            latitude: parseFloat(route.params.data.source[0].latitude),
-            longitude: parseFloat(route.params.data.source[0].longitude),
-            latitudeDelta: 0.03,
-            longitudeDelta: 0.1,
-          },
-          3 * 1000,
-        );
+        try {
+          mapRef.current.animateToRegion(
+            {
+              latitude: parseFloat(route.params.data.source[0].latitude),
+              longitude: parseFloat(route.params.data.source[0].longitude),
+              latitudeDelta: 0.03,
+              longitudeDelta: 0.1,
+            },
+            3 * 1000,
+          );
+        } catch {
+          Toast.show('Failed to animate direction');
         }
-        catch{
-            Toast.show("Failed to animate direction")
-        }
-      }, 1000);
+      }, 1000)}
+      catch(er){
+        Toast.show("Error occured")
+      }
 
     }, 500);
   }, [state]);
-
 
   if (loading) {
     return (
@@ -99,7 +101,10 @@ export const GetParticularTripSummary = ({navigation, route}) => {
               <Text style={styles.headerText}>Trip Summary</Text>
             </View>
           </View>
-          <ScrollView style={styles.scrollView}>
+          <ScrollView
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            style={styles.scrollView}>
             <View style={styles.mapView}>
               <MapView
                 ref={mapRef}
@@ -213,7 +218,8 @@ export const GetParticularTripSummary = ({navigation, route}) => {
       {route.params.data.tripStatus === 'completed' &&
         (images.length > 0 ? (
           <ScrollView
-          >
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
               <View style={[styles.header]}>
                 <View style={styles.subHeader}>
