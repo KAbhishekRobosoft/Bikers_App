@@ -128,6 +128,8 @@ const ChatScreen = ({navigation, route}) => {
 
   const handleClearChat = async () => {
     let cred = await getVerifiedKeys(authData.userToken);
+    console.log(route.params.mobile)
+    console.log(number)
     if (route.params.mobile === number) {
       let response = await clearChat(route.params.id, cred);
       if (response !== undefined) {

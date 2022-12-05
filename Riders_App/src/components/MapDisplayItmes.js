@@ -15,8 +15,6 @@ import {shareLocation} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {useDispatch, useSelector} from 'react-redux';
 import {setToken} from '../redux/AuthSlice';
-import {deSetLoading} from '../redux/MileStoneSlice';
-import {setLoading} from '../redux/MileStoneSlice';
 import PopUpMenu from './PopUpMenu';
 import { endTrip } from '../services/Auth';
 import Toast from 'react-native-simple-toast'
@@ -286,7 +284,6 @@ export const MapBottomBar = ({
       <Pressable
         onPress={() => {
           musicControl();
-
           GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: 15000,
@@ -305,7 +302,7 @@ export const MapBottomBar = ({
             })
             .catch(error => {
               const {code, message} = error;
-             Toast.show("Please turn on the location")
+              console.warn(code, message);
             });
         }}>
         <Icon
@@ -353,7 +350,7 @@ export const MapChatButton = ({
             })
             .catch(error => {
               const {code, message} = error;
-              Toast.show("Please turn on the location")
+              console.warn(code, message);
             });
             dispatch(setInitialState(state))
         }}>

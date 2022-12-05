@@ -25,7 +25,8 @@ const authenticateSlice = createSlice({
     },
 
     logOut: state => {
-      state.userData = null;
+      state.userCredentials = {};
+      state.userData= {};
       state.isLoading = false;
       state.userToken = null;
       state.image= ''

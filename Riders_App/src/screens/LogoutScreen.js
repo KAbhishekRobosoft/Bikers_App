@@ -14,10 +14,17 @@ import {useDispatch, useSelector} from 'react-redux';
 import {logOut} from '../redux/AuthSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-simple-toast';
+import { removeBikeType } from '../redux/AccessoriesSlice';
+import { removeBikeData } from '../redux/AccessoriesSlice';
+import { deSetRegistered } from '../redux/AuthSlice';
 
 const LogoutScreen = ({navigation}) => {
+
   async function checkOut() {
     try {
+      dispatch(removeBikeType())
+      dispatch(removeBikeData())
+      dispatch(deSetRegistered())
       Toast.show('Logged Out');
       await AsyncStorage.removeItem('token');
     } catch (e) {

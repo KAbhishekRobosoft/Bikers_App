@@ -57,6 +57,15 @@ const asseccoriesSlice = createSlice({
     addBikeType: (state, action) => {
       state.bikeType = action.payload;
     },
+
+    removeBikeType: (state) => {
+      state.bikeType = [];
+    },
+
+    removeBikeData: (state) => {
+      state.allBikeData = [];
+    },
+
     addBikeData: (state, action) => {
       state.allBikeData = action.payload;
       state.fliteredBikeData = action.payload;
@@ -83,5 +92,7 @@ export const {
   addAllServices,
   addBikeType,
   addBikeData,
+  removeBikeType,
+  removeBikeData
 } = asseccoriesSlice.actions;
 export default asseccoriesSlice.reducer;

@@ -31,10 +31,12 @@ const AllTripList = ({navigation, data}) => {
   return (
     <View>
       <Pressable
-        onPress={() =>
+        onPress={() =>{
+        console.log(data)
           navigation.navigate('particularTrip', {
             data: data,
           })
+        }
         }>
         <View style={styles.container}>
           <ImageBackground

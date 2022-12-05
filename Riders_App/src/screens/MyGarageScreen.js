@@ -1,13 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {
-  FlatList,
   SafeAreaView,
   StyleSheet,
-  TextInput,
   View,
   Text,
   Image,
-  Pressable,
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
@@ -19,6 +16,7 @@ import {getVerifiedKeys} from '../utils/Functions';
 import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
 import {getAllService} from '../services/Auth';
 import {addAllServices} from '../redux/AccessoriesSlice';
+import {setToken} from '../redux/AuthSlice'
 
 export const MyGarage = ({navigation}) => {
   const hadBike = useSelector(state => state.auth.userCredentials);
@@ -28,30 +26,32 @@ export const MyGarage = ({navigation}) => {
   const loading = useSelector(state => state.milestone.isLoading);
   const serviceData = useSelector(state => state.shop.serviceData);
   const [day, setDay] = useState();
+
   useEffect(() => {
     dispatch(deSetLoading());
-    const get = async () => {
+    setTimeout(async () => {
       try {
         let cred = await getVerifiedKeys(authData.userToken);
-        const response = await getBikeDetails(cred);
+        dispatch(setToken(cred))
+        let response = await getBikeDetails(cred);
+        let BikeTypes = response.map(e => {
+              return e.vehicleType
+        });
+        dispatch(addBikeType(BikeTypes));
+        dispatch(addBikeData(response));
         const response2 = await getAllService(cred);
         const time = response2[0].slotDate;
         const time2 = Date.now();
         const diffTime = new Date(time).getTime() - time2;
         setDay(diffTime);
         dispatch(addAllServices(response2));
-        const BikeTypes = response.map(e => {
-          return e.vehicleType;
-        });
-        dispatch(addBikeType(BikeTypes));
-        dispatch(addBikeData(response));
       } catch (e) {
         dispatch(addAllServices([]));
       }
       dispatch(setLoading());
-    };
-    get();
+    }, 500);
   }, []);
+
   if (loading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
