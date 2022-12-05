@@ -14,17 +14,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import {deSetRegistered, logOut} from '../redux/AuthSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-simple-toast';
-import { removeBikeType } from '../redux/AccessoriesSlice';
-import { removeBikeData } from '../redux/AccessoriesSlice';
-import { deSetRegistered } from '../redux/AuthSlice';
+import {removeBikeData, removeBikeType} from '../redux/AccessoriesSlice';
 
 const LogoutScreen = ({navigation}) => {
-
   async function checkOut() {
     try {
-      dispatch(removeBikeType())
-      dispatch(removeBikeData())
-      dispatch(deSetRegistered())
+      dispatch(removeBikeType());
+      dispatch(removeBikeData());
+      // dispatch(deSetRegistered())
       Toast.show('Logged Out');
       await AsyncStorage.removeItem('token');
     } catch (e) {
@@ -44,16 +41,11 @@ const LogoutScreen = ({navigation}) => {
           style={styles.img}
           source={require('../assets/images/logoutImg.jpg')}
         />
-        {hadBike.haveBike && !authData.registered ? (
+        {hadBike.haveBike ? (
           <View style={styles.btn1}>
             <ButtonLarge
               onPress={() => {
-                if (!userDetails.hasOwnProperty('lisenceNumber')) {
-                  navigation.navigate('AddDetailsStack');
-                  Toast.show('Please Add Personal Details First');
-                } else {
-                  navigation.navigate('AddBikeDetails');
-                }
+                navigation.navigate('AddBikeDetails');
               }}
               title="Add Bike Details"
             />
@@ -64,25 +56,7 @@ const LogoutScreen = ({navigation}) => {
               <ButtonLarge disabled={true} title="Add Bike Details" />
             </View>
 
-        
-            {authData.registered && hadBike.haveBike && (
-              <View
-                style={{
-                  marginTop: 10,
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{
-                    color: '#F36870',
-                    fontSize: 13,
-                    fontFamily: 'Roboto-Regular',
-                    textAlign: 'center',
-                  }}>
-                  Please complete the Owner Manual Process {'\n'}
-                  (You can find Owner Manual in My Garage Section)
-                </Text>
-              </View>
-            )}
+  
           </>
         )}
 
@@ -91,7 +65,6 @@ const LogoutScreen = ({navigation}) => {
             onPress={() => {
               checkOut();
               dispatch(logOut());
-              dispatch(deSetRegistered())
             }}>
             <View style={styles.container}>
               <LinearGradient

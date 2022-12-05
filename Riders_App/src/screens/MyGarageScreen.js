@@ -16,7 +16,7 @@ import {getVerifiedKeys} from '../utils/Functions';
 import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
 import {getAllService} from '../services/Auth';
 import {addAllServices} from '../redux/AccessoriesSlice';
-import {setToken} from '../redux/AuthSlice'
+import {setToken} from '../redux/AuthSlice';
 
 export const MyGarage = ({navigation}) => {
   const hadBike = useSelector(state => state.auth.userCredentials);
@@ -25,7 +25,7 @@ export const MyGarage = ({navigation}) => {
   const authData = useSelector(state => state.auth);
   const loading = useSelector(state => state.milestone.isLoading);
   const serviceData = useSelector(state => state.shop.serviceData);
-  const state = useSelector(state => state.milestone.initialState)
+  const state = useSelector(state => state.milestone.initialState);
   const [day, setDay] = useState();
 
   useEffect(() => {
@@ -33,13 +33,7 @@ export const MyGarage = ({navigation}) => {
     setTimeout(async () => {
       try {
         let cred = await getVerifiedKeys(authData.userToken);
-        dispatch(setToken(cred))
-        let response = await getBikeDetails(cred);
-        let BikeTypes = response.map(e => {
-              return e.vehicleType
-        });
-        dispatch(addBikeType(BikeTypes));
-        dispatch(addBikeData(response));
+        dispatch(setToken(cred));
         const response2 = await getAllService(cred);
         const time = response2[0].slotDate;
         const time2 = Date.now();
@@ -95,11 +89,7 @@ export const MyGarage = ({navigation}) => {
               text="Book a Service"
               source={require('../assets/images/telemarketer.png')}
               onPress={() => {
-                if (bikeType[0] === undefined) {
-                  navigation.navigate('AddDetailsStack');
-                } else {
-                  navigation.navigate('BookService');
-                }
+                navigation.navigate('BookService');
               }}
               disabled={false}
             />
@@ -107,11 +97,7 @@ export const MyGarage = ({navigation}) => {
               text="Service Records"
               source={require('../assets/images/folder.png')}
               onPress={() => {
-                if (bikeType[0] === undefined) {
-                  navigation.navigate('AddDetailsStack');
-                } else {
-                  navigation.navigate('ServiceRecord');
-                }
+                navigation.navigate('ServiceRecord');
               }}
               disabled={false}
             />
@@ -119,11 +105,7 @@ export const MyGarage = ({navigation}) => {
               text="Owners Manual"
               source={require('../assets/images/notebook-of-spring-with-lines-page.png')}
               onPress={() => {
-                if (bikeType[0] === undefined) {
-                  navigation.navigate('AddDetailsStack');
-                } else {
-                  navigation.navigate('OwnerManual');
-                }
+                navigation.navigate('OwnerManual');
               }}
               disabled={false}
             />
