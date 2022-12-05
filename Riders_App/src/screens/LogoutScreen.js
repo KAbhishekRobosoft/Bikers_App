@@ -11,7 +11,7 @@ import React, {useState} from 'react';
 import ButtonLarge from '../components/Buttons';
 import LinearGradient from 'react-native-linear-gradient';
 import {useDispatch, useSelector} from 'react-redux';
-import {logOut} from '../redux/AuthSlice';
+import {deSetRegistered, logOut} from '../redux/AuthSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-simple-toast';
 import { removeBikeType } from '../redux/AccessoriesSlice';
@@ -37,7 +37,6 @@ const LogoutScreen = ({navigation}) => {
   const userDetails = useSelector(state => state.auth.userData);
   const authData = useSelector(state => state.auth);
 
-  console.log(userDetails);
   return (
     <SafeAreaView style={styles.main}>
       <ScrollView style={{width: '100%'}}>
@@ -92,6 +91,7 @@ const LogoutScreen = ({navigation}) => {
             onPress={() => {
               checkOut();
               dispatch(logOut());
+              dispatch(deSetRegistered())
             }}>
             <View style={styles.container}>
               <LinearGradient

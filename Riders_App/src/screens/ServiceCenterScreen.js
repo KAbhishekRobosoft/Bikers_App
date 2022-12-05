@@ -78,23 +78,21 @@ const ServiceCenterScreen = ({navigation}) => {
             }}
           />
           <DatePicker
-            mode="time"
+            mode="datetime"
             modal
             minimumDate={new Date()}
             open={open2}
             date={time}
             onConfirm={value => {
-              setTimer(value);
               setOpen2(false);
-
               const obj3 = {
                 serviceType: route.params.serviceType,
                 vehicleNumber: route.params.vehicleNumber,
                 dealerName: route.params.dealerName,
                 dealerCity: route.params.dealerCity,
                 comment: route.params.comment,
-                slotDate: date.toLocaleDateString(),
-                time: time.toLocaleTimeString(),
+                slotDate: date.toString(),
+                time: value.toString(),
                 mobileNumber: route.params.mobileNumber,
                 dealerPhoneNumber: route.params.dealerPhoneNumber
               };

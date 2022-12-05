@@ -25,6 +25,7 @@ export const MyGarage = ({navigation}) => {
   const authData = useSelector(state => state.auth);
   const loading = useSelector(state => state.milestone.isLoading);
   const serviceData = useSelector(state => state.shop.serviceData);
+  const state = useSelector(state => state.milestone.initialState)
   const [day, setDay] = useState();
 
   useEffect(() => {
