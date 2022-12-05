@@ -8,6 +8,7 @@ import {
   ScrollView,
   Platform,
   ToastAndroid,
+  KeyboardAvoidingView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
@@ -69,6 +70,9 @@ export const AddPersonalDetails = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+      <KeyboardAvoidingView
+       
+       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.mainView}>
         <View style={[styles.header]}>
           <View style={styles.subHeader}>
@@ -195,6 +199,7 @@ export const AddPersonalDetails = ({navigation}) => {
           </View>
         </ScrollView>
       </View>
+     </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

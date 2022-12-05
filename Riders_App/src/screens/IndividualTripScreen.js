@@ -32,7 +32,7 @@ const AllTrips = ({navigation}) => {
       const key = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(key));
       const response = await getOwnerDetails(key);
-      console.log('%%%%',response[0])
+     // console.log('%%%%',response[0])
       dispatch(setUserData(response[0]));
       const tripdata = await UserTrips(key);
       setTripDetails(tripdata);
