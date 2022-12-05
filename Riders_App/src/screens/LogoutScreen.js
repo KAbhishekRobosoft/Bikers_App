@@ -16,7 +16,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-simple-toast';
 import { removeBikeType } from '../redux/AccessoriesSlice';
 import { removeBikeData } from '../redux/AccessoriesSlice';
-import { deSetRegistered } from '../redux/AuthSlice';
 
 const LogoutScreen = ({navigation}) => {
 
@@ -91,7 +90,6 @@ const LogoutScreen = ({navigation}) => {
             onPress={() => {
               checkOut();
               dispatch(logOut());
-              dispatch(deSetRegistered())
             }}>
             <View style={styles.container}>
               <LinearGradient
