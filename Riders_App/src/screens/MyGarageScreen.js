@@ -21,7 +21,6 @@ import {setToken} from '../redux/AuthSlice';
 export const MyGarage = ({navigation}) => {
   const hadBike = useSelector(state => state.auth.userCredentials);
   const dispatch = useDispatch();
-  const bikeType = useSelector(state => state.shop.bikeType);
   const authData = useSelector(state => state.auth);
   const loading = useSelector(state => state.milestone.isLoading);
   const serviceData = useSelector(state => state.shop.serviceData);
@@ -35,6 +34,7 @@ export const MyGarage = ({navigation}) => {
         let cred = await getVerifiedKeys(authData.userToken);
         dispatch(setToken(cred));
         const response2 = await getAllService(cred);
+        // console.log(response2)
         const time = response2[0].slotDate;
         const time2 = Date.now();
         const diffTime = new Date(time).getTime() - time2;
@@ -45,7 +45,7 @@ export const MyGarage = ({navigation}) => {
       }
       dispatch(setLoading());
     }, 500);
-  }, []);
+  }, [state]);
 
   if (loading) {
     return (
