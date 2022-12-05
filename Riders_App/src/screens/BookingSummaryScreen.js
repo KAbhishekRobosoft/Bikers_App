@@ -33,7 +33,6 @@ const BookingSummary = ({navigation}) => {
   const ratingCompleted = async (rating) => {
     const id = route.params._id
     const key = await getVerifiedKeys(authData.userToken);
-    console.log(key)
     dispatch(setToken(key));
     const response = await getRatings(key,id,rating);
   }
@@ -152,8 +151,7 @@ const BookingSummary = ({navigation}) => {
               <Text>:</Text>
               <TextInput style={styles.textInputText} editable={editable}>
                 <Text>
-                  {route.params.time.substring(0, 4)}
-                  {route.params.time.substring(8, 10)}
+                  {route.params.time.substring(16, 21)}
                 </Text>
               </TextInput>
             </View>

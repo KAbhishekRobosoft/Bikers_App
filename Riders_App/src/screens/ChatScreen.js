@@ -30,7 +30,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {clearChat} from '../services/Auth';
 
 const ChatScreen = ({navigation, route}) => {
-  const textRef = useRef(null);
+    const textRef = useRef(null);
   const auth = useSelector(state => state.auth);
   const [text, setText] = useState('');
   const state = useSelector(state => state.milestone.initialState);

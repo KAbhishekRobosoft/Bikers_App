@@ -24,6 +24,7 @@ import {setToken} from '../redux/AuthSlice';
 
 const BookingDetails = ({navigation}) => {
   const route = useRoute();
+  console.log('touteee',route)
   const [editable, setEditable] = useState(false);
   const [comment, setComment] = useState(route.params.comment);
   const dispatch = useDispatch();
@@ -71,27 +72,28 @@ const BookingDetails = ({navigation}) => {
               mobile: route.params.mobileNumber,
               vehicle: route.params.vehicleNumber,
               serviceType: route.params.serviceType,
-              slotDate: route.params.slotDate,
-              time: route.params.time,
+              slotDate: route.params.slotDate.substring(0,15),
+              time: route.params.time.substring(16,21),
               dealer: route.params.dealerName,
               city: route.params.dealerCity,
               comment: '',
             }}
+            //.substring(16,21)
             onSubmit={async values => {
               const value = {
                 vehicleNumber: values.vehicle,
                 serviceType: values.serviceType,
-                slotDate: values.slotDate,
-                time: values.time,
+                slotDate: route.params.slotDate,
+                time: route.params.time,
                 dealer: values.dealer,
                 city: values.city,
                 comments: comment,
                 dealerPhoneNumber: route.params.dealerPhoneNumber,
               };
-
               const key = await getVerifiedKeys(authData.userToken);
               dispatch(setToken(key));
               const response = await BookService(key, value);
+
               navigation.navigate('BookingSuccess');
             }}>
             {({handleSubmit, values, isValid, handleChange}) => (

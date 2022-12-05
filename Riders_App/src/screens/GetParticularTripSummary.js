@@ -199,6 +199,8 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                       milestones: route.params.data.milestones,
                       id: route.params.data._id,
                       tripName: route.params.data.tripName,
+                      mobile: route.params.data.mobile,
+                      riders: route.params.data.riders
                     });
                   }}
                   title="GO"

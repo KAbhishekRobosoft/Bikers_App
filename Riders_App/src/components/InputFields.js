@@ -498,7 +498,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 14,
     color: '#4F504F',
-    width: '60%',
+    width: '80%',
     textAlign: 'left',
   },
 });
