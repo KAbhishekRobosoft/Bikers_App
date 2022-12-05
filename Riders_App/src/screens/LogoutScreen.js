@@ -18,12 +18,11 @@ import { removeBikeType } from '../redux/AccessoriesSlice';
 import { removeBikeData } from '../redux/AccessoriesSlice';
 
 const LogoutScreen = ({navigation}) => {
-
   async function checkOut() {
     try {
-      dispatch(removeBikeType())
-      dispatch(removeBikeData())
-      dispatch(deSetRegistered())
+      dispatch(removeBikeType());
+      dispatch(removeBikeData());
+      // dispatch(deSetRegistered())
       Toast.show('Logged Out');
       await AsyncStorage.removeItem('token');
     } catch (e) {
@@ -43,16 +42,11 @@ const LogoutScreen = ({navigation}) => {
           style={styles.img}
           source={require('../assets/images/logoutImg.jpg')}
         />
-        {hadBike.haveBike && !authData.registered ? (
+        {hadBike.haveBike ? (
           <View style={styles.btn1}>
             <ButtonLarge
               onPress={() => {
-                if (!userDetails.hasOwnProperty('lisenceNumber')) {
-                  navigation.navigate('AddDetailsStack');
-                  Toast.show('Please Add Personal Details First');
-                } else {
-                  navigation.navigate('AddBikeDetails');
-                }
+                navigation.navigate('AddBikeDetails');
               }}
               title="Add Bike Details"
             />
@@ -63,25 +57,7 @@ const LogoutScreen = ({navigation}) => {
               <ButtonLarge disabled={true} title="Add Bike Details" />
             </View>
 
-        
-            {authData.registered && hadBike.haveBike && (
-              <View
-                style={{
-                  marginTop: 10,
-                  alignItems: 'center',
-                }}>
-                <Text
-                  style={{
-                    color: '#F36870',
-                    fontSize: 13,
-                    fontFamily: 'Roboto-Regular',
-                    textAlign: 'center',
-                  }}>
-                  Please complete the Owner Manual Process {'\n'}
-                  (You can find Owner Manual in My Garage Section)
-                </Text>
-              </View>
-            )}
+  
           </>
         )}
 
