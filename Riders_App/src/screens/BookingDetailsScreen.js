@@ -160,7 +160,6 @@ const BookingDetails = ({navigation}) => {
                     style={styles.textInputText}
                     editable={editable}
                     name="comment"
-                    // value={route.params.comment}
                     defaultValue={route.params.comment}
                     onChangeText={value => setComment(value)}
                   />
@@ -263,7 +262,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',
-    // borderWidth: 1,
   },
   buttonView: {
     marginTop: 25,

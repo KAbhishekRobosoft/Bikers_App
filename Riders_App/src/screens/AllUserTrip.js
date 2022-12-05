@@ -25,7 +25,7 @@ const AllUserTrip = ({navigation}) => {
   const authData = useSelector(state => state.auth);
   const state = useSelector(state => state.milestone.initialState);
   const dispatch = useDispatch();
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const loading = useSelector(state => state.milestone.isLoading);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -17,7 +17,7 @@ import {getVerifiedKeys} from '../utils/Functions';
 import {setToken} from '../redux/AuthSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {month1} from '../utils/Functions';
-import {Rating, AirbnbRating} from 'react-native-ratings';
+import {AirbnbRating} from 'react-native-ratings';
 import { getRatings } from '../services/Auth';
 import {useRoute} from '@react-navigation/native';
 const BookingSummary = ({navigation}) => {

@@ -1,7 +1,6 @@
 import {Field, Formik} from 'formik';
 import React, {useEffect, useState} from 'react';
 import {
-  FlatList,
   SafeAreaView,
   StyleSheet,
   TextInput,
@@ -151,7 +150,7 @@ export const BookService = ({navigation}) => {
               };
               navigation.navigate('SearchService', obj);
             }}>
-            {({isValid, handleSubmit, values, errors}) => (
+            {({ handleSubmit, values}) => (
               <>
                 <View style={styles.firstInputField}>
                   <Field
@@ -229,7 +228,6 @@ export const BookService = ({navigation}) => {
                 <View style={styles.btnView}>
                   <ButtonLarge
                     title="FIND A DEALER"
-                    //disabled={!isValid}
                     onPress={handleSubmit}
                   />
                 </View>

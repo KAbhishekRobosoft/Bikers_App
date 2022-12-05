@@ -20,7 +20,7 @@ import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
 import {useDispatch, useSelector} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
-import {getCoordinates, getDistance} from '../services/Auth';
+import {getCoordinates} from '../services/Auth';
 import GetLocation from 'react-native-get-location';
 import {getLocationName} from '../services/Auth';
 import {setLoading} from '../redux/MileStoneSlice';

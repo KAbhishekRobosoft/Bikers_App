@@ -7,25 +7,19 @@ import {
   Pressable,
   Platform,
   TextInput,
-  FlatList,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import Contacts from 'react-native-contacts';
 import {PermissionsAndroid} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
-import {selectMarked} from '../redux/ContactSlice';
 import {selectContacts} from '../redux/ContactSlice';
-import {selectUnMarked} from '../redux/ContactSlice';
 import {filterContacts} from '../redux/ContactSlice';
 import {ContactFlatList} from '../components/ContactsFlatList';
-import {images} from '../components/StarComponent';
-import { deleteContactsData } from '../redux/ContactSlice';
 
 export const ContactDisplay = ({navigation}) => {
   const dispatch = useDispatch();
   const data = useSelector(state => state.contact.contactsData);
-  const [text, setText] = useState();
   useEffect(() => {
     getContactBook();
   }, []);
@@ -54,42 +48,6 @@ export const ContactDisplay = ({navigation}) => {
           console.log(err);
         });
     } else if (Platform.OS === 'android') {
-      //   PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
-      //     title: 'Contacts',
-      //     message: 'Rider app would like to view your contacts.',
-      //   });
-      //   // PermissionsAndroid.requestMultiple(
-      //   //   [
-      //   //     PermissionsAndroid.PERMISSIONS.WRITE_CONTACTS,
-      //   //     PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
-      //   //   ],
-      //   //   {
-      //   //     title: 'Contacts',
-      //   //     message: 'Rider app would like to view your contacts.',
-      //   //     'buttonPositive': 'Please accept bare mortal'
-      //   //   },
-      //   // );
-      //   Contacts.getAll((err, contacts))
-      //     .then(contacts => {
-      //       const trimmedContacts = contacts
-      //         .sort((a, b) => a.givenName.localeCompare(b.givenName))
-      //         .filter(c => c.phoneNumbers.length > 0)
-      //         .map(c => {
-      //           return {
-      //             givenName: c.givenName,
-      //             recordID: c.recordID,
-      //             phoneNumbers: c.phoneNumbers,
-      //             marked: false,
-      //           };
-      //         });
-      //       if (data.length === 0) {
-      //         dispatch(selectContacts(trimmedContacts));
-      //       }
-      //     })
-      //     .catch(err => {
-      //       console.log(err);
-      //     });
-      // }
       PermissionsAndroid.requestMultiple([
         PermissionsAndroid.PERMISSIONS.WRITE_CONTACTS,
         PermissionsAndroid.PERMISSIONS.READ_CONTACTS,
@@ -160,7 +118,6 @@ export const ContactDisplay = ({navigation}) => {
 
 const styles = StyleSheet.create({
   header: {
-    // flex: 1,
     flexDirection: 'row',
     width: '100%',
     height: 64,
@@ -216,27 +173,4 @@ const styles = StyleSheet.create({
   },
   flatView: {flex: 1, marginTop: 30},
 });
-// .then(() => {
-//   Contacts.getAll((err, contacts) => {
-//     if (err) {
-//       console.log(err, 'failed to fetch contacts');
-//     } else {
-//       const trimmedContacts = contacts
-//         .sort((a, b) => a.givenName.localeCompare(b.givenName))
-//         .filter(c => c.phoneNumbers.length > 0)
-//         .map(c => {
-//           return {
-//             givenName: c.givenName,
-//             recordID: c.recordID,
-//             phoneNumbers: c.phoneNumbers,
-//             marked: false,
-//           };
-//         });
-//       if (data.length === 0) {
-//         dispatch(selectContacts(trimmedContacts));
-//       }
-//     }
-//   });
-// }).catch((err) => {
-//   console.log("error in accessing contacts",err)
-// })
+
