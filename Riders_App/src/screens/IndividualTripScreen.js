@@ -7,17 +7,20 @@ import {
   Image,
   Pressable,
   FlatList,
-  Text,
   RefreshControl,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AllTripList from '../components/AllTripList';
-import {addOwnerDetails, getBikeDetails, getOwnerDetails, UserTrips} from '../services/Auth';
+import {
+  getBikeDetails,
+  getOwnerDetails,
+  UserTrips,
+} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {SearchUserTrips} from '../services/Auth';
 import {setToken, setUserData} from '../redux/AuthSlice';
 import Toast from 'react-native-simple-toast';
-import { addBikeData, addBikeType } from '../redux/AccessoriesSlice';
+import {addBikeData, addBikeType} from '../redux/AccessoriesSlice';
 
 const AllTrips = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
@@ -28,16 +31,21 @@ const AllTrips = ({navigation}) => {
   const dispatch = useDispatch();
   useEffect(() => {
     setTimeout(async () => {
-      try{
-      const key = await getVerifiedKeys(authData.userToken);
-      dispatch(setToken(key));
-      const response = await getOwnerDetails(key);
-     // console.log('%%%%',response[0])
-      dispatch(setUserData(response[0]));
-      const tripdata = await UserTrips(key);
-      setTripDetails(tripdata);
-      }catch(er){
-        Toast.show("Error Occurred")
+      try {
+        const key = await getVerifiedKeys(authData.userToken);
+        dispatch(setToken(key));
+        const response = await getOwnerDetails(key);
+        let bikeResponse = await getBikeDetails(key);
+        let BikeTypes = bikeResponse.map(e => {
+          return e.vehicleType;
+        });
+        dispatch(addBikeType(BikeTypes));
+        dispatch(addBikeData(bikeResponse));
+        dispatch(setUserData(response[0]));
+        const tripdata = await UserTrips(key);
+        setTripDetails(tripdata);
+      } catch (er) {
+        Toast.show('Error Occurred');
       }
     }, 500);
   }, [state]);

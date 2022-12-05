@@ -40,54 +40,53 @@ const AddBikeDetails = ({navigation}) => {
   };
 
   const submit = async (values, {resetForm}) => {
-    if (
-      values.vehicleType &&
-      values.vehicleNumber &&
-      values.engineNumber &&
-      values.frameNumber &&
-      values.batteryMake &&
-      values.registerNumber &&
-      values.model &&
-      values.model &&
-      values.dealerCode !== ''
-    ) {
-      const obj = {
-        vehicleType: values.vehicleType,
-        vehicleNumber: values.vehicleNumber,
-        engineNumber: values.engineNumber,
-        frameNumber: values.frameNumber,
-        batteryMake: values.batteryMake,
-        registerNumber: values.registerNumber,
-        model: values.model,
-        color: values.model,
-        dealerCode: values.dealerCode,
-      };
-      let cred = await getVerifiedKeys(authData.userToken);
-      await addBikeDetails(obj, cred); // <-----------API  CAll
-      const response = await getBikeDetails(cred);
-      const BikeTypes = response.map(e => {
-        return e.vehicleType;
-      });
+    try {
+      if (
+        values.vehicleType &&
+        values.vehicleNumber &&
+        values.engineNumber &&
+        values.frameNumber &&
+        values.batteryMake &&
+        values.registerNumber &&
+        values.model &&
+        values.model &&
+        values.dealerCode !== ''
+      ) {
+        const obj = {
+          vehicleType: values.vehicleType,
+          vehicleNumber: values.vehicleNumber,
+          engineNumber: values.engineNumber,
+          frameNumber: values.frameNumber,
+          batteryMake: values.batteryMake,
+          registerNumber: values.registerNumber,
+          model: values.model,
+          color: values.model,
+          dealerCode: values.dealerCode,
+        };
+        let cred = await getVerifiedKeys(authData.userToken);
+        await addBikeDetails(obj, cred); // <-----------API  CAll
+        const response = await getBikeDetails(cred);
+        const BikeTypes = response.map(e => {
+          return e.vehicleType;
+        });
 
-      dispatch(addBikeType(BikeTypes));
-      dispatch(addBikeData(response)); // <-----------Redux
-      resetForm({initialValues});
-      if (authData.registered) {
-        Toast.show('To add more bikes, Create a trip first');
-        navigation.navigate('WelcomeAboardScreen');
-      } else {
+        dispatch(addBikeType(BikeTypes));
+        dispatch(addBikeData(response)); // <-----------Redux
+        resetForm({initialValues});
+
         Toast.show('Bike Details Added');
-        navigation.navigate('Garage');
+        navigation.navigate('subStack');
+      } else {
+        Toast.show('Enter all the Details');
       }
-    } else {
-      Toast.show('Enter all the Details');
+    } catch (error) {
+      Toast.show('Error occured');
     }
   };
 
   return (
     <SafeAreaView style={{backgroundColor: '#ffffff'}}>
       <KeyboardAvoidingView
-       
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={[styles.header]}>
           <View style={styles.subHeader}>
