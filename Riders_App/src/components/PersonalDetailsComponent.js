@@ -20,7 +20,6 @@ export const PersonalDetails = () => {
   const authData = useSelector(state => state.auth);
   const loading = useSelector(state => state.milestone.isLoading);
 
-  //console.log('personal details-----',userDetails.lisenceNumber);
 
   useEffect(() => {
     dispatch(deSetLoading());
