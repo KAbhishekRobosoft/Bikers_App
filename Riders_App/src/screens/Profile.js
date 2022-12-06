@@ -232,7 +232,7 @@ const Profile = ({navigation}) => {
               ) : (
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
                   <Text style={{fontSize: 16, fontFamily: 'Roboto-Regular'}}>
-                    Not following anyone at he moment
+                    Not following anyone at the moment
                   </Text>
                 </View>
                   )
