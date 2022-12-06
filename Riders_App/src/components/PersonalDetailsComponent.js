@@ -27,10 +27,8 @@ export const PersonalDetails = () => {
     setTimeout(async () => {
       let cred = await getVerifiedKeys(authData.userToken);
       const response = await getOwnerDetails(cred);
-     console.log('response',response[0]);
       dispatch(setUserData(response[0]));
       dispatch(setLoading());
-      // setPin(response[0].pincode)
     }, 1000);
   }, [userDetails?.pincode]);
   if (loading) {
@@ -46,7 +44,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputView}>
           <Text style={styles.text}>Licence No.</Text>
           <View style={styles.inputTextView}>
-            <Text style={{}}>:</Text>
+            <Text>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Licence"
