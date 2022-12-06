@@ -141,8 +141,6 @@ const ChatScreen = ({navigation, route}) => {
     }
   };
 
-//console.log(route.params.id);
-
   return (
     <SafeAreaView style={{flex: 1}}>
       <Pressable onPress={() => handleToggle()}>
@@ -434,6 +432,3 @@ const styles = StyleSheet.create({
 });
 
 export default ChatScreen;
-
-// chat/clearChat
-//groupId

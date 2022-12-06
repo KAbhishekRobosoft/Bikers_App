@@ -1,7 +1,5 @@
-import {Formik} from 'formik';
 import React, {useState} from 'react';
 import {
-  FlatList,
   SafeAreaView,
   StyleSheet,
   TextInput,
@@ -12,16 +10,30 @@ import {
   ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Icon2 from 'react-native-vector-icons/FontAwesome5';
-import {ToolkitData} from '../assets/data';
-import Modal from 'react-native-modal';
+import {Modals} from '../components/Modals';
 
 export const ToolKit = ({navigation}) => {
   const [text, setText] = useState('');
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isModalVisible1, setModalVisible1] = useState(false);
+  const [isModalVisible2, setModalVisible2] = useState(false);
+  const [isModalVisible3, setModalVisible3] = useState(false);
+  const [isModalVisible4, setModalVisible4] = useState(false);
+  const [isModalVisible5, setModalVisible5] = useState(false);
 
-  const handleToggle = () => {
-    setModalVisible(!isModalVisible);
+  const handleToggle1 = () => {
+    setModalVisible1(!isModalVisible1);
+  };
+  const handleToggle2 = () => {
+    setModalVisible2(!isModalVisible2);
+  };
+  const handleToggle3 = () => {
+    setModalVisible3(!isModalVisible3);
+  };
+  const handleToggle4 = () => {
+    setModalVisible4(!isModalVisible4);
+  };
+  const handleToggle5 = () => {
+    setModalVisible5(!isModalVisible5);
   };
 
   const search = async value => {
@@ -76,57 +88,111 @@ export const ToolKit = ({navigation}) => {
           />
         </View>
       </View>
-      <View style={{height: '80%'}}>
-        <FlatList
-          data={ToolkitData}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({item}) => (
-            <Pressable onPress={handleToggle}>
-              <View style={styles.flatView}>
-                <Image source={item.icon} style={styles.image} />
-                <Text style={styles.title}>{item.title}</Text>
-              </View>
-            </Pressable>
-          )}
-        />
-      </View>
-      <Modal isVisible={isModalVisible} style={{alignItems: 'center'}}>
-        <View
-          style={{
-            backgroundColor: 'white',
-            height: 416,
-            width: 322,
-            borderRadius: 17,
-          }}>
-          <Pressable onPress={handleToggle}>
-            <Icon2
-              name="times"
-              size={20}
-              color={'#A4A4A4'}
-              style={styles.times}
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}>
+        <Pressable onPress={handleToggle1}>
+          <View style={styles.flatView}>
+            <Image
+              source={require('../assets/images/Onsite.png')}
+              style={styles.image}
             />
-          </Pressable>
-          <Text style={styles.modalHeader}>Onsite Minor Repairs</Text>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}>
-            <Text style={styles.modalDescription}>
-              If your Royal Enfield motorcycle breaks down due to a minor
-              mechanical or electrical fault and an immediate repair on the spot
-              is deemed possible, Royal Enfield shall assist the user by
-              arranging for a technician to reach the breakdown location. Royal
-              Enfield will bear the labour and conveyance costs. However, the
-              cost of material and spare parts, if required, to repair the
-              motorcycle on the spot and any other incidental conveyance to
-              obtain such material and spare parts, will have to be borne by the
-              user. This service will be provided when the motorcycle is not in
-              a position to be ridden to the nearest Service Centre (Unlimited
-              KM).
-            </Text>
-          </ScrollView>
-        </View>
-      </Modal>
+            <Text style={styles.title}>Onsite Minor Repairs</Text>
+          </View>
+        </Pressable>
+        <Pressable onPress={handleToggle2}>
+          <View style={styles.flatView}>
+            <Image
+              source={require('../assets/images/Accident.png')}
+              style={styles.image}
+            />
+            <Text style={styles.title}>Vehicle Accident</Text>
+          </View>
+        </Pressable>
+        <Pressable onPress={handleToggle3}>
+          <View style={styles.flatView}>
+            <Image
+              source={require('../assets/images/Battery.png')}
+              style={styles.image}
+            />
+            <Text style={styles.title}>Battery Drain</Text>
+          </View>
+        </Pressable>
+        <Pressable onPress={handleToggle4}>
+          <View style={styles.flatView}>
+            <Image
+              source={require('../assets/images/Break.png')}
+              style={styles.image}
+            />
+            <Text style={styles.title}>Breakdown</Text>
+          </View>
+        </Pressable>
+        <Pressable onPress={handleToggle5}>
+          <View style={styles.flatView}>
+            <Image
+              source={require('../assets/images/Chain.png')}
+              style={styles.image}
+            />
+            <Text style={styles.title}>Loose Chain</Text>
+          </View>
+        </Pressable>
+      </ScrollView>
+      <Modals
+        isVisible={isModalVisible1}
+        press={handleToggle1}
+        title="Onsite Minor Repairs"
+        text="If your Royal Enfield motorcycle breaks down due to a minor
+            mechanical or electrical fault and an immediate repair on the spot
+            is deemed possible, Royal Enfield shall assist the user by arranging
+            for a technician to reach the breakdown location. Royal Enfield will
+            bear the labour and conveyance costs. However, the cost of material
+            and spare parts, if required, to repair the motorcycle on the spot
+            and any other incidental conveyance to obtain such material and
+            spare parts, will have to be borne by the user. This service will be
+            provided when the motorcycle is not in a position to be ridden to
+            the nearest Service Centre (Unlimited KM)."
+      />
+      <Modals
+        isVisible={isModalVisible2}
+        press={handleToggle2}
+        title="Vehicle Accident"
+        text="If your Royal Enfield motorcycle breaks down due to a minor
+            mechanical or electrical fault and an immediate repair on the spot
+            is deemed possible, Royal Enfield shall assist the user by arranging
+            for a technician to reach the breakdown location. Royal Enfield will
+            bear the labour and conveyance costs. However, the cost of material
+            and spare parts, if required, to repair the motorcycle on the spot
+            and any other incidental conveyance to obtain such material and
+            spare parts, will have to be borne by the user. This service will be
+            provided when the motorcycle is not in a position to be ridden to
+            the nearest Service Centre (Unlimited KM)."
+      />
+      <Modals
+        isVisible={isModalVisible3}
+        press={handleToggle3}
+        title="Batter Drain"
+        text="Battery 
+        management and maintenance is an essential step in getting the most out of your bike.
+        A good battery will last for almost the entire lifetime of the bike and can go a long way in helping you 
+        have a pleasant experience with your automobile."
+      />
+      <Modals
+        isVisible={isModalVisible4}
+        press={handleToggle4}
+        title="Breakdown"
+        text="Battery 
+        management and maintenance is an essential step in getting the most out of your bike. 
+        A good battery will last for almost the entire lifetime of the bike and can go a long way in 
+        helping you have a pleasant experience with your automobile."
+      />
+      <Modals
+        isVisible={isModalVisible5}
+        press={handleToggle5}
+        title="Loose Chain"
+        text="To tighten the chain on a fixed-gear bike, start by flipping the bike over or placing 
+        it on a bike stand. Loosen the rear axle and then pull back on the rear tire to make the chain 
+        tighter. Make sure the chain isn't too tight or too loose, then tighten the rear tire again"
+      />
     </SafeAreaView>
   );
 };
@@ -247,30 +313,5 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Medium',
     fontSize: 30,
     color: 'rgba(0,0,0,0.54)',
-  },
-  times: {
-    resizeMode: 'contain',
-    height: 20,
-    width: 20,
-    marginTop: 15,
-    marginLeft: 290,
-  },
-  modalHeader: {
-    fontFamily: 'Roboto-Regular',
-    fontSize: 24,
-    lineHeight: 35,
-    color: '#4F504F',
-    alignSelf: 'center',
-    marginTop: 10,
-  },
-  modalDescription: {
-    fontFamily: 'Roboto-Regular',
-    color: '#727070',
-    lineHeight: 20,
-    fontSize: 14,
-    alignSelf: 'center',
-    marginHorizontal: 40,
-    marginTop: 13,
-    paddingBottom: 20,
   },
 });

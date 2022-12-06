@@ -71,7 +71,11 @@ const AddBikeDetails = ({navigation}) => {
         resetForm({initialValues});
 
         Toast.show('Bike Details Added');
-        navigation.navigate('subStack');
+        if (authData.registered) {
+          navigation.navigate('subStack');
+        } else {
+          navigation.goBack();
+        }
       } else {
         Toast.show('Enter all the Details');
       }

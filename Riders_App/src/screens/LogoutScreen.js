@@ -14,7 +14,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {deSetRegistered, logOut} from '../redux/AuthSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Toast from 'react-native-simple-toast';
-import {removeBikeData, removeBikeType} from '../redux/AccessoriesSlice';
+import { removeBikeType } from '../redux/AccessoriesSlice';
+import { removeBikeData } from '../redux/AccessoriesSlice';
 
 const LogoutScreen = ({navigation}) => {
   async function checkOut() {
