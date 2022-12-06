@@ -20,17 +20,14 @@ export const PersonalDetails = () => {
   const authData = useSelector(state => state.auth);
   const loading = useSelector(state => state.milestone.isLoading);
 
-  //console.log('personal details-----',userDetails.lisenceNumber);
 
   useEffect(() => {
     dispatch(deSetLoading());
     setTimeout(async () => {
       let cred = await getVerifiedKeys(authData.userToken);
       const response = await getOwnerDetails(cred);
-     console.log('response',response[0]);
       dispatch(setUserData(response[0]));
       dispatch(setLoading());
-      // setPin(response[0].pincode)
     }, 1000);
   }, [userDetails?.pincode]);
   if (loading) {
