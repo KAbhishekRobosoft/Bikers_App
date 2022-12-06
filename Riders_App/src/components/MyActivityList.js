@@ -13,14 +13,11 @@ const ActivityList = ({
   return (
     <View>
       <View style={[styles.container, styles.shadow]}>
-        <ImageBackground
-          source={{uri: image}}
-          resizeMode="cover"
-          style={styles.image}>
+        <ImageBackground source={{uri: image}} resizeMode="cover">
           <LinearGradient
-            start={{x: 0, y: 1}}
-            end={{x: 1, y: 1}}
-            locations={[0.2, 1]}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            locations={[0.25, 1]}
             colors={['rgba(0,0,0,0.85)', 'rgba(255,255,255,0)']}>
             <View style={styles.listContainer}>
               <View style={styles.textContainer}>
@@ -72,9 +69,13 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 10,
   },
-  listContainer: {flexDirection: 'row', justifyContent: 'space-between'},
+  listContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: '100%',
+  },
   image: {
-    height: 110,
+    height: '100%',
     borderRadius: 40,
     backgroundColor: 'grey',
   },
