@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,26 +7,22 @@ import {
   Pressable,
   ScrollView,
   Platform,
-  ToastAndroid,
   KeyboardAvoidingView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
 import {useDispatch, useSelector} from 'react-redux';
-import {addOwnerDetails, getOwnerDetails} from '../services/Auth';
+import {addOwnerDetails} from '../services/Auth';
 import {setUserData} from '../redux/AuthSlice';
 import ButtonLarge from '../components/Buttons';
 import {Field, Formik} from 'formik';
-import * as yup from 'yup';
 import {getVerifiedKeys} from '../utils/Functions';
 import Toast from 'react-native-simple-toast';
 
 export const AddPersonalDetails = ({navigation}) => {
-  const useDetails = useSelector(state => state.auth.userData);
+
   const authData = useSelector(state => state.auth);
   const userCredentials = useSelector(state => state.auth.userCredentials);
-  // console.log(userCredentials);
-  // console.log(useDetails);
   const dispatch = useDispatch();
 
   const submitForm = async (values, {resetForm}) => {
@@ -107,7 +103,6 @@ export const AddPersonalDetails = ({navigation}) => {
             </View>
             <View style={{width: '90%', alignSelf: 'center', marginTop: 10}}>
               <Formik
-                // validationSchema={personalDetailsValidation}
                 initialValues={{
                   licence: '',
                   name: '',
@@ -121,7 +116,7 @@ export const AddPersonalDetails = ({navigation}) => {
                 onSubmit={(values, {resetForm}) =>
                   submitForm(values, {resetForm})
                 }>
-                {({values, handleSubmit, isValid, resetForm}) => (
+                {({values, handleSubmit, isValid}) => (
                   <>
                     <Field
                       component={PlaceholderTextFieldOwnerManual}
@@ -135,7 +130,6 @@ export const AddPersonalDetails = ({navigation}) => {
                       name="name"
                       placeholder="Name"
                       keyboardType="default"
-                      //value={values.name}
                       editable={false}
                       defaultValue={userCredentials.userName}
                     />
@@ -172,7 +166,6 @@ export const AddPersonalDetails = ({navigation}) => {
                       name="mobile"
                       placeholder="Mobile"
                       keyboardType="default"
-                      //value={values.mobile}
                       editable={false}
                       defaultValue={userCredentials.mobile}
                     />
@@ -181,7 +174,6 @@ export const AddPersonalDetails = ({navigation}) => {
                       name="email"
                       placeholder="Email"
                       keyboardType="default"
-                      //value={values.email}
                       editable={false}
                       defaultValue={userCredentials.email}
                     />
@@ -246,7 +238,6 @@ const styles = StyleSheet.create({
     height: 27,
   },
   personalDetailView: {
-    //height:Platform.OS==='ios'? 584:630,
     alignSelf: 'center',
     backgroundColor: '#FFFFFF',
     width: '90%',

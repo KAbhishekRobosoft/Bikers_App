@@ -4,14 +4,12 @@ import {
   Text,
   View,
   Pressable,
-  Image,
   ScrollView,
   TextInput,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
-import {BikeDetails} from '../components/BikeDetailsComponent';
+import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
 import {addBikeDetails, getBikeDetails} from '../services/Auth';
@@ -20,8 +18,6 @@ import {addBikeType, addBikeData} from '../redux/AccessoriesSlice';
 import {Formik, Field} from 'formik';
 import Toast from 'react-native-simple-toast';
 import {getVerifiedKeys} from '../utils/Functions';
-import * as yup from 'yup';
-import {PlaceholderTextField} from '../components/InputFields';
 
 const AddBikeDetails = ({navigation}) => {
   const authData = useSelector(state => state.auth);
@@ -75,7 +71,11 @@ const AddBikeDetails = ({navigation}) => {
         resetForm({initialValues});
 
         Toast.show('Bike Details Added');
-        navigation.navigate('subStack');
+        if (authData.registered) {
+          navigation.navigate('subStack');
+        } else {
+          navigation.goBack();
+        }
       } else {
         Toast.show('Enter all the Details');
       }
@@ -83,10 +83,10 @@ const AddBikeDetails = ({navigation}) => {
       Toast.show('Error occured');
     }
   };
-
   return (
-    <SafeAreaView style={{backgroundColor: '#ffffff'}}>
+    <SafeAreaView style={{backgroundColor: '#ffffff', flex: 1}}>
       <KeyboardAvoidingView
+        style={{flex: 1}}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={[styles.header]}>
           <View style={styles.subHeader}>

@@ -34,12 +34,7 @@ function ImageSuccessPage({navigation}) {
         const key = await getVerifiedKeys(authData.userToken);
         dispatch(setToken(key));
         let bikeResponse = await getBikeDetails(key);
-        // let BikeTypes = bikeResponse.map(e => {
-        //   return e.vehicleType;
-        // });
-        // dispatch(addBikeType(BikeTypes));
         dispatch(addBikeData(bikeResponse));
-        //console.log('%%%%', BikeTypes);
       } catch (er) {
         Toast.show('Error Occurred');
       }

@@ -32,6 +32,7 @@ import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/Key
 
 const ImageLikeCommentScreen = ({navigation, route}) => {
   const [comments, Setcomments] = useState(false);
+  const [distinctComments, SetdistinctComments] = useState(false);
   const [like, setLike] = useState(false);
   const [likeView, setLikeView] = useState(false);
   const [imgData, setImgData] = useState({});
@@ -49,7 +50,6 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
     setTimeout(async () => {
       const cred = await getVerifiedKeys(authData.userToken);
       const response = await getParticularPhoto(cred, route.params.id);
-      // console.log("resp,",response);
       setImgData(response);
       dispatch(setLoading());
     });
@@ -89,7 +89,6 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
     );
   }
 
-  // console.log(route.params.id);
   const position = new Animated.ValueXY({x: 0, y: 50});
   Animated.timing(position, {
     toValue: {x: 0, y: 0},
@@ -139,6 +138,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                       onPress={() => {
                         setLikeView(!likeView);
                         Setcomments(false);
+                        SetdistinctComments(false);
                       }}>
                       <Text style={styles.text}>
                         {imgData.photos.likeCount} Likes
@@ -159,12 +159,13 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                     onPress={() => {
                       Setcomments(!comments);
                       setLikeView(false);
+                      SetdistinctComments(false);
                     }}>
                     <View
                       style={{
                         flexDirection: 'row',
                         width: 130,
-                      
+
                         justifyContent: 'space-around',
                         alignItems: 'center',
                       }}>
@@ -172,8 +173,15 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                         {' '}
                         {imgData.photos.commentCount} Comments
                       </Text>
-                      <Icons name="comment" color="grey" size={18} />
                     </View>
+                  </Pressable>
+                  <Pressable
+                    onPress={() => {
+                      SetdistinctComments(!distinctComments);
+                      setLikeView(false);
+                      Setcomments(false);
+                    }}>
+                    <Icons name="comment" color="grey" size={18} />
                   </Pressable>
                 </View>
                 {comments ? (
@@ -321,6 +329,119 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                                     />
                                   </TouchableOpacity>
                                 ) : null}
+                              </View>
+                            );
+                          })}
+                      </ScrollView>
+                    )}
+                  </Animated.View>
+                ) : null}
+                {distinctComments ? (
+                  <Animated.View
+                    style={[
+                      {
+                        height: 200,
+                        width: '100%',
+                        alignSelf: 'center',
+                        transform: [
+                          {translateX: position.x},
+                          {translateY: position.y},
+                        ],
+                        backgroundColor: 'black',
+                        borderRadius: 20,
+                        marginVertical: 15,
+                        shadowColor: 'rgba(142,142,142,0.5)',
+                        shadowOffset: {
+                          width: 0,
+                          height: 2,
+                        },
+                        shadowRadius: 4,
+                        shadowOpacity: 0.9,
+                        elevation: 4,
+                        opacity: 0.9,
+                        borderRadius: 20,
+                        marginVertical: 15,
+                      },
+                      styles.bottomshadow,
+                    ]}>
+                    {imgData.distinctComment?.length === 0 ? (
+                      <View
+                        style={{
+                          justifyContent: 'center',
+
+                          alignItems: 'center',
+                          height: 200,
+                        }}>
+                        <Text style={{fontWeight: 'bold', color: 'black'}}>
+                          No Distinct Comments
+                        </Text>
+                      </View>
+                    ) : (
+                      <ScrollView
+                        style={{padding: 5}}
+                        showsVerticalScrollIndicator={false}>
+                        {imgData.distinctComment?.length > 0 &&
+                          imgData.distinctComment.map(item => {
+                            return (
+                              <View
+                                key={item._id}
+                                style={{
+                                  flexDirection: 'row',
+                                  alignItems: 'center',
+                                  justifyContent: 'space-between',
+                                  paddingBottom: 3,
+                                }}>
+                                <View>
+                                  <Pressable
+                                    onPress={() => {
+                                      if (
+                                        authData.userCredentials.mobile !==
+                                        item.mobile
+                                      )
+                                        navigation.navigate('viewProfile', {
+                                          mobile: item.mobile,
+                                        });
+                                    }}>
+                                    <View
+                                      style={{
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                        height: 35,
+                                        paddingHorizontal: 10,
+                                      
+                                      }}>
+                                      <Image
+                                        style={{
+                                          height: 25,
+                                          width: 25,
+                                          borderRadius: 30,
+                                        }}
+                                        source={{
+                                          uri:
+                                            'https' +
+                                            item.profileImage.substring(
+                                              4,
+                                            ),
+                                        }}
+                                      />
+
+                                      <Text
+                                        style={{
+                                          fontWeight: 'bold',
+                                          fontFamily: 'Roboto-Regular',
+                                          color: '#ED7E2B',
+                                          marginLeft: 10,
+                                          fontSize: 15,
+                                        }}>
+                                        {item.commentedNumber ===
+                                        authData.userCredentials.mobile
+                                          ? 'You'
+                                          : item.userName}
+                                      </Text>
+                                    </View>
+                                  </Pressable>
+                                
+                                </View>
                               </View>
                             );
                           })}

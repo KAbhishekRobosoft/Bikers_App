@@ -12,20 +12,14 @@ import {DropDownInputField} from '../components/InputFields';
 import {NewServiceRecordDetails} from '../components/ServiceRecordDetails';
 import {PastServiceRecordDetails} from '../components/ServiceRecordDetails';
 import {DropDownInputField2} from '../components/InputFields';
-import {useDispatch, useSelector} from 'react-redux';
-import {getVerifiedKeys} from '../utils/Functions';
-import {setToken} from '../redux/AuthSlice';
-import {getAllService} from '../services/Auth';
-import {addAllServices} from '../redux/AccessoriesSlice';
+import {useSelector} from 'react-redux';
 
 const ServiceRecord = ({navigation}) => {
   const [bikeSelected, setBikeSelected] = useState('');
   const [serviceSelected, setServiceSelected] = useState('');
 
   const bikedata = useSelector(state => state.shop.bikeType);
-  const authData = useSelector(state => state.auth);
   const serviceData = useSelector(state => state.shop.serviceData);
-  const dispatch = useDispatch();
   const servicedata = [
     {
       key: 'Free service',
@@ -40,15 +34,6 @@ const ServiceRecord = ({navigation}) => {
       value: 'Breakdown assistance',
     },
   ];
-
-  useEffect(() => {
-    setTimeout(async () => {
-      const key = await getVerifiedKeys(authData.userToken);
-      dispatch(setToken(key));
-      // const response = await getAllService(key);
-      // dispatch(addAllServices(response));
-    }, 500);
-  }, []);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>

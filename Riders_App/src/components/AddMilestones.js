@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   SafeAreaView,
@@ -9,6 +9,7 @@ import {
   ToastAndroid,
   Platform,
   Image,
+  KeyboardAvoidingView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -21,10 +22,10 @@ import {getCoordinates} from '../services/Auth';
 import {calculateRoute} from '../services/Auth';
 import Toast from 'react-native-simple-toast';
 import GetLocation from 'react-native-get-location';
-import { getLocationName } from '../services/Auth';
+import {getLocationName} from '../services/Auth';
 
 export const Milestone = () => {
-  const [curLoc,setcurLoc]= useState('')
+  const [curLoc, setcurLoc] = useState('');
 
   useEffect(() => {
     setTimeout(async () => {
@@ -52,109 +53,109 @@ export const Milestone = () => {
 
   return (
     <SafeAreaView>
-      <View style={styles.milestoneView}>
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 0, y: 0.45}}
-          colors={['#fbe5d4', 'rgba(255,255,255,0)']}
-          style={styles.gradient}>
-          <View style={styles.textView}>
-            <Text style={styles.milestoneText}>
-              Milestone {mileStoneData.length + 1}
-            </Text>
-            <Pressable
-              onPress={async () => {
-                if ((from, to !== '')) {
-                  try{
-                  const resp = await getCoordinates(from);
-                  const resp1 = await getCoordinates(to);
-                  const dist = await calculateRoute(
-                    resp.lat,
-                    resp.lon,
-                    resp1.lat,
-                    resp1.lon,
-                  );
-                  const msInHour = 1000 * 60 * 60;
-                 
-                    const obj = {
-                      id: mileStoneData.length + 1,
-                      source: [
-                        {
-                          place: from,
-                          latitude: resp.lat,
-                          longitude: resp.lon,
-                        },
-                      ],
-                      destination: [
-                        {
-                          place: to,
-                          latitude: resp1.lat,
-                          longitude: resp1.lon,
-                        },
-                      ],
-                      distance: dist.summary.lengthInMeters / 1000,
-                      duration: Math.round(
-                        Math.abs(
-                          new Date(dist.summary.arrivalTime) -
-                            new Date(dist.summary.departureTime),
-                        ) / msInHour,
-                      ),
-                    };
-                    dispatch(setMileStoneData(obj));
+      
+        <View style={styles.milestoneView}>
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 0, y: 0.45}}
+            colors={['#fbe5d4', 'rgba(255,255,255,0)']}
+            style={styles.gradient}>
+            <View style={styles.textView}>
+              <Text style={styles.milestoneText}>
+                Milestone {mileStoneData.length + 1}
+              </Text>
+              <Pressable
+                onPress={async () => {
+                  if ((from, to !== '')) {
+                    try {
+                      const resp = await getCoordinates(from);
+                      const resp1 = await getCoordinates(to);
+                      const dist = await calculateRoute(
+                        resp.lat,
+                        resp.lon,
+                        resp1.lat,
+                        resp1.lon,
+                      );
+                      const msInHour = 1000 * 60 * 60;
+
+                      const obj = {
+                        id: mileStoneData.length + 1,
+                        source: [
+                          {
+                            place: from,
+                            latitude: resp.lat,
+                            longitude: resp.lon,
+                          },
+                        ],
+                        destination: [
+                          {
+                            place: to,
+                            latitude: resp1.lat,
+                            longitude: resp1.lon,
+                          },
+                        ],
+                        distance: dist.summary.lengthInMeters / 1000,
+                        duration: Math.round(
+                          Math.abs(
+                            new Date(dist.summary.arrivalTime) -
+                              new Date(dist.summary.departureTime),
+                          ) / msInHour,
+                        ),
+                      };
+                      dispatch(setMileStoneData(obj));
+                      dispatch(setMileStone(false));
+                      Toast.show('Milestone added');
+                    } catch (er) {
+                      Toast.show('Please enter valid location');
+                    }
+                  } else {
                     dispatch(setMileStone(false));
-                    Toast.show("Milestone added")
-                  }catch(er){
-                    Toast.show("Please enter valid location")
                   }
-                } 
-                else {
-                  dispatch(setMileStone(false));
-                }
-              }}>
-              <Icon
-                name="close"
-                size={25}
-                color={'#A4A4A4'}
-                style={styles.times}
+                }}>
+                <Icon
+                  name="close"
+                  size={25}
+                  color={'#A4A4A4'}
+                  style={styles.times}
+                />
+              </Pressable>
+            </View>
+            <Text style={styles.description}>
+              This is to make a break journey inbetween your trip
+            </Text>
+            <View style={styles.fromView}>
+              <TextInput
+                placeholder="From"
+                placeholderTextColor={'rgba(79,80,79,0.92)'}
+                style={styles.textFrom}
+                onChangeText={value => setFrom(value)}
               />
-            </Pressable>
-          </View>
-          <Text style={styles.description}>
-            This is to make a break journey inbetween your trip
-          </Text>
-          <View style={styles.fromView}>
-            <TextInput
-              placeholder="From"
-              placeholderTextColor={'rgba(79,80,79,0.92)'}
-              style={styles.textFrom}
-              onChangeText={value => setFrom(value)}
-            />
-          </View>
-          <View style={styles.locationView}>
-          <Icon2
+            </View>
+            <View style={styles.locationView}>
+              <Icon2
                 name="gps-fixed"
                 size={22}
                 color="#A4A4A4"
                 style={{
                   marginLeft: 10,
-                  marginTop: 6
+                  marginTop: 6,
                 }}
               />
-            <View style={styles.locationNamesView}>
-              <Text style={styles.textUdupi}>{curLoc}</Text>
-              <Text style={styles.textCurrentLocation}>current location</Text>
+              <View style={styles.locationNamesView}>
+                <Text style={styles.textUdupi}>{curLoc}</Text>
+                <Text style={styles.textCurrentLocation}>current location</Text>
+              </View>
             </View>
-          </View>
-          <View style={styles.toView}>
-            <TextInput
-              placeholder="To"
-              placeholderTextColor={'rgba(79,80,79,0.92)'}
-              style={styles.textFrom}
-              onChangeText={value => setTo(value)}
-            />
-          </View>
-        </LinearGradient>
-      </View>
+            <View style={styles.toView}>
+              <TextInput
+                placeholder="To"
+                placeholderTextColor={'rgba(79,80,79,0.92)'}
+                style={styles.textFrom}
+                onChangeText={value => setTo(value)}
+              />
+            </View>
+          </LinearGradient>
+        </View>
     </SafeAreaView>
   );
 };
