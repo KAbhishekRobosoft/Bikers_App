@@ -1,18 +1,15 @@
 import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {NavigationContainer} from '@react-navigation/native';
 import {BikeDetails} from '../components/BikeDetailsComponent';
 import {PersonalDetails} from '../components/PersonalDetailsComponent';
-import { useSelector } from 'react-redux';
-
-
+import {Platform, useWindowDimensions} from 'react-native';
 
 const Tab = createMaterialTopTabNavigator();
 
-const TopNavigation = ({editable,defaultValue}) => {
-
-
- // console.log('top',defaultValue);
+const TopNavigation = ({editable, defaultValue}) => {
+  const {height, width} = useWindowDimensions();
+  const marginLeft = width > height ? (Platform.OS === 'ios' ? 52 : 54) : '8.9%';
+  const barWidth = width > height ? (Platform.OS === 'ios' ? 50 : 50) : 12;
   return (
     <Tab.Navigator
       initialRouteName="PersonalDetails"
@@ -23,33 +20,27 @@ const TopNavigation = ({editable,defaultValue}) => {
           lineHeight: 21,
           marginTop: 10,
           textAlign: 'left',
-         // width: '130%',
           textTransform: 'none',
-          top:6
-          //borderWidth:1
+          top: 6,
         },
         tabBarStyle: {
           width: '100%',
           paddingHorizontal: '5%',
-          
-         // borderWidth:1
 
         },
         tabBarItemStyle: {
           alignSelf: 'flex-start',
-         // borderWidth:1
-
         },
         tabBarIndicatorStyle: {
           backgroundColor: '#ED7F2C',
-          marginLeft: '8%',
-          width: 12,
+          marginLeft: marginLeft,
+          width: barWidth,
           height: 2,
           alignSelf: 'flex-start',
         },
-        tabBarActiveTintColor:'#ED7F2C',
-        tabBarInactiveTintColor:'#868584',
-        tabBarPressOpacity:0.1
+        tabBarActiveTintColor: '#ED7F2C',
+        tabBarInactiveTintColor: '#868584',
+        tabBarPressOpacity: 0.1,
       }}>
       <Tab.Screen
         name="Home"

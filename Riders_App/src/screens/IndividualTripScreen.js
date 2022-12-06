@@ -53,14 +53,19 @@ const AllTrips = ({navigation}) => {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    const cred = await getVerifiedKeys(authData.userToken);
-    dispatch(setToken(cred));
-    const tripdata = await UserTrips(cred);
-    if (tripdata !== undefined) {
-      Toast.show('Loading Created Trips');
-      setTripDetails(tripdata);
-    } else {
-      Toast.show('Unable to Load Trips');
+    try {
+      
+      const cred = await getVerifiedKeys(authData.userToken);
+      dispatch(setToken(cred));
+      const tripdata = await UserTrips(cred);
+      if (tripdata !== undefined) {
+        Toast.show('Loading Created Trips');
+        setTripDetails(tripdata);
+      } else {
+        Toast.show('Unable to Load Trips');
+      }
+    } catch (error) {
+      Toast.show('Error occured in Refreshing');
     }
     setRefreshing(false);
   }, []);

@@ -55,7 +55,6 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
       dispatch(setLoading());
     });
   }, [state]);
-
   const likeAdd = async () => {
     const cred = await getVerifiedKeys(authData.userToken);
     dispatch(setToken(cred));

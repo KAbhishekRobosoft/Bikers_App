@@ -48,7 +48,7 @@ const CreateTrip = ({navigation}) => {
           dispatch(setLoading());
         })
         .catch(error => {
-         Toast.show('Network Error')
+          Toast.show('Network Error');
         });
     }, 500);
   }, []);
@@ -98,305 +98,311 @@ const CreateTrip = ({navigation}) => {
         </Pressable>
         <Text style={styles.headerText}>Create a trip</Text>
       </View>
-            <KeyboardAvoidingView
-              style={{flex:1}}
-              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <ScrollView style={{height: '80%'}} showsVerticalScrollIndicator={false}>
-        <View style={styles.textInputView}>
-          {whereto ? (
-            <View style={styles.placeholder}>
-              <Text style={styles.placeholderText}>{placeholder1}</Text>
-            </View>
-          ) : (
-            <View style={styles.placeholderText}></View>
-          )}
-
-          <TextInput
-            name="Go"
-            value={whereto}
-            placeholderTextColor={'#4F504F'}
-            placeholder="Where do you want to go?"
-            style={styles.inputText}
-            onTouchStart={() => navigation.navigate('SearchCity')}
-          />
-        </View>
-        <View style={styles.textInputView}>
-          {from ? (
-            <View style={styles.placeholder}>
-              <Text style={styles.placeholderText}>{placeholder2}</Text>
-            </View>
-          ) : (
-            <View style={styles.placeholderText}></View>
-          )}
-
-          <TextInput
-            name="From"
-            value={from}
-            placeholderTextColor={'#4F504F'}
-            placeholder="From"
-            style={styles.inputText}
-            onChangeText={value => setFrom(value)}
-          />
-        </View>
-        {open && (
-          <Pressable
-            onPress={() => {
-              setOpen(false);
-            }}>
-            <View style={styles.locationNamesView}>
-              <Icon2
-                name="gps-fixed"
-                size={22}
-                color="#A4A4A4"
-                style={{
-                  marginLeft: 10,
-                }}
-              />
-              <View style={{marginLeft: -10}}>
-                <Text style={styles.textUdupi}>{currLoc}</Text>
-                <Text style={styles.textCurrentLocation}>current location</Text>
+      <KeyboardAvoidingView
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView
+          style={{height: '80%'}}
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.textInputView}>
+            {whereto ? (
+              <View style={styles.placeholder}>
+                <Text style={styles.placeholderText}>{placeholder1}</Text>
               </View>
-            </View>
-          </Pressable>
-        )}
-
-        <View style={styles.textInputView}>
-          {tripName ? (
-            <View style={styles.placeholder}>
-              <Text style={styles.placeholderText}>{placeholder3}</Text>
-            </View>
-          ) : (
-            <View style={styles.placeholderText}></View>
-          )}
-          <TextInput
-            name="TripName"
-            value={tripName}
-            placeholderTextColor={'#4F504F'}
-            placeholder="Name of the trip"
-            style={styles.inputText}
-            onChangeText={value => settripName(value)}
-          />
-        </View>
-        <View style={styles.calenderView}>
-          <View style={styles.startDateView}>
-            <View
-              style={{
-                height: 40,
-                justifyContent: 'space-evenly',
-                paddingBottom: 5,
-              }}>
-              {date ? (
-                <>
-                  <Text style={styles.placeholderText2}>Start Date</Text>
-                </>
-              ) : null}
-              <TextInput
-                style={styles.dateText}
-                placeholderTextColor={'#4F504F'}
-                placeholder="Start date"
-                value={date.toLocaleDateString()}
-              />
-            </View>
-            <Pressable
-              onPress={() => {
-                setOpen1(true);
-              }}>
-              <Image
-                style={styles.calenderImg2}
-                source={require('../assets/images/calenderImg.png')}
-              />
-              <DatePicker
-                mode="date"
-                modal
-                minimumDate={new Date()}
-                open={open1}
-                date={date}
-                onConfirm={value => {
-                  setDate(value);
-                  setOpen1(false);
-                }}
-                onCancel={() => setOpen1(false)}
-              />
-            </Pressable>
-          </View>
-          <View style={styles.startDateView}>
-            <View
-              style={{
-                height: 40,
-                justifyContent: 'space-evenly',
-                paddingBottom: 5,
-              }}>
-              {date ? (
-                <>
-                  <Text style={styles.placeholderText2}>End Date</Text>
-                </>
-              ) : null}
-              <TextInput
-                style={styles.dateText}
-                placeholderTextColor={'#4F504F'}
-                placeholder="End date"
-                value={endDate.toLocaleDateString()}
-              />
-            </View>
-            <Pressable
-              onPress={() => {
-                setOpen2(true);
-              }}>
-              <DatePicker
-                mode="date"
-                modal
-                minimumDate={new Date()}
-                s
-                open={open2}
-                date={endDate}
-                onConfirm={value => {
-                  setEndDate(value);
-                  setOpen2(false);
-                }}
-                onCancel={() => setOpen2(false)}
-              />
-              <Image
-                style={styles.calenderImg2}
-                source={require('../assets/images/calenderImg.png')}
-              />
-            </Pressable>
-          </View>
-          <View style={styles.timeView}>
-            <View
-              style={{
-                height: 40,
-                justifyContent: 'space-evenly',
-                paddingBottom: 5,
-              }}>
-              {time ? (
-                <>
-                  <Text style={styles.placeholderText2}>Start Time</Text>
-                </>
-              ) : null}
-              <TextInput
-                style={styles.dateText}
-                placeholderTextColor={'#4F504F'}
-                placeholder="Start time"
-                value={time.toLocaleTimeString()}
-              />
-            </View>
-            <Pressable
-              onPress={() => {
-                setOpen3(true);
-              }}>
-              <DatePicker
-                mode="time"
-                modal
-                open={open3}
-                date={time}
-                onConfirm={value => {
-                  setTimer(value);
-                  setOpen3(false);
-                }}
-                onCancel={() => setOpen3(false)}
-              />
-              <Image
-                style={styles.calenderImg2}
-                source={require('../assets/images/clock.png')}
-              />
-            </Pressable>
-          </View>
-        </View>
-        <View>
-          {recommend ? <Recommendations /> : null}
-
-          <View style={styles.addUserView}>
-            <View style={styles.addUserImgView}>
-              <Pressable
-                onPress={() => {
-                  setRecommend(!recommend);
-                  navigation.navigate('Contacts');
-                }}>
-                <Image
-                  style={styles.calenderImg}
-                  source={require('../assets/images/adduser.png')}
-                />
-              </Pressable>
-            </View>
-            {contactsData.addTripContacts.length === 0 && (
-              <Text style={styles.text}>Invite other riders</Text>
+            ) : (
+              <View style={styles.placeholderText}></View>
             )}
-            {contactsData.addTripContacts.length > 0 && (
-              <BikeImageComponent data={contactsData.addTripContacts.length} />
-            )}
-          </View>
-          {mileStones ? (
-            <View style={styles.mileStone}>
-              <Milestone />
-            </View>
-          ) : null}
-          <View style={styles.addMileStoneView}>
-            <View style={styles.addUserImgView}>
-              <Pressable
-                onPress={() => {
-                  dispatch(setMileStone(true));
-                }}>
-                <Image
-                  style={styles.calenderImg}
-                  source={require('../assets/images/mileStone.png')}
-                />
-              </Pressable>
-            </View>
-            <Text style={styles.text}>Add a milestone</Text>
-          </View>
-          <View style={styles.btn}>
-            <ButtonLarge
-              onPress={async () => {
-                try{
-                const resp = await getCoordinates(from);
-                const resp1 = await getCoordinates(whereto);
-                const dist = await calculateRoute(
-                  resp.lat,
-                  resp.lon,
-                  resp1.lat,
-                  resp1.lon,
-                );
-                const msInHour = 1000 * 60 * 60;
-                  const obj = {
-                    tripName: tripName,
-                    source: [
-                      {
-                        place: from,
-                        latitude: resp.lat,
-                        longitude: resp.lon,
-                      },
-                    ],
-                    destination: [
-                      {
-                        place: whereto,
-                        latitude: resp1.lat,
-                        longitude: resp1.lon,
-                      },
-                    ],
-                    startDate: date.toString(),
-                    endDate: endDate.toString(),
-                    startTime: time.toString(),
-                    distance: dist.summary.lengthInMeters / 1000,
-                    riders: contactsData.addTripContacts,
-                    milestones: milesonesData,
-                    duration: Math.round(
-                      Math.abs(
-                        new Date(dist.summary.arrivalTime) -
-                          new Date(dist.summary.departureTime),
-                      ) / msInHour,
-                    ),
-                  };
-                  dispatch(tripStore(obj));
-                  navigation.navigate('TripSummary');
-                } catch(er){
-                  Toast.show('Please Enter requested details');
-                }
-              }}
-              title="Done"
+
+            <TextInput
+              name="Go"
+              value={whereto}
+              placeholderTextColor={'#4F504F'}
+              placeholder="Where do you want to go?"
+              style={styles.inputText}
+              onTouchStart={() => navigation.navigate('SearchCity')}
             />
           </View>
-        </View>
-      </ScrollView>
+          <View style={styles.textInputView}>
+            {from ? (
+              <View style={styles.placeholder}>
+                <Text style={styles.placeholderText}>{placeholder2}</Text>
+              </View>
+            ) : (
+              <View style={styles.placeholderText}></View>
+            )}
+
+            <TextInput
+              name="From"
+              value={from}
+              placeholderTextColor={'#4F504F'}
+              placeholder="From"
+              style={styles.inputText}
+              onChangeText={value => setFrom(value)}
+            />
+          </View>
+          {open && (
+            <Pressable
+              onPress={() => {
+                setOpen(false);
+              }}>
+              <View style={styles.locationNamesView}>
+                <Icon2
+                  name="gps-fixed"
+                  size={22}
+                  color="#A4A4A4"
+                  style={{
+                    marginLeft: 10,
+                  }}
+                />
+                <View style={{marginLeft: -10}}>
+                  <Text style={styles.textUdupi}>{currLoc}</Text>
+                  <Text style={styles.textCurrentLocation}>
+                    current location
+                  </Text>
+                </View>
+              </View>
+            </Pressable>
+          )}
+
+          <View style={styles.textInputView}>
+            {tripName ? (
+              <View style={styles.placeholder}>
+                <Text style={styles.placeholderText}>{placeholder3}</Text>
+              </View>
+            ) : (
+              <View style={styles.placeholderText}></View>
+            )}
+            <TextInput
+              name="TripName"
+              value={tripName}
+              placeholderTextColor={'#4F504F'}
+              placeholder="Name of the trip"
+              style={styles.inputText}
+              onChangeText={value => settripName(value)}
+            />
+          </View>
+          <View style={styles.calenderView}>
+            <View style={styles.startDateView}>
+              <View
+                style={{
+                  height: 40,
+                  justifyContent: 'space-evenly',
+                  paddingBottom: 5,
+                }}>
+                {date ? (
+                  <>
+                    <Text style={styles.placeholderText2}>Start Date</Text>
+                  </>
+                ) : null}
+                <TextInput
+                  style={styles.dateText}
+                  placeholderTextColor={'#4F504F'}
+                  placeholder="Start date"
+                  value={date.toLocaleDateString()}
+                />
+              </View>
+              <Pressable
+                onPress={() => {
+                  setOpen1(true);
+                }}>
+                <Image
+                  style={styles.calenderImg2}
+                  source={require('../assets/images/calenderImg.png')}
+                />
+                <DatePicker
+                  mode="date"
+                  modal
+                  minimumDate={new Date()}
+                  open={open1}
+                  date={date}
+                  onConfirm={value => {
+                    setDate(value);
+                    setOpen1(false);
+                  }}
+                  onCancel={() => setOpen1(false)}
+                />
+              </Pressable>
+            </View>
+            <View style={styles.startDateView}>
+              <View
+                style={{
+                  height: 40,
+                  justifyContent: 'space-evenly',
+                  paddingBottom: 5,
+                }}>
+                {date ? (
+                  <>
+                    <Text style={styles.placeholderText2}>End Date</Text>
+                  </>
+                ) : null}
+                <TextInput
+                  style={styles.dateText}
+                  placeholderTextColor={'#4F504F'}
+                  placeholder="End date"
+                  value={endDate.toLocaleDateString()}
+                />
+              </View>
+              <Pressable
+                onPress={() => {
+                  setOpen2(true);
+                }}>
+                <DatePicker
+                  mode="date"
+                  modal
+                  minimumDate={new Date()}
+                  s
+                  open={open2}
+                  date={endDate}
+                  onConfirm={value => {
+                    setEndDate(value);
+                    setOpen2(false);
+                  }}
+                  onCancel={() => setOpen2(false)}
+                />
+                <Image
+                  style={styles.calenderImg2}
+                  source={require('../assets/images/calenderImg.png')}
+                />
+              </Pressable>
+            </View>
+            <View style={styles.timeView}>
+              <View
+                style={{
+                  height: 40,
+                  justifyContent: 'space-evenly',
+                  paddingBottom: 5,
+                }}>
+                {time ? (
+                  <>
+                    <Text style={styles.placeholderText2}>Start Time</Text>
+                  </>
+                ) : null}
+                <TextInput
+                  style={styles.dateText}
+                  placeholderTextColor={'#4F504F'}
+                  placeholder="Start time"
+                  value={time.toLocaleTimeString()}
+                />
+              </View>
+              <Pressable
+                onPress={() => {
+                  setOpen3(true);
+                }}>
+                <DatePicker
+                  mode="time"
+                  modal
+                  open={open3}
+                  date={time}
+                  onConfirm={value => {
+                    setTimer(value);
+                    setOpen3(false);
+                  }}
+                  onCancel={() => setOpen3(false)}
+                />
+                <Image
+                  style={styles.calenderImg2}
+                  source={require('../assets/images/clock.png')}
+                />
+              </Pressable>
+            </View>
+          </View>
+          <View>
+            {recommend ? <Recommendations /> : null}
+
+            <View style={styles.addUserView}>
+              <View style={styles.addUserImgView}>
+                <Pressable
+                  onPress={() => {
+                    setRecommend(!recommend);
+                    navigation.navigate('Contacts');
+                  }}>
+                  <Image
+                    style={styles.calenderImg}
+                    source={require('../assets/images/adduser.png')}
+                  />
+                </Pressable>
+              </View>
+              {contactsData.addTripContacts.length === 0 && (
+                <Text style={styles.text}>Invite other riders</Text>
+              )}
+              {contactsData.addTripContacts.length > 0 && (
+                <BikeImageComponent
+                  data={contactsData.addTripContacts.length}
+                />
+              )}
+            </View>
+            {mileStones ? (
+              <View style={styles.mileStone}>
+                <Milestone />
+              </View>
+            ) : null}
+            <View style={styles.addMileStoneView}>
+              <View style={styles.addUserImgView}>
+                <Pressable
+                  onPress={() => {
+                    dispatch(setMileStone(true));
+                  }}>
+                  <Image
+                    style={styles.calenderImg}
+                    source={require('../assets/images/mileStone.png')}
+                  />
+                </Pressable>
+              </View>
+              <Text style={styles.text}>Add a milestone</Text>
+            </View>
+            <View style={styles.btn}>
+              <ButtonLarge
+                onPress={async () => {
+                  try {
+                    const resp = await getCoordinates(from);
+                    const resp1 = await getCoordinates(whereto);
+                    const dist = await calculateRoute(
+                      resp.lat,
+                      resp.lon,
+                      resp1.lat,
+                      resp1.lon,
+                    );
+                    const msInHour = 1000 * 60 * 60;
+                    const obj = {
+                      tripName: tripName,
+                      source: [
+                        {
+                          place: from,
+                          latitude: resp.lat,
+                          longitude: resp.lon,
+                        },
+                      ],
+                      destination: [
+                        {
+                          place: whereto,
+                          latitude: resp1.lat,
+                          longitude: resp1.lon,
+                        },
+                      ],
+                      startDate: date.toString(),
+                      endDate: endDate.toString(),
+                      startTime: time.toString(),
+                      distance: dist.summary.lengthInMeters / 1000,
+                      riders: contactsData.addTripContacts,
+                      milestones: milesonesData,
+                      duration: Math.round(
+                        Math.abs(
+                          new Date(dist.summary.arrivalTime) -
+                            new Date(dist.summary.departureTime),
+                        ) / msInHour,
+                      ),
+                    };
+                    dispatch(tripStore(obj));
+                    navigation.navigate('TripSummary');
+                  } catch (er) {
+                    Toast.show('Please Enter requested details');
+                  }
+                }}
+                title="Done"
+              />
+            </View>
+          </View>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
