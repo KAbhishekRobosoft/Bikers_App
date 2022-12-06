@@ -1,13 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  ImageBackground,
-  Image,
-  Modal,
-  ToastAndroid,
-} from 'react-native';
+import {View, StyleSheet, Text, ImageBackground, Image} from 'react-native';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {getVerifiedKeys} from '../utils/Functions';
 import {deleteTrip} from '../services/Auth';
@@ -15,10 +7,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setInitialState} from '../redux/MileStoneSlice';
 import {month1} from '../utils/Functions';
 import Toast from 'react-native-simple-toast';
+import LinearGradient from 'react-native-linear-gradient';
 
 const AllTripList = ({navigation, data}) => {
   const state = useSelector(state => state.milestone.initialState);
-  const [visible, setVisible] = useState(false);
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
@@ -31,54 +23,51 @@ const AllTripList = ({navigation, data}) => {
   return (
     <View>
       <Pressable
-        onPress={() =>{
-        console.log(data)
+        onPress={() => {
           navigation.navigate('particularTrip', {
             data: data,
-          })
-        }
-        }>
+          });
+        }}>
         <View style={styles.container}>
           <ImageBackground
             source={{uri: 'https' + data.tripImage.substring(4)}}
-            resizeMode="cover"
-            style={styles.image}>
-            <View style={styles.listContainer}>
-              <View style={styles.textContainer}>
-                <Text style={styles.placeName}>{data.tripName}</Text>
-                <View style={{flexDirection: 'row'}}>
-                  <Text style={styles.dateText}>
-                    {data.startDate.substring(8, 10)}{' '}
-                    {month1[data.startDate.substring(5, 7)]} -{' '}
-                  </Text>
-                  <Text style={styles.dateText}>
-                    {data.endDate.substring(8, 10)}{' '}
-                    {month1[data.endDate.substring(5, 7)]}
-                  </Text>
+            resizeMode="cover">
+            <LinearGradient
+              start={{x: 0, y: 1}}
+              end={{x: 1, y: 1}}
+              locations={[0.2,1]}
+              colors={['rgba(0,0,0,0.85)', 'rgba(255,255,255,0)']}
+              style={styles.gradient}>
+              <View style={styles.listContainer}>
+                <View style={styles.textContainer}>
+                  <Text style={styles.placeName}>{data.tripName}</Text>
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.dateText}>
+                      {data.startDate.substring(8, 10)}{' '}
+                      {month1[data.startDate.substring(5, 7)]} -{' '}
+                    </Text>
+                    <Text style={styles.dateText}>
+                      {data.endDate.substring(8, 10)}{' '}
+                      {month1[data.endDate.substring(5, 7)]}
+                    </Text>
+                  </View>
+                  <View style={styles.statusContainer}>
+                    <Text style={styles.statusText}>{data.tripStatus}</Text>
+                  </View>
                 </View>
-                <View style={styles.statusContainer}>
-                  <Text style={styles.statusText}>{data.tripStatus}</Text>
-                </View>
+                {authData.userCredentials.mobile === data.mobile && (
+                  <Pressable onPress={() => handleClose(data._id)}>
+                    <Image
+                      source={require('../assets/images/close.png')}
+                      style={styles.closeImage}
+                    />
+                  </Pressable>
+                )}
               </View>
-              {authData.userCredentials.mobile === data.mobile && (
-                <Pressable onPress={() => handleClose(data._id)}>
-                  <Image
-                    source={require('../assets/images/close.png')}
-                    style={styles.closeImage}
-                  />
-                </Pressable>
-              )}
-            </View>
+            </LinearGradient>
           </ImageBackground>
         </View>
       </Pressable>
-      <Modal visible={visible} animationType="slide">
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Pressable onPress={() => setVisible(false)}>
-            <Text>HeLLO</Text>
-          </Pressable>
-        </View>
-      </Modal>
     </View>
   );
 };
@@ -95,14 +84,19 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 
-  listContainer: {flexDirection: 'row', justifyContent: 'space-between'},
+  listContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: '100%',
+  },
   image: {
     height: 140,
     shadowColor: 'black',
     shadowOffset: {
-      width: 0,
-      height: 2
-    }
+      width: 1,
+      height: 2,
+    },
+    shadowRadius: 4,
   },
 
   placeName: {

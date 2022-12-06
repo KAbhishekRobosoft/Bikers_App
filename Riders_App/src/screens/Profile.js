@@ -9,18 +9,20 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector, useDispatch} from 'react-redux';
 import ActivityList from '../components/MyActivityList';
 import {getSortedTripDetails, profileData} from '../services/Auth';
 import {getVerifiedKeys, month} from '../utils/Functions';
 import ImagePicker from 'react-native-image-crop-picker';
-import { uploadProfileImage } from '../services/Auth';
-import { setLoading,deSetLoading } from '../redux/MileStoneSlice';
-import { setToken } from '../redux/AuthSlice';
-import { setInitialState } from '../redux/MileStoneSlice';
-import Toast from 'react-native-simple-toast'
+import {uploadProfileImage} from '../services/Auth';
+import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
+import {setToken} from '../redux/AuthSlice';
+import {setInitialState} from '../redux/MileStoneSlice';
+import Toast from 'react-native-simple-toast';
 
 const Profile = ({navigation}) => {
   const [personData, setPersonData] = useState({});
@@ -30,6 +32,8 @@ const Profile = ({navigation}) => {
   const state = useSelector(state => state.milestone.initialState);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.milestone.isLoading);
+  const [visible, setVisible] = useState(false);
+  const [visible1, setVisible1] = useState(false);
 
   function setImage() {
     ImagePicker.openPicker({
@@ -44,15 +48,15 @@ const Profile = ({navigation}) => {
         name: `${image.filename}.${image.mime.substring(
           image.mime.indexOf('/') + 1,
         )}`,
-      })
-      let cred= await getVerifiedKeys(token.userToken)
-      dispatch(setToken(cred))
-      const resp = await uploadProfileImage(payload,cred)
-      if(resp !== undefined){
-        Toast.show('Profile image updated succesfully')
-        dispatch(setInitialState(state))
+      });
+      let cred = await getVerifiedKeys(token.userToken);
+      dispatch(setToken(cred));
+      const resp = await uploadProfileImage(payload, cred);
+      if (resp !== undefined) {
+        Toast.show('Profile image updated succesfully');
+        dispatch(setInitialState(state));
       }
-    })
+    });
   }
 
   useEffect(() => {
@@ -78,86 +82,223 @@ const Profile = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-    {JSON.stringify(personData) !== "{}" ? 
-      <ScrollView style={{flex: 1}}>
-        
-        { JSON.stringify(personData) !== "{}" && <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          colors={['#ED7E2C', '#F7B557']}
-          style={styles.gradientCreateButton}>
-          <ImageBackground
-            source={require('../assets/images/profilebike.png')}
-            resizeMode="cover"
-            style={styles.backgroundImage}></ImageBackground>
-          <Pressable
-            onPress={() =>
-              navigation.navigate('updateProfile', {
-                userName: personData.userDetails.userName,
-                aboutUser: personData.userDetails.aboutUser,
-              })
-            }>
-            <Image
-              source={require('../assets/images/edit.png')}
-              style={styles.editIcon}
-            />
-          </Pressable>
-          <View style={styles.profileContainer}>
-            {personData.userDetails.hasOwnProperty('profileImage') ?(<Pressable onPress={setImage}><Image
-              source={{uri:'https'+personData.userDetails.profileImage.substring(4)}}
-              style={styles.profileImage}
-            /></Pressable>):<Pressable onPress={setImage}><Image
-              source={require('../assets/images/photoless.png')}
-              style={styles.profileImage}
-            /></Pressable>}
-            <Text style={styles.profileName}>
-              {personData?.userDetails?.userName}
-            </Text>
-            <Text style={styles.bioText}>
-              {personData?.userDetails?.aboutUser}
-            </Text>
-          </View>
-        </LinearGradient>}
-        <View style={styles.detailContainer}>
-          <View style={styles.textContainer}>
-            <Text style={styles.detailText}>Rides</Text>
-            <Text style={styles.numberText}>{personData?.tripCount}</Text>
-          </View>
-          <View style={styles.line}></View>
-          <View style={styles.textContainer}>
-            <Text style={styles.detailText}>Following</Text>
-            <Text style={styles.numberText}>
-              {personData?.userDetails?.followingCount}
-            </Text>
-          </View>
-          <View style={styles.line}></View>
-          <View style={styles.textContainer}>
-            <Text style={styles.detailText}>Followers</Text>
-            <Text style={styles.numberText}>
-              {personData?.userDetails?.followersCount}
-            </Text>
-          </View>
-        </View>
-        <View>
-          <Text style={styles.activitiText}>My Activities</Text>
-        </View>
+      {JSON.stringify(personData) !== '{}' ? (
         <ScrollView style={{flex: 1}}>
-          {tripDetails.length > 0
-            ? tripDetails.map(details => (
-                <ActivityList
-                  key={details?._id}
-                  image={'https' + details?.tripImage?.substring(4)}
-                  placeName={details?.tripName}
-                  tripYear={details?.startDate?.substring(0, 4)}
-                  startDate={details?.startDate?.substring(8, 10)}
-                  endDate={details?.endDate?.substring(8, 10)}
-                  startMonth={month[details?.startDate?.substring(5, 7)]}
-                  endMonth={month[details?.endDate?.substring(5, 7)]}
+          {JSON.stringify(personData) !== '{}' && (
+            <LinearGradient
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 0}}
+              colors={['#ED7E2C', '#F7B557']}
+              style={styles.gradientCreateButton}>
+              <ImageBackground
+                source={require('../assets/images/profilebike.png')}
+                resizeMode="cover"
+                style={styles.backgroundImage}></ImageBackground>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate('updateProfile', {
+                    userName: personData.userDetails.userName,
+                    aboutUser: personData.userDetails.aboutUser,
+                  })
+                }>
+                <Image
+                  source={require('../assets/images/edit.png')}
+                  style={styles.editIcon}
                 />
-              ))
-            : null}
+              </Pressable>
+              <View style={styles.profileContainer}>
+                {personData.userDetails.hasOwnProperty('profileImage') ? (
+                  <Pressable onPress={setImage}>
+                    <Image
+                      source={{
+                        uri:
+                          'https' +
+                          personData.userDetails.profileImage.substring(4),
+                      }}
+                      style={styles.profileImage}
+                    />
+                  </Pressable>
+                ) : (
+                  <Pressable onPress={setImage}>
+                    <Image
+                      source={require('../assets/images/photoless.png')}
+                      style={styles.profileImage}
+                    />
+                  </Pressable>
+                )}
+                <Text style={styles.profileName}>
+                  {personData?.userDetails?.userName}
+                </Text>
+                <Text style={styles.bioText}>
+                  {personData?.userDetails?.aboutUser}
+                </Text>
+              </View>
+            </LinearGradient>
+          )}
+          <View style={styles.detailContainer}>
+            <View style={styles.textContainer}>
+              <Text style={styles.detailText}>Rides</Text>
+              <Text style={styles.numberText}>{personData?.tripCount}</Text>
+            </View>
+            <View style={styles.line}></View>
+            <TouchableOpacity
+              onPress={() => {
+                setVisible(true);
+              }}
+              style={styles.textContainer}>
+              <View>
+                <Text style={styles.detailText}>Following</Text>
+                <Text style={styles.numberText}>
+                  {personData?.userDetails?.followingCount}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            <View style={styles.line}></View>
+            <TouchableOpacity
+              onPress={() => {
+                setVisible1(true);
+              }}>
+              <View style={styles.textContainer}>
+                <Text style={styles.detailText}>Followers</Text>
+                <Text style={styles.numberText}>
+                  {personData?.userDetails?.followersCount}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Text style={styles.activitiText}>My Activities</Text>
+          </View>
+          <ScrollView style={{flex: 1}}>
+            {tripDetails.length > 0
+              ? tripDetails.map(details => (
+                  <ActivityList
+                    key={details?._id}
+                    image={'https' + details?.tripImage?.substring(4)}
+                    placeName={details?.tripName}
+                    tripYear={details?.startDate?.substring(0, 4)}
+                    startDate={details?.startDate?.substring(8, 10)}
+                    endDate={details?.endDate?.substring(8, 10)}
+                    startMonth={month[details?.startDate?.substring(5, 7)]}
+                    endMonth={month[details?.endDate?.substring(5, 7)]}
+                  />
+                ))
+              : null}
+          </ScrollView>
         </ScrollView>
-      </ScrollView> : null}
+      ) : null}
+      <Modal
+        isVisible={visible}
+        backdropOpacity={0.3}
+        avoidKeyboard={true}
+        animationIn={'slideInUp'}
+        animationOut={'slideOutDown'}>
+        <Pressable
+          onPress={() => {
+            setVisible(false);
+          }}>
+          <View style={styles.modalView}>
+            <Image
+              source={require('../assets/images/appicon.png')}
+              style={styles.imageIcon}
+            />
+            <ScrollView style={{marginTop: 10}}>
+              {JSON.stringify(personData) !== '{}' ?( 
+                  personData.userDetails.following.length > 0 ? (
+                    personData.userDetails.following.map(ele => {
+                  return (
+                    <View key={ele._id} style={styles.followingView}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          right: 10,
+                          fontWeight: 'bold',
+                          color: 'black',
+                        }}>
+                        {ele.followingName}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          left: 10,
+                          fontWeight: 'bold',
+                          color: 'black',
+                        }}>
+                        {ele.followingPhone}
+                      </Text>
+                    </View>
+                  );
+                })
+              ) : (
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={{fontSize: 16, fontFamily: 'Roboto-Regular'}}>
+                    Not following anyone at the moment
+                  </Text>
+                </View>
+                  )
+                ):null
+              }
+                
+            </ScrollView>
+          </View>
+        </Pressable>
+      </Modal>
+
+      <Modal
+        isVisible={visible1}
+        backdropOpacity={0.3}
+        avoidKeyboard={true}
+        animationIn={'slideInUp'}
+        animationOut={'slideOutDown'}>
+        <Pressable
+          onPress={() => {
+            setVisible1(false);
+          }}>
+          <View style={styles.modalView}>
+            <Image
+              source={require('../assets/images/appicon.png')}
+              style={styles.imageIcon}
+            />
+            <ScrollView style={{marginTop: 10}}>
+              {JSON.stringify(personData) !== '{}' ?( 
+                  personData.userDetails.followers.length > 0 ? (
+                    personData.userDetails.followers.map(ele => {
+                  return (
+                    <View key={ele._id} style={styles.followingView}>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          right: 10,
+                          fontWeight: 'bold',
+                          color: 'black',
+                        }}>
+                        {ele.followerName}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          left: 10,
+                          fontWeight: 'bold',
+                          color: 'black',
+                        }}>
+                        {ele.followerPhone}
+                      </Text>
+                    </View>
+                  );
+                })
+              ) : (
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Text style={{fontSize: 16, fontFamily: 'Roboto-Regular'}}>
+                    No followers at the moment
+                  </Text>
+                </View>
+                  )
+                ):null
+              }
+            </ScrollView>
+          </View>
+        </Pressable>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -165,6 +306,17 @@ const Profile = ({navigation}) => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
+  },
+
+  followingView: {
+    backgroundColor: '#f7f5c9',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    borderRadius: 5,
+    height: 30,
+    borderWidth: 1,
+    alignItems:"center"
   },
 
   gradientCreateButton: {
@@ -187,6 +339,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 300,
     width: '100%',
+  },
+
+  imageIcon: {
+    resizeMode: 'contain',
+    width: 40,
+    height: 40,
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+
+  modalView: {
+    backgroundColor: 'white',
+    width: '100%',
+    padding: 10,
+    borderRadius: 10,
   },
 
   profileImage: {

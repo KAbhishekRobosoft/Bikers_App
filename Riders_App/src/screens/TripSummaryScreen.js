@@ -64,7 +64,7 @@ export const TripSummary = ({navigation}) => {
   if (loading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator color="orange"/>
+        <ActivityIndicator color="orange" size="large" />
       </View>
     );
   }
@@ -111,7 +111,7 @@ export const TripSummary = ({navigation}) => {
                     longitude: ele.longitude,
                   }))}
                   strokeColor={'blue'}
-                  strokeWidth={2}
+                  strokeWidth={4}
                   lineDashPattern={[1]}
                 />
                 <Marker

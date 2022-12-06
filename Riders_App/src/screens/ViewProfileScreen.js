@@ -12,11 +12,8 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector, useDispatch} from 'react-redux';
-import ActivityList from '../components/MyActivityList';
-import {getSortedTripDetails, profileData} from '../services/Auth';
-import {getVerifiedKeys, month} from '../utils/Functions';
-import ImagePicker from 'react-native-image-crop-picker';
-import {uploadProfileImage} from '../services/Auth';
+import {profileData} from '../services/Auth';
+import {getVerifiedKeys} from '../utils/Functions';
 import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
 import {setToken} from '../redux/AuthSlice';
 import {setInitialState} from '../redux/MileStoneSlice';
@@ -78,7 +75,7 @@ const ViewProfileScreen = ({navigation, route}) => {
               />
             </Pressable>
             <View style={styles.profileContainer}>
-              {personData.userDetails.profileImage !== '' ? (
+              {personData.userDetails.hasOwnProperty('profileImage') ? (
                 <Image
                   source={{
                     uri:

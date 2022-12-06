@@ -146,7 +146,7 @@ export const Accessories = ({navigation}) => {
                   />
                   <View style={styles.costTitleText}>
                     <Text style={styles.titleText}>{item.productName}</Text>
-                    <Text style={styles.costText}>Rs{item.productPrice}/-</Text>
+                    <Text style={styles.costText}>Rs {item.productPrice} /-</Text>
                   </View>
                 </View>
               );
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     height: Platform.OS === 'ios' ? 21 : 30,
     width: '78%',
-    paddingBottom: 3,
+    paddingBottom: 1,
   },
   form1: {
     marginTop: Platform.OS === 'ios' ? 14 : 15,
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: 40,
     flexDirection: 'column',
-    height: 60,
+    height: 68,
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',
   },

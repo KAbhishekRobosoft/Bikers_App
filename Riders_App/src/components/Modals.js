@@ -1,13 +1,8 @@
-import {Formik} from 'formik';
-import React, {useState} from 'react';
+import React from 'react';
 import {
-  FlatList,
-  SafeAreaView,
   StyleSheet,
-  TextInput,
   View,
   Text,
-  Image,
   Pressable,
   ScrollView,
 } from 'react-native';
