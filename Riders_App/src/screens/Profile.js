@@ -316,6 +316,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 30,
     borderWidth: 1,
+    alignItems:"center"
   },
 
   gradientCreateButton: {

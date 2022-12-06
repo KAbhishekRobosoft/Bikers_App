@@ -28,7 +28,6 @@ import {setToken} from '../redux/AuthSlice';
 import {addComments} from '../services/Auth';
 import Toast from 'react-native-simple-toast';
 import {deleteComment} from '../services/Auth';
-import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/KeyboardAvoidingView';
 
 const ImageLikeCommentScreen = ({navigation, route}) => {
   const [comments, Setcomments] = useState(false);
@@ -49,6 +48,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
     dispatch(deSetLoading());
     setTimeout(async () => {
       const cred = await getVerifiedKeys(authData.userToken);
+      dispatch(setToken(cred));
       const response = await getParticularPhoto(cred, route.params.id);
       setImgData(response);
       dispatch(setLoading());
@@ -256,20 +256,33 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                                         height: 45,
                                         paddingHorizontal: 10,
                                       }}>
-                                      <Image
-                                        style={{
-                                          height: 25,
-                                          width: 25,
-                                          borderRadius: 30,
-                                        }}
-                                        source={{
-                                          uri:
-                                            'https' +
-                                            item.commentedUserImage.substring(
-                                              4,
-                                            ),
-                                        }}
-                                      />
+                                      {item.hasOwnProperty(
+                                        'commentedUserImage',
+                                      ) ? (
+                                        <Image
+                                          style={{
+                                            height: 25,
+                                            width: 25,
+                                            borderRadius: 30,
+                                          }}
+                                          source={{
+                                            uri:
+                                              'https' +
+                                              item.commentedUserImage.substring(
+                                                4,
+                                              ),
+                                          }}
+                                        />
+                                      ) : (
+                                        <Image
+                                          style={{
+                                            height: 25,
+                                            width: 30,
+                                            borderRadius: 30,
+                                          }}
+                                          source={require('../assets/images/photoless.png')}
+                                        />
+                                      )}
 
                                       <Text
                                         style={{
@@ -406,23 +419,31 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                                         flexDirection: 'row',
                                         alignItems: 'center',
                                         height: 35,
-                                        paddingHorizontal: 10,
-                                      
-                                      }}>
-                                      <Image
-                                        style={{
-                                          height: 25,
-                                          width: 25,
-                                          borderRadius: 30,
-                                        }}
-                                        source={{
-                                          uri:
+                                        paddingHorizontal: 10}}>
+
+                            {item.hasOwnProperty('profileImage') ? (
+                                        <Image
+                                          style={{
+                                            height: 25,
+                                            width: 30,
+                                            borderRadius: 30,
+                                          }}
+                                          source={{
+                                            uri:
                                             'https' +
-                                            item.profileImage.substring(
-                                              4,
-                                            ),
-                                        }}
-                                      />
+                                            item.profileImage.substring(4),
+                                          }}
+                                        />
+                                      ) : (
+                                        <Image
+                                          style={{
+                                            height: 25,
+                                            width: 30,
+                                            borderRadius: 30,
+                                          }}
+                                          source={require('../assets/images/photoless.png')}
+                                        />
+                                      )}
 
                                       <Text
                                         style={{
@@ -432,14 +453,13 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                                           marginLeft: 10,
                                           fontSize: 15,
                                         }}>
-                                        {item.commentedNumber ===
+                                        {item.mobile ===
                                         authData.userCredentials.mobile
                                           ? 'You'
                                           : item.userName}
                                       </Text>
                                     </View>
                                   </Pressable>
-                                
                                 </View>
                               </View>
                             );

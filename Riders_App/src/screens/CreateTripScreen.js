@@ -100,7 +100,7 @@ const CreateTrip = ({navigation}) => {
       </View>
             <KeyboardAvoidingView
               style={{flex:1}}
-              behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
+              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <ScrollView style={{height: '80%'}} showsVerticalScrollIndicator={false}>
         <View style={styles.textInputView}>
           {whereto ? (

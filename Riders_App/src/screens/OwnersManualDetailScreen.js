@@ -4,8 +4,6 @@ import {
   Text,
   View,
   Pressable,
-  ScrollView,
-  Image,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
