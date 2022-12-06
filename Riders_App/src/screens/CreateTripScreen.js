@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput,
   ActivityIndicator,
+  KeyboardAvoidingView,
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 import Icon2 from 'react-native-vector-icons/MaterialIcons';
@@ -47,8 +48,7 @@ const CreateTrip = ({navigation}) => {
           dispatch(setLoading());
         })
         .catch(error => {
-          const {code, message} = error;
-          console.warn(code, message);
+         Toast.show('Network Error')
         });
     }, 500);
   }, []);
@@ -98,6 +98,9 @@ const CreateTrip = ({navigation}) => {
         </Pressable>
         <Text style={styles.headerText}>Create a trip</Text>
       </View>
+            <KeyboardAvoidingView
+              style={{flex:1}}
+              behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}>
       <ScrollView style={{height: '80%'}} showsVerticalScrollIndicator={false}>
         <View style={styles.textInputView}>
           {whereto ? (
@@ -394,6 +397,7 @@ const CreateTrip = ({navigation}) => {
           </View>
         </View>
       </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

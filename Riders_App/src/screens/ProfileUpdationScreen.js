@@ -6,6 +6,8 @@ import {
   Pressable,
   Image,
   StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
@@ -18,9 +20,9 @@ import {editProfileuserName} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import Toast from 'react-native-simple-toast';
 import {setInitialState} from '../redux/MileStoneSlice';
-import { setToken } from '../redux/AuthSlice';
+import {setToken} from '../redux/AuthSlice';
 
-function ProfileUpdationScreen({navigation,route}) {
+function ProfileUpdationScreen({navigation, route}) {
   const dispatch = useDispatch();
   const state = useSelector(state => state.milestone.initialState);
   const auth = useSelector(state => state.auth);
@@ -31,103 +33,120 @@ function ProfileUpdationScreen({navigation,route}) {
   };
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <View style={styles.mainView}>
-        <View style={[styles.header]}>
-          <View style={styles.subHeader}>
-            <Pressable
-              onPress={() => {
-                navigation.goBack();
-              }}>
-              <Icon
-                name="md-arrow-back"
-                color="white"
-                size={25}
-                style={styles.icon}
-              />
-            </Pressable>
-            <Text style={styles.headerText}>Edit Profile Details</Text>
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0}
+        style={{flex: 1}}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <View style={styles.mainView}>
+          <View style={[styles.header]}>
+            <View style={styles.subHeader}>
+              <Pressable
+                onPress={() => {
+                  navigation.goBack();
+                }}>
+                <Icon
+                  name="md-arrow-back"
+                  color="white"
+                  size={25}
+                  style={styles.icon}
+                />
+              </Pressable>
+              <Text style={styles.headerText}>Edit Profile Details</Text>
+            </View>
           </View>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{height: '92%'}}>
+            <Image
+              style={{
+                height: 180,
+                width: 180,
+                alignSelf: 'center',
+                marginTop: 30,
+              }}
+              source={require('../assets/images/profileUpdate.png')}
+            />
+            <View style={styles.personalDetailView}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  marginTop: 20,
+                  marginHorizontal: '5%',
+                  justifyContent: 'space-between',
+                }}>
+                <Text style={styles.personaldetailText}>Edit Profile</Text>
+              </View>
+              <View style={{width: '90%', alignSelf: 'center', marginTop: 10}}>
+                <Formik
+                  initialValues={initialValues}
+                  onSubmit={async values => {
+                    if (values.userName === null) {
+                      dispatch(setInitialState(state));
+                      const key = await getVerifiedKeys(auth.userToken);
+                      dispatch(setToken(key));
+                      const resp1 = await editAboutUser(key, values.aboutUser);
+                      if (resp1 !== undefined) {
+                        navigation.navigate('Profile');
+                        Toast.show('Profile Updated');
+                      } else {
+                        Toast.show('Profile Updation failed');
+                      }
+                    } else if (values.aboutUser === null) {
+                      dispatch(setInitialState(state));
+                      const key = await getVerifiedKeys(auth.userToken);
+                      const resp2 = await editProfileuserName(
+                        key,
+                        values.userName,
+                      );
+                      if (resp2 !== undefined) {
+                        navigation.navigate('Profile');
+                        Toast.show('Profile Updated');
+                      } else {
+                        Toast.show('Profile Updation failed');
+                      }
+                    } else {
+                      dispatch(setInitialState(state));
+                      const key = await getVerifiedKeys(auth.userToken);
+                      const resp2 = await editProfile(key, values);
+                      if (resp2 !== undefined) {
+                        navigation.navigate('Profile');
+                        Toast.show('Profile Updated');
+                      } else {
+                        Toast.show('Profile Updation failed');
+                      }
+                    }
+                  }}>
+                  {({values, handleSubmit, isValid, resetForm}) => (
+                    <>
+                      <Field
+                        component={PlaceholderTextFieldOwnerManual}
+                        name="userName"
+                        placeholder="Username"
+                        keyboardType="default"
+                        defaultValue={route.params.userName}
+                      />
+                      <Field
+                        component={PlaceholderTextFieldOwnerManual}
+                        name="aboutUser"
+                        placeholder="Short description"
+                        keyboardType="default"
+                        defaultValue={route.params.aboutUser}
+                      />
+                      <View style={styles.btn}>
+                        <ButtonLarge
+                          title="Submit"
+                          onPress={handleSubmit}
+                          disabled={!isValid}
+                        />
+                      </View>
+                    </>
+                  )}
+                </Formik>
+              </View>
+            </View>
+          </ScrollView>
         </View>
-        <Image
-          style={{height: 180, width: 180, alignSelf: 'center', marginTop: 30}}
-          source={require('../assets/images/profileUpdate.png')}
-        />
-        <View style={styles.personalDetailView}>
-          <View
-            style={{
-              flexDirection: 'row',
-              marginTop: 20,
-              marginHorizontal: '5%',
-              justifyContent: 'space-between',
-            }}>
-            <Text style={styles.personaldetailText}>Edit Profile</Text>
-          </View>
-          <View style={{width: '90%', alignSelf: 'center', marginTop: 10}}>
-            <Formik
-              initialValues={initialValues}
-              onSubmit={async values => {
-                if (values.userName === null) {
-                  dispatch(setInitialState(state));
-                  const key = await getVerifiedKeys(auth.userToken);
-                  dispatch(setToken(key))
-                  const resp1 = await editAboutUser(key, values.aboutUser);
-                  if (resp1 !== undefined) {
-                    navigation.navigate('Profile');
-                    Toast.show('Profile Updated');
-                  } else {
-                    Toast.show('Profile Updation failed');
-                  }
-                } else if (values.aboutUser === null) {
-                  dispatch(setInitialState(state));
-                  const key = await getVerifiedKeys(auth.userToken);
-                  const resp2 = await editProfileuserName(key, values.userName);
-                  if (resp2 !== undefined) {
-                    navigation.navigate('Profile');
-                    Toast.show('Profile Updated');
-                  } else {
-                    Toast.show('Profile Updation failed');
-                  }
-                } else {
-                  dispatch(setInitialState(state));
-                  const key = await getVerifiedKeys(auth.userToken);
-                  const resp2 = await editProfile(key, values);
-                  if (resp2 !== undefined) {
-                    navigation.navigate('Profile');
-                    Toast.show('Profile Updated');
-                  } else {
-                    Toast.show('Profile Updation failed');
-                  }
-                }
-              }}>
-              {({values, handleSubmit, isValid, resetForm}) => (
-                <>
-                  <Field
-                    component={PlaceholderTextFieldOwnerManual}
-                    name="userName"
-                    placeholder="Username"
-                    keyboardType="default"
-                    defaultValue= {route.params.userName}
-                  />
-                  <Field
-                    component={PlaceholderTextFieldOwnerManual}
-                    name="aboutUser"
-                    placeholder="Short description"
-                    keyboardType="default"
-                    defaultValue= {route.params.aboutUser}
-                  />
-                  <View style={styles.btn}>
-                    <ButtonLarge
-                      title="Submit"
-                      onPress={handleSubmit}
-                      disabled={!isValid}
-                    />
-                  </View>
-                </>
-              )}
-            </Formik>
-          </View>
-        </View>
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
