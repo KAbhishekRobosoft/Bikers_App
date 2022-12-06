@@ -37,7 +37,7 @@ const AllTripList = ({navigation, data}) => {
               end={{x: 1, y: 1}}
               locations={[0.2,1]}
               colors={['rgba(0,0,0,0.85)', 'rgba(255,255,255,0)']}
-              style={styles.gradient}>
+              >
               <View style={styles.listContainer}>
                 <View style={styles.textContainer}>
                   <Text style={styles.placeName}>{data.tripName}</Text>

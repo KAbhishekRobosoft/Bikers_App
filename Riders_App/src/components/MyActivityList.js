@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, ImageBackground} from 'react-native';
-
+import LinearGradient from 'react-native-linear-gradient';
 const ActivityList = ({
   image,
   placeName,
@@ -17,14 +17,20 @@ const ActivityList = ({
           source={{uri: image}}
           resizeMode="cover"
           style={styles.image}>
-          <View style={styles.listContainer}>
-            <View style={styles.textContainer}>
-              <Text style={styles.placeName}>{placeName}</Text>
-              <Text style={styles.dateText}>
-                {startDate} {startMonth}- {endDate} {endMonth}
-              </Text>
+          <LinearGradient
+            start={{x: 0, y: 1}}
+            end={{x: 1, y: 1}}
+            locations={[0.2, 1]}
+            colors={['rgba(0,0,0,0.85)', 'rgba(255,255,255,0)']}>
+            <View style={styles.listContainer}>
+              <View style={styles.textContainer}>
+                <Text style={styles.placeName}>{placeName}</Text>
+                <Text style={styles.dateText}>
+                  {startDate} {startMonth}- {endDate} {endMonth}
+                </Text>
+              </View>
             </View>
-          </View>
+          </LinearGradient>
         </ImageBackground>
       </View>
       <View style={styles.point}></View>
