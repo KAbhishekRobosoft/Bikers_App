@@ -11,6 +11,7 @@ import {
   useWindowDimensions,
   TouchableOpacity,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -30,9 +31,9 @@ import Toast from 'react-native-simple-toast';
 import {deleteComment} from '../services/Auth';
 
 const ImageLikeCommentScreen = ({navigation, route}) => {
+  const [refreshing,setRefreshing]= useState(false)
   const [comments, Setcomments] = useState(false);
   const [distinctComments, SetdistinctComments] = useState(false);
-  const [like, setLike] = useState(false);
   const [likeView, setLikeView] = useState(false);
   const [imgData, setImgData] = useState({});
   const state = useSelector(state => state.milestone.initialState);
@@ -66,6 +67,21 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
       Toast.show("Couldn't like the Image");
     }
   };
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    try{
+      const cred = await getVerifiedKeys(authData.userToken);
+      dispatch(setToken(cred));
+      const response = await getParticularPhoto(cred, route.params.id);
+      setImgData(response);
+      dispatch(setLoading());
+    }
+    catch(er){
+        Toast.show("Error occurred while refreshing")
+    }
+    setRefreshing(false)
+  }, []);
 
   async function comment() {
     const cred = await getVerifiedKeys(authData.userToken);
@@ -123,7 +139,10 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
             <ScrollView
               bounces={false}
               showsVerticalScrollIndicator={false}
-              showsHorizontalScrollIndicator={false}>
+              showsHorizontalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }>
               <View style={styles.imgContainer}>
                 <Image style={styles.img} source={{uri: route.params.image}} />
                 <View style={styles.likeCommentView}>
@@ -419,9 +438,9 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                                         flexDirection: 'row',
                                         alignItems: 'center',
                                         height: 35,
-                                        paddingHorizontal: 10}}>
-
-                            {item.hasOwnProperty('profileImage') ? (
+                                        paddingHorizontal: 10,
+                                      }}>
+                                      {item.hasOwnProperty('profileImage') ? (
                                         <Image
                                           style={{
                                             height: 25,
@@ -430,8 +449,8 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                                           }}
                                           source={{
                                             uri:
-                                            'https' +
-                                            item.profileImage.substring(4),
+                                              'https' +
+                                              item.profileImage.substring(4),
                                           }}
                                         />
                                       ) : (

@@ -43,7 +43,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputView}>
           <Text style={styles.text}>Licence No.</Text>
           <View style={styles.inputTextView}>
-            <Text style={{}}>:</Text>
+            <Text>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Licence"
