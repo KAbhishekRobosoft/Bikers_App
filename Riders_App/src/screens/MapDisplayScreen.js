@@ -82,7 +82,7 @@ const MapDisplayScreen = ({navigation, route}) => {
   const [musicControlState, setMusicControlState] = useState(false);
 
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? '8%' : '8%') : '300%';
+  const top = width > height ? (Platform.OS === 'ios' ? '8%' : '8%') : (Platform.OS === "ios" ? 670 : 620);
   const top1 = width > height ? (Platform.OS === 'ios' ? 50 : 30) : 540;
   const musicControl = () => {
     setMusicControlState(!musicControlState);
@@ -192,7 +192,7 @@ const MapDisplayScreen = ({navigation, route}) => {
                       latitudeDelta: 0.1,
                       longitudeDelta: 0.1,
                     }}
-                    image={require('../assets/images/gasStation.jpg')}
+                    image={require('../assets/images/fuel.jpg')}
                     title={ele.name}
                   />
                 );
@@ -232,7 +232,7 @@ const MapDisplayScreen = ({navigation, route}) => {
             })}
           </MapView>
           <View>
-            <View style={{flex: 1, top: top1}}>
+            <View>
               <MapChatButton
                 setLatitude={setLatitude}
                 setLongitude={setLongitude}
@@ -242,7 +242,7 @@ const MapDisplayScreen = ({navigation, route}) => {
                 mobile= {route.params.mobile}
                 rider={route.params.riders}
               />
-              <View style={[styles.bottomContainer,]}>
+              <View style={[styles.bottomContainer,{top}]}>
                 <MapBottomBar
                   id={route.params.id}
                   musicControl={musicControl}
@@ -262,8 +262,8 @@ const MapDisplayScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   bottomContainer: {
     flex: 1,
-    marginTop: Platform.OS === 'android' ? "48.5%" : '30.1%',
   },
+  
   mapStyle: {
     position: 'absolute',
     top: 0,

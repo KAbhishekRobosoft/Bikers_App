@@ -22,7 +22,6 @@ const LogoutScreen = ({navigation}) => {
     try {
       dispatch(removeBikeType());
       dispatch(removeBikeData());
-      // dispatch(deSetRegistered())
       Toast.show('Logged Out');
       await AsyncStorage.removeItem('token');
     } catch (e) {

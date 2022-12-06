@@ -5,8 +5,6 @@ import {
   Text,
   ImageBackground,
   Image,
-  Modal,
-  ToastAndroid,
 } from 'react-native';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {getVerifiedKeys} from '../utils/Functions';
@@ -18,7 +16,6 @@ import Toast from 'react-native-simple-toast';
 
 const AllTripList = ({navigation, data}) => {
   const state = useSelector(state => state.milestone.initialState);
-  const [visible, setVisible] = useState(false);
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
@@ -32,7 +29,6 @@ const AllTripList = ({navigation, data}) => {
     <View>
       <Pressable
         onPress={() =>{
-        console.log(data)
           navigation.navigate('particularTrip', {
             data: data,
           })
@@ -72,13 +68,6 @@ const AllTripList = ({navigation, data}) => {
           </ImageBackground>
         </View>
       </Pressable>
-      <Modal visible={visible} animationType="slide">
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <Pressable onPress={() => setVisible(false)}>
-            <Text>HeLLO</Text>
-          </Pressable>
-        </View>
-      </Modal>
     </View>
   );
 };

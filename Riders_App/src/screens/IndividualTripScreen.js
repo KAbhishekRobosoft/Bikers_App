@@ -21,6 +21,7 @@ import {SearchUserTrips} from '../services/Auth';
 import {setToken, setUserData} from '../redux/AuthSlice';
 import Toast from 'react-native-simple-toast';
 import {addBikeData, addBikeType} from '../redux/AccessoriesSlice';
+import { setInitialState } from '../redux/MileStoneSlice';
 
 const AllTrips = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
@@ -103,7 +104,9 @@ const AllTrips = ({navigation}) => {
 
       <Pressable
         style={styles.addButton}
-        onPress={() => navigation.navigate('CreateTrip')}>
+        onPress={() => {navigation.navigate('CreateTrip')
+          dispatch(setInitialState(state))
+        }}>
         <Image source={require('../assets/images/addtrip.png')} />
       </Pressable>
     </SafeAreaView>

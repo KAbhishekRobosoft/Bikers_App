@@ -1,5 +1,7 @@
 import axios from 'axios';
+import Toast from 'react-native-simple-toast'
 const BASE_URL = 'https://ride-app-node.vercel.app/api/v1';
+
 
 export const register = async (values, haveBike) => {
   try {
@@ -395,7 +397,7 @@ export const deleteTrip = async (id, key) => {
     );
     return response.data;
   } catch (err) {
-    console.log('delete trip error occurred');
+      Toast.show("Network Error")
   }
 };
 
