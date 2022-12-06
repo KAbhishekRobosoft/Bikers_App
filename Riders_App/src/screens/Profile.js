@@ -231,7 +231,7 @@ const Profile = ({navigation}) => {
                 })
               ) : (
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Text style={{fontSize: 16, fontFamily: 'Roboto-Regular'}}>
+                  <Text style={{fontSize: 16, fontFamily: 'Roboto-Regular',color:'black'}}>
                     Not following anyone at the moment
                   </Text>
                 </View>
@@ -288,7 +288,7 @@ const Profile = ({navigation}) => {
                 })
               ) : (
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Text style={{fontSize: 16, fontFamily: 'Roboto-Regular'}}>
+                  <Text style={{fontSize: 16, fontFamily: 'Roboto-Regular',color:'black'}}>
                     No followers at the moment
                   </Text>
                 </View>
