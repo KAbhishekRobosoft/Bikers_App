@@ -312,7 +312,7 @@ export const MapChatButton = ({
   rider,
 }) => {
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? 80 : 80) : (Platform.OS === "ios" ? 480:480);
+  const top = width > height ? (Platform.OS === 'ios' ? 80 : 80) : (Platform.OS === "ios" ? 480:500);
   const left = width > height ? (Platform.OS === 'ios' ? '85%' : '85%') : '75%';
   const state= useSelector(state=>state.milestone.initialState)
   const dispatch= useDispatch()

@@ -1,31 +1,15 @@
-// import { StyleSheet, Text, View } from 'react-native'
-// import React from 'react'
 
-// const OwnerManualEdit = ({navigation}) => {
-//   return (
-//     <View>
-//       <Text>OwnerManualEditableScreen</Text>
-//     </View>
-//   )
-// }
-
-// export default OwnerManualEdit
-
-// const styles = StyleSheet.create({})
 
 import {Formik, Field} from 'formik';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
-  FlatList,
   SafeAreaView,
   StyleSheet,
-  TextInput,
   View,
   Text,
   Image,
   Pressable,
   ScrollView,
-  Alert,
 } from 'react-native';
 
 import {useSelector, useDispatch} from 'react-redux';
@@ -42,12 +26,10 @@ import KeyboardAvoidingView from 'react-native/Libraries/Components/Keyboard/Key
 
 const OwnerManualEdit = ({navigation}) => {
   const userDetails = useSelector(state => state.auth.userData);
-  //console.log(userDetails);
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
-
   const bikedata = useSelector(state => state.shop.allBikeData);
-  const keyboardVerticalOffset = Platform.OS === 'ios' ? 10 : 0;
+  
   const update = async values => {
     const obj = {
       city: values.city,
@@ -193,10 +175,9 @@ const OwnerManualEdit = ({navigation}) => {
     };
     try {
       const shareResponse = await Share.open(shareOptions);
-      console.log(JSON.stringify(shareResponse));
       Toast.show('Shared Successfully');
     } catch (error) {
-      console.log('error while sharing');
+        Toast.show("Error occurred while sharing")
     }
   };
 

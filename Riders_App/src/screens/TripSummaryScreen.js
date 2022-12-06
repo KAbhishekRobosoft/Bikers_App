@@ -111,7 +111,7 @@ export const TripSummary = ({navigation}) => {
                     longitude: ele.longitude,
                   }))}
                   strokeColor={'blue'}
-                  strokeWidth={2}
+                  strokeWidth={4}
                   lineDashPattern={[1]}
                 />
                 <Marker

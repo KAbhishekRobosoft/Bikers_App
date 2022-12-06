@@ -82,7 +82,7 @@ const MapDisplayScreen = ({navigation, route}) => {
   const [musicControlState, setMusicControlState] = useState(false);
 
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? '8%' : '8%') : (Platform.OS === "ios" ? 670 : 620);
+  const top = width > height ? (Platform.OS === 'ios' ? '8%' : '8%') : (Platform.OS === "ios" ? 670 : 670);
   const top1 = width > height ? (Platform.OS === 'ios' ? 50 : 30) : 540;
   const musicControl = () => {
     setMusicControlState(!musicControlState);
@@ -123,8 +123,8 @@ const MapDisplayScreen = ({navigation, route}) => {
                 longitude: parseFloat(ele.longitude),
               }))}
               strokeColor={'blue'}
-              strokeWidth={2}
-              lineDashPattern={[1]}
+              strokeWidth={5}
+              lineDashPattern={[3]}
             />
 
             <Marker
