@@ -7,13 +7,11 @@ import {
   Image,
   Pressable,
   FlatList,
-  Text,
   RefreshControl,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AllTripList from '../components/AllTripList';
 import {
-  addOwnerDetails,
   getBikeDetails,
   getOwnerDetails,
   UserTrips,
@@ -23,6 +21,7 @@ import {SearchUserTrips} from '../services/Auth';
 import {setToken, setUserData} from '../redux/AuthSlice';
 import Toast from 'react-native-simple-toast';
 import {addBikeData, addBikeType} from '../redux/AccessoriesSlice';
+import { setInitialState } from '../redux/MileStoneSlice';
 
 const AllTrips = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
@@ -43,8 +42,6 @@ const AllTrips = ({navigation}) => {
         });
         dispatch(addBikeType(BikeTypes));
         dispatch(addBikeData(bikeResponse));
-
-        console.log('%%%%', BikeTypes);
         dispatch(setUserData(response[0]));
         const tripdata = await UserTrips(key);
         setTripDetails(tripdata);
@@ -107,7 +104,9 @@ const AllTrips = ({navigation}) => {
 
       <Pressable
         style={styles.addButton}
-        onPress={() => navigation.navigate('CreateTrip')}>
+        onPress={() => {navigation.navigate('CreateTrip')
+          dispatch(setInitialState(state))
+        }}>
         <Image source={require('../assets/images/addtrip.png')} />
       </Pressable>
     </SafeAreaView>

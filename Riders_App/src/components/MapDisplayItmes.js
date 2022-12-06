@@ -41,7 +41,9 @@ export const MapNavBar = ({
 
   return (
     <View style={styles.navBar}>
-      <Pressable onPress={() => navigation.goBack()}>
+      <Pressable onPress={() => {
+        dispatch(setInitialState(state))
+        navigation.goBack()}}>
         <Icon
           name="md-arrow-back"
           color={'grey'}
@@ -68,8 +70,7 @@ export const MapNavBar = ({
               setData(res.results);
             })
             .catch(error => {
-              const {code, message} = error;
-              console.warn(code, message);
+              Toast.show("Network Error")
             });
         }}>
         <Image
@@ -99,8 +100,7 @@ export const MapNavBar = ({
               setData(res.results);
             })
             .catch(error => {
-              const {code, message} = error;
-              console.warn(code, message);
+              Toast.show("Network Error")
             });
         }}>
         <Image
@@ -130,8 +130,7 @@ export const MapNavBar = ({
               setData(res.results);
             })
             .catch(error => {
-              const {code, message} = error;
-              console.warn(code, message);
+              Toast.show("Network Error")
             });
         }}>
         <Image
@@ -161,8 +160,7 @@ export const MapNavBar = ({
               setData(res.results);
             })
             .catch(error => {
-              const {code, message} = error;
-              console.warn(code, message);
+              Toast.show("Network Error")
             });
         }}>
         <Image
@@ -181,12 +179,12 @@ export const MapNavBar = ({
               dispatch(setToken(cred))
               const resp= await endTrip(id,cred)
               if(resp !== undefined){
-                dispatch(setInitialState(state))
                 navigation.navigate('BottomTabLoginNavigation')
+                dispatch(setInitialState(state))
                 Toast.show('Trip Ended')
               }
               else{
-                Toast.show("Task Failed")
+                Toast.show("Couldn't end the trip")
               }
             },
           },
@@ -230,11 +228,8 @@ const styles = StyleSheet.create({
   gradientCreateButton: {
     height: 45,
     shadowColor: 'rgba(126,118,118,0.5)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
     width: '100%',
-    flex: 1,
+    alignItems:"center"
   },
 
   indicatorContiner: {
@@ -260,18 +255,10 @@ export default MapNavBar;
 export const MapBottomBar = ({
   musicControlIcon,
   musicControl,
-  fuel,
-  setFuel,
-  food,
-  setFood,
-  atm,
-  setAtm,
-  sleep,
-  setSleep,
   id,
 }) => {
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? '1%' : '1%') : 0;
+  const top = width > height ? (Platform.OS === 'ios' ? '10%' : '1%') : 0;
   const dispatch = useDispatch();
   const authData= useSelector(state=>state.auth)
 
@@ -280,7 +267,7 @@ export const MapBottomBar = ({
       start={{x: 0, y: 0}}
       end={{x: 1, y: 0}}
       colors={['#ED7E2B', '#F4A264']}
-      style={[styles.gradientCreateButton, {top}]}>
+      style={[styles.gradientCreateButton]}>
       <Pressable
         onPress={() => {
           musicControl();
@@ -296,13 +283,12 @@ export const MapBottomBar = ({
                 [{latitude: location.latitude, longitude: location.longitude}],
                 cred,
               );
-              if(resp === undefined){
-                Toast.show("Location updation unsuccessfull")
+              if(resp !== undefined){
+                Toast.show("Location updation successfull")
               }
             })
             .catch(error => {
-              const {code, message} = error;
-              console.warn(code, message);
+                Toast.show("Network Error")
             });
         }}>
         <Icon
@@ -326,17 +312,13 @@ export const MapChatButton = ({
   rider,
 }) => {
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? 80 : 80) : '275%';
+  const top = width > height ? (Platform.OS === 'ios' ? 80 : 80) : (Platform.OS === "ios" ? 480:480);
   const left = width > height ? (Platform.OS === 'ios' ? '85%' : '85%') : '75%';
   const state= useSelector(state=>state.milestone.initialState)
   const dispatch= useDispatch()
   return (
     <View
-      style={[
-        {top},
-        {left},
-        {flex: 1, position: 'absolute', alignItems: 'center'},
-      ]}>
+      style={{flex: 1, position: 'absolute', alignItems: 'center',top:top,left:left}}>
       <Pressable
         onPress={() => {
           GetLocation.getCurrentPosition({
@@ -349,8 +331,7 @@ export const MapChatButton = ({
            
             })
             .catch(error => {
-              const {code, message} = error;
-              console.warn(code, message);
+              Toast.show("Network Error")
             });
             dispatch(setInitialState(state))
         }}>

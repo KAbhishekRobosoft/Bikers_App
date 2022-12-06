@@ -215,9 +215,10 @@ export const GetParticularTripSummary = ({navigation, route}) => {
           </ScrollView>
         </View>
       )}
+
       {route.params.data.tripStatus === 'completed' &&
-        (images.length > 0 ? (
-          <ScrollView
+          (<>
+            <ScrollView
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
@@ -313,6 +314,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                 }}>
                 <BikeImageComponent data={route.params.data.riders.length} />
               </View>
+
               {images.length > 0 ? (
                 <Text
                   style={{
@@ -355,11 +357,14 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                         </Pressable>
                       );
                     })
-                  : null}
+                  :<View style={{marginTop:Platform.OS === "ios" ? 100 : 100}}>
+                    <Text style={{fontFamily:"Roboto-Regular",fontSize:16}}>No Images Posted</Text>
+                  </View>}
               </View>
             </View>
           </ScrollView>
-        ) : null)}
+          </>
+          )}
     </SafeAreaView>
   );
 };

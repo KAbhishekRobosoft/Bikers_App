@@ -3,19 +3,14 @@ import RegisterUserIntro from '../screens/RegisterUserIntro';
 import ImageSuccessPage from '../screens/ImageSuccessPage';
 import NewUserSubStack from './NewUserSubStack';
 import {useSelector} from 'react-redux';
-import PracScreen from '../screens/PracScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import BottomTabLoginNavigation from './BottomTabLoginNavigation';
-import CreateTrip from '../screens/CreateTripScreen';
 import UserLoginStack from './UserLoginNAvigationStack';
-import AddDetailsStack from './AddDetailsStack';
 import {AddPersonalDetails} from '../screens/AddPersonalDetailsScreen';
 import AddBikeDetails from '../screens/AddBikeDetailsScreen';
 
 const Stack = createNativeStackNavigator();
 
 function NewUserStack() {
-  const hadBike = useSelector(state => state.auth.userCredentials);
   const authData = useSelector(state => state.auth);
 
   return authData.registered ? (
