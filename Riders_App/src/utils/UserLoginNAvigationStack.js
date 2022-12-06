@@ -28,6 +28,7 @@ import AddBikeDetails from '../screens/AddBikeDetailsScreen';
 import ProfileUpdationScreen from '../screens/ProfileUpdationScreen';
 import ViewProfileScreen from '../screens/ViewProfileScreen';
 import ImageLikeCommentScreen from '../screens/ImageLikeCommentScreen';
+import NewUserSubStack from './NewUserSubStack';
 
 const Stack = createNativeStackNavigator();
 
@@ -175,6 +176,11 @@ function UserLoginStack() {
         options={{headerShown: false}}
         name="ImageLikeComment"
         component={ImageLikeCommentScreen}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="subStack"
+        component={NewUserSubStack}
       />
     </Stack.Navigator>
   );

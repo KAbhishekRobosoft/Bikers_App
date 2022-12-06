@@ -10,8 +10,6 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {GarageInputField} from '../components/InputFields';
-import {addBikeData, addBikeType} from '../redux/AccessoriesSlice';
-import {getBikeDetails} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
 import {getAllService} from '../services/Auth';
@@ -25,7 +23,7 @@ export const MyGarage = ({navigation}) => {
   const loading = useSelector(state => state.milestone.isLoading);
   const serviceData = useSelector(state => state.shop.serviceData);
   const state = useSelector(state => state.milestone.initialState);
-  const [day, setDay] = useState();
+  const [day, setDay] = useState([]);
 
   useEffect(() => {
     dispatch(deSetLoading());
@@ -34,11 +32,13 @@ export const MyGarage = ({navigation}) => {
         let cred = await getVerifiedKeys(authData.userToken);
         dispatch(setToken(cred));
         const response2 = await getAllService(cred);
-        // console.log(response2)
-        const time = response2[0].slotDate;
         const time2 = Date.now();
-        const diffTime = new Date(time).getTime() - time2;
-        setDay(diffTime);
+        const time = response2
+          .filter(ele => new Date(ele.slotDate) > Date.now())
+          .map(ele => new Date(ele.slotDate).getTime() - time2);
+        const minTime = Math.min(...time);
+        const due = Math.floor(minTime / (1000 * 3600 * 24));
+        setDay(due);
         dispatch(addAllServices(response2));
       } catch (e) {
         dispatch(addAllServices([]));
@@ -63,9 +63,11 @@ export const MyGarage = ({navigation}) => {
         {serviceData.length > 0 ? (
           new Date(serviceData[0]?.slotDate) >= Date.now() ? (
             <View style={styles.serviceDueView}>
-              <Text style={styles.daysText}>
-                {Math.floor(day / (1000 * 3600 * 24))} days
-              </Text>
+              {day <= 1 ? (
+                <Text style={styles.daysText}>{day} day</Text>
+              ) : (
+                <Text style={styles.daysText}>{day} days</Text>
+              )}
               <Text style={styles.daysDescription}>Next Service due</Text>
             </View>
           ) : (

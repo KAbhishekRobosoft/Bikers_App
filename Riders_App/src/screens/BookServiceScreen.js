@@ -38,7 +38,6 @@ export const BookService = ({navigation}) => {
   const Data = useSelector(state => state.shop.bikeType);
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
-  const keyboardVerticalOffset = Platform.OS === 'ios' ? 10 : 0;
   const data = [
     {
       key: 'Free service',
@@ -106,24 +105,23 @@ export const BookService = ({navigation}) => {
   };
   return (
     <SafeAreaView style={{backgroundColor: '#FFFFFF', flex: 1}}>
+      <View style={[styles.header, styles.shadow]}>
+        <Pressable
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <Icon
+            name="md-arrow-back"
+            color={'white'}
+            size={25}
+            style={styles.icon}
+          />
+        </Pressable>
+        <Text style={styles.headerText}>Book a Service</Text>
+      </View>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={keyboardVerticalOffset}
-        style={styles.container}>
-        <View style={[styles.header, styles.shadow]}>
-          <Pressable
-            onPress={() => {
-              navigation.goBack();
-            }}>
-            <Icon
-              name="md-arrow-back"
-              color={'white'}
-              size={25}
-              style={styles.icon}
-            />
-          </Pressable>
-          <Text style={styles.headerText}>Book a Service</Text>
-        </View>
+        >
         <ScrollView
           style={{
             width: '80%',
@@ -150,7 +148,7 @@ export const BookService = ({navigation}) => {
               };
               navigation.navigate('SearchService', obj);
             }}>
-            {({ handleSubmit, values}) => (
+            {({handleSubmit, values}) => (
               <>
                 <View style={styles.firstInputField}>
                   <Field
@@ -226,10 +224,7 @@ export const BookService = ({navigation}) => {
                   </InsetShadow>
                 </View>
                 <View style={styles.btnView}>
-                  <ButtonLarge
-                    title="FIND A DEALER"
-                    onPress={handleSubmit}
-                  />
+                  <ButtonLarge title="FIND A DEALER" onPress={handleSubmit} />
                 </View>
               </>
             )}
