@@ -15,20 +15,25 @@ import {useDispatch, useSelector} from 'react-redux';
 import {register} from '../services/Auth';
 import {setOtpVerfied} from '../redux/AuthSlice';
 import Toast from 'react-native-simple-toast';
+import { sendOtp } from '../services/Auth';
+import { verifyOtp } from '../services/Auth';
 
 const OtpScreen = ({navigation}) => {
   const [count, setCount] = useState(20);
-
+  const auth= useSelector(state=>state.auth)
+  const data = useSelector(state => state.auth);
+  const [code, setCode] = useState('');
+  const dispatch = useDispatch();
   useEffect(() => {
+    // setTimeout(async()=>{
+    //       const response= await sendOtp(auth.userCredentials.mobile)
+    //       setCode(response.otp)     
+    // },500)
     count > 0 &&
       setTimeout(() => {
         setCount(count - 1);
       }, 1000);
   }, [count]);
-
-  const data = useSelector(state => state.auth);
-  const [code, setCode] = useState('');
-  const dispatch = useDispatch();
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>

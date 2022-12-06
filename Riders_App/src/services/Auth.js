@@ -87,9 +87,9 @@ export const sendOtp = async mobileNumber => {
     const response = await axios.post(`${BASE_URL}/sendOtp`, {
       destination: mobileNumber,
     });
-    console.log(response.data);
+    return response.data
   } catch (error) {
-    console.log('Error Occured');
+    Toast.show("Error occurred")
   }
 };
 
@@ -100,7 +100,7 @@ export const verifyOtp = async otp => {
     });
     return response.data.message;
   } catch (error) {
-    console.log('Error Occured');
+    Toast.show("Error Occurred")
   }
 };
 

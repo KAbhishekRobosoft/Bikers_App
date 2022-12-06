@@ -48,7 +48,7 @@ const CreateTrip = ({navigation}) => {
           dispatch(setLoading());
         })
         .catch(error => {
-          Toast.show('Network Error');
+          Toast.show('Turn on the location');
         });
     }, 500);
   }, []);
