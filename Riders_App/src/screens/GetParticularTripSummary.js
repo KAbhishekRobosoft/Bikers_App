@@ -165,7 +165,9 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                   </Text>
                   <View style={styles.lineView}></View>
                   <Text style={styles.fromToText}>
-                    {route.params.data.destination[0].place.substring(0, 15)}..
+                  {route.params.data.destination[0].place.length > 12
+                        ? route.params.data.destination[0].place.substring(0, 10) + '..'
+                        : route.params.data.destination[0].place.substring(0, 11)}
                   </Text>
                 </View>
               </View>
@@ -302,8 +304,9 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                     </Text>
                     <View style={styles.lineView}></View>
                     <Text style={styles.fromToText}>
-                      {route.params.data.destination[0].place.substring(0, 11)}
-                      ..
+                      {route.params.data.destination[0].place.length > 12
+                        ? route.params.data.destination[0].place.substring(0, 10) + '..'
+                        : route.params.data.destination[0].place.substring(0, 11)}
                     </Text>
                   </View>
                 </View>

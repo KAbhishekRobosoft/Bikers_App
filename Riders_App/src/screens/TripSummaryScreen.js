@@ -7,7 +7,7 @@ import {
   Image,
   Pressable,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
@@ -48,7 +48,7 @@ export const TripSummary = ({navigation}) => {
       );
       setRoute(resp.legs[0].points);
       dispatch(setLoading());
-      setTimeout(()=>{
+      setTimeout(() => {
         mapRef.current.animateToRegion(
           {
             latitude: parseFloat(tripDetails.source[0].latitude),
@@ -58,7 +58,7 @@ export const TripSummary = ({navigation}) => {
           },
           3 * 1000,
         );
-      },500)
+      }, 500);
     }, 500);
   }, []);
   if (loading) {
@@ -137,7 +137,11 @@ export const TripSummary = ({navigation}) => {
                 <Image source={require('../assets/images/motorcycle.png')} />
                 <Text style={styles.tripName}>{tripDetails?.tripName}</Text>
                 <Text style={styles.dateText}>
-                  {tripDetails?.startDate?.substring(8, 10)}{' '}{tripDetails?.startDate?.substring(4, 7)}{' '}-{' '}{tripDetails?.endDate?.substring(8, 10)}{' '}{tripDetails?.endDate?.substring(4, 7)} {tripDetails?.endDate?.substring(11, 15)}
+                  {tripDetails?.startDate?.substring(8, 10)}{' '}
+                  {tripDetails?.startDate?.substring(4, 7)} -{' '}
+                  {tripDetails?.endDate?.substring(8, 10)}{' '}
+                  {tripDetails?.endDate?.substring(4, 7)}{' '}
+                  {tripDetails?.endDate?.substring(11, 15)}
                 </Text>
                 <Text style={styles.timeText}>
                   {tripDetails?.startTime?.substring(15, 21)}
@@ -148,7 +152,11 @@ export const TripSummary = ({navigation}) => {
                   </Text>
                   <View style={styles.lineView}></View>
                   <Text style={styles.fromToText}>
-                    {tripDetails?.destination[0]?.place.substring(0,10)}..
+                    {tripDetails?.destination[0]?.place
+                      .length > 12
+                      ? tripDetails?.destination[0]?.place.substring(0, 10) +
+                        '..'
+                      : tripDetails?.destination[0]?.place.substring(0, 11)}
                   </Text>
                 </View>
               </View>
@@ -171,7 +179,9 @@ export const TripSummary = ({navigation}) => {
                   <Text style={styles.text}>Invite other riders</Text>
                 )}
                 {contactsData.addTripContacts.length > 0 && (
-                  <BikeImageComponent data={contactsData.addTripContacts.length}/>
+                  <BikeImageComponent
+                    data={contactsData.addTripContacts.length}
+                  />
                 )}
               </View>
               <View style={styles.buttonView}>
@@ -299,7 +309,7 @@ const styles = StyleSheet.create({
   fromToView: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
   },
   fromToText: {
     fontFamily: 'Roboto-Regular',
