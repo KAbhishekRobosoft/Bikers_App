@@ -43,6 +43,7 @@ const MapDisplayScreen = ({navigation, route}) => {
     dispatch(deSetLoading());
     setTimeout(async () => {
       try{
+        console.log(latitude)
       const dir = await calculateRoute(
         latitude,
         longitude,
@@ -66,11 +67,11 @@ const MapDisplayScreen = ({navigation, route}) => {
         catch{
           Toast.show("Failed to animate direction")
         }
-      },100)}
+      },500)}
       catch(er){
         Toast.show("Error Occurred")
       }
-    }, 500);
+    }, 1000);
   }, [state]);
 
   const [atm, setAtm] = useState(false);
@@ -82,8 +83,7 @@ const MapDisplayScreen = ({navigation, route}) => {
   const [musicControlState, setMusicControlState] = useState(false);
 
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? '8%' : '8%') : (Platform.OS === "ios" ? 670 : 670);
-  const top1 = width > height ? (Platform.OS === 'ios' ? 50 : 30) : 540;
+  const top = width > height ? (Platform.OS === 'ios' ? '8%' : 260) : (Platform.OS === "ios" ? 670 : 670);
   const musicControl = () => {
     setMusicControlState(!musicControlState);
   };
@@ -111,6 +111,7 @@ const MapDisplayScreen = ({navigation, route}) => {
           data={data}
           setData={setData}
           id={route.params.id}
+          mobile={route.params.mobile}
         />
         <View style={{flex: 1}}>
           <MapView

@@ -16,34 +16,31 @@ import {getVerifiedKeys} from '../utils/Functions';
 import {useDispatch, useSelector} from 'react-redux';
 import {setToken} from '../redux/AuthSlice';
 import PopUpMenu from './PopUpMenu';
-import { endTrip } from '../services/Auth';
-import Toast from 'react-native-simple-toast'
-import { setInitialState } from '../redux/MileStoneSlice';
-
+import {endTrip} from '../services/Auth';
+import Toast from 'react-native-simple-toast';
+import {setInitialState} from '../redux/MileStoneSlice';
 
 export const MapNavBar = ({
   navigation,
-  atm,
   setAtm,
-  food,
   setFood,
-  fuel,
   setFuel,
-  sleep,
   setSleep,
-  data,
   setData,
-  id
+  id,
+  mobile,
 }) => {
   const dispatch = useDispatch();
-  const auth= useSelector(state=>state.auth)
-  const state= useSelector(state=>state.milestone.initialState)
+  const auth = useSelector(state => state.auth);
+  const state = useSelector(state => state.milestone.initialState);
 
   return (
     <View style={styles.navBar}>
-      <Pressable onPress={() => {
-        dispatch(setInitialState(state))
-        navigation.goBack()}}>
+      <Pressable
+        onPress={() => {
+          navigation.goBack();
+          dispatch(setInitialState(state));
+        }}>
         <Icon
           name="md-arrow-back"
           color={'grey'}
@@ -70,7 +67,7 @@ export const MapNavBar = ({
               setData(res.results);
             })
             .catch(error => {
-              Toast.show("Network Error")
+              Toast.show('Turn on the location');
             });
         }}>
         <Image
@@ -100,7 +97,7 @@ export const MapNavBar = ({
               setData(res.results);
             })
             .catch(error => {
-              Toast.show("Network Error")
+              Toast.show('Turn on the location');
             });
         }}>
         <Image
@@ -130,7 +127,7 @@ export const MapNavBar = ({
               setData(res.results);
             })
             .catch(error => {
-              Toast.show("Network Error")
+              Toast.show('Turn on the location');
             });
         }}>
         <Image
@@ -160,7 +157,7 @@ export const MapNavBar = ({
               setData(res.results);
             })
             .catch(error => {
-              Toast.show("Network Error")
+              Toast.show('Turn on the location');
             });
         }}>
         <Image
@@ -175,17 +172,20 @@ export const MapNavBar = ({
           {
             title: 'End Trip',
             action: async () => {
-              const cred= await getVerifiedKeys(auth.userToken)
-              dispatch(setToken(cred))
-              const resp= await endTrip(id,cred)
-              if(resp !== undefined){
-                navigation.navigate('BottomTabLoginNavigation')
-                dispatch(setInitialState(state))
-                Toast.show('Trip Ended')
+              if (auth.userCredentials.mobile === mobile) {
+
+                const cred = await getVerifiedKeys(auth.userToken);
+                dispatch(setToken(cred));
+                const resp = await endTrip(id, cred);
+                if (resp !== undefined) {
+                  navigation.navigate('BottomTabLoginNavigation');
+                  dispatch(setInitialState(state));
+                  Toast.show('Trip Ended');
+                } else {
+                  Toast.show("Couldn't end the trip");
+                }
               }
-              else{
-                Toast.show("Couldn't end the trip")
-              }
+
             },
           },
           {
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
     height: 45,
     shadowColor: 'rgba(126,118,118,0.5)',
     width: '100%',
-    alignItems:"center"
+    alignItems: 'center',
   },
 
   indicatorContiner: {
@@ -252,15 +252,11 @@ const styles = StyleSheet.create({
 
 export default MapNavBar;
 
-export const MapBottomBar = ({
-  musicControlIcon,
-  musicControl,
-  id,
-}) => {
+export const MapBottomBar = ({musicControlIcon, musicControl, id}) => {
   const {height, width} = useWindowDimensions();
   const top = width > height ? (Platform.OS === 'ios' ? '10%' : '1%') : 0;
   const dispatch = useDispatch();
-  const authData= useSelector(state=>state.auth)
+  const authData = useSelector(state => state.auth);
 
   return (
     <LinearGradient
@@ -283,12 +279,12 @@ export const MapBottomBar = ({
                 [{latitude: location.latitude, longitude: location.longitude}],
                 cred,
               );
-              if(resp !== undefined){
-                Toast.show("Location updation successfull")
+              if (resp !== undefined) {
+                Toast.show('Location updation successfull');
               }
             })
             .catch(error => {
-                Toast.show("Network Error")
+              Toast.show('Network Error');
             });
         }}>
         <Icon
@@ -312,13 +308,26 @@ export const MapChatButton = ({
   rider,
 }) => {
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? 80 : 80) : (Platform.OS === "ios" ? 480:500);
+  const top =
+    width > height
+      ? Platform.OS === 'ios'
+        ? 80
+        : 80
+      : Platform.OS === 'ios'
+      ? 480
+      : 500;
   const left = width > height ? (Platform.OS === 'ios' ? '85%' : '85%') : '75%';
-  const state= useSelector(state=>state.milestone.initialState)
-  const dispatch= useDispatch()
+  const state = useSelector(state => state.milestone.initialState);
+  const dispatch = useDispatch();
   return (
     <View
-      style={{flex: 1, position: 'absolute', alignItems: 'center',top:top,left:left}}>
+      style={{
+        flex: 1,
+        position: 'absolute',
+        alignItems: 'center',
+        top: top,
+        left: left,
+      }}>
       <Pressable
         onPress={() => {
           GetLocation.getCurrentPosition({
@@ -328,12 +337,11 @@ export const MapChatButton = ({
             .then(async location => {
               setLatitude(location.latitude);
               setLongitude(location.longitude);
-           
+              dispatch(setInitialState(state));
             })
             .catch(error => {
-              Toast.show("Network Error")
+              Toast.show('Turn on the location');
             });
-            dispatch(setInitialState(state))
         }}>
         <View style={styles.indicatorContiner}>
           <Icon1 name="gps-fixed" color={'#A4A4A4'} size={25} />
@@ -343,9 +351,9 @@ export const MapChatButton = ({
         onPress={() => {
           navigation.navigate('ChatScreen', {
             tripName: tripName,
-            id:id,
-            mobile:mobile,
-            riders:rider
+            id: id,
+            mobile: mobile,
+            riders: rider,
           });
         }}>
         <Image source={require('../assets/images/wechat.png')} />
