@@ -188,7 +188,7 @@ export const MapNavBar = ({
                 Toast.show("Only admin can end the trip")
               }
 
-            },
+            }
           },
           {
             title: 'Clear',
