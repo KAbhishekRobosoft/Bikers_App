@@ -261,7 +261,7 @@ export const getSortedTripDetails = async token => {
     console.log(err);
   }
 };
-export const searchProducts = async (value, token) => {
+export const searchProducts = async (value,token) => {
   try {
     const response = await axios.post(
       `${BASE_URL}/product/searchProducts`,

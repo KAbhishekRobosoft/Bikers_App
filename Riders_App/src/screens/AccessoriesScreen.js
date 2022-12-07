@@ -9,56 +9,57 @@ import {
   Pressable,
   ScrollView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import {useDispatch, useSelector} from 'react-redux';
 import {searchProducts} from '../services/Auth';
 import {LikeProducts} from '../services/Auth';
-import {addAccessoriesData} from '../redux/AccessoriesSlice';
-import {addLiked} from '../redux/AccessoriesSlice';
-import {disLiked} from '../redux/AccessoriesSlice';
-import { getVerifiedKeys } from '../utils/Functions';
+import {getVerifiedKeys} from '../utils/Functions';
+import {setInitialState} from '../redux/MileStoneSlice';
+import {setToken} from '../redux/AuthSlice';
+import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
 
 export const Accessories = ({navigation}) => {
-
   const [text, setText] = useState('');
-  const accessories = useSelector(state => state.shop.accessoriesData);
+  const [accessories, setAccessories] = useState([]);
+  const number = useSelector(state => state.auth.userCredentials.mobile);
   const dispatch = useDispatch();
-  const auth= useSelector(state=>state.auth)
+  const auth = useSelector(state => state.auth);
+  const state = useSelector(state => state.milestone.initialState);
+  const loading = useSelector(state => state.milestone.isLoading);
+
+  useEffect(() => {
+
+    setTimeout(async () => {
+      const key = await getVerifiedKeys(auth.userToken);
+      dispatch(setToken(key));
+      const Data = await searchProducts(text, key);
+      setAccessories(Data);
+    });
+  }, [state]);
 
   const handleSearch = async value => {
     setText(value);
-    const key= await getVerifiedKeys(auth.userToken)
-    const Data = await searchProducts(value,key);
-    const trimmedData = Data.map(ele => {
-      let liked = false;
-      if (ele.likedBy.length > 0) {
-        liked = true;
-      }
-      return {
-        _id: ele._id,
-        productImage: ele.productImage,
-        productName: ele.productName,
-        productPrice: ele.productPrice,
-        likedBy: ele.likedBy,
-        liked: liked,
-      };
-    });
-    dispatch(addAccessoriesData(trimmedData));
+    const key = await getVerifiedKeys(auth.userToken);
+    dispatch(setToken(key));
+    const Data = await searchProducts(value, key);
+    setAccessories(Data);
   };
 
-
   const handleLike = async items => {
-    const key= await getVerifiedKeys(auth.userToken)
-    const product = await LikeProducts(items._id,key);
-    dispatch(addLiked(items));
+    const key = await getVerifiedKeys(auth.userToken);
+    dispatch(setToken(key));
+    const product = await LikeProducts(items._id, key);
+    dispatch(setInitialState(state));
   };
 
   const handleUnLike = async items => {
-    const key= await getVerifiedKeys(auth.userToken)
-    const product = await LikeProducts(items._id,key);
-    dispatch(disLiked(items));
+    const key = await getVerifiedKeys(auth.userToken);
+    dispatch(setToken(key));
+    const product = await LikeProducts(items._id, key);
+    dispatch(setInitialState(state));
   };
 
   return (
@@ -108,65 +109,65 @@ export const Accessories = ({navigation}) => {
           />
         </View>
       </View>
-
-      {text ? (
-        <ScrollView
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-          style={{marginTop: 20}}>
-          <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
-            {accessories.length > 0 ? accessories.map(item => {
-              return (
-                <View style={styles.mainView} key={item._id}>
-                  <View style={styles.subView}>
-                    <Text style={styles.dateText}>18 NOV</Text>
-                    {!item.liked ? (
-                      <Pressable onPress={() => handleLike(item)}>
-                        <FontAwesome
-                          name="thumbs-up"
-                          color={'rgba(150,75,0,0.5)'}
-                          size={18}
-                          solid={false}
-                        />
-                      </Pressable>
-                    ) : (
-                      <Pressable onPress={() => handleUnLike(item)}>
-                        <FontAwesome
-                          name="thumbs-up"
-                          color={'rgba(150,75,0,0.5)'}
-                          size={18}
-                          solid={true}
-                        />
-                      </Pressable>
-                    )}
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        style={{marginTop: 20}}>
+        <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
+          {accessories.length > 0
+            ? accessories.map(item => {
+                return (
+                  <View style={styles.mainView} key={item._id}>
+                    <View style={styles.subView}>
+                      <Text style={styles.dateText}>18 NOV</Text>
+                      {item.likedBy.length > 0 ? ( 
+                        item.likedBy.filter(ele => ele.mobile === number)
+                          .length > 0 ? (
+                          <Pressable onPress={() => handleUnLike(item)}>
+                            <FontAwesome
+                              name="thumbs-up"
+                              color={'rgba(150,75,0,0.5)'}
+                              size={18}
+                              solid={true}
+                            />
+                          </Pressable>
+                        ) : (
+                          <Pressable onPress={() => handleLike(item)}>
+                            <FontAwesome
+                              name="thumbs-up"
+                              color={'rgba(150,75,0,0.5)'}
+                              size={18}
+                              solid={false}
+                            />
+                          </Pressable>
+                        )
+                      ) : (
+                        <Pressable onPress={() => handleLike(item)}>
+                          <FontAwesome
+                            name="thumbs-up"
+                            color={'rgba(150,75,0,0.5)'}
+                            size={18}
+                            solid={false}
+                          />
+                        </Pressable>
+                      )}
+                    </View>
+                    <Image
+                      source={{uri: 'https' + item.productImage.substring(4)}}
+                      style={styles.image}
+                    />
+                    <View style={styles.costTitleText}>
+                      <Text style={styles.titleText}>{item.productName}</Text>
+                      <Text style={styles.costText}>
+                        Rs {item.productPrice} /-
+                      </Text>
+                    </View>
                   </View>
-                  <Image
-                    source={{uri: 'https' + item.productImage.substring(4)}}
-                    style={styles.image}
-                  />
-                  <View style={styles.costTitleText}>
-                    <Text style={styles.titleText}>{item.productName}</Text>
-                    <Text style={styles.costText}>Rs {item.productPrice} /-</Text>
-                  </View>
-                </View>
-              );
-            }):null}
-          </View>
-        </ScrollView>
-      ) : (
-        <>
-          <Text
-            style={{
-              alignSelf: 'center',
-              marginTop: '50%',
-              fontFamily: 'Roboto-Medium',
-              fontSize: 20,
-              color: '#ED7E2B'
-            }}>
-            Search for Gloves, Jacket, Shoes!!
-          </Text>
-        </>
-      )}
+                );
+              })
+            : null}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -234,7 +235,7 @@ const styles = StyleSheet.create({
   search: {
     marginHorizontal: '14%',
     tintColor: 'rgba(0,0,0,0.54)',
-    marginTop: Platform.OS === 'ios' ? -2 : 8 , 
+    marginTop: Platform.OS === 'ios' ? -2 : 8,
   },
   container: {
     marginHorizontal: 40,

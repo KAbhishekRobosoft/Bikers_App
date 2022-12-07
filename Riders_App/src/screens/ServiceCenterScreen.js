@@ -7,6 +7,7 @@ import {
   Pressable,
   ScrollView,
   Dimensions,
+  Platform,
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -15,13 +16,14 @@ import ButtonLarge from '../components/Buttons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useRoute} from '@react-navigation/native';
 import DatePicker from 'react-native-date-picker';
-
-const windowWidth = Dimensions.get('screen').width;
+import { useWindowDimensions } from 'react-native';
+//const windowWidth = Dimensions.get('screen').width;
 
 const ServiceCenterScreen = ({navigation}) => {
   const [date, setDate] = useState(new Date());
   const [time, setTimer] = useState(new Date());
-
+  const {width,height}=useWindowDimensions()
+  const paddingHorizontal=width>height?(Platform.OS==='ios'?57:25):38
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
 
@@ -29,20 +31,23 @@ const ServiceCenterScreen = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.main}>
-      <Image
-        style={styles.img}
-        source={{uri: 'https' + route.params.dealerImage.substring(4)}}
-      />
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Icon
-          style={styles.backBtn}
-          name="md-arrow-back"
-          size={25}
-          color="white"
-        />
-      </TouchableOpacity>
       <ScrollView style={styles.scrollView}>
-        <View style={styles.ratingComponent}>
+        <View>
+          <Image
+            style={styles.img}
+            source={{uri: 'https' + route.params.dealerImage.substring(4)}}
+          />
+        </View>
+
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon
+            style={styles.backBtn}
+            name="md-arrow-back"
+            size={25}
+            color="white"
+          />
+        </TouchableOpacity>
+        <View style={[styles.ratingComponent,{paddingHorizontal:paddingHorizontal}]}>
           <Star rating={Math.floor(route.params.dealerRating)} />
         </View>
 
@@ -94,9 +99,9 @@ const ServiceCenterScreen = ({navigation}) => {
                 slotDate: date.toString(),
                 time: value.toString(),
                 mobileNumber: route.params.mobileNumber,
-                dealerPhoneNumber: route.params.dealerPhoneNumber
+                dealerPhoneNumber: route.params.dealerPhoneNumber,
               };
-              navigation.navigate('BookingDetails',obj3);
+              navigation.navigate('BookingDetails', obj3);
             }}
             onCancel={() => {
               setOpen2(false);
@@ -130,7 +135,6 @@ const styles = StyleSheet.create({
     bottom: 1,
   },
   scrollView: {
-    marginTop: 260,
     width: '100%',
   },
   textContainer: {
@@ -141,7 +145,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   ratingComponent: {
-    paddingHorizontal: 22,
+  
+    marginTop: 250,
   },
   textView1: {
     flexDirection: 'row',
@@ -179,7 +184,7 @@ const styles = StyleSheet.create({
     lineHeight: 18,
   },
   btn: {
-    marginTop: 20,
+    marginVertical: 20,
     alignSelf: 'center',
   },
 });

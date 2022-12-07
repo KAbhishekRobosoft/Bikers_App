@@ -120,8 +120,7 @@ export const BookService = ({navigation}) => {
         <Text style={styles.headerText}>Book a Service</Text>
       </View>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        >
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <ScrollView
           style={{
             width: '80%',
@@ -139,14 +138,22 @@ export const BookService = ({navigation}) => {
               comment: '',
             }}
             onSubmit={values => {
-              const obj = {
-                mobileNumber: values.mobileNumber,
-                vehicleType: selectedVehicle,
-                vehicleNumber: values.vehicleNumber,
-                serviceType: selected,
-                comment: comment,
-              };
-              navigation.navigate('SearchService', obj);
+              if (
+                (selectedVehicle,
+                values.vehicleNumber,
+                selected != null)
+              ) {
+                const obj = {
+                  mobileNumber: values.mobileNumber,
+                  vehicleType: selectedVehicle,
+                  vehicleNumber: values.vehicleNumber,
+                  serviceType: selected,
+                  comment: comment,
+                };
+                navigation.navigate('SearchService', obj);
+              } else {
+                Toast.show('Enter all Details');
+              }
             }}>
             {({handleSubmit, values}) => (
               <>

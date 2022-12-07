@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, View, Text, Pressable} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {Star} from './StarComponent';
@@ -6,22 +6,21 @@ import {getVerifiedKeys} from '../utils/Functions';
 import {setToken} from '../redux/AuthSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {getParticularService} from '../services/Auth';
-import { month1 } from '../utils/Functions';
+import {month1} from '../utils/Functions';
 export const NewServiceRecordDetails = ({navigation, data}) => {
-
   const id = data._id;
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
-  const [rate, setRate]  = useState(3)
+  const [rate, setRate] = useState(3);
 
   const handlePress = async () => {
     const key = await getVerifiedKeys(authData.userToken);
     dispatch(setToken(key));
     const response = await getParticularService(key, id);
-    navigation.navigate('BookingSummary', response)
-    setRate(response.ratings)
+    navigation.navigate('BookingSummary', response);
+    setRate(response.ratings);
   };
-  
+
   return (
     <Pressable onPress={handlePress}>
       <View style={[styles.container, styles.shadow]}>
@@ -44,21 +43,23 @@ export const NewServiceRecordDetails = ({navigation, data}) => {
               flexDirection: 'row',
               marginLeft: '5%',
               alignItems: 'center',
+              width: '30%',
             }}>
             <Text style={[styles.dateText, {color: '#ED7F2C'}]}>
               {data.slotDate.substring(8, 10)}
             </Text>
             <View style={{marginLeft: '5%'}}>
-              <Text style={[styles.monthText, {color: '#ED7F2C'}]}>{month1[data.slotDate.substring(5,7)]}</Text>
+              <Text style={[styles.monthText, {color: '#ED7F2C'}]}>
+                {month1[data.slotDate.substring(5, 7)]}
+              </Text>
               <Text style={[styles.yearText, {color: '#ED7F2C'}]}>
                 {data.slotDate.substring(0, 4)}
               </Text>
             </View>
           </View>
           <View style={styles.line}></View>
-          <View style={{justifyContent: 'flex-start', right: 20}}>
+          <View style={{width: '30%', right: '50%'}}>
             <Text style={styles.serviceText}>{data.serviceType}</Text>
-            <Star rating={rate} />
           </View>
         </View>
       </View>
@@ -66,7 +67,6 @@ export const NewServiceRecordDetails = ({navigation, data}) => {
   );
 };
 export const PastServiceRecordDetails = ({navigation, data}) => {
-
   const id = data._id;
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
@@ -75,7 +75,7 @@ export const PastServiceRecordDetails = ({navigation, data}) => {
     const key = await getVerifiedKeys(authData.userToken);
     dispatch(setToken(key));
     const response = await getParticularService(key, id);
-    navigation.navigate('BookingSummary', response)
+    navigation.navigate('BookingSummary', response);
   };
 
   return (
@@ -105,16 +105,17 @@ export const PastServiceRecordDetails = ({navigation, data}) => {
               {data.slotDate.substring(8, 10)}
             </Text>
             <View style={{marginLeft: '5%'}}>
-              <Text style={[styles.monthText, {color: '#1CB391'}]}>{month1[data.slotDate.substring(5,7)]}</Text>
+              <Text style={[styles.monthText, {color: '#1CB391'}]}>
+                {month1[data.slotDate.substring(5, 7)]}
+              </Text>
               <Text style={[styles.yearText, {color: '#1CB391'}]}>
                 {data.slotDate.substring(0, 4)}
               </Text>
             </View>
           </View>
           <View style={styles.line}></View>
-          <View style={{justifyContent: 'flex-start', right: 20}}>
+          <View style={{width: '30%', right: '50%'}}>
             <Text style={styles.serviceText}>{data.serviceType}</Text>
-            <Star rating={3} />
           </View>
         </View>
       </View>
@@ -137,7 +138,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 100,
     marginTop: 20,
-    // borderWidth: 1
   },
   shadow: {
     backgroundColor: '#FFFFFF',
@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
     height: 62,
     opacity: 0.17,
     borderColor: '#979797;',
+    width: '10%',
   },
 
   textContainer: {
@@ -194,7 +195,6 @@ const styles = StyleSheet.create({
   serviceText: {
     color: '#6F6D6D',
     fontFamily: 'Roboto',
-    fontSize: 12,
-    left: '5%',
+    fontSize: 15,
   },
 });
