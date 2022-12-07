@@ -5,10 +5,8 @@ import {
   SafeAreaView,
   Pressable,
   ScrollView,
-  Image,
   TextInput,
   Platform,
-  ToastAndroid,
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -159,6 +157,8 @@ const styles = StyleSheet.create({
     height: 30,
     justifyContent: 'flex-end',
     paddingHorizontal: 20,
+    top:10,
+    left:10
   },
   scrollView: {
     width: '100%',
