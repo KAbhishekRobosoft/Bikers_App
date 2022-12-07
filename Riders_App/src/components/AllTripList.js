@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, ImageBackground, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  ImageBackground,
+  Image,
+  Alert,
+} from 'react-native';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {getVerifiedKeys} from '../utils/Functions';
 import {deleteTrip} from '../services/Auth';
@@ -8,17 +15,31 @@ import {setInitialState} from '../redux/MileStoneSlice';
 import {month1} from '../utils/Functions';
 import Toast from 'react-native-simple-toast';
 import LinearGradient from 'react-native-linear-gradient';
+import {setToken} from '../redux/AuthSlice';
 
 const AllTripList = ({navigation, data}) => {
   const state = useSelector(state => state.milestone.initialState);
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
-  const handleClose = async id => {
+  const handleYes = async id => {
     const key = await getVerifiedKeys(authData.userToken);
+    dispatch(setToken(key));
     const reponse = await deleteTrip(id, key);
     Toast.show('trip deleted successfully');
     dispatch(setInitialState(state));
+  };
+  const handleClose = async id => {
+    Alert.alert('Confirm', 'Are you sure you want to delete the trip?', [
+      {
+        text: 'Yes',
+        onPress: () => handleYes(id),
+      },
+      {
+        text: 'No',
+        onPress: () => Toast.show('Trip not deleted'),
+      },
+    ]);
   };
   return (
     <View>
@@ -35,9 +56,8 @@ const AllTripList = ({navigation, data}) => {
             <LinearGradient
               start={{x: 0, y: 1}}
               end={{x: 1, y: 1}}
-              locations={[0.2,1]}
-              colors={['rgba(0,0,0,0.85)', 'rgba(255,255,255,0)']}
-              >
+              locations={[0.2, 1]}
+              colors={['rgba(0,0,0,0.85)', 'rgba(255,255,255,0)']}>
               <View style={styles.listContainer}>
                 <View style={styles.textContainer}>
                   <Text style={styles.placeName}>{data.tripName}</Text>

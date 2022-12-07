@@ -7,53 +7,10 @@ const asseccoriesSlice = createSlice({
     allBikeData: [],
     fliteredBikeData: [],
     selectedBikeData:[],
-    accessoriesData: [],
-    filterAccessoriesData: [],
     serviceData: [],
   },
 
   reducers: {
-    addAccessoriesData: (state, action) => {
-      state.accessoriesData = action.payload;
-      state.filterAccessoriesData = action.payload;
-    },
-    addLiked: (state, action) => {
-      state.accessoriesData = state.accessoriesData.map(ele => {
-        if (ele._id === action.payload._id) {
-          return {
-            ...ele,
-            _id: ele._id,
-            productImage: ele.productImage,
-            productName: ele.productName,
-            productPrice: ele.productPrice,
-            likedBy: ele.likedBy,
-            liked: true,
-          };
-        }
-        return ele;
-      });
-    },
-    disLiked: (state, action) => {
-      state.accessoriesData = state.accessoriesData.map(ele => {
-        if (ele._id === action.payload._id) {
-          return {
-            ...ele,
-            _id: ele._id,
-            productImage: ele.productImage,
-            productName: ele.productName,
-            productPrice: ele.productPrice,
-            likedBy: ele.likedBy,
-            liked: false,
-          };
-        }
-        return ele;
-      });
-    },
-    filterAccessories: (state, action) => {
-      state.accessoriesData = state.filterAccessoriesData.filter(site =>
-        site.title.toLowerCase().includes(action.payload.toLowerCase()),
-      );
-    },
     addBikeType: (state, action) => {
       state.bikeType = action.payload;
     },
@@ -84,11 +41,7 @@ const asseccoriesSlice = createSlice({
   },
 });
 export const {
-  addLiked,
-  disLiked,
-  filterAccessories,
   fliteredBikeDetails,
-  addAccessoriesData,
   addAllServices,
   addBikeType,
   addBikeData,

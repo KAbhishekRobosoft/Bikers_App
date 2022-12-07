@@ -24,7 +24,6 @@ import {setToken} from '../redux/AuthSlice';
 
 const BookingDetails = ({navigation}) => {
   const route = useRoute();
-  console.log('touteee',route)
   const [editable, setEditable] = useState(false);
   const [comment, setComment] = useState(route.params.comment);
   const dispatch = useDispatch();
