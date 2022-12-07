@@ -12,6 +12,7 @@ import {
   FlatList,
   RefreshControl,
   Platform,
+  ScrollView
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ReceiverContainer, SenderChatDetails} from '../components/chatDetails';
@@ -26,7 +27,6 @@ import {sendChat} from '../services/Auth';
 import {uploadChatImage} from '../services/Auth';
 import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modal';
-import {ScrollView} from 'react-native-gesture-handler';
 import {clearChat} from '../services/Auth';
 
 const ChatScreen = ({navigation, route}) => {
