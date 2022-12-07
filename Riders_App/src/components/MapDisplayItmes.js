@@ -173,7 +173,6 @@ export const MapNavBar = ({
             title: 'End Trip',
             action: async () => {
               if (auth.userCredentials.mobile === mobile) {
-
                 const cred = await getVerifiedKeys(auth.userToken);
                 dispatch(setToken(cred));
                 const resp = await endTrip(id, cred);
@@ -184,6 +183,9 @@ export const MapNavBar = ({
                 } else {
                   Toast.show("Couldn't end the trip");
                 }
+              }
+              else{
+                Toast.show("Only admin can end the trip")
               }
 
             },
