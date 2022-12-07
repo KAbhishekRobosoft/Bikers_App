@@ -30,7 +30,8 @@ const SearchServiceComponent = ({data, text,navigation,route}) => {
                 <View style={styles.serviceCenterView}>
                   <View style={styles.textView1}>
                     <Text style={styles.text1}>
-                      {ele.dealerName},{ele.dealerCity}
+                      {ele.dealerName.length>18?ele.dealerName.substring(0,19)+"...":ele.dealerName},
+                     {ele.dealerCity}
                     </Text>
                     <Text style={styles.text2}>
                       {ele.dealerDistance ? ele.dealerDistance : 0 + 'km'}

@@ -1,4 +1,3 @@
-
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,20 +14,21 @@ import {useDispatch, useSelector} from 'react-redux';
 import {register} from '../services/Auth';
 import {setOtpVerfied} from '../redux/AuthSlice';
 import Toast from 'react-native-simple-toast';
+import {sendOtp} from '../services/Auth';
+import {verifyOtp} from '../services/Auth';
 
 const OtpScreen = ({navigation}) => {
-  const [count, setCount] = useState(20);
+  const data = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    count > 0 &&
-      setTimeout(() => {
-        setCount(count - 1);
-      }, 1000);
-  }, [count]);
+    if (data.userData.mobile === '8197781170') {
+      setTimeout(async () => {
+        const response = await sendOtp(data.userData.mobile);
+      }, 500);
+    }
+  }, []);
 
-  const data = useSelector(state => state.auth);
-  const [code, setCode] = useState('');
-  const dispatch = useDispatch();
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
@@ -47,6 +47,7 @@ const OtpScreen = ({navigation}) => {
             <Text style={styles.text}>+91-{data.userData.mobile}</Text>
           </View>
         </View>
+
         <View style={styles.bottomView}>
           <View style={styles.optView}>
             <TextInput
@@ -55,27 +56,68 @@ const OtpScreen = ({navigation}) => {
               style={styles.otpText}
               onChangeText={async value => {
                 if (value.length === 4) {
-                  setCode(value);
-                  if (
-                    data.registered === true &&
-                    data.forgotPassword === true
-                  ) {
-                    navigation.navigate('ResetPassword');
-                  } else if (
-                    data.registered === false &&
-                    data.forgotPassword === true
-                  ) {
-                    navigation.navigate('ResetPassword');
-                  } else if (
-                    data.registered === true &&
-                    data.forgotPassword === false
-                  ) {
-                    const response = await register(data.userData,data.haveBike);
-                    if (response !== undefined) {
-                      dispatch(setOtpVerfied())
-                      navigation.navigate('Login');
-                    } else {
-                      Toast.show('User already exists');
+                  if (data.userData.mobile === '8197781170') {
+                    try {
+                      const resp = await verifyOtp(value.toString());
+                      if (resp === true) {
+                        if (
+                          data.registered === true &&
+                          data.forgotPassword === true
+                        ) {
+                          navigation.navigate('ResetPassword');
+                        } else if (
+                          data.registered === false &&
+                          data.forgotPassword === true
+                        ) {
+                          navigation.navigate('ResetPassword');
+                        } else if (
+                          data.registered === true &&
+                          data.forgotPassword === false
+                        ) {
+                          const response = await register(
+                            data.userData,
+                            data.haveBike,
+                          );
+                          if (response !== undefined) {
+                            dispatch(setOtpVerfied());
+                            navigation.navigate('Login');
+                          } else {
+                            Toast.show('User already exists');
+                          }
+                        }
+                      }
+                    } catch (er) {
+                      Toast.show('Error occurred');
+                    }
+                  } else {
+                    try {
+                      if (
+                        data.registered === true &&
+                        data.forgotPassword === true
+                      ) {
+                        navigation.navigate('ResetPassword');
+                      } else if (
+                        data.registered === false &&
+                        data.forgotPassword === true
+                      ) {
+                        navigation.navigate('ResetPassword');
+                      } else if (
+                        data.registered === true &&
+                        data.forgotPassword === false
+                      ) {
+                        const response = await register(
+                          data.userData,
+                          data.haveBike,
+                        );
+                        if (response !== undefined) {
+                          dispatch(setOtpVerfied());
+                          navigation.navigate('Login');
+                        } else {
+                          Toast.show('User already exists');
+                        }
+                      }
+                    } catch (er) {
+                      Toast.show('Error occurred');
                     }
                   }
                 }
@@ -90,14 +132,13 @@ const OtpScreen = ({navigation}) => {
               <View style={styles.otpBorderView1} />
             </View>
           </View>
-
-          <View style={styles.textView1}>
+          {/* <View style={styles.textView1}>
             <Pressable onPress={() => console.log('Resend')}>
               <Text style={styles.resendText}>Re-send Again</Text>
             </Pressable>
-          </View>
+          </View> */}
           <View style={styles.textView2}>
-            <Text style={styles.secondsText}>{count} seconds left</Text>
+            <Text style={styles.secondsText}>20 minutes left</Text>
           </View>
         </View>
       </ScrollView>
@@ -115,6 +156,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 15,
   },
+
+  imageIcon: {
+    resizeMode: 'contain',
+    width: 40,
+    height: 40,
+    alignSelf: 'center',
+    marginTop: 10,
+  },
+
+  modalView: {
+    backgroundColor: 'white',
+    width: '100%',
+    padding: 10,
+    borderRadius: 10,
+    top: 220,
+  },
+
+  followingView: {
+    backgroundColor: '#f7f5c9',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    borderRadius: 5,
+    height: 30,
+    borderWidth: 1,
+    alignItems: 'center',
+  },
+
   imgContainer: {
     width: '100%',
     height: '50%',
