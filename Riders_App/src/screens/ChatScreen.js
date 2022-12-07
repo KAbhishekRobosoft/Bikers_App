@@ -113,17 +113,14 @@ const ChatScreen = ({navigation, route}) => {
           route.params.id,
           'https' + resp.url.substring(4),
         );
-        dispatch(setInitialState(state));
         Toast.show('Image Posted');
+        dispatch(setInitialState(state));
       }
     }).catch(er=>Toast.show("Error occured"))
   };
 
   const handleToggle = () => {
     setmodal1(!modal1);
-  };
-  const handleEmoji = () => {
-    setEmoji(!emoji);
   };
 
   const handleClearChat = async () => {

@@ -8,23 +8,46 @@ import {
   Image,
   TextInput,
   Platform,
+  ToastAndroid,
 } from 'react-native';
 import React, {useState} from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon2 from 'react-native-vector-icons/Ionicons';
 import {useRoute} from '@react-navigation/native';
 import {useRef} from 'react';
 import SearchServiceComponent from '../components/SearchServiceComponent';
-import {searchServiceCenter} from '../services/Auth';
-import { getVerifiedKeys } from '../utils/Functions';
-import { useDispatch, useSelector } from 'react-redux';
-import {setToken} from '../redux/AuthSlice'
+import {getLocationName, searchServiceCenter} from '../services/Auth';
+import {getVerifiedKeys} from '../utils/Functions';
+import {useDispatch, useSelector} from 'react-redux';
+import {setToken} from '../redux/AuthSlice';
+import {useEffect} from 'react';
+import GetLocation from 'react-native-get-location';
+import Toast from 'react-native-simple-toast';
+
 const SearchServiceScreen = ({navigation}) => {
-  const route = useRoute()
+  useEffect(() => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+      .then(async location => {
+        const resp = await getLocationName(
+          location.latitude,
+          location.longitude,
+        );
+        setcurLoc(resp.name);
+      })
+      .catch(error => {
+        Toast.show('Turn on the Location');
+      });
+  }, []);
+  const [curLoc, setcurLoc] = useState('');
+  const route = useRoute();
   const [text, setText] = useState('');
   const [data, setData] = useState([]);
   const [cross, setCross] = useState(false);
   const ref = useRef();
-  const authData= useSelector(state=>state.auth);
+  const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
   const search = async value => {
@@ -34,8 +57,8 @@ const SearchServiceScreen = ({navigation}) => {
       setCross(false);
     }
     setText(value);
-    const key = await getVerifiedKeys(authData.userToken)
-    dispatch(setToken(key))
+    const key = await getVerifiedKeys(authData.userToken);
+    dispatch(setToken(key));
     const Data = await searchServiceCenter(value, key);
     setData(Data);
   };
@@ -47,7 +70,7 @@ const SearchServiceScreen = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}>
-          <Icon name="arrow-left" color={'#ED7E2B'} size={18} />
+          <Icon2 name="md-arrow-back" color={'#ED7E2B'} size={25} />
         </Pressable>
       </View>
       <View style={styles.searchView}>
@@ -90,8 +113,8 @@ const SearchServiceScreen = ({navigation}) => {
                 setData([]);
                 ref.current.clear();
               }}>
-              <Icon
-                name="times"
+              <Icon2
+                name="close"
                 size={20}
                 color={'#A4A4A4'}
                 style={styles.times}
@@ -102,18 +125,23 @@ const SearchServiceScreen = ({navigation}) => {
       </View>
       <View style={styles.locationView}>
         <Icon
-          name="map-marker"
+          name="gps-fixed"
           color="#A4A4A4"
           style={styles.locationImage}
           size={16}
         />
         <View style={styles.locationNamesView}>
-          <Text style={styles.textUdupi}>Udupi</Text>
+          <Text style={styles.textUdupi}>{curLoc}</Text>
           <Text style={styles.textCurrentLocation}>current location</Text>
         </View>
       </View>
       <ScrollView style={styles.scrollView}>
-        <SearchServiceComponent data={data} text={text} navigation={navigation} route={route}/>
+        <SearchServiceComponent
+          data={data}
+          text={text}
+          navigation={navigation}
+          route={route}
+        />
       </ScrollView>
     </SafeAreaView>
   );

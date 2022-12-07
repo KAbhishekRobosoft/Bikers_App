@@ -65,7 +65,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
         } catch {
           Toast.show('Failed to animate direction');
         }
-      }, 1000)}
+      }, 500)}
       catch(er){
         Toast.show("Error occured")
       }

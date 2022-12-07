@@ -48,7 +48,7 @@ const CreateTrip = ({navigation}) => {
           dispatch(setLoading());
         })
         .catch(error => {
-          Toast.show('Network Error');
+          Toast.show('Turn on the location');
         });
     }, 500);
   }, []);
@@ -63,8 +63,6 @@ const CreateTrip = ({navigation}) => {
   const [date, setDate] = useState(new Date());
   const [lat1, setLat1] = useState(0);
   const [lon1, setLon1] = useState(0);
-  const [lat2, setLat2] = useState(0);
-  const [lon2, setLon2] = useState(0);
   const [currLoc, setcurLoc] = useState('');
   const [endDate, setEndDate] = useState(new Date());
   const [time, setTimer] = useState(new Date());
@@ -75,7 +73,6 @@ const CreateTrip = ({navigation}) => {
   const [placeholder2, setPlaceholder2] = useState('From');
   const [placeholder3, setPlaceholder3] = useState('Name of the trip');
   const contactsData = useSelector(state => state.contact);
-  const [open, setOpen] = useState(true);
 
   const whereto = useSelector(state => state.milestone.setTo);
 
@@ -140,11 +137,7 @@ const CreateTrip = ({navigation}) => {
               onChangeText={value => setFrom(value)}
             />
           </View>
-          {open && (
-            <Pressable
-              onPress={() => {
-                setOpen(false);
-              }}>
+         
               <View style={styles.locationNamesView}>
                 <Icon2
                   name="gps-fixed"
@@ -161,8 +154,6 @@ const CreateTrip = ({navigation}) => {
                   </Text>
                 </View>
               </View>
-            </Pressable>
-          )}
 
           <View style={styles.textInputView}>
             {tripName ? (

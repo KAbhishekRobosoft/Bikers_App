@@ -68,6 +68,7 @@ export const TripSummary = ({navigation}) => {
       </View>
     );
   }
+  
   return (
     <SafeAreaView>
       {route.length > 0 ? (
