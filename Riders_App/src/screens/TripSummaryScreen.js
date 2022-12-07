@@ -143,12 +143,12 @@ export const TripSummary = ({navigation}) => {
                   {tripDetails?.startTime?.substring(15, 21)}
                 </Text>
                 <View style={styles.fromToView}>
-                  <Text style={styles.fromToText}>
+                  <Text style={styles.fromToText1}>
                     {tripDetails?.source[0]?.place}
                   </Text>
                   <View style={styles.lineView}></View>
-                  <Text style={styles.fromToText1}>
-                    {tripDetails?.destination[0]?.place}
+                  <Text style={styles.fromToText}>
+                    {tripDetails?.destination[0]?.place.substring(0,10)}..
                   </Text>
                 </View>
               </View>
@@ -307,6 +307,9 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     color: '#4F504F',
     paddingHorizontal: 3,
+    textAlign: 'left',
+    width: '35%',
+    height: 20,
   },
   fromToText1: {
     fontFamily: 'Roboto-Regular',
@@ -314,7 +317,9 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     color: '#4F504F',
     paddingHorizontal: 3,
-    width: '30%'
+    textAlign: 'right',
+    width: '35%',
+    height: 20,
   },
   lineView: {
     borderWidth: 1,
