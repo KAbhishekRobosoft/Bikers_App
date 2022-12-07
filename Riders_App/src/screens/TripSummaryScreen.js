@@ -68,7 +68,7 @@ export const TripSummary = ({navigation}) => {
       </View>
     );
   }
-  
+
   return (
     <SafeAreaView>
       {route.length > 0 ? (
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Medium',
   },
   icon: {
-    marginHorizontal: 20,
+    marginHorizontal: 22,
   },
   editImage: {
     marginHorizontal: 25,

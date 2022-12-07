@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Medium',
   },
   icon: {
-    marginHorizontal: 20,
+    marginHorizontal: 22,
   },
   editImage: {
     marginHorizontal: 25,
@@ -432,7 +432,6 @@ const styles = StyleSheet.create({
   mapView: {
     height: 270,
     width: '100%',
-    // borderWidth: 1,
     backgroundColor: 'grey',
   },
   summaryView: {
@@ -539,10 +538,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignSelf: 'center',
     height: '50%',
-    //flexDirection: "row",
-    //flexWrap: "wrap",
-    // alignItems: 'center',
-    // justifyContent: 'center',
   },
 
   itemImageStyle: {
@@ -550,7 +545,6 @@ const styles = StyleSheet.create({
     height: 128,
     marginHorizontal: 10,
     marginVertical: 5,
-    //borderWidth: 1,
     borderRadius: 2,
   },
 });
