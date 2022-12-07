@@ -12,7 +12,7 @@ import {
   FlatList,
   RefreshControl,
   Platform,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ReceiverContainer, SenderChatDetails} from '../components/chatDetails';
@@ -30,7 +30,7 @@ import Modal from 'react-native-modal';
 import {clearChat} from '../services/Auth';
 
 const ChatScreen = ({navigation, route}) => {
-    const textRef = useRef(null);
+  const textRef = useRef(null);
   const auth = useSelector(state => state.auth);
   const [text, setText] = useState('');
   const state = useSelector(state => state.milestone.initialState);
@@ -50,7 +50,8 @@ const ChatScreen = ({navigation, route}) => {
       : Platform.OS === 'ios'
       ? '95%'
       : '90%';
-  const height2= width > height ? (Platform.OS === "ios" ? '60%' :'70%'):'80%'
+  const height2 =
+    width > height ? (Platform.OS === 'ios' ? '60%' : '70%') : '80%';
 
   useEffect(() => {
     setTimeout(async () => {
@@ -65,7 +66,6 @@ const ChatScreen = ({navigation, route}) => {
       }
     }, 500);
   }, [state]);
-
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
@@ -87,36 +87,38 @@ const ChatScreen = ({navigation, route}) => {
       width: 200,
       height: 200,
       cropping: true,
-    }).then(async image => {
-      const payload = new FormData();
-      const file = [
-        {key: 'id', value: route.params.id},
-        {
-          key: 'image',
-          value: {
-            uri: image.path,
-            type: image.mime,
-            name: `${image.filename}.${image.mime.substring(
-              image.mime.indexOf('/') + 1,
-            )}`,
+    })
+      .then(async image => {
+        const payload = new FormData();
+        const file = [
+          {key: 'id', value: route.params.id},
+          {
+            key: 'image',
+            value: {
+              uri: image.path,
+              type: image.mime,
+              name: `${image.filename}.${image.mime.substring(
+                image.mime.indexOf('/') + 1,
+              )}`,
+            },
           },
-        },
-      ];
-      file.map(ele => {
-        payload.append(ele.key, ele.value);
-      });
-      let cred = await getVerifiedKeys(auth.userToken);
-      resp = await uploadChatImage(payload, cred);
-      if (resp !== undefined) {
-        let resp1 = await sendChat(
-          cred,
-          route.params.id,
-          'https' + resp.url.substring(4),
-        );
-        Toast.show('Image Posted');
-        dispatch(setInitialState(state));
-      }
-    }).catch(er=>Toast.show("Error occured"))
+        ];
+        file.map(ele => {
+          payload.append(ele.key, ele.value);
+        });
+        let cred = await getVerifiedKeys(auth.userToken);
+        resp = await uploadChatImage(payload, cred);
+        if (resp !== undefined) {
+          let resp1 = await sendChat(
+            cred,
+            route.params.id,
+            'https' + resp.url.substring(4),
+          );
+          Toast.show('Image Posted');
+          dispatch(setInitialState(state));
+        }
+      })
+      .catch(er => Toast.show('Error occured'));
   };
 
   const handleToggle = () => {
@@ -213,7 +215,7 @@ const ChatScreen = ({navigation, route}) => {
             style={styles.input}
             onChangeText={val => setText(val)}
             placeholder="Type a Message"
-            placeholderTextColor='grey'
+            placeholderTextColor="grey"
           />
         </View>
         <View
@@ -253,33 +255,39 @@ const ChatScreen = ({navigation, route}) => {
           avoidKeyboard={true}
           animationIn={'slideInUp'}
           animationOut={'slideOutDown'}>
-          <Pressable onPress={() => handleToggle()}>
-            <View style={styles.modalView}>
-              <Image
-                source={require('../assets/images/appicon.png')}
-                style={styles.imageIcon}
+          <View style={styles.modalView}>
+            <Pressable onPress={() => handleToggle()}>
+              <Icon
+                name="close"
+                size={27}
+                color={'#A4A4A4'}
+                style={styles.times}
               />
-              <Text style={styles.GroupInfoText}>Group Info</Text>
-              <View style={{flexDirection: 'row', marginTop: 15}}>
-                <Text style={styles.adminText}>Admin</Text>
-                <Text style={styles.adminMobileText}>
-                  : {route.params.mobile}
-                </Text>
-              </View>
-              <ScrollView style={{marginTop: 10}}>
-                {route.params.riders.map(ele => {
-                  return (
-                    <View key={ele._id} style={styles.ridersView}>
-                      <Text style={styles.ridersNameText}>{ele.riderName}</Text>
-                      <Text style={styles.ridersNumberText}>
-                        : {ele.riderPhoneNumber}
-                      </Text>
-                    </View>
-                  );
-                })}
-              </ScrollView>
+            </Pressable>
+            <Image
+              source={require('../assets/images/appicon.png')}
+              style={styles.imageIcon}
+            />
+            <Text style={styles.GroupInfoText}>Group Info</Text>
+            <View style={{flexDirection: 'row', marginTop: 15}}>
+              <Text style={styles.adminText}>Admin</Text>
+              <Text style={styles.adminMobileText}>
+                : {route.params.mobile}
+              </Text>
             </View>
-          </Pressable>
+            <ScrollView style={{marginTop: 10}}>
+              {route.params.riders.map(ele => {
+                return (
+                  <View key={ele._id} style={styles.ridersView}>
+                    <Text style={styles.ridersNameText}>{ele.riderName}</Text>
+                    <Text style={styles.ridersNumberText}>
+                      : {ele.riderPhoneNumber}
+                    </Text>
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </View>
         </Modal>
       ) : (
         <></>
@@ -422,7 +430,10 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     alignSelf: 'center',
-    marginTop: 10,
+  },
+  times: {
+    resizeMode: 'contain',
+    marginLeft: '90%',
   },
 });
 
