@@ -19,13 +19,13 @@ import {DropDownInputField2} from '../components/InputFields';
 import InsetShadow from 'react-native-inset-shadow';
 import ButtonLarge from '../components/Buttons';
 import * as yup from 'yup';
-import {updateMobileNumber} from '../services/Auth';
+import { updateMobileNumber } from '../services/UserCredentials';
 import {useDispatch, useSelector} from 'react-redux';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setToken} from '../redux/AuthSlice';
 import {updateUserCredentials} from '../redux/AuthSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {attempts} from '../services/Auth';
+import { attempts } from '../services/UserCredentials';
 import Toast from 'react-native-simple-toast';
 
 export const BookService = ({navigation}) => {

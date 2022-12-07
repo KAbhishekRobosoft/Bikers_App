@@ -18,11 +18,11 @@ import {useDispatch} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
 import {setMileStoneData} from '../redux/MileStoneSlice';
 import {useSelector} from 'react-redux';
-import {getCoordinates} from '../services/Auth';
-import {calculateRoute} from '../services/Auth';
+import { getCoordinates } from '../services/Maps';
+import { calculateRoute } from '../services/Maps';
 import Toast from 'react-native-simple-toast';
 import GetLocation from 'react-native-get-location';
-import {getLocationName} from '../services/Auth';
+import { getLocationName } from '../services/Maps';
 
 export const Milestone = () => {
   const [curLoc, setcurLoc] = useState('');

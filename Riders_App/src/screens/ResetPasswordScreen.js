@@ -16,7 +16,7 @@ import {Formik, Field} from 'formik';
 import * as yup from 'yup';
 import Toast from 'react-native-simple-toast'
 import { useSelector } from 'react-redux';
-import { resetPassword } from '../services/Auth';
+import { resetPassword } from '../services/UserCredentials';
 
 const passwordValidationSchema = yup.object().shape({
   password: yup

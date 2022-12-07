@@ -13,8 +13,8 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import {useDispatch, useSelector} from 'react-redux';
-import {searchProducts} from '../services/Auth';
-import {LikeProducts} from '../services/Auth';
+import { searchProducts } from '../services/OwnerAndBike';
+import { LikeProducts } from '../services/OwnerAndBike';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setInitialState} from '../redux/MileStoneSlice';
 import {setToken} from '../redux/AuthSlice';

@@ -14,7 +14,7 @@ import MapNavBar, {
   MapBottomBar,
   MapChatButton,
 } from '../components/MapDisplayItmes';
-import {calculateRoute} from '../services/Auth';
+import { calculateRoute } from '../services/Maps';
 import uuid from 'react-native-uuid';
 import {setLoading} from '../redux/MileStoneSlice';
 import {deSetLoading} from '../redux/MileStoneSlice';

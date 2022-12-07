@@ -23,12 +23,13 @@ import {
   setInitialState,
   setLoading,
 } from '../redux/MileStoneSlice';
-import {addLike, getParticularPhoto} from '../services/Auth';
+import { addLike } from '../services/Trips';
+import { getParticularPhoto } from '../services/Trips';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setToken} from '../redux/AuthSlice';
-import {addComments} from '../services/Auth';
+import { addComments } from '../services/Trips';
 import Toast from 'react-native-simple-toast';
-import {deleteComment} from '../services/Auth';
+import { deleteComment } from '../services/Trips';
 
 const ImageLikeCommentScreen = ({navigation, route}) => {
   const [refreshing,setRefreshing]= useState(false)

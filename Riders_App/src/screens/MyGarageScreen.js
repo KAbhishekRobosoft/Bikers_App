@@ -12,7 +12,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {GarageInputField} from '../components/InputFields';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
-import {getAllService} from '../services/Auth';
+import { getAllService } from '../services/Services';
 import {addAllServices} from '../redux/AccessoriesSlice';
 import {setToken} from '../redux/AuthSlice';
 

@@ -18,8 +18,9 @@ import {setToken} from '../redux/AuthSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {month1} from '../utils/Functions';
 import {AirbnbRating} from 'react-native-ratings';
-import { getRatings } from '../services/Auth';
+import { getRatings } from '../services/Services';
 import {useRoute} from '@react-navigation/native';
+
 const BookingSummary = ({navigation}) => {
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
