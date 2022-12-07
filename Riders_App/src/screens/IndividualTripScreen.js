@@ -42,14 +42,12 @@ const AllTrips = ({navigation}) => {
         const tripdata = await UserTrips(key);
         setTripDetails(tripdata);
         dispatch(setLoading())
-        //const response = await getOwnerDetails(key);
         let bikeResponse = await getBikeDetails(key);
         let BikeTypes = bikeResponse.map(e => {
           return e.vehicleType;
         });
         dispatch(addBikeType(BikeTypes));
         dispatch(addBikeData(bikeResponse));
-       // dispatch(setUserData(response[0]));
       } catch (er) {
         Toast.show('Error Occurred');
       }
