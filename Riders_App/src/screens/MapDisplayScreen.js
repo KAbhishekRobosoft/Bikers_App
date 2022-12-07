@@ -26,9 +26,8 @@ const MapDisplayScreen = ({navigation, route}) => {
   const mapRef = useRef(null);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.milestone.isLoading);
-  const [latitude, setLatitude] = useState(parseFloat(route.params.latitude));
   const state= useSelector(state=>state.milestone.initialState)
-
+  const [latitude, setLatitude] = useState(parseFloat(route.params.latitude));
   const [longitude, setLongitude] = useState(
     parseFloat(route.params.longitude),
   );
@@ -71,7 +70,7 @@ const MapDisplayScreen = ({navigation, route}) => {
       catch(er){
         Toast.show("Error Occurred")
       }
-    }, 1000);
+    }, 500);
   }, [state]);
 
   const [atm, setAtm] = useState(false);
