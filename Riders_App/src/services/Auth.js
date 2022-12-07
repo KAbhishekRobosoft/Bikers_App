@@ -561,7 +561,6 @@ export const updateMobileNumber = async (m, key) => {
         },
       },
     );
-    console.log('resd', response.data);
     return response.data;
   } catch (err) {
     console.log('error in update mobile number');
@@ -596,7 +595,6 @@ export const getRatings = async (key, id, rating) => {
         },
       },
     );
-    console.log(response.data);
     return response.data;
   } catch (err) {
     console.log('error in getting ratings');

@@ -9,7 +9,6 @@ import {
   Pressable,
   ScrollView,
   Platform,
-  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
@@ -19,7 +18,6 @@ import {LikeProducts} from '../services/Auth';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setInitialState} from '../redux/MileStoneSlice';
 import {setToken} from '../redux/AuthSlice';
-import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
 
 export const Accessories = ({navigation}) => {
   const [text, setText] = useState('');
@@ -28,10 +26,8 @@ export const Accessories = ({navigation}) => {
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth);
   const state = useSelector(state => state.milestone.initialState);
-  const loading = useSelector(state => state.milestone.isLoading);
 
   useEffect(() => {
-
     setTimeout(async () => {
       const key = await getVerifiedKeys(auth.userToken);
       dispatch(setToken(key));
