@@ -4,26 +4,26 @@ import {
   StyleSheet,
   Text,
   View,
-  Pressable,
   ScrollView,
-  Dimensions,
+  TouchableOpacity,
   Platform,
+  ImageBackground,
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Star} from '../components/StarComponent';
 import ButtonLarge from '../components/Buttons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useRoute} from '@react-navigation/native';
 import DatePicker from 'react-native-date-picker';
-import { useWindowDimensions } from 'react-native';
-//const windowWidth = Dimensions.get('screen').width;
+import {useWindowDimensions} from 'react-native';
+import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 
 const ServiceCenterScreen = ({navigation}) => {
   const [date, setDate] = useState(new Date());
   const [time, setTimer] = useState(new Date());
-  const {width,height}=useWindowDimensions()
-  const paddingHorizontal=width>height?(Platform.OS==='ios'?57:25):38
+  const {width, height} = useWindowDimensions();
+  const paddingHorizontal =
+    width > height ? (Platform.OS === 'ios' ? 57 : 58) : 38;
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
 
@@ -33,21 +33,24 @@ const ServiceCenterScreen = ({navigation}) => {
     <SafeAreaView style={styles.main}>
       <ScrollView style={styles.scrollView}>
         <View>
-          <Image
+          <ImageBackground
             style={styles.img}
-            source={{uri: 'https' + route.params.dealerImage.substring(4)}}
-          />
+            source={{uri: 'https' + route.params.dealerImage.substring(4)}}>
+            <Pressable onPress={() => navigation.goBack()}>
+              <Icon
+                style={styles.backBtn}
+                name="md-arrow-back"
+                size={25}
+                color="white"
+              />
+            </Pressable>
+          </ImageBackground>
         </View>
-
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon
-            style={styles.backBtn}
-            name="md-arrow-back"
-            size={25}
-            color="white"
-          />
-        </TouchableOpacity>
-        <View style={[styles.ratingComponent,{paddingHorizontal:paddingHorizontal}]}>
+        <View
+          style={[
+            styles.ratingComponent,
+            {paddingHorizontal: paddingHorizontal},
+          ]}>
           <Star rating={Math.floor(route.params.dealerRating)} />
         </View>
 
@@ -132,7 +135,6 @@ const styles = StyleSheet.create({
   backBtn: {
     paddingLeft: 20,
     marginTop: 5,
-    bottom: 1,
   },
   scrollView: {
     width: '100%',
@@ -145,7 +147,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   ratingComponent: {
-  
     marginTop: 250,
   },
   textView1: {

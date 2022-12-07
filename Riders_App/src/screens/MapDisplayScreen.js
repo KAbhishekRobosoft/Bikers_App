@@ -5,9 +5,9 @@ import {
   StyleSheet,
   useWindowDimensions,
   View,
-  Text,
   Platform,
 } from 'react-native';
+
 import MapView, {Polyline} from 'react-native-maps';
 import {Marker} from 'react-native-maps';
 import MapNavBar, {
@@ -42,7 +42,6 @@ const MapDisplayScreen = ({navigation, route}) => {
     dispatch(deSetLoading());
     setTimeout(async () => {
       try{
-        console.log(latitude)
       const dir = await calculateRoute(
         latitude,
         longitude,
@@ -262,6 +261,7 @@ const MapDisplayScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   bottomContainer: {
     flex: 1,
+  
   },
   
   mapStyle: {
