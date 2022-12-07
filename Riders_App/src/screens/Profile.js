@@ -231,7 +231,7 @@ const Profile = ({navigation}) => {
                 })
               ) : (
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Text style={{fontSize: 16, fontFamily: 'Roboto-Regular',color:'black'}}>
+                  <Text style={{fontSize: 16,color:"black",fontFamily: 'Roboto-Regular'}}>
                     Not following anyone at the moment
                   </Text>
                 </View>

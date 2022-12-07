@@ -26,9 +26,8 @@ const MapDisplayScreen = ({navigation, route}) => {
   const mapRef = useRef(null);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.milestone.isLoading);
-  const [latitude, setLatitude] = useState(parseFloat(route.params.latitude));
   const state= useSelector(state=>state.milestone.initialState)
-
+  const [latitude, setLatitude] = useState(parseFloat(route.params.latitude));
   const [longitude, setLongitude] = useState(
     parseFloat(route.params.longitude),
   );
@@ -43,6 +42,7 @@ const MapDisplayScreen = ({navigation, route}) => {
     dispatch(deSetLoading());
     setTimeout(async () => {
       try{
+        console.log(latitude)
       const dir = await calculateRoute(
         latitude,
         longitude,
@@ -66,7 +66,7 @@ const MapDisplayScreen = ({navigation, route}) => {
         catch{
           Toast.show("Failed to animate direction")
         }
-      },100)}
+      },500)}
       catch(er){
         Toast.show("Error Occurred")
       }
@@ -82,8 +82,7 @@ const MapDisplayScreen = ({navigation, route}) => {
   const [musicControlState, setMusicControlState] = useState(false);
 
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? '8%' : '8%') : (Platform.OS === "ios" ? 670 : 670);
-  const top1 = width > height ? (Platform.OS === 'ios' ? 50 : 30) : 540;
+  const top = width > height ? (Platform.OS === 'ios' ? '8%' : 260) : (Platform.OS === "ios" ? 670 : 670);
   const musicControl = () => {
     setMusicControlState(!musicControlState);
   };
@@ -111,6 +110,7 @@ const MapDisplayScreen = ({navigation, route}) => {
           data={data}
           setData={setData}
           id={route.params.id}
+          mobile={route.params.mobile}
         />
         <View style={{flex: 1}}>
           <MapView

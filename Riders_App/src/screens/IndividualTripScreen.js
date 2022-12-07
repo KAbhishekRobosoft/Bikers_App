@@ -8,6 +8,7 @@ import {
   Pressable,
   FlatList,
   RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AllTripList from '../components/AllTripList';
@@ -22,19 +23,25 @@ import {setToken, setUserData} from '../redux/AuthSlice';
 import Toast from 'react-native-simple-toast';
 import {addBikeData, addBikeType} from '../redux/AccessoriesSlice';
 import { setInitialState } from '../redux/MileStoneSlice';
+import { deSetLoading,setLoading } from '../redux/MileStoneSlice';
 
 const AllTrips = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
   const authData = useSelector(state => state.auth);
   const state = useSelector(state => state.milestone.initialState);
   const [refreshing, setRefreshing] = useState(false);
+  const loading= useSelector(state=>state.milestone.isLoading)
 
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(deSetLoading())
     setTimeout(async () => {
       try {
         const key = await getVerifiedKeys(authData.userToken);
         dispatch(setToken(key));
+        const tripdata = await UserTrips(key);
+        setTripDetails(tripdata);
+        dispatch(setLoading())
         const response = await getOwnerDetails(key);
         let bikeResponse = await getBikeDetails(key);
         let BikeTypes = bikeResponse.map(e => {
@@ -43,8 +50,6 @@ const AllTrips = ({navigation}) => {
         dispatch(addBikeType(BikeTypes));
         dispatch(addBikeData(bikeResponse));
         dispatch(setUserData(response[0]));
-        const tripdata = await UserTrips(key);
-        setTripDetails(tripdata);
       } catch (er) {
         Toast.show('Error Occurred');
       }
@@ -54,7 +59,6 @@ const AllTrips = ({navigation}) => {
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
-      
       const cred = await getVerifiedKeys(authData.userToken);
       dispatch(setToken(cred));
       const tripdata = await UserTrips(cred);
@@ -73,11 +77,20 @@ const AllTrips = ({navigation}) => {
   const renderItem = details => {
     return <AllTripList navigation={navigation} data={details.item} />;
   };
+
   const handleSearch = async value => {
     const key = await getVerifiedKeys(authData.userToken);
     const response = await SearchUserTrips(key, value);
     setTripDetails(response);
   };
+
+  if(loading){
+    return(
+      <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
+            <ActivityIndicator size="large" color="orange" />
+      </View>
+    )
+  }
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>

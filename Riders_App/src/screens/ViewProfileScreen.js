@@ -55,9 +55,6 @@ const ViewProfileScreen = ({navigation, route}) => {
             end={{x: 1, y: 0}}
             colors={['#ED7E2C', '#F7B557']}
             style={styles.gradientCreateButton}>
-              
-
-              
             <ImageBackground
               source={require('../assets/images/profilebike.png')}
               resizeMode="cover"
