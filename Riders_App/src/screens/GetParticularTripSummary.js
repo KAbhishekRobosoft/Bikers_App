@@ -33,43 +33,42 @@ export const GetParticularTripSummary = ({navigation, route}) => {
   const dispatch = useDispatch();
   const loading = useSelector(state => state.milestone.isLoading);
   const [images, setImages] = useState([]);
-  const state= useSelector(state=>state.milestone.initialState)
+  const state = useSelector(state => state.milestone.initialState);
 
   useEffect(() => {
     dispatch(deSetLoading());
     setTimeout(async () => {
-      try{
-      const dir = await calculateRoute(
-        route.params.data.source[0].latitude,
-        route.params.data.source[0].longitude,
-        route.params.data.destination[0].latitude,
-        route.params.data.destination[0].longitude,
-      );
-      setDirection(dir.legs[0].points);
-      const cred = await getVerifiedKeys(authData.userToken);
-      dispatch(setToken(cred));
-      const response = await getImagePreview(cred, route.params.data._id);
-      setImages(response);
-      dispatch(setLoading());
-      setTimeout(() => {
-        try {
-          mapRef.current.animateToRegion(
-            {
-              latitude: parseFloat(route.params.data.source[0].latitude),
-              longitude: parseFloat(route.params.data.source[0].longitude),
-              latitudeDelta: 0.03,
-              longitudeDelta: 0.1,
-            },
-            3 * 1000,
-          );
-        } catch {
-          Toast.show('Failed to animate direction');
-        }
-      }, 500)}
-      catch(er){
-        Toast.show("Error occured")
+      try {
+        const dir = await calculateRoute(
+          route.params.data.source[0].latitude,
+          route.params.data.source[0].longitude,
+          route.params.data.destination[0].latitude,
+          route.params.data.destination[0].longitude,
+        );
+        setDirection(dir.legs[0].points);
+        const cred = await getVerifiedKeys(authData.userToken);
+        dispatch(setToken(cred));
+        const response = await getImagePreview(cred, route.params.data._id);
+        setImages(response);
+        dispatch(setLoading());
+        setTimeout(() => {
+          try {
+            mapRef.current.animateToRegion(
+              {
+                latitude: parseFloat(route.params.data.source[0].latitude),
+                longitude: parseFloat(route.params.data.source[0].longitude),
+                latitudeDelta: 0.03,
+                longitudeDelta: 0.1,
+              },
+              3 * 1000,
+            );
+          } catch {
+            Toast.show('Failed to animate direction');
+          }
+        }, 500);
+      } catch (er) {
+        Toast.show('Error occured');
       }
-
     }, 500);
   }, [state]);
 
@@ -82,7 +81,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
   }
 
   return (
-    <SafeAreaView style={{backgroundColor: 'white',height: '100%'}}>
+    <SafeAreaView style={{backgroundColor: 'white', height: '100%'}}>
       {route.params.data.tripStatus === 'upcoming' && (
         <View style={styles.mainView}>
           <View style={[styles.header]}>
@@ -161,12 +160,14 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                   {route.params.data.startTime.substring(15, 21)}
                 </Text>
                 <View style={styles.fromToView}>
-                  <Text style={styles.fromToText}>
+                  <Text style={styles.fromToText1}>
                     {route.params.data.source[0]?.place}
                   </Text>
                   <View style={styles.lineView}></View>
                   <Text style={styles.fromToText}>
-                    {route.params.data.destination[0].place}
+                  {route.params.data.destination[0].place.length > 12
+                        ? route.params.data.destination[0].place.substring(0, 10) + '..'
+                        : route.params.data.destination[0].place.substring(0, 11)}
                   </Text>
                 </View>
               </View>
@@ -204,8 +205,8 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                       milestones: route.params.data.milestones,
                       id: route.params.data._id,
                       tripName: route.params.data.tripName,
-                      mobile:route.params.data.mobile,
-                      riders:route.params.data.riders
+                      mobile: route.params.data.mobile,
+                      riders: route.params.data.riders,
                     });
                   }}
                   title="GO"
@@ -216,9 +217,9 @@ export const GetParticularTripSummary = ({navigation, route}) => {
         </View>
       )}
 
-      {route.params.data.tripStatus === 'completed' &&
-          (<>
-            <ScrollView
+      {route.params.data.tripStatus === 'completed' && (
+        <>
+          <ScrollView
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
@@ -296,13 +297,16 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                   <Text style={styles.timeText}>
                     {route.params.data.startTime.substring(15, 21)}
                   </Text>
+
                   <View style={styles.fromToView}>
-                    <Text style={styles.fromToText}>
+                    <Text style={styles.fromToText1}>
                       {route.params.data.source[0]?.place}
                     </Text>
                     <View style={styles.lineView}></View>
                     <Text style={styles.fromToText}>
-                      {route.params.data.destination[0].place}
+                      {route.params.data.destination[0].place.length > 12
+                        ? route.params.data.destination[0].place.substring(0, 10) + '..'
+                        : route.params.data.destination[0].place.substring(0, 11)}
                     </Text>
                   </View>
                 </View>
@@ -323,7 +327,6 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                     color: 'rgba(58,57,57,0.87)',
                     lineHeight: 24,
                     marginTop: 25,
-             
 
                     width: '80%',
                     alignSelf: 'center',
@@ -339,32 +342,36 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                 }}>
-                {images.length !== 0
-                  ? images.map(item => {
-                      return (
-                        <Pressable
-                          key={item._id}
-                          onPress={() =>
-                            navigation.navigate('ImageLikeComment', {
-                              id: item._id,
-                              image: 'https' + item.imageUrl.substring(4),
-                            })
-                          }>
-                          <Image
-                            style={styles.itemImageStyle}
-                            source={{uri: 'https' + item.imageUrl.substring(4)}}
-                          />
-                        </Pressable>
-                      );
-                    })
-                  :<View style={{marginTop:Platform.OS === "ios" ? 100 : 100}}>
-                    <Text style={{fontFamily:"Roboto-Regular",fontSize:16}}>No Images Posted</Text>
-                  </View>}
+                {images.length !== 0 ? (
+                  images.map(item => {
+                    return (
+                      <Pressable
+                        key={item._id}
+                        onPress={() =>
+                          navigation.navigate('ImageLikeComment', {
+                            id: item._id,
+                            image: 'https' + item.imageUrl.substring(4),
+                          })
+                        }>
+                        <Image
+                          style={styles.itemImageStyle}
+                          source={{uri: 'https' + item.imageUrl.substring(4)}}
+                        />
+                      </Pressable>
+                    );
+                  })
+                ) : (
+                  <View style={{marginTop: Platform.OS === 'ios' ? 100 : 100}}>
+                    <Text style={{fontFamily: 'Roboto-Regular', fontSize: 16}}>
+                      No Images Posted
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
           </ScrollView>
-          </>
-          )}
+        </>
+      )}
     </SafeAreaView>
   );
 };
@@ -473,6 +480,7 @@ const styles = StyleSheet.create({
   fromToView: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
   fromToText: {
     fontFamily: 'Roboto-Regular',
@@ -480,6 +488,19 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     color: '#4F504F',
     paddingHorizontal: 3,
+    textAlign: 'left',
+    width: '35%',
+    height: 20,
+  },
+  fromToText1: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 14,
+    lineHeight: 19,
+    color: '#4F504F',
+    paddingHorizontal: 3,
+    textAlign: 'right',
+    width: '35%',
+    height: 20,
   },
   lineView: {
     borderWidth: 1,

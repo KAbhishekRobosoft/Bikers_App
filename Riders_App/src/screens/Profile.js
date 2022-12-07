@@ -15,6 +15,7 @@ import Modal from 'react-native-modal';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector, useDispatch} from 'react-redux';
 import ActivityList from '../components/MyActivityList';
+import Icon2 from 'react-native-vector-icons/Ionicons';
 import {getSortedTripDetails, profileData} from '../services/Auth';
 import {getVerifiedKeys, month} from '../utils/Functions';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -193,11 +194,18 @@ const Profile = ({navigation}) => {
         avoidKeyboard={true}
         animationIn={'slideInUp'}
         animationOut={'slideOutDown'}>
-        <Pressable
-          onPress={() => {
-            setVisible(false);
-          }}>
           <View style={styles.modalView}>
+          <Pressable
+              onPress={() => {
+                  setVisible(false)
+              }}>
+              <Icon2
+                name="close"
+                size={25}
+                color={'#A4A4A4'}
+                style={styles.times}
+              />
+            </Pressable>
             <Image
               source={require('../assets/images/appicon.png')}
               style={styles.imageIcon}
@@ -241,7 +249,6 @@ const Profile = ({navigation}) => {
                 
             </ScrollView>
           </View>
-        </Pressable>
       </Modal>
 
       <Modal
@@ -250,11 +257,18 @@ const Profile = ({navigation}) => {
         avoidKeyboard={true}
         animationIn={'slideInUp'}
         animationOut={'slideOutDown'}>
-        <Pressable
-          onPress={() => {
-            setVisible1(false);
-          }}>
           <View style={styles.modalView}>
+                 <Pressable
+              onPress={() => {
+                setVisible1(false)
+              }}>
+              <Icon2
+                name="close"
+                size={25}
+                color={'#A4A4A4'}
+                style={styles.times}
+              />
+            </Pressable>
             <Image
               source={require('../assets/images/appicon.png')}
               style={styles.imageIcon}
@@ -284,6 +298,7 @@ const Profile = ({navigation}) => {
                         {ele.followerPhone}
                       </Text>
                     </View>
+                    
                   );
                 })
               ) : (
@@ -297,7 +312,6 @@ const Profile = ({navigation}) => {
               }
             </ScrollView>
           </View>
-        </Pressable>
       </Modal>
     </SafeAreaView>
   );
@@ -346,7 +360,6 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40,
     alignSelf: 'center',
-    marginTop: 10,
   },
 
   modalView: {
@@ -382,6 +395,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
     fontWeight: '500',
     letterSpacing: 0,
+  },
+
+  times: {
+    alignSelf:"flex-end",
+    marginTop: 5,
   },
 
   profileName: {

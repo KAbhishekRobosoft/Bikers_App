@@ -128,28 +128,28 @@ const BookingSummary = ({navigation}) => {
             <View style={styles.textInputView}>
               <Text style={styles.titleText}>Mobile Number</Text>
               <Text>:</Text>
-              <TextInput style={styles.textInputText} editable={editable}>
+              <TextInput style={styles.textInputText} editable={false}>
                 {route.params.mobile}
               </TextInput>
             </View>
             <View style={styles.textInputView}>
               <Text style={styles.titleText}>Vehicle Number</Text>
               <Text>:</Text>
-              <TextInput style={styles.textInputText} editable={editable}>
+              <TextInput style={styles.textInputText} editable={false}>
                 <Text>{route.params.vehicleNumber}</Text>
               </TextInput>
             </View>
             <View style={styles.textInputView}>
               <Text style={styles.titleText}>Service Type</Text>
               <Text>:</Text>
-              <TextInput style={styles.textInputText} editable={editable}>
+              <TextInput style={styles.textInputText} editable={false}>
                 <Text>{route.params.serviceType}</Text>
               </TextInput>
             </View>
             <View style={styles.textInputView}>
               <Text style={styles.titleText}>Time</Text>
               <Text>:</Text>
-              <TextInput style={styles.textInputText} editable={editable}>
+              <TextInput style={styles.textInputText} editable={false}>
                 <Text>
                   {route.params.time.substring(16, 21)}
                 </Text>
@@ -158,14 +158,14 @@ const BookingSummary = ({navigation}) => {
             <View style={styles.textInputView}>
               <Text style={styles.titleText}>Dealer</Text>
               <Text>:</Text>
-              <TextInput style={styles.textInputText} editable={editable}>
+              <TextInput style={styles.textInputText} editable={false}>
                 <Text>{route.params.dealer}</Text>
               </TextInput>
             </View>
             <View style={styles.textInputView}>
               <Text style={styles.titleText}>City</Text>
               <Text>:</Text>
-              <TextInput style={styles.textInputText} editable={editable}>
+              <TextInput style={styles.textInputText} editable={false}>
                 <Text>{route.params.city}</Text>
               </TextInput>
             </View>
