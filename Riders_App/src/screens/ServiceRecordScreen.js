@@ -20,6 +20,7 @@ const ServiceRecord = ({navigation}) => {
 
   const bikedata = useSelector(state => state.shop.bikeType);
   const serviceData = useSelector(state => state.shop.serviceData);
+  console.log('sdsd',serviceData)
   const servicedata = [
     {
       key: 'Free service',
@@ -74,7 +75,7 @@ const ServiceRecord = ({navigation}) => {
             {serviceData.length > 0 ? (
               serviceData
                 .filter(ele => ele.serviceType === serviceSelected)
-                .filter(ele => new Date(ele.slotDate) > Date.now())
+                .filter(ele =>  new Date(ele.slotDate) > Date.now())
                 .map(ele => (
                   <View key={ele._id}>
                     <NewServiceRecordDetails

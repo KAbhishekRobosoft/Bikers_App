@@ -75,13 +75,14 @@ export const getParticularService = async (key, id) => {
   }
 };
 
-export const getRatings = async (key, id, rating) => {
+export const getRatings = async (key, id, rating, phone) => {
   try {
     const response = await axios.post(
-      BASE_URL + '/service/reviewservice',
+      BASE_URL + '/service/reviewService',
       {
         _id: id,
         ratings: rating,
+        dealerPhoneNumber: phone
       },
       {
         headers: {

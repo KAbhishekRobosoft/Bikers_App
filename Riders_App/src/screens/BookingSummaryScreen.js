@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -18,27 +18,34 @@ import {setToken} from '../redux/AuthSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {month1} from '../utils/Functions';
 import {AirbnbRating} from 'react-native-ratings';
-import { getRatings } from '../services/Services';
+import {getRatings} from '../services/Services';
 import {useRoute} from '@react-navigation/native';
 
 const BookingSummary = ({navigation}) => {
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
+  const [disabled, setDisabled] = useState(true);
   const route = useRoute();
+  console.log('ed', route);
+  const [rate, setRate] = useState(route.params.ratings);
   const handlePast = () => {
     const obj = {
       date: route.params.slotDate,
+      //invoice: route.params.invoice
     };
     navigation.navigate('Invoice', obj);
   };
-  const ratingCompleted = async (rating) => {
-    const id = route.params._id
+  const ratingCompleted = async rating => {
+    setRate(rating);
+    setDisabled(false);
+    const id = route.params._id;
+    const phone = route.params.dealerPhoneNumber;
     const key = await getVerifiedKeys(authData.userToken);
     dispatch(setToken(key));
-    const response = await getRatings(key,id,rating);
-  }
+    const response = await getRatings(key, id, rating, phone);
+  };
   return (
-    <SafeAreaView style={{flex: 1,backgroundColor: 'white'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <View style={[styles.header]}>
         <View style={styles.subHeader}>
           <Pressable
@@ -123,7 +130,7 @@ const BookingSummary = ({navigation}) => {
                 <Text style={styles.serviceText}>
                   {route.params.serviceType}
                 </Text>
-                <Star rating={route.params.ratings} />
+                <Star rating={rate} />
               </View>
             </View>
             <View style={styles.textInputView}>
@@ -151,9 +158,7 @@ const BookingSummary = ({navigation}) => {
               <Text style={styles.titleText}>Time</Text>
               <Text>:</Text>
               <TextInput style={styles.textInputText} editable={false}>
-                <Text>
-                  {route.params.time.substring(16, 21)}
-                </Text>
+                <Text>{route.params.time.substring(16, 21)}</Text>
               </TextInput>
             </View>
             <View style={styles.textInputView}>
@@ -187,17 +192,43 @@ const BookingSummary = ({navigation}) => {
             }}>
             {new Date(route.params.slotDate) < Date.now() ? (
               <>
-                <Text style={styles.totalText}>Total bill payed</Text>
-                <Text style={styles.ruppesText}>Rs 4,000 /-</Text>
+                {route.params.serviceType !== 'Free service' ? (
+                  <>
+                    <Text style={styles.totalText}>Total bill payed</Text>
+                    <Text style={styles.ruppesText}>Rs 4,000 /-</Text>
+                  </>
+                ) : null}
+
                 <Text style={styles.totalText}>Rate the Service</Text>
-                <AirbnbRating
-                  size={15}
-                  showRating={false}
-                  onFinishRating={(rate) => ratingCompleted(rate)}
-                  defaultRating = {0}
-                />
+                {disabled ? (
+                  <AirbnbRating
+                    size={15}
+                    showRating={false}
+                    defaultRating={rate}
+                    isDisabled={false}
+                    onFinishRating={rating => ratingCompleted(rating)}
+                  />
+                ) : (
+                  <AirbnbRating
+                    size={15}
+                    showRating={false}
+                    defaultRating={rate}
+                    isDisabled={true}
+                    onFinishRating={rating => ratingCompleted(rating)}
+                  />
+                )}
               </>
-            ) : null}
+            ) : (
+              <Text
+                style={{
+                  fontFamily: 'Roboto-Regular',
+                  fontSize: 18,
+                  color: '#ED7E2B',
+                  marginTop: '10%',
+                }}>
+                Service not yet completed.
+              </Text>
+            )}
           </View>
         </View>
       </ScrollView>
@@ -348,8 +379,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 14,
     color: '#4F504F',
-    width: '27%',
-    textAlign: 'right',
+    width: '60%',
+    textAlign: 'center',
   },
   textInputCommentText: {
     fontFamily: 'Roboto-Regular',
