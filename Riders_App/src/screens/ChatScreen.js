@@ -22,12 +22,12 @@ import {getVerifiedKeys} from '../utils/Functions';
 import {useDispatch, useSelector} from 'react-redux';
 import {setToken} from '../redux/AuthSlice';
 import {setInitialState} from '../redux/MileStoneSlice';
-import {getChat} from '../services/Chats';
-import {sendChat} from '../services/Chats';
-import {uploadChatImage} from '../services/Chats';
+import { getChat } from '../services/Chats';
+import { sendChat } from '../services/Chats';
+import { uploadChatImage } from '../services/Chats';
 import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modal';
-import {clearChat} from '../services/Chats';
+import { clearChat } from '../services/Chats';
 
 const ChatScreen = ({navigation, route}) => {
   const textRef = useRef(null);
