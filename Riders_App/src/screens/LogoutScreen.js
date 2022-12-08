@@ -18,10 +18,14 @@ import { removeBikeType } from '../redux/AccessoriesSlice';
 import { removeBikeData } from '../redux/AccessoriesSlice';
 
 const LogoutScreen = ({navigation}) => {
+  const dispatch = useDispatch();
+  const hadBike = useSelector(state => state.auth.userCredentials);
+
   async function checkOut() {
     try {
       dispatch(removeBikeType());
       dispatch(removeBikeData());
+      dispatch(deSetRegistered())
       Toast.show('Logged Out');
       await AsyncStorage.removeItem('token');
     } catch (e) {
@@ -29,10 +33,7 @@ const LogoutScreen = ({navigation}) => {
     }
   }
 
-  const dispatch = useDispatch();
-  const hadBike = useSelector(state => state.auth.userCredentials);
-  const userDetails = useSelector(state => state.auth.userData);
-  const authData = useSelector(state => state.auth);
+  
 
   return (
     <SafeAreaView style={styles.main}>

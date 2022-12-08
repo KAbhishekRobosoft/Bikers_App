@@ -22,6 +22,7 @@ import AddDetailsStack from './AddDetailsStack';
 import {ToolKit} from '../screens/ToolKitScreen';
 import {Accessories} from '../screens/AccessoriesScreen';
 import ProfileUpdationScreen from '../screens/ProfileUpdationScreen';
+import BottomTabLoginNavigation from './BottomTabLoginNavigation';
 
 const Stack = createNativeStackNavigator();
 
@@ -132,6 +133,11 @@ const NewUserSubStack = () => {
         options={{headerShown: false}}
         name="updateProfile"
         component={ProfileUpdationScreen}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="BottomTabLoginNavigation"
+        component={BottomTabLoginNavigation}
       />
     </Stack.Navigator>
   );
