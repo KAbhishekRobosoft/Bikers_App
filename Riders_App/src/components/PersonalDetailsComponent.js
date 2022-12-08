@@ -6,8 +6,8 @@ import {
   TextInput,
   ActivityIndicator,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {getOwnerDetails} from '../services/Auth';
+import React, {useEffect} from 'react';
+import {getOwnerDetails} from '../services/OwnerAndBike';
 import {useDispatch, useSelector} from 'react-redux';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setToken, setUserData} from '../redux/AuthSlice';
