@@ -40,7 +40,6 @@ const ChatScreen = ({navigation, route}) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const number = useSelector(state => state.auth.userCredentials.mobile);
   const authData = useSelector(state => state.auth);
-  const [emoji, setEmoji] = useState(false);
   const {height, width} = useWindowDimensions();
   const top =
     width > height
@@ -50,8 +49,6 @@ const ChatScreen = ({navigation, route}) => {
       : Platform.OS === 'ios'
       ? '95%'
       : '90%';
-  const height2 =
-    width > height ? (Platform.OS === 'ios' ? '60%' : '70%') : '80%';
 
   useEffect(() => {
     setTimeout(async () => {
@@ -269,13 +266,13 @@ const ChatScreen = ({navigation, route}) => {
               style={styles.imageIcon}
             />
             <Text style={styles.GroupInfoText}>Group Info</Text>
-            <View style={{flexDirection: 'row', marginTop: 15}}>
-              <Text style={styles.adminText}>Admin</Text>
-              <Text style={styles.adminMobileText}>
-                : {route.params.mobile}
-              </Text>
-            </View>
             <ScrollView style={{marginTop: 10}}>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={styles.adminText}>Admin</Text>
+                <Text style={styles.adminMobileText}>
+                  : {route.params.mobile}
+                </Text>
+              </View>
               {route.params.riders.map(ele => {
                 return (
                   <View key={ele._id} style={styles.ridersView}>
