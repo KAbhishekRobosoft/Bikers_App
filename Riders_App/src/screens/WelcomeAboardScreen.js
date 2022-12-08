@@ -15,12 +15,12 @@ const WelcomeAboardScreen = ({navigation}) => {
   return (
     <SafeAreaView>
       <View style={styles.header}>
-        <Pressable
+        {/* <Pressable
           onPress={() => {
             navigation.goBack();
           }}>
           <Icon name="arrow-left" color={'grey'} size={18} />
-        </Pressable>
+        </Pressable> */}
       </View>
       <ScrollView style={styles.scrollView}>
         <Image

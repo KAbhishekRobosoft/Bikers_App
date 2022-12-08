@@ -29,6 +29,7 @@ import ProfileUpdationScreen from '../screens/ProfileUpdationScreen';
 import ViewProfileScreen from '../screens/ViewProfileScreen';
 import ImageLikeCommentScreen from '../screens/ImageLikeCommentScreen';
 import NewUserSubStack from './NewUserSubStack';
+import { AddPersonalDetails } from '../screens/AddPersonalDetailsScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -148,8 +149,8 @@ function UserLoginStack() {
       />
       <Stack.Screen
         options={{headerShown: false}}
-        name="AddDetailsStack"
-        component={AddDetailsStack}
+        name="AddPersonalDetails"
+        component={AddPersonalDetails}
       />
       <Stack.Screen
         options={{headerShown: false}}

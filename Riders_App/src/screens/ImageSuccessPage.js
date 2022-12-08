@@ -13,7 +13,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import ButtonLarge from '../components/Buttons';
 import {addBikeData, addBikeType} from '../redux/AccessoriesSlice';
-import { getBikeDetails } from '../services/OwnerAndBike';
+import {getBikeDetails} from '../services/OwnerAndBike';
 import {getVerifiedKeys} from '../utils/Functions';
 import Toast from 'react-native-simple-toast';
 import {setToken} from '../redux/AuthSlice';
@@ -47,66 +47,68 @@ function ImageSuccessPage({navigation}) {
         <Pressable style={styles.backArrow} onPress={() => navigation.goBack()}>
           <Image source={require('../assets/images/back_arrow.png')} />
         </Pressable>
-
-        <ScrollView style={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
-          <View style={styles.content_con}>
-            {authData.image === '' && (
-              <Image
-                style={styles.rUserImg}
-                source={require('../assets/images/photoless.png')}
-              />
-            )}
-            {authData.image.length > 0 && (
-              <View style={{alignItems: 'center'}}>
+       
+          <ScrollView
+            style={{flexGrow: 1}}
+            showsVerticalScrollIndicator={false}>
+            <View style={styles.content_con}>
+              {authData.image === '' && (
                 <Image
-                  style={{width: 246, height: 86}}
-                  source={require('../assets/images/blueCircle.png')}
+                  style={styles.rUserImg}
+                  source={require('../assets/images/photoless.png')}
                 />
-                <View
-                  style={{
-                    width: '100%',
-                    height: 140,
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                  }}>
+              )}
+              {authData.image.length > 0 && (
+                <View style={{alignItems: 'center'}}>
                   <Image
-                    style={styles.rUserImg1}
-                    source={{uri: authData.image}}
+                    style={{width: 246, height: 86}}
+                    source={require('../assets/images/blueCircle.png')}
                   />
-                  <Image
+                  <View
                     style={{
-                      width: 40,
-                      height: 40,
-                      marginRight: marginRight,
-                      alignSelf: 'flex-end',
-                      marginBottom: 10,
-                    }}
-                    source={require('../assets/images/green_tick.png')}
-                  />
+                      width: '100%',
+                      height: 140,
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                    }}>
+                    <Image
+                      style={styles.rUserImg1}
+                      source={{uri: authData.image}}
+                    />
+                    <Image
+                      style={{
+                        width: 40,
+                        height: 40,
+                        marginRight: marginRight,
+                        alignSelf: 'flex-end',
+                        marginBottom: 10,
+                      }}
+                      source={require('../assets/images/green_tick.png')}
+                    />
+                  </View>
                 </View>
-              </View>
-            )}
-            <Text style={styles.sucText1}>Awesome</Text>
-            <Text style={styles.sucText2}>Lets move on and make some</Text>
-            <Text style={styles.sucText3}>crazy trips</Text>
-            <View style={{marginTop: marginTop}}>
-              <ButtonLarge
-                onPress={() => {
-                  if (hadBike.haveBike) {
-                    if (bikeData.length > 0) {
-                      navigation.navigate('subStack');
+              )}
+              <Text style={styles.sucText1}>Awesome</Text>
+              <Text style={styles.sucText2}>Lets move on and make some</Text>
+              <Text style={styles.sucText3}>crazy trips</Text>
+              <View style={{marginTop: marginTop}}>
+                <ButtonLarge
+                  onPress={() => {
+                    if (hadBike.haveBike) {
+                      if (bikeData.length > 0) {
+                        navigation.navigate('subStack');
+                      } else {
+                        navigation.navigate('AddBikeDetails');
+                      }
                     } else {
-                      navigation.navigate('AddPersonalDetails');
+                      navigation.navigate('subStack');
                     }
-                  } else {
-                    navigation.navigate('subStack');
-                  }
-                }}
-                title="LETS GET STARTED"
-              />
+                  }}
+                  title="LETS GET STARTED"
+                />
+              </View>
             </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
       </View>
     </SafeAreaView>
   );
