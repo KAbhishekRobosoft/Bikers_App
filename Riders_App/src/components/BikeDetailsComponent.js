@@ -1,12 +1,6 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TextInput,
-} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, TextInput} from 'react-native';
 import React from 'react';
-import { useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import Toast from 'react-native-simple-toast';
 
 export const BikeDetails = ({
@@ -27,9 +21,8 @@ export const BikeDetails = ({
 }) => {
   const BikeDetails = useSelector(state => state.shop.allBikeData);
 
-
   return (
-    <ScrollView style={styles.scrollView}>
+    <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         {header ? <Text style={styles.bikeDetailText}>{header}</Text> : null}
         {Type ? (
