@@ -110,6 +110,7 @@ const AllTrips = ({navigation}) => {
         />
       </View>
       <FlatList
+      showsVerticalScrollIndicator={false}
         data={tripDetails}
         keyExtractor={details => details._id}
         renderItem={renderItem}
