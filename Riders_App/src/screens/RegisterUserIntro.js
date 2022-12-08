@@ -12,14 +12,14 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import {uploadImage} from '../services/Auth';
+import { uploadImage } from '../services/UserCredentials';
 import SmallButton from '../components/SmallButton';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import {setImage} from '../redux/AuthSlice';
 import {setToken} from '../redux/AuthSlice';
 import {getVerifiedKeys} from '../utils/Functions';
-import {profileData} from '../services/Auth';
+import { profileData } from '../services/Profile';
 import { setLoading } from '../redux/MileStoneSlice';
 import { deSetLoading } from '../redux/MileStoneSlice';
 

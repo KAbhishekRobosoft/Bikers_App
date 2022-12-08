@@ -1,9 +1,7 @@
 import React from 'react';
-import {useSelector} from 'react-redux';
 import {View,StyleSheet,Image} from 'react-native'
 
 function BikeImageComponent({data}) {
-  // const data = useSelector(state => state.contact.addTripContacts);
 
   return (
     <>

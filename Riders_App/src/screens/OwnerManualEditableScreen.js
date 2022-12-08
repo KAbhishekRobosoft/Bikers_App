@@ -18,7 +18,7 @@ import {setUserData} from '../redux/AuthSlice';
 import {getVerifiedKeys} from '../utils/Functions';
 import pdf from 'react-native-html-to-pdf';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
-import {updateOwnerDetails} from '../services/Auth';
+import { updateOwnerDetails } from '../services/OwnerAndBike';
 import Share from 'react-native-share';
 import {BikeDetails} from '../components/BikeDetailsComponent';
 import Toast from 'react-native-simple-toast';

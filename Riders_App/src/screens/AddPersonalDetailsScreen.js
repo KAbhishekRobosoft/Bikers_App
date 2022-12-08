@@ -12,7 +12,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
 import {useDispatch, useSelector} from 'react-redux';
-import {addOwnerDetails} from '../services/Auth';
+import { addOwnerDetails } from '../services/OwnerAndBike';
 import {setUserData} from '../redux/AuthSlice';
 import ButtonLarge from '../components/Buttons';
 import {Field, Formik} from 'formik';

@@ -12,13 +12,13 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector, useDispatch} from 'react-redux';
-import {profileData} from '../services/Auth';
+import { profileData } from '../services/Profile';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
 import {setToken} from '../redux/AuthSlice';
 import {setInitialState} from '../redux/MileStoneSlice';
 import Toast from 'react-native-simple-toast';
-import {followRider} from '../services/Auth';
+import { followRider } from '../services/Profile';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const ViewProfileScreen = ({navigation, route}) => {

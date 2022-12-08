@@ -16,11 +16,10 @@ import {Password} from '../components/InputFields';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
 import {useDispatch} from 'react-redux';
-import {checkIn} from '../services/Auth';
+import { checkIn } from '../services/UserCredentials';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {login} from '../redux/AuthSlice';
-import {setToken} from '../redux/AuthSlice';
 import {setForgotPassword} from '../redux/AuthSlice';
 import {setImage} from '../redux/AuthSlice';
 
