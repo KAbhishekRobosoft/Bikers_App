@@ -42,7 +42,7 @@ export const calculateRoute = async (
     );
     return response.data.routes[0];
   } catch (err) {
-    console.log(err);
+    console.log('calculate route error');
   }
 };
 
