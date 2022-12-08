@@ -96,7 +96,7 @@ function ImageSuccessPage({navigation}) {
                     if (bikeData.length > 0) {
                       navigation.navigate('subStack');
                     } else {
-                      navigation.navigate('AddPersonalDetails');
+                      navigation.navigate('AddBikeDetails');
                     }
                   } else {
                     navigation.navigate('subStack');

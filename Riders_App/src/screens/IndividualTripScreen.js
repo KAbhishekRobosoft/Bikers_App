@@ -12,39 +12,42 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AllTripList from '../components/AllTripList';
-import { getBikeDetails } from '../services/OwnerAndBike';
-import { UserTrips } from '../services/Trips';
+import {getBikeDetails, getOwnerDetails} from '../services/OwnerAndBike';
+import {UserTrips} from '../services/Trips';
 import {getVerifiedKeys} from '../utils/Functions';
-import { SearchUserTrips } from '../services/Trips';
-import {setToken} from '../redux/AuthSlice';
+import {SearchUserTrips} from '../services/Trips';
+import {setToken, setUserData} from '../redux/AuthSlice';
 import Toast from 'react-native-simple-toast';
 import {addBikeData, addBikeType} from '../redux/AccessoriesSlice';
-import { setInitialState } from '../redux/MileStoneSlice';
-import { deSetLoading,setLoading } from '../redux/MileStoneSlice';
+import {setInitialState} from '../redux/MileStoneSlice';
+import {deSetLoading, setLoading} from '../redux/MileStoneSlice';
 
 const AllTrips = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
   const authData = useSelector(state => state.auth);
   const state = useSelector(state => state.milestone.initialState);
   const [refreshing, setRefreshing] = useState(false);
-  const loading= useSelector(state=>state.milestone.isLoading)
+  const loading = useSelector(state => state.milestone.isLoading);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(deSetLoading())
+    dispatch(deSetLoading());
     setTimeout(async () => {
       try {
         const key = await getVerifiedKeys(authData.userToken);
         dispatch(setToken(key));
         const tripdata = await UserTrips(key);
         setTripDetails(tripdata);
-        dispatch(setLoading())
+        dispatch(setLoading());
         let bikeResponse = await getBikeDetails(key);
         let BikeTypes = bikeResponse.map(e => {
           return e.vehicleType;
         });
         dispatch(addBikeType(BikeTypes));
         dispatch(addBikeData(bikeResponse));
+        const response = await getOwnerDetails(key);
+        dispatch(setUserData(response[0]));
+        
       } catch (er) {
         Toast.show('Error Occurred');
       }
@@ -79,12 +82,12 @@ const AllTrips = ({navigation}) => {
     setTripDetails(response);
   };
 
-  if(loading){
-    return(
-      <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
-            <ActivityIndicator size="large" color="orange" />
+  if (loading) {
+    return (
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator size="large" color="orange" />
       </View>
-    )
+    );
   }
 
   return (
@@ -117,8 +120,9 @@ const AllTrips = ({navigation}) => {
 
       <Pressable
         style={styles.addButton}
-        onPress={() => {navigation.navigate('CreateTrip')
-          dispatch(setInitialState(state))
+        onPress={() => {
+          navigation.navigate('CreateTrip');
+          dispatch(setInitialState(state));
         }}>
         <Image source={require('../assets/images/addtrip.png')} />
       </Pressable>

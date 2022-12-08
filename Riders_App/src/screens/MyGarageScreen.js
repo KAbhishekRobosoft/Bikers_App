@@ -12,9 +12,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import {GarageInputField} from '../components/InputFields';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
-import { getAllService } from '../services/Services';
+import {getAllService} from '../services/Services';
 import {addAllServices} from '../redux/AccessoriesSlice';
-import {setToken} from '../redux/AuthSlice';
+import {setToken, setUserData} from '../redux/AuthSlice';
 
 export const MyGarage = ({navigation}) => {
   const hadBike = useSelector(state => state.auth.userCredentials);
@@ -23,6 +23,7 @@ export const MyGarage = ({navigation}) => {
   const loading = useSelector(state => state.milestone.isLoading);
   const serviceData = useSelector(state => state.shop.serviceData);
   const state = useSelector(state => state.milestone.initialState);
+
   const [day, setDay] = useState([]);
 
   useEffect(() => {
@@ -107,7 +108,11 @@ export const MyGarage = ({navigation}) => {
               text="Owners Manual"
               source={require('../assets/images/notebook-of-spring-with-lines-page.png')}
               onPress={() => {
-                navigation.navigate('OwnerManual');
+                if (authData.userData.hasOwnProperty('lisenceNumber')) {
+                  navigation.navigate('OwnerManual');
+                } else {
+                  navigation.navigate('AddPersonalDetails');
+                }
               }}
               disabled={false}
             />

@@ -61,7 +61,7 @@ const OwnerManualEdit = ({navigation}) => {
         <html>
           <head>
             <meta charset="utf-8">
-            <title>Bike and Personal Details</title>
+            <title>Personal and Bike Details</title>
             <link rel="license" href="https://www.opensource.org/licenses/mit-license/">
             <style>
             ${htmlStyles}
@@ -69,7 +69,7 @@ const OwnerManualEdit = ({navigation}) => {
           </head>
           <body>
             <header>
-              <h1>Bike and Personal Details</h1>
+              <h1>Personal and Bike Details</h1>
               <address>
                 <p></p>
                 <p></p>
@@ -123,7 +123,7 @@ const OwnerManualEdit = ({navigation}) => {
               </table>
 
             </article>
-              <h1><span>Bike Details</span></h1>
+              
               <table>
             <tr>
               <th><span>Engine :- </span></th>
