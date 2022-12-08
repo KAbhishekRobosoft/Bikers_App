@@ -14,7 +14,7 @@ import {getVerifiedKeys} from '../utils/Functions';
 import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
 import {getAllService} from '../services/Services';
 import {addAllServices} from '../redux/AccessoriesSlice';
-import {setToken, setUserData} from '../redux/AuthSlice';
+import {setToken} from '../redux/AuthSlice';
 
 export const MyGarage = ({navigation}) => {
   const hadBike = useSelector(state => state.auth.userCredentials);
