@@ -6,6 +6,7 @@ import {setToken} from '../redux/AuthSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import { getParticularService } from '../services/Services';
 import {month1} from '../utils/Functions';
+
 export const NewServiceRecordDetails = ({navigation, data}) => {
   const id = data._id;
   const dispatch = useDispatch();

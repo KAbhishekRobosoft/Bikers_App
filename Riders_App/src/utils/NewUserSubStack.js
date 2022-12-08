@@ -18,10 +18,10 @@ import Invoice from '../screens/Invoice';
 import OwnersManualScreen from '../screens/OwnersManualScreen';
 import OwnersManualDetailScreen from '../screens/OwnersManualDetailScreen';
 import OwnerManualEdit from '../screens/OwnerManualEditableScreen';
-import AddDetailsStack from './AddDetailsStack';
 import {ToolKit} from '../screens/ToolKitScreen';
 import {Accessories} from '../screens/AccessoriesScreen';
 import ProfileUpdationScreen from '../screens/ProfileUpdationScreen';
+import BottomTabLoginNavigation from './BottomTabLoginNavigation';
 import { AddPersonalDetails } from '../screens/AddPersonalDetailsScreen';
 
 const Stack = createNativeStackNavigator();
@@ -133,6 +133,11 @@ const NewUserSubStack = () => {
         options={{headerShown: false}}
         name="updateProfile"
         component={ProfileUpdationScreen}
+      />
+      <Stack.Screen
+        options={{headerShown: false}}
+        name="BottomTabLoginNavigation"
+        component={BottomTabLoginNavigation}
       />
     </Stack.Navigator>
   );
