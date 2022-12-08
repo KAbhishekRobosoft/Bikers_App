@@ -10,13 +10,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Icon1 from 'react-native-vector-icons/MaterialIcons';
 import GetLocation from 'react-native-get-location';
-import {getNearbyPlaces} from '../services/Auth';
-import {shareLocation} from '../services/Auth';
+import { getNearbyPlaces } from '../services/Maps';
+import { shareLocation } from '../services/Maps';
 import {getVerifiedKeys} from '../utils/Functions';
 import {useDispatch, useSelector} from 'react-redux';
 import {setToken} from '../redux/AuthSlice';
 import PopUpMenu from './PopUpMenu';
-import {endTrip} from '../services/Auth';
+import { endTrip } from '../services/Trips';
 import Toast from 'react-native-simple-toast';
 import {setInitialState} from '../redux/MileStoneSlice';
 
@@ -183,10 +183,12 @@ export const MapNavBar = ({
                 } else {
                   Toast.show("Couldn't end the trip");
                 }
-              } else {
-                Toast.show('Only Admin can the trip ');
               }
-            },
+              else{
+                Toast.show("Only admin can end the trip")
+              }
+
+            }
           },
           {
             title: 'Clear',

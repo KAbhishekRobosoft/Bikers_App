@@ -17,7 +17,7 @@ import ButtonLarge from '../components/Buttons';
 import {Formik, Field} from 'formik';
 import {useRoute} from '@react-navigation/native';
 import {BookingDetailsInput} from '../components/InputFields';
-import {BookService} from '../services/Auth';
+import { BookService } from '../services/Services';
 import {useDispatch, useSelector} from 'react-redux';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setToken} from '../redux/AuthSlice';

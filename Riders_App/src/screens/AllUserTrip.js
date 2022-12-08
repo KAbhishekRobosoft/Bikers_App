@@ -12,9 +12,9 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AllTripList from '../components/AllTripList';
-import {SearchAllUserInputTrips} from '../services/Auth';
+import { SearchAllUserInputTrips } from '../services/Trips';
 import {getVerifiedKeys} from '../utils/Functions';
-import {SearchAllUserTrips} from '../services/Auth';
+import { SearchAllUserTrips } from '../services/Trips';
 import {setToken} from '../redux/AuthSlice';
 import {setLoading} from '../redux/MileStoneSlice';
 import {deSetLoading} from '../redux/MileStoneSlice';

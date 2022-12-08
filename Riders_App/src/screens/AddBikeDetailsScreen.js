@@ -8,12 +8,12 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
-  useWindowDimensions,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
-import {addBikeDetails, getBikeDetails} from '../services/Auth';
+import { addBikeDetails, } from '../services/OwnerAndBike';
+import { getBikeDetails } from '../services/OwnerAndBike';
 import {useDispatch, useSelector} from 'react-redux';
 import {addBikeType, addBikeData} from '../redux/AccessoriesSlice';
 import {Formik, Field} from 'formik';
@@ -21,16 +21,6 @@ import Toast from 'react-native-simple-toast';
 import {getVerifiedKeys} from '../utils/Functions';
 
 const AddBikeDetails = ({navigation}) => {
-  const {height, width} = useWindowDimensions();
-
-  const keyboard =
-    width > height
-      ? Platform.OS === 'ios'
-        ? 50
-        : 0
-      : Platform.OS === 'ios'
-      ? 30
-      : 0;
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
@@ -98,7 +88,6 @@ const AddBikeDetails = ({navigation}) => {
     <SafeAreaView style={{backgroundColor: '#ffffff', flex: 1}}>
       <KeyboardAvoidingView
         style={{flex: 1}}
-        keyboardVerticalOffset={keyboard}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={[styles.header]}>
           <View style={styles.subHeader}>

@@ -21,13 +21,13 @@ import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
 import {useDispatch, useSelector} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
-import {getCoordinates} from '../services/Auth';
+import { getCoordinates } from '../services/Maps';
 import GetLocation from 'react-native-get-location';
-import {getLocationName} from '../services/Auth';
+import { getLocationName } from '../services/Maps';
 import {setLoading} from '../redux/MileStoneSlice';
 import {deSetLoading} from '../redux/MileStoneSlice';
 import {tripStore} from '../redux/MileStoneSlice';
-import {calculateRoute} from '../services/Auth';
+import { calculateRoute } from '../services/Maps';
 import Toast from 'react-native-simple-toast';
 
 const CreateTrip = ({navigation}) => {

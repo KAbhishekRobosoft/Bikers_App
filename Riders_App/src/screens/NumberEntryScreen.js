@@ -11,7 +11,6 @@ import {
   TextInput,
   Text,
 } from 'react-native';
-import {PlaceholderTextField} from '../components/InputFields';
 import LinearGradient from 'react-native-linear-gradient';
 import ButtonLarge from '../components/Buttons';
 import {useDispatch, useSelector} from 'react-redux';

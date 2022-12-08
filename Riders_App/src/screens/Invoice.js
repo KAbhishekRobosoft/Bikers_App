@@ -13,11 +13,11 @@ import {
 import InvoiceItem from '../components/InvoiceItemPrice';
 import {useRoute} from '@react-navigation/native';
 import {month1} from '../utils/Functions';
-import Share from 'react-native-share';
 import pdf from 'react-native-html-to-pdf';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FileViewer from 'react-native-file-viewer';
 import Toast from 'react-native-simple-toast';
+
 const Invoice = ({navigation}) => {
   const route = useRoute();
   console.log('&&&&', route.params.date);
