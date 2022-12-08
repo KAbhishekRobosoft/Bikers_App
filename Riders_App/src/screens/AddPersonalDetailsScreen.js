@@ -58,7 +58,7 @@ export const AddPersonalDetails = ({navigation}) => {
       dispatch(setUserData(userData));
       Toast.show('Personal Details Added');
       resetForm((initialValues = ''));
-      navigation.navigate('AddBikeDetails');
+      navigation.goBack()
     } else {
       Toast.show('Enter the Details');
     }

@@ -70,7 +70,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
         Toast.show('Error occured');
       }
     }, 500);
-  }, [state]);
+  }, []);
 
   if (loading) {
     return (
@@ -81,7 +81,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
   }
 
   return (
-    <SafeAreaView style={{backgroundColor: 'white'}}>
+    <SafeAreaView style={{backgroundColor: 'white',flex:1}}>
       {route.params.data.tripStatus === 'upcoming' && (
         <View style={styles.mainView}>
           <View style={[styles.header]}>
@@ -220,6 +220,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
       {route.params.data.tripStatus === 'completed' && (
         <>
           <ScrollView
+       
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
@@ -362,7 +363,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                   })
                 ) : (
                   <View style={{marginTop: Platform.OS === 'ios' ? 100 : 100}}>
-                    <Text style={{fontFamily: 'Roboto-Regular', fontSize: 16}}>
+                    <Text style={{fontFamily: 'Roboto-Regular', fontSize: 16,color:'black'}}>
                       No Images Posted
                     </Text>
                   </View>

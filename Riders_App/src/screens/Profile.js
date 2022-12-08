@@ -246,8 +246,7 @@ const Profile = ({navigation}) => {
                 </View>
                   )
                 ):null
-              }
-                
+              }             
             </ScrollView>
           </View>
       </Modal>
@@ -302,6 +301,7 @@ const Profile = ({navigation}) => {
                     
                   );
                 })
+
               ) : (
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
                   <Text style={{fontSize: 16, fontFamily: 'Roboto-Regular',color:'black'}}>
@@ -325,13 +325,9 @@ const styles = StyleSheet.create({
 
   followingView: {
     backgroundColor: '#f7f5c9',
-    width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
-    borderRadius: 5,
-    height: 30,
-    borderWidth: 1,
-    alignItems:"center"
+    alignItems:"center",
   },
 
   gradientCreateButton: {
