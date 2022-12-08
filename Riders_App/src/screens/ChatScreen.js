@@ -383,7 +383,6 @@ const styles = StyleSheet.create({
 
   iconContainer: {
     flexDirection: 'row',
-    // justifyContent: 'flex-start',
     marginLeft: '3%',
     width: '72%',
     alignItems: 'center',

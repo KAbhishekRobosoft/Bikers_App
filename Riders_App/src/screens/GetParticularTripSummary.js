@@ -70,7 +70,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
         Toast.show('Error occured');
       }
     }, 500);
-  }, [state]);
+  }, []);
 
   if (loading) {
     return (

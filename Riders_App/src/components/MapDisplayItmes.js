@@ -39,7 +39,6 @@ export const MapNavBar = ({
       <Pressable
         onPress={() => {
           navigation.goBack();
-          dispatch(setInitialState(state));
         }}>
         <Icon
           name="md-arrow-back"
@@ -184,7 +183,7 @@ export const MapNavBar = ({
                   Toast.show("Couldn't end the trip");
                 }
               } else {
-                Toast.show('Only Admin can the trip ');
+                Toast.show('Only Admin can end the trip ');
               }
             }
           },
@@ -315,7 +314,7 @@ export const MapChatButton = ({
         : 80
       : Platform.OS === 'ios'
       ? 480
-      : 500;
+      : 470;
   const left = width > height ? (Platform.OS === 'ios' ? '85%' : '85%') : '75%';
   const state = useSelector(state => state.milestone.initialState);
   const dispatch = useDispatch();

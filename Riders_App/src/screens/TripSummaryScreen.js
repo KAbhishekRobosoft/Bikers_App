@@ -61,6 +61,7 @@ export const TripSummary = ({navigation}) => {
       }, 500);
     }, 500);
   }, []);
+  
   if (loading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
