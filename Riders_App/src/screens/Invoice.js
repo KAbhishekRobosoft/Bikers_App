@@ -20,7 +20,6 @@ import Toast from 'react-native-simple-toast';
 
 const Invoice = ({navigation}) => {
   const route = useRoute();
-  console.log('&&&&', route.params.date);
   const htmlContent = `
   <html>
     <head>
@@ -274,7 +273,7 @@ const styles = StyleSheet.create({
   },
 
   dateText: {
-    height: 16,
+    height: 20,
     lineHeight: 19,
     fontSize: 14,
     fontFamily: 'Roboto',
@@ -285,7 +284,7 @@ const styles = StyleSheet.create({
   },
 
   billNo: {
-    height: 16,
+    height: 20,
     lineHeight: 19,
     fontSize: 14,
     fontFamily: 'Roboto',

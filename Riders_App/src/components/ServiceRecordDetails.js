@@ -75,6 +75,7 @@ export const PastServiceRecordDetails = ({navigation, data}) => {
     const key = await getVerifiedKeys(authData.userToken);
     dispatch(setToken(key));
     const response = await getParticularService(key, id);
+    console.log(response)
     navigation.navigate('BookingSummary', response);
   };
 

@@ -40,7 +40,7 @@ const SearchServiceComponent = ({data, text,navigation,route}) => {
                   <Text style={styles.text3}>{ele.dealerDescription}</Text>
                   <Text style={styles.text3}>+91 {ele.dealerPhoneNumber}</Text>
                   <View style={styles.rating}>
-                    <Star rating={Math.floor(ele.dealerRating)}/>
+                    <Star rating={Math.ceil(ele.dealerRating)}/>
                   </View>
                 </View>
               </TouchableOpacity>

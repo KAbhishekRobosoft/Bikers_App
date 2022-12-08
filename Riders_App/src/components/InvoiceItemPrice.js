@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
 
   productText: {
-    height: 16,
+    height: 20,
     lineHeight: 19,
     fontSize: 14,
     fontFamily: 'Roboto',
