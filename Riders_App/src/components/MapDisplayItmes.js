@@ -183,11 +183,9 @@ export const MapNavBar = ({
                 } else {
                   Toast.show("Couldn't end the trip");
                 }
+              } else {
+                Toast.show('Only Admin can the trip ');
               }
-              else{
-                Toast.show("Only admin can end the trip")
-              }
-
             }
           },
           {

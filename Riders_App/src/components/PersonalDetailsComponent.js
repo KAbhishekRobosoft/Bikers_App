@@ -6,11 +6,11 @@ import {
   TextInput,
   ActivityIndicator,
 } from 'react-native';
-import React, {useEffect} from 'react';
-import { getOwnerDetails } from '../services/OwnerAndBike';
+import React, {useEffect, useState} from 'react';
+import {getOwnerDetails} from '../services/Auth';
 import {useDispatch, useSelector} from 'react-redux';
 import {getVerifiedKeys} from '../utils/Functions';
-import {setUserData} from '../redux/AuthSlice';
+import {setToken, setUserData} from '../redux/AuthSlice';
 import {deSetLoading, setLoading} from '../redux/MileStoneSlice';
 
 export const PersonalDetails = () => {
@@ -19,16 +19,18 @@ export const PersonalDetails = () => {
   const authData = useSelector(state => state.auth);
   const loading = useSelector(state => state.milestone.isLoading);
 
-
   useEffect(() => {
     dispatch(deSetLoading());
     setTimeout(async () => {
       let cred = await getVerifiedKeys(authData.userToken);
+      dispatch(setToken(cred))
       const response = await getOwnerDetails(cred);
       dispatch(setUserData(response[0]));
       dispatch(setLoading());
-    }, 1000);
+    }, 500);
   }, [userDetails?.pincode]);
+
+
   if (loading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -113,7 +115,7 @@ export const PersonalDetails = () => {
               placeholder="Pincode"
               editable={false}
               placeholderTextColor="#4F504F"
-             defaultValue={JSON.stringify(userDetails?.pincode)}
+              defaultValue={JSON.stringify(userDetails?.pincode)}
             />
           </View>
         </View>
