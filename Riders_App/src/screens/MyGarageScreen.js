@@ -14,7 +14,7 @@ import {getVerifiedKeys} from '../utils/Functions';
 import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
 import {getAllService} from '../services/Services';
 import {addAllServices} from '../redux/AccessoriesSlice';
-import {setToken, setUserData} from '../redux/AuthSlice';
+import {setToken} from '../redux/AuthSlice';
 
 export const MyGarage = ({navigation}) => {
   const hadBike = useSelector(state => state.auth.userCredentials);
@@ -65,9 +65,9 @@ export const MyGarage = ({navigation}) => {
           new Date(serviceData[0]?.slotDate) >= Date.now() ? (
             <View style={styles.serviceDueView}>
               {day <= 1 ? (
-                <Text style={styles.daysText}>{day} day</Text>
+                <Text style={styles.daysText}>{day+1} day</Text>
               ) : (
-                <Text style={styles.daysText}>{day} days</Text>
+                <Text style={styles.daysText}>{day+1} days</Text>
               )}
               <Text style={styles.daysDescription}>Next Service due</Text>
             </View>

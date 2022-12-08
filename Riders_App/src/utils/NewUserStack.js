@@ -4,7 +4,6 @@ import ImageSuccessPage from '../screens/ImageSuccessPage';
 import NewUserSubStack from './NewUserSubStack';
 import {useSelector} from 'react-redux';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {AddPersonalDetails} from '../screens/AddPersonalDetailsScreen';
 import AddBikeDetails from '../screens/AddBikeDetailsScreen';
 import BottomTabLoginNavigation from './BottomTabLoginNavigation';
 import CreateTrip from '../screens/CreateTripScreen';
