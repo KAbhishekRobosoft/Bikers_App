@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
   },
 
   dateText: {
-    height: 16,
+    height: 20,
     lineHeight: 19,
     fontSize: 14,
     fontFamily: 'Roboto',
@@ -290,7 +290,7 @@ const styles = StyleSheet.create({
   },
 
   billNo: {
-    height: 16,
+    height: 20,
     lineHeight: 19,
     fontSize: 14,
     fontFamily: 'Roboto',
