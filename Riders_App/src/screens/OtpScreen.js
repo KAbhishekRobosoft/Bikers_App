@@ -132,11 +132,6 @@ const OtpScreen = ({navigation}) => {
               <View style={styles.otpBorderView1} />
             </View>
           </View>
-          {/* <View style={styles.textView1}>
-            <Pressable onPress={() => console.log('Resend')}>
-              <Text style={styles.resendText}>Re-send Again</Text>
-            </Pressable>
-          </View> */}
           <View style={styles.textView2}>
             <Text style={styles.secondsText}>20 minutes left</Text>
           </View>
