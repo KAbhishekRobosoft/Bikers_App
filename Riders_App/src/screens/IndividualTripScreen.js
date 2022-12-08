@@ -12,14 +12,11 @@ import {
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AllTripList from '../components/AllTripList';
-import {
-  getBikeDetails,
-  getOwnerDetails,
-  UserTrips,
-} from '../services/Auth';
+import { getBikeDetails } from '../services/OwnerAndBike';
+import { UserTrips } from '../services/Trips';
 import {getVerifiedKeys} from '../utils/Functions';
-import {SearchUserTrips} from '../services/Auth';
-import {setToken, setUserData} from '../redux/AuthSlice';
+import { SearchUserTrips } from '../services/Trips';
+import {setToken} from '../redux/AuthSlice';
 import Toast from 'react-native-simple-toast';
 import {addBikeData, addBikeType} from '../redux/AccessoriesSlice';
 import { setInitialState } from '../redux/MileStoneSlice';
@@ -42,14 +39,12 @@ const AllTrips = ({navigation}) => {
         const tripdata = await UserTrips(key);
         setTripDetails(tripdata);
         dispatch(setLoading())
-        const response = await getOwnerDetails(key);
         let bikeResponse = await getBikeDetails(key);
         let BikeTypes = bikeResponse.map(e => {
           return e.vehicleType;
         });
         dispatch(addBikeType(BikeTypes));
         dispatch(addBikeData(bikeResponse));
-        dispatch(setUserData(response[0]));
       } catch (er) {
         Toast.show('Error Occurred');
       }

@@ -11,7 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {searchCity} from '../services/Auth';
+import { searchCity } from '../services/Maps';
 import uuid from 'react-native-uuid';
 import {whereTo} from '../redux/MileStoneSlice';
 import {useDispatch} from 'react-redux';

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {getVerifiedKeys} from '../utils/Functions';
-import {deleteTrip} from '../services/Auth';
+import { deleteTrip } from '../services/Trips';
 import {useDispatch, useSelector} from 'react-redux';
 import {setInitialState} from '../redux/MileStoneSlice';
 import {month1} from '../utils/Functions';

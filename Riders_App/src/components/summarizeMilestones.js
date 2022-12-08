@@ -1,18 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
-  FlatList,
-  SafeAreaView,
   StyleSheet,
   TextInput,
   View,
   Text,
   Image,
-  Pressable,
-  ScrollView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { useSelector } from 'react-redux';
-import {summaryData} from '../assets/data';
 import uuid from 'react-native-uuid'
 
 export const TripSummaryList = ({data}) => {

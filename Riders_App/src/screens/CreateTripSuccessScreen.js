@@ -7,6 +7,7 @@ import {deleteMilestonesData} from '../redux/MileStoneSlice';
 import {setInitialState} from '../redux/MileStoneSlice';
 import {emptySetTo} from '../redux/MileStoneSlice';
 import {deleteContactsData} from '../redux/ContactSlice';
+
 export const CreateTripSuccess = ({navigation}) => {
   const auth = useSelector(state => state.auth);
   const state = useSelector(state => state.milestone.initialState);

@@ -22,12 +22,12 @@ import {getVerifiedKeys} from '../utils/Functions';
 import {useDispatch, useSelector} from 'react-redux';
 import {setToken} from '../redux/AuthSlice';
 import {setInitialState} from '../redux/MileStoneSlice';
-import {getChat} from '../services/Auth';
-import {sendChat} from '../services/Auth';
-import {uploadChatImage} from '../services/Auth';
+import {getChat} from '../services/Chats';
+import {sendChat} from '../services/Chats';
+import {uploadChatImage} from '../services/Chats';
 import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modal';
-import {clearChat} from '../services/Auth';
+import {clearChat} from '../services/Chats';
 
 const ChatScreen = ({navigation, route}) => {
   const textRef = useRef(null);
@@ -40,7 +40,6 @@ const ChatScreen = ({navigation, route}) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const number = useSelector(state => state.auth.userCredentials.mobile);
   const authData = useSelector(state => state.auth);
-  const [emoji, setEmoji] = useState(false);
   const {height, width} = useWindowDimensions();
   const top =
     width > height
@@ -50,8 +49,6 @@ const ChatScreen = ({navigation, route}) => {
       : Platform.OS === 'ios'
       ? '95%'
       : '90%';
-  const height2 =
-    width > height ? (Platform.OS === 'ios' ? '60%' : '70%') : '80%';
 
   useEffect(() => {
     setTimeout(async () => {
@@ -269,13 +266,13 @@ const ChatScreen = ({navigation, route}) => {
               style={styles.imageIcon}
             />
             <Text style={styles.GroupInfoText}>Group Info</Text>
-            <View style={{flexDirection: 'row', marginTop: 15}}>
-              <Text style={styles.adminText}>Admin</Text>
-              <Text style={styles.adminMobileText}>
-                : {route.params.mobile}
-              </Text>
-            </View>
             <ScrollView style={{marginTop: 10}}>
+              <View style={{flexDirection: 'row'}}>
+                <Text style={styles.adminText}>Admin</Text>
+                <Text style={styles.adminMobileText}>
+                  : {route.params.mobile}
+                </Text>
+              </View>
               {route.params.riders.map(ele => {
                 return (
                   <View key={ele._id} style={styles.ridersView}>

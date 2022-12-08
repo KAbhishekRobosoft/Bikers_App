@@ -1,13 +1,12 @@
 import {
-  Image,
   SafeAreaView,
   StyleSheet,
   Text,
   View,
   ScrollView,
-  TouchableOpacity,
   Platform,
   ImageBackground,
+  Pressable
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -16,7 +15,6 @@ import ButtonLarge from '../components/Buttons';
 import {useRoute} from '@react-navigation/native';
 import DatePicker from 'react-native-date-picker';
 import {useWindowDimensions} from 'react-native';
-import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 
 const ServiceCenterScreen = ({navigation}) => {
   const [date, setDate] = useState(new Date());

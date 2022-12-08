@@ -13,7 +13,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import ButtonLarge from '../components/Buttons';
 import {addBikeData, addBikeType} from '../redux/AccessoriesSlice';
-import {getBikeDetails} from '../services/Auth';
+import { getBikeDetails } from '../services/OwnerAndBike';
 import {getVerifiedKeys} from '../utils/Functions';
 import Toast from 'react-native-simple-toast';
 import {setToken} from '../redux/AuthSlice';

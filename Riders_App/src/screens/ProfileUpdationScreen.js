@@ -14,9 +14,7 @@ import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
 import {useDispatch, useSelector} from 'react-redux';
 import ButtonLarge from '../components/Buttons';
 import {Field, Formik} from 'formik';
-import {editAboutUser} from '../services/Auth';
-import {editProfile} from '../services/Auth';
-import {editProfileuserName} from '../services/Auth';
+import { editProfile } from '../services/Profile';
 import {getVerifiedKeys} from '../utils/Functions';
 import Toast from 'react-native-simple-toast';
 import {setInitialState} from '../redux/MileStoneSlice';
@@ -80,42 +78,22 @@ function ProfileUpdationScreen({navigation, route}) {
                 <Formik
                   initialValues={initialValues}
                   onSubmit={async values => {
-                    if (values.userName === null) {
-                      dispatch(setInitialState(state));
+                    try{
                       const key = await getVerifiedKeys(auth.userToken);
-                      dispatch(setToken(key));
-                      const resp1 = await editAboutUser(key, values.aboutUser);
-                      if (resp1 !== undefined) {
-                        navigation.navigate('Profile');
-                        Toast.show('Profile Updated');
-                      } else {
-                        Toast.show('Profile Updation failed');
-                      }
-                    } else if (values.aboutUser === null) {
-                      dispatch(setInitialState(state));
-                      const key = await getVerifiedKeys(auth.userToken);
-                      const resp2 = await editProfileuserName(
-                        key,
-                        values.userName,
-                      );
-                      if (resp2 !== undefined) {
-                        navigation.navigate('Profile');
-                        Toast.show('Profile Updated');
-                      } else {
-                        Toast.show('Profile Updation failed');
-                      }
-                    } else {
-                      dispatch(setInitialState(state));
-                      const key = await getVerifiedKeys(auth.userToken);
+                      dispatch(setToken(key))
                       const resp2 = await editProfile(key, values);
                       if (resp2 !== undefined) {
                         navigation.navigate('Profile');
                         Toast.show('Profile Updated');
+                        dispatch(setInitialState(state));
                       } else {
                         Toast.show('Profile Updation failed');
                       }
-                    }
+                    }catch(er){
+                          Toast.show("Network Error")
+                  }
                   }}>
+
                   {({values, handleSubmit, isValid, resetForm}) => (
                     <>
                       <Field

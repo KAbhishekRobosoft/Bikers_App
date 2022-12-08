@@ -8,14 +8,14 @@ import {
   TextInput,
   ScrollView,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useDispatch, useSelector} from 'react-redux';
-import {register} from '../services/Auth';
+import { register } from '../services/UserCredentials';
 import {setOtpVerfied} from '../redux/AuthSlice';
 import Toast from 'react-native-simple-toast';
-import {sendOtp} from '../services/Auth';
-import {verifyOtp} from '../services/Auth';
+import { sendOtp } from '../services/UserCredentials';
+import { verifyOtp } from '../services/UserCredentials';
 
 const OtpScreen = ({navigation}) => {
   const data = useSelector(state => state.auth);

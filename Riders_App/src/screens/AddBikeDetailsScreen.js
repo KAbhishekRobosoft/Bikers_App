@@ -12,7 +12,8 @@ import {
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
-import {addBikeDetails, getBikeDetails} from '../services/Auth';
+import { addBikeDetails, } from '../services/OwnerAndBike';
+import { getBikeDetails } from '../services/OwnerAndBike';
 import {useDispatch, useSelector} from 'react-redux';
 import {addBikeType, addBikeData} from '../redux/AccessoriesSlice';
 import {Formik, Field} from 'formik';

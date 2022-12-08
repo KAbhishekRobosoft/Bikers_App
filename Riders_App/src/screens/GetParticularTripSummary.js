@@ -17,9 +17,9 @@ import {useSelector, useDispatch} from 'react-redux';
 import BikeImageComponent from '../components/BikeImageComponent';
 import MapView, {Marker} from 'react-native-maps';
 import {Polyline} from 'react-native-maps';
-import {getImagePreview} from '../services/Auth';
+import { getImagePreview } from '../services/Trips';
 import {getVerifiedKeys, month1} from '../utils/Functions';
-import {calculateRoute} from '../services/Auth';
+import { calculateRoute } from '../services/Maps';
 import {deSetLoading} from '../redux/MileStoneSlice';
 import {setLoading} from '../redux/MileStoneSlice';
 import uuid from 'react-native-uuid';
@@ -81,7 +81,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
   }
 
   return (
-    <SafeAreaView style={{backgroundColor: 'white', height: '100%'}}>
+    <SafeAreaView style={{backgroundColor: 'white'}}>
       {route.params.data.tripStatus === 'upcoming' && (
         <View style={styles.mainView}>
           <View style={[styles.header]}>
