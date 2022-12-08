@@ -16,11 +16,17 @@ import {month1} from '../utils/Functions';
 import pdf from 'react-native-html-to-pdf';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FileViewer from 'react-native-file-viewer';
+import uuid from 'react-native-uuid';
+
 import Toast from 'react-native-simple-toast';
 
 const Invoice = ({navigation}) => {
   const route = useRoute();
-  console.log('&&&&', route.params.date);
+  const arr = [
+    {itemName: 'oil', itemQuantity: 3, itemPrice: 100},
+    {itemName: 'brake', itemQuantity: 5, itemPrice: 22},
+    {itemName: 'ennn', itemQuantity: 6, itemPrice: 33},
+  ];
   const htmlContent = `
   <html>
     <head>
@@ -174,16 +180,15 @@ const Invoice = ({navigation}) => {
               />
               <Text style={styles.statusText}>Paid</Text>
             </View>
-        
+
             <View
               style={{
                 borderWidth: 0.7,
                 marginVertical: 20,
                 width: '90%',
                 //marginLeft: 35,
-                alignSelf:'center',
-                borderColor:'grey'
-
+                alignSelf: 'center',
+                borderColor: 'grey',
               }}></View>
             <View style={styles.ProducttextContainer}>
               <Text style={styles.productText}>PRODUCT</Text>
@@ -192,10 +197,11 @@ const Invoice = ({navigation}) => {
                 <Text style={styles.productText}>PRICE</Text>
               </View>
             </View>
-            <InvoiceItem />
-            <InvoiceItem />
-            <InvoiceItem />
-            <InvoiceItem />
+            {arr.length > 0
+              ? arr.map(e => {
+                  return <InvoiceItem ele={e} id={uuid.v4()} />;
+                })
+              : null}
 
             <View style={styles.totalPriceContainer}>
               <Text style={styles.totalText}>TOTAL</Text>
@@ -207,9 +213,8 @@ const Invoice = ({navigation}) => {
                 marginVertical: 20,
                 width: '90%',
                 //marginLeft: 35,
-                alignSelf:'center',
-                borderColor:'grey'
-              
+                alignSelf: 'center',
+                borderColor: 'grey',
               }}></View>
           </ImageBackground>
         </View>

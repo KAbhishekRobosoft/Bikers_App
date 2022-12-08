@@ -1,13 +1,13 @@
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 
-const InvoiceItem = () => {
+const InvoiceItem = ({ele,id}) => {
   return (
-    <View style={styles.ProducttextContainer}>
-      <Text style={styles.productText}>iTEM 1</Text>
+    <View style={styles.ProducttextContainer} key={id}>
+      <Text style={styles.productText}>{ele.itemName}</Text>
       <View style={styles.unitContainer}>
-        <Text style={styles.productText}>1</Text>
-        <Text style={styles.productText}>1000/-</Text>
+        <Text style={styles.productText}>{ele.itemQuantity}</Text>
+        <Text style={styles.productText}>{ele.itemPrice}/-</Text>
       </View>
     </View>
   );

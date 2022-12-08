@@ -191,8 +191,8 @@ function NewUserStack() {
       />
       <Stack.Screen
         options={{headerShown: false}}
-        name="AddDetailsStack"
-        component={AddDetailsStack}
+        name="AddPersonalDetails"
+        component={AddPersonalDetails}
       />
       <Stack.Screen
         options={{headerShown: false}}
