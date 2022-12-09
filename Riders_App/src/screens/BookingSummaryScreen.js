@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput,
   editable,
+  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -20,20 +21,27 @@ import {month1} from '../utils/Functions';
 import {AirbnbRating} from 'react-native-ratings';
 import {getRatings} from '../services/Services';
 import {useRoute} from '@react-navigation/native';
+import Toast from 'react-native-simple-toast'
 
 const BookingSummary = ({navigation}) => {
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
   const [disabled, setDisabled] = useState(true);
   const route = useRoute();
-  console.log('ed', route);
   const [rate, setRate] = useState(route.params.ratings);
+
   const handlePast = () => {
-    const obj = {
-      date: route.params.slotDate,
-      //invoice: route.params.invoice
-    };
-    navigation.navigate('Invoice', obj);
+    if(route.params.invoice.length > 0){
+      const obj = {
+        date: route.params.slotDate,
+        //invoice: route.params.invoice
+      };
+      navigation.navigate('Invoice', obj);
+    }
+    else{
+        Toast.show("Invoice yet to be generated")
+    }
+
   };
   const ratingCompleted = async rating => {
     setRate(rating);
@@ -192,12 +200,12 @@ const BookingSummary = ({navigation}) => {
             }}>
             {new Date(route.params.slotDate) < Date.now() ? (
               <>
-                {route.params.serviceType !== 'Free service' ? (
+                {(route.params.serviceType !== 'Free service' && route.params.invoice.length > 0) ? (
                   <>
                     <Text style={styles.totalText}>Total bill payed</Text>
                     <Text style={styles.ruppesText}>Rs 4,000 /-</Text>
                   </>
-                ) : null}
+                ) : <Text style={{fontFamily:"Roboto-Regular",color:"orange",fontSize:18,textAlign:"center",fontWeight:"bold"}}>Invoice yet to be generated</Text>}
 
                 <Text style={styles.totalText}>Rate the Service</Text>
                 {disabled ? (

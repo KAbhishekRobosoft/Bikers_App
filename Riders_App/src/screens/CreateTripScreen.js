@@ -89,7 +89,7 @@ const CreateTrip = ({navigation}) => {
         <Pressable
           onPress={() => {
             navigation.goBack();
-            dispatch(deSetLoading());
+            
           }}>
           <Icon3 name="arrow-back" color={'white'} size={25} />
         </Pressable>

@@ -55,7 +55,7 @@ export const uploadImage = async (payload, token) => {
 export const sendOtp = async mobileNumber => {
   try {
     const response = await axios.post(`${BASE_URL}/sendOtp`, {
-      destination: mobileNumber,
+      destination: '+91'+mobileNumber,
     });
     return response.data;
   } catch (error) {
