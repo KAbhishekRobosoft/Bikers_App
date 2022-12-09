@@ -21,12 +21,12 @@ import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
 import {useDispatch, useSelector} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
-import { getCoordinates } from '../services/Maps';
+import {getCoordinates} from '../services/Maps';
 import GetLocation from 'react-native-get-location';
-import { getLocationName } from '../services/Maps';
+import {getLocationName} from '../services/Maps';
 import {setLoading} from '../redux/MileStoneSlice';
 import {tripStore} from '../redux/MileStoneSlice';
-import { calculateRoute } from '../services/Maps';
+import {calculateRoute} from '../services/Maps';
 import Toast from 'react-native-simple-toast';
 
 const CreateTrip = ({navigation}) => {
@@ -135,23 +135,21 @@ const CreateTrip = ({navigation}) => {
               onChangeText={value => setFrom(value)}
             />
           </View>
-         
-              <View style={styles.locationNamesView}>
-                <Icon2
-                  name="gps-fixed"
-                  size={22}
-                  color="#A4A4A4"
-                  style={{
-                    marginLeft: 10,
-                  }}
-                />
-                <View style={{marginLeft: -10}}>
-                  <Text style={styles.textUdupi}>{currLoc}</Text>
-                  <Text style={styles.textCurrentLocation}>
-                    current location
-                  </Text>
-                </View>
-              </View>
+
+          <View style={styles.locationNamesView}>
+            <Icon2
+              name="gps-fixed"
+              size={22}
+              color="#A4A4A4"
+              style={{
+                marginLeft: 10,
+              }}
+            />
+            <View style={{marginLeft: -10}}>
+              <Text style={styles.textUdupi}>{currLoc}</Text>
+              <Text style={styles.textCurrentLocation}>current location</Text>
+            </View>
+          </View>
 
           <View style={styles.textInputView}>
             {tripName ? (

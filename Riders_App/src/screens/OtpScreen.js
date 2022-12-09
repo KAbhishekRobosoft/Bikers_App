@@ -7,26 +7,30 @@ import {
   Pressable,
   TextInput,
   ScrollView,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {useDispatch, useSelector} from 'react-redux';
-import { register } from '../services/UserCredentials';
+import {register} from '../services/UserCredentials';
 import {setOtpVerfied} from '../redux/AuthSlice';
 import Toast from 'react-native-simple-toast';
-import { sendOtp } from '../services/UserCredentials';
-import { verifyOtp } from '../services/UserCredentials';
+import {sendOtp} from '../services/UserCredentials';
+import {verifyOtp} from '../services/UserCredentials';
+import {useRef} from 'react';
 
 const OtpScreen = ({navigation}) => {
+  const ref = useRef();
+  const [loading, setLoading] = useState(false);
   const data = useSelector(state => state.auth);
   console.log(data.userData.mobile)
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (data.userData.mobile === '7026324187') {
+    if (data.userData.mobile === '5555') {
       setTimeout(async () => {
         const response = await sendOtp(data.userData.mobile);
-        console.log(response)
+        console.log(response);
       }, 500);
     }
   }, []);
@@ -53,13 +57,16 @@ const OtpScreen = ({navigation}) => {
         <View style={styles.bottomView}>
           <View style={styles.optView}>
             <TextInput
+              ref={ref}
               cursorColor={'white'}
               name="otp"
               style={styles.otpText}
               onChangeText={async value => {
                 if (value.length === 4) {
-                  if (data.userData.mobile === '7026324187') {
+                  if (data.userData.mobile === '5555') {
                     try {
+                      setLoading(true);
+
                       const resp = await verifyOtp(value.toString());
                       if (resp === true) {
                         if (
@@ -87,11 +94,16 @@ const OtpScreen = ({navigation}) => {
                             Toast.show('User already exists');
                           }
                         }
+                      } else {
+                        Toast.show('Wrong OTP');
                       }
+                      ref.current.clear()
+                      setLoading(false);
                     } catch (er) {
                       Toast.show('Error occurred');
                     }
                   } else {
+                    setLoading(false);
                     try {
                       if (
                         data.registered === true &&
@@ -135,6 +147,7 @@ const OtpScreen = ({navigation}) => {
             </View>
           </View>
           <View style={styles.textView2}>
+            {loading && <ActivityIndicator size="small" color="#ED7E2B" />}
             <Text style={styles.secondsText}>20 minutes left</Text>
           </View>
         </View>

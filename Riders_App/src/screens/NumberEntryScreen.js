@@ -15,7 +15,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import ButtonLarge from '../components/Buttons';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUserData} from '../redux/AuthSlice';
-import { deSetForgotPassword } from '../redux/AuthSlice';
+import {deSetForgotPassword} from '../redux/AuthSlice';
+import Toast from 'react-native-simple-toast'
 
 function NumberEntryScreen({navigation}) {
   const [text, setText] = useState('');
@@ -32,7 +33,7 @@ function NumberEntryScreen({navigation}) {
         <Pressable
           onPress={() => {
             navigation.goBack();
-            dispatch(deSetForgotPassword())
+            dispatch(deSetForgotPassword());
           }}>
           <Image
             style={styles.back_pic}
@@ -68,6 +69,7 @@ function NumberEntryScreen({navigation}) {
                 <TextInput
                   name="sample"
                   placeholder="Enter your Mobile number"
+                  placeholderTextColor={'grey'}
                   keyboardType="numeric"
                   value={text}
                   onChangeText={value => setText(value)}
@@ -78,8 +80,12 @@ function NumberEntryScreen({navigation}) {
             <View style={{alignSelf: 'center'}}>
               <ButtonLarge
                 onPress={() => {
-                  dispatch(setUserData({mobile: text}));
-                  navigation.navigate('Otp');
+                  if (text.length === 10) {
+                    dispatch(setUserData({mobile: text}));
+                    navigation.navigate('Otp');
+                  } else {
+                    Toast.show('Enter a 10 digit Number');
+                  }
                 }}
                 title="SUBMIT"
               />
@@ -127,13 +133,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
-    marginHorizontal: 60
+    marginHorizontal: 60,
   },
   textInputView: {
     width: '90%',
     height: 50,
     flexDirection: 'row',
-    // marginTop: 25,
     borderColor: '#B4B3B3',
     borderBottomWidth: 1,
   },
