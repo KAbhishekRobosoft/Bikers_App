@@ -27,7 +27,7 @@ import {deleteMilestonesData} from '../redux/MileStoneSlice';
 import {setLoading} from '../redux/MileStoneSlice';
 import {deSetLoading} from '../redux/MileStoneSlice';
 import {setLoad} from '../redux/ContactSlice';
-import {desetLoad} from '../redux/ContactSlice';
+import {deSetLoad} from '../redux/ContactSlice';
 import LinearGradient from 'react-native-linear-gradient';
 
 export const TripSummary = ({navigation}) => {
@@ -40,7 +40,7 @@ export const TripSummary = ({navigation}) => {
   const dispatch = useDispatch();
   const [route, setRoute] = useState([]);
   const loading1 = useSelector(state => state.contact.isLoading);
-
+console.log(loading1);
   useEffect(() => {
     dispatch(deSetLoading());
     setTimeout(async () => {
@@ -196,7 +196,7 @@ export const TripSummary = ({navigation}) => {
                       const cred = await getVerifiedKeys(authData.userToken);
                       dispatch(setToken(cred));
                       const resp = await createTrip(tripDetails, cred);
-                      dispatch(desetLoad());
+                      dispatch(deSetLoad());
                       if (resp !== undefined)
                         navigation.navigate('CreateTripSuccess');
                       else Toast.show('Trip Creation Unsuccessfull');

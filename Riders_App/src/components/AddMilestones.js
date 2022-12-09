@@ -16,12 +16,12 @@ import {useDispatch} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
 import {setMileStoneData} from '../redux/MileStoneSlice';
 import {useSelector} from 'react-redux';
-import { getCoordinates } from '../services/Maps';
-import { calculateRoute } from '../services/Maps';
+import {getCoordinates} from '../services/Maps';
+import {calculateRoute} from '../services/Maps';
 import Toast from 'react-native-simple-toast';
 import GetLocation from 'react-native-get-location';
-import { getLocationName } from '../services/Maps';
-import { setLoad, deSetLoad } from '../redux/ContactSlice';
+import {getLocationName} from '../services/Maps';
+import {setLoad, deSetLoad} from '../redux/ContactSlice';
 
 export const Milestone = () => {
   const [curLoc, setcurLoc] = useState('');
@@ -50,21 +50,21 @@ export const Milestone = () => {
         });
     }, 500);
   }, []);
-  
+
   return (
     <SafeAreaView>
-      
-        <View style={styles.milestoneView}>
-          <LinearGradient
-            start={{x: 0, y: 0}}
-            end={{x: 0, y: 0.45}}
-            colors={['#fbe5d4', 'rgba(255,255,255,0)']}
-            style={styles.gradient}>
-            <View style={styles.textView}>
-              <Text style={styles.milestoneText}>
-                Milestone {mileStoneData.length + 1}
-              </Text>
-              {!loading &&  <Pressable
+      <View style={styles.milestoneView}>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 0, y: 0.45}}
+          colors={['#fbe5d4', 'rgba(255,255,255,0)']}
+          style={styles.gradient}>
+          <View style={styles.textView}>
+            <Text style={styles.milestoneText}>
+              Milestone {mileStoneData.length + 1}
+            </Text>
+            {!loading && (
+              <Pressable
                 onPress={async () => {
                   if ((from, to !== '')) {
                     try {
@@ -108,6 +108,7 @@ export const Milestone = () => {
                       dispatch(deSetLoad());
                       Toast.show('Milestone added');
                     } catch (er) {
+                      dispatch(deSetLoad());
                       Toast.show('Please enter valid location');
                     }
                   } else {
@@ -120,45 +121,46 @@ export const Milestone = () => {
                   color={'#A4A4A4'}
                   style={styles.times}
                 />
-              </Pressable> }
-              {loading && <ActivityIndicator color="red" />}
+              </Pressable>
+            )}
+            {loading && <ActivityIndicator color="red" />}
+          </View>
+          <Text style={styles.description}>
+            This is to make a break journey inbetween your trip
+          </Text>
+          <View style={styles.fromView}>
+            <TextInput
+              placeholder="From"
+              placeholderTextColor={'rgba(79,80,79,0.92)'}
+              style={styles.textFrom}
+              onChangeText={value => setFrom(value)}
+            />
+          </View>
+          <View style={styles.locationView}>
+            <Icon2
+              name="gps-fixed"
+              size={22}
+              color="#A4A4A4"
+              style={{
+                marginLeft: 10,
+                marginTop: 6,
+              }}
+            />
+            <View style={styles.locationNamesView}>
+              <Text style={styles.textUdupi}>{curLoc}</Text>
+              <Text style={styles.textCurrentLocation}>current location</Text>
             </View>
-            <Text style={styles.description}>
-              This is to make a break journey inbetween your trip
-            </Text>
-            <View style={styles.fromView}>
-              <TextInput
-                placeholder="From"
-                placeholderTextColor={'rgba(79,80,79,0.92)'}
-                style={styles.textFrom}
-                onChangeText={value => setFrom(value)}
-              />
-            </View>
-            <View style={styles.locationView}>
-              <Icon2
-                name="gps-fixed"
-                size={22}
-                color="#A4A4A4"
-                style={{
-                  marginLeft: 10,
-                  marginTop: 6,
-                }}
-              />
-              <View style={styles.locationNamesView}>
-                <Text style={styles.textUdupi}>{curLoc}</Text>
-                <Text style={styles.textCurrentLocation}>current location</Text>
-              </View>
-            </View>
-            <View style={styles.toView}>
-              <TextInput
-                placeholder="To"
-                placeholderTextColor={'rgba(79,80,79,0.92)'}
-                style={styles.textFrom}
-                onChangeText={value => setTo(value)}
-              />
-            </View>
-          </LinearGradient>
-        </View>
+          </View>
+          <View style={styles.toView}>
+            <TextInput
+              placeholder="To"
+              placeholderTextColor={'rgba(79,80,79,0.92)'}
+              style={styles.textFrom}
+              onChangeText={value => setTo(value)}
+            />
+          </View>
+        </LinearGradient>
+      </View>
     </SafeAreaView>
   );
 };

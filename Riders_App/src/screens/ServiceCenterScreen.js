@@ -7,7 +7,7 @@ import {
   Platform,
   ImageBackground,
   Pressable,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -16,7 +16,7 @@ import ButtonLarge from '../components/Buttons';
 import {useRoute} from '@react-navigation/native';
 import DatePicker from 'react-native-date-picker';
 import {useWindowDimensions} from 'react-native';
-import Toast from 'react-native-simple-toast'
+import Toast from 'react-native-simple-toast';
 
 const ServiceCenterScreen = ({navigation}) => {
   const [date, setDate] = useState(new Date());
@@ -36,14 +36,25 @@ const ServiceCenterScreen = ({navigation}) => {
           <ImageBackground
             style={styles.img}
             source={{uri: 'https' + route.params.dealerImage.substring(4)}}>
-            <Pressable onPress={() => navigation.goBack()}>
-              <Icon
-                style={styles.backBtn}
-                name="md-arrow-back"
-                size={25}
-                color="white"
-              />
-            </Pressable>
+            <View
+              style={{
+                backgroundColor: '#ED7E2B',
+                width: 35,
+                height: 35,
+                borderRadius: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop:7,marginLeft:6
+              }}>
+              <Pressable onPress={() => navigation.goBack()}>
+                <Icon
+                  style={styles.backBtn}
+                  name="md-arrow-back"
+                  size={25}
+                  color="white"
+                />
+              </Pressable>
+            </View>
           </ImageBackground>
         </View>
         <View
@@ -51,7 +62,7 @@ const ServiceCenterScreen = ({navigation}) => {
             styles.ratingComponent,
             {paddingHorizontal: paddingHorizontal},
           ]}>
-          <Star rating={Math.floor(route.params.dealerRating)} />
+          <Star rating={Math.ceil(route.params.dealerRating)} />
         </View>
 
         <View style={styles.textContainer}>
@@ -93,23 +104,25 @@ const ServiceCenterScreen = ({navigation}) => {
             date={time}
             onConfirm={value => {
               setOpen2(false);
-              if(date.toString().substring(4,10) === value.toString().substring(4,10)){
-              const obj3 = {
-                serviceType: route.params.serviceType,
-                vehicleNumber: route.params.vehicleNumber,
-                dealerName: route.params.dealerName,
-                dealerCity: route.params.dealerCity,
-                comment: route.params.comment,
-                slotDate: date.toString(),
-                time: value.toString(),
-                mobileNumber: route.params.mobileNumber,
-                dealerPhoneNumber: route.params.dealerPhoneNumber,
-              };
-            
-              navigation.navigate('BookingDetails', obj3);
-              }
-              else{
-                Toast.show("Date and time must match")
+              if (
+                date.toString().substring(4, 10) ===
+                value.toString().substring(4, 10)
+              ) {
+                const obj3 = {
+                  serviceType: route.params.serviceType,
+                  vehicleNumber: route.params.vehicleNumber,
+                  dealerName: route.params.dealerName,
+                  dealerCity: route.params.dealerCity,
+                  comment: route.params.comment,
+                  slotDate: date.toString(),
+                  time: value.toString(),
+                  mobileNumber: route.params.mobileNumber,
+                  dealerPhoneNumber: route.params.dealerPhoneNumber,
+                };
+
+                navigation.navigate('BookingDetails', obj3);
+              } else {
+                Toast.show('Date and time must match');
               }
             }}
             onCancel={() => {
@@ -137,10 +150,12 @@ const styles = StyleSheet.create({
     top: '5%',
     alignSelf: 'center',
     backgroundColor: 'grey',
+    resizeMode: 'contain',
   },
   backBtn: {
-    paddingLeft: 20,
-    marginTop: 5,
+    // paddingLeft: 20,
+    // marginTop: 5,
+    // backgroundColor: 'black',
   },
   scrollView: {
     width: '100%',
@@ -153,7 +168,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   ratingComponent: {
-    marginTop: 250,
+    marginTop: 280,
   },
   textView1: {
     flexDirection: 'row',

@@ -74,7 +74,6 @@ const CreateTrip = ({navigation}) => {
   const contactsData = useSelector(state => state.contact);
 
   const whereto = useSelector(state => state.milestone.setTo);
-
   if (loading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>

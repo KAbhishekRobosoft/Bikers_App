@@ -18,15 +18,13 @@ export const register = async (values, haveBike) => {
 };
 
 export const checkIn = async values => {
-  try {
+  
     const response = await axios.post(`${BASE_URL}/loginPhone`, {
       mobile: values.number,
       password: values.password,
     });
     return response.data;
-  } catch (error) {
-    console.log('An error has occurred');
-  }
+ 
 };
 
 export const refreshToken = async token => {

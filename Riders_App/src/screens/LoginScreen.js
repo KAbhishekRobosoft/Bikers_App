@@ -9,6 +9,8 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   ActivityIndicator,
+  useWindowDimensions,
+  Platform,
 } from 'react-native';
 import React, {useState} from 'react';
 import ButtonLarge from '../components/Buttons';
@@ -24,8 +26,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {login} from '../redux/AuthSlice';
 import {setForgotPassword} from '../redux/AuthSlice';
 import {setImage} from '../redux/AuthSlice';
-import { setLoad } from '../redux/ContactSlice';
-import { desetLoad } from '../redux/ContactSlice';
+import {deSetLoad, setLoad} from '../redux/ContactSlice';
+import {desetLoad} from '../redux/ContactSlice';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),
@@ -41,27 +43,40 @@ const registerValidationSchema = yup.object().shape({
 const LoginScreen = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
   const dispatch = useDispatch();
-  const loading= useSelector(state=>state.contact.isLoading)
-
+  const loading = useSelector(state => state.contact.isLoading);
+  const {height, width} = useWindowDimensions();
+  const textView =
+    height > width
+      ? Platform.OS === 'ios'
+        ? 10
+        : 20
+      : Platform.OS === 'ios'
+      ? 10
+      : 20;
   async function signIn(values) {
-    let image = '';
-    dispatch(setLoad())
-    const response = await checkIn(values);
-    if (response !== undefined) {
-      try {
-        await AsyncStorage.setItem('token', response.token);
-      } catch (e) {
-        console.log(e);
+    try {
+      let image = '';
+      dispatch(setLoad());
+      const response = await checkIn(values);
+      if (response !== undefined) {
+        try {
+          await AsyncStorage.setItem('token', response.token);
+        } catch (e) {
+          console.log(e);
+        }
+        if (response.hasOwnProperty('profileImage')) {
+          image = 'https' + response.profileImage.substring(4);
+          dispatch(setImage(image));
+        }
+        dispatch(deSetLoad());
+        dispatch(login(response));
+        Toast.show('Logged in Successfully!');
+      } else {
+        Toast.show('User Does not exist');
       }
-      if (response.hasOwnProperty('profileImage')) {
-        image = 'https' + response.profileImage.substring(4);
-        dispatch(setImage(image));
-      }
-      dispatch(desetLoad())
-      dispatch(login(response));
-      Toast.show('Logged in Successfully!');
-    } else {
-      Toast.show('User Does not exist');
+    } catch (error) {
+      dispatch(deSetLoad());
+      Toast.show('Enter the  right credentials');
     }
   }
 
@@ -128,27 +143,31 @@ const LoginScreen = ({navigation}) => {
                       </Pressable>
                     </View>
 
-                    {!loading && <View style={styles.buttonView}>
-                      <ButtonLarge
-                        disabled={!isValid}
-                        title="LOGIN"
-                        onPress={handleSubmit}
-                      />
-                    </View>}
+                    {!loading && (
+                      <View style={styles.buttonView}>
+                        <ButtonLarge
+                          disabled={!isValid}
+                          title="LOGIN"
+                          onPress={handleSubmit}
+                        />
+                      </View>
+                    )}
 
-                    {loading && <View style={styles.buttonView}>
-                      <Pressable>
-                        <View style={styles.container}>
-                          <LinearGradient
-                            start={{x: 0, y: 0}}
-                            end={{x: 1, y: 0}}
-                            colors={['#ED7E2B', '#F4A264']}
-                            style={styles.gradient}>
-                           <ActivityIndicator color="white" size="large" />
-                          </LinearGradient>
-                        </View>
-                      </Pressable>
-                    </View>}
+                    {loading && (
+                      <View style={styles.buttonView}>
+                        <Pressable>
+                          <View style={styles.container}>
+                            <LinearGradient
+                              start={{x: 0, y: 0}}
+                              end={{x: 1, y: 0}}
+                              colors={['#ED7E2B', '#F4A264']}
+                              style={styles.gradient}>
+                              <ActivityIndicator color="white" size="large" />
+                            </LinearGradient>
+                          </View>
+                        </Pressable>
+                      </View>
+                    )}
                   </>
                 )}
               </Formik>
@@ -206,6 +225,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
+   
   },
   inputTextView1: {
     width: '100%',
