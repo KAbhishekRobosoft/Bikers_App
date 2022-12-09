@@ -16,10 +16,17 @@ import {month1} from '../utils/Functions';
 import pdf from 'react-native-html-to-pdf';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FileViewer from 'react-native-file-viewer';
+import uuid from 'react-native-uuid';
+
 import Toast from 'react-native-simple-toast';
 
 const Invoice = ({navigation}) => {
   const route = useRoute();
+  const arr = [
+    {itemName: 'oil', itemQuantity: 3, itemPrice: 100},
+    {itemName: 'brake', itemQuantity: 5, itemPrice: 22},
+    {itemName: 'ennn', itemQuantity: 6, itemPrice: 33},
+  ];
   const htmlContent = `
   <html>
     <head>
@@ -45,10 +52,10 @@ const Invoice = ({navigation}) => {
         <table >
         <tr>
           <th><span>Date :-</span></th>
-          <td><span>${route.params.date.substring(8, 10)}, ${
-    month1[route.params.date.substring(5, 7)]
+          <td><span>${route.params.invoice[0].invoiceDate.substring(8, 10)}, ${
+    month1[route.params.invoice[0].invoiceDate.substring(5, 7)]
   },
-          ${route.params.date.substring(0, 4)}
+          ${route.params.invoice[0].invoiceDate.substring(0, 4)}
         </span></td>
         </tr>
           <tr>
@@ -124,8 +131,6 @@ const Invoice = ({navigation}) => {
     //   message: 'PDF',
     //   url: `data:application/pdf;base64,${file.base64}`,
     // };
-
-    console.log(file.filePath);
   };
 
   return (
@@ -150,68 +155,151 @@ const Invoice = ({navigation}) => {
             />
           </Pressable>
         </View>
-        <View style={{}}>
-          <ImageBackground
-            source={require('../assets/images/whitesheet.png')}
-            style={styles.backgroundImage}>
-            <View style={styles.maintextContainer}>
-              <View>
-                <Text style={styles.invoiceText}>Invoice</Text>
-                <Text style={styles.dateText}>
-                  {route.params.date.substring(8, 10)}{' '}
-                  {month1[route.params.date.substring(5, 7)]},{' '}
-                  {route.params.date.substring(0, 4)}
+        {route.params.invoice[0].paid ? (
+          <View>
+            <ImageBackground
+              source={require('../assets/images/whitesheet.png')}
+              style={styles.backgroundImage}>
+              <View style={styles.maintextContainer}>
+                <View>
+                  <Text style={styles.invoiceText}>Invoice</Text>
+                  <Text style={styles.dateText}>
+                    {route.params.invoice[0].invoiceDate.substring(8, 10)}{' '}
+                    {
+                      month1[
+                        route.params.invoice[0].invoiceDate.substring(5, 7)
+                      ]
+                    }
+                    , {route.params.invoice[0].invoiceDate.substring(0, 4)}
+                  </Text>
+                </View>
+                <Text style={styles.billNo}>
+                  #{route.params.invoice[0].invoiceNumber}
                 </Text>
               </View>
-              <Text style={styles.billNo}>#0162</Text>
-            </View>
-            <Text style={styles.ruppesText}>Rs 4,000/-</Text>
-            <View style={styles.statusContainer}>
-              <Image
-                source={require('../assets/images/checkmark.png')}
-                style={{height: 17, width: 17, marginRight: 2}}
-              />
-              <Text style={styles.statusText}>Paid</Text>
-            </View>
-        
-            <View
-              style={{
-                borderWidth: 0.7,
-                marginVertical: 20,
-                width: '90%',
-                //marginLeft: 35,
-                alignSelf:'center',
-                borderColor:'grey'
+              <Text style={styles.ruppesText}>
+                Rs {route.params.invoice[0].total}/-
+              </Text>
+              {route.params.service === 'Free service' ? (
+                <Text style={styles.statusText2}>Free Service</Text>
+              ) : (
+                <View style={styles.statusContainer2}>
+                  <Image
+                    source={require('../assets/images/checkmark.png')}
+                    style={{height: 17, width: 17, marginRight: 2}}
+                  />
+                  <Text style={styles.statusText2}>Paid</Text>
+                </View>
+              )}
 
-              }}></View>
-            <View style={styles.ProducttextContainer}>
-              <Text style={styles.productText}>PRODUCT</Text>
-              <View style={styles.unitContainer}>
-                <Text style={styles.productText}>UNIT</Text>
-                <Text style={styles.productText}>PRICE</Text>
+              <View
+                style={{
+                  borderWidth: 0.7,
+                  marginVertical: 20,
+                  width: '90%',
+                  alignSelf: 'center',
+                  borderColor: 'grey',
+                }}></View>
+              <View style={styles.ProducttextContainer}>
+                <Text style={styles.productText}>PRODUCT</Text>
+                <View style={styles.unitContainer}>
+                  <Text style={styles.productText}>UNIT</Text>
+                  <Text style={styles.productText}>PRICE</Text>
+                </View>
               </View>
-            </View>
-            <InvoiceItem />
-            <InvoiceItem />
-            <InvoiceItem />
-            <InvoiceItem />
+              {route.params.invoice[0].items.length > 0
+                ? route.params.invoice[0].items.map(e => {
+                    return <InvoiceItem ele={e} key={e._id} />;
+                  })
+                : null}
 
-            <View style={styles.totalPriceContainer}>
-              <Text style={styles.totalText}>TOTAL</Text>
-              <Text style={styles.totalText}>4000/-</Text>
-            </View>
-            <View
-              style={{
-                borderWidth: 0.7,
-                marginVertical: 20,
-                width: '90%',
-                //marginLeft: 35,
-                alignSelf:'center',
-                borderColor:'grey'
-              
-              }}></View>
-          </ImageBackground>
-        </View>
+              <View style={styles.totalPriceContainer}>
+                <Text style={styles.totalText}>TOTAL</Text>
+                <Text style={styles.totalText}>
+                  {route.params.invoice[0].total}/-
+                </Text>
+              </View>
+              <View
+                style={{
+                  borderWidth: 0.7,
+                  marginVertical: 20,
+                  width: '90%',
+                  alignSelf: 'center',
+                  borderColor: 'grey',
+                }}></View>
+            </ImageBackground>
+          </View>
+        ) : (
+          <View>
+            <ImageBackground
+              source={require('../assets/images/whitesheet.png')}
+              style={styles.backgroundImage}>
+              <View style={styles.maintextContainer}>
+                <View>
+                  <Text style={styles.invoiceText}>Invoice</Text>
+                  <Text style={styles.dateText}>
+                    {route.params.invoice[0].invoiceDate.substring(8, 10)}{' '}
+                    {
+                      month1[
+                        route.params.invoice[0].invoiceDate.substring(5, 7)
+                      ]
+                    }
+                    , {route.params.invoice[0].invoiceDate.substring(0, 4)}
+                  </Text>
+                </View>
+                <Text style={styles.billNo}>
+                  #{route.params.invoice[0].invoiceNumber}
+                </Text>
+              </View>
+              <Text style={styles.ruppesText}>
+                Rs {route.params.invoice[0].total}/-
+              </Text>
+              {route.params.service === 'Free service' ? (
+                <Text style={styles.statusText2}>Free Service</Text>
+              ) : (
+                <View style={styles.statusContainer}>
+                  <Text style={styles.statusText}>Not Paid</Text>
+                </View>
+              )}
+
+              <View
+                style={{
+                  borderWidth: 0.7,
+                  marginVertical: 20,
+                  width: '90%',
+                  alignSelf: 'center',
+                  borderColor: 'grey',
+                }}></View>
+              <View style={styles.ProducttextContainer}>
+                <Text style={styles.productText}>PRODUCT</Text>
+                <View style={styles.unitContainer}>
+                  <Text style={styles.productText}>UNIT</Text>
+                  <Text style={styles.productText}>PRICE</Text>
+                </View>
+              </View>
+              {route.params.invoice[0].items.length > 0
+                ? route.params.invoice[0].items.map(e => {
+                    return <InvoiceItem ele={e} key={e._id} />;
+                  })
+                : null}
+
+              <View style={styles.totalPriceContainer}>
+                <Text style={styles.totalText}>TOTAL</Text>
+                <Text style={styles.totalText}>
+                  {route.params.invoice[0].total}/-
+                </Text>
+              </View>
+              <View
+                style={{
+                  borderWidth: 0.7,
+                  marginVertical: 20,
+                  width: '90%',
+                  alignSelf: 'center',
+                  borderColor: 'grey',
+                }}></View>
+            </ImageBackground>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -231,8 +319,6 @@ const styles = StyleSheet.create({
   },
 
   backicon: {
-    //tintColor: '#ED7F2C',
-    //color: '#red',
     height: 18,
     width: 18,
   },
@@ -308,11 +394,23 @@ const styles = StyleSheet.create({
   },
   statusContainer: {
     borderRadius: 13,
+    borderColor: 'red',
+    alignSelf: 'center',
+    borderWidth: 1,
+    height: 28,
+    width: '25%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+  },
+  statusContainer2: {
+    borderRadius: 13,
     borderColor: '#19B692',
     alignSelf: 'center',
     borderWidth: 1,
     height: 28,
-    width: '22%',
+    width: '25%',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -320,6 +418,14 @@ const styles = StyleSheet.create({
   },
 
   statusText: {
+    height: 28,
+    lineHeight: 28,
+    fontSize: 16,
+    fontFamily: 'Roboto',
+    color: 'red',
+    alignSelf: 'center',
+  },
+  statusText2: {
     height: 28,
     lineHeight: 28,
     fontSize: 16,

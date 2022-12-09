@@ -7,6 +7,7 @@ import {
   TextInput,
   Pressable,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -20,9 +21,15 @@ import { calculateRoute } from '../services/Maps';
 import Toast from 'react-native-simple-toast';
 import GetLocation from 'react-native-get-location';
 import { getLocationName } from '../services/Maps';
+import { setLoad, deSetLoad } from '../redux/ContactSlice';
 
 export const Milestone = () => {
   const [curLoc, setcurLoc] = useState('');
+  const mileStoneData = useSelector(state => state.milestone.milestoneData);
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('');
+  const loading = useSelector(state => state.contact.isLoading);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setTimeout(async () => {
@@ -43,11 +50,7 @@ export const Milestone = () => {
         });
     }, 500);
   }, []);
-  const mileStoneData = useSelector(state => state.milestone.milestoneData);
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
-  const dispatch = useDispatch();
-
+  
   return (
     <SafeAreaView>
       
@@ -61,10 +64,11 @@ export const Milestone = () => {
               <Text style={styles.milestoneText}>
                 Milestone {mileStoneData.length + 1}
               </Text>
-              <Pressable
+              {!loading &&  <Pressable
                 onPress={async () => {
                   if ((from, to !== '')) {
                     try {
+                      dispatch(setLoad());
                       const resp = await getCoordinates(from);
                       const resp1 = await getCoordinates(to);
                       const dist = await calculateRoute(
@@ -101,6 +105,7 @@ export const Milestone = () => {
                       };
                       dispatch(setMileStoneData(obj));
                       dispatch(setMileStone(false));
+                      dispatch(deSetLoad());
                       Toast.show('Milestone added');
                     } catch (er) {
                       Toast.show('Please enter valid location');
@@ -115,7 +120,8 @@ export const Milestone = () => {
                   color={'#A4A4A4'}
                   style={styles.times}
                 />
-              </Pressable>
+              </Pressable> }
+              {loading && <ActivityIndicator color="red" />}
             </View>
             <Text style={styles.description}>
               This is to make a break journey inbetween your trip

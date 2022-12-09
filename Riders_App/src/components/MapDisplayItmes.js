@@ -316,7 +316,7 @@ export const MapChatButton = ({
         : 80
       : Platform.OS === 'ios'
       ? 480
-      : 470;
+      : 490;
   const left = width > height ? (Platform.OS === 'ios' ? '85%' : '85%') : '75%';
   const state = useSelector(state => state.milestone.initialState);
   const dispatch = useDispatch();

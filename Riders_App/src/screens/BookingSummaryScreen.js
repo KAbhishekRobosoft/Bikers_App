@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput,
   editable,
+  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -20,20 +21,25 @@ import {month1} from '../utils/Functions';
 import {AirbnbRating} from 'react-native-ratings';
 import {getRatings} from '../services/Services';
 import {useRoute} from '@react-navigation/native';
+import Toast from 'react-native-simple-toast';
 
 const BookingSummary = ({navigation}) => {
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
   const [disabled, setDisabled] = useState(true);
   const route = useRoute();
-  console.log('ed', route);
   const [rate, setRate] = useState(route.params.ratings);
+
   const handlePast = () => {
-    const obj = {
-      date: route.params.slotDate,
-      //invoice: route.params.invoice
-    };
-    navigation.navigate('Invoice', obj);
+    if (route.params.invoice.length > 0) {
+      const obj = {
+        invoice: route.params.invoice,
+        service: route.params.serviceType,
+      };
+      navigation.navigate('Invoice', obj);
+    } else {
+      Toast.show('Invoice yet to be generated');
+    }
   };
   const ratingCompleted = async rating => {
     setRate(rating);
@@ -195,7 +201,19 @@ const BookingSummary = ({navigation}) => {
                 {route.params.serviceType !== 'Free service' ? (
                   <>
                     <Text style={styles.totalText}>Total bill payed</Text>
-                    <Text style={styles.ruppesText}>Rs 4,000 /-</Text>
+                    <Text style={styles.ruppesText}>Rs {route.params.invoice[0].total} /-</Text>
+                    {route.params.invoice.length == 0 ? (
+                      <Text
+                        style={{
+                          fontFamily: 'Roboto-Regular',
+                          color: 'orange',
+                          fontSize: 18,
+                          textAlign: 'center',
+                          fontWeight: 'bold',
+                        }}>
+                        Invoice yet to be generated
+                      </Text>
+                    ) : null}
                   </>
                 ) : null}
 
@@ -380,7 +398,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#4F504F',
     width: '60%',
-    textAlign: 'center',
+    textAlign: 'right',
   },
   textInputCommentText: {
     fontFamily: 'Roboto-Regular',

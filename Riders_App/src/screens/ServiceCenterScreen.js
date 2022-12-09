@@ -6,7 +6,8 @@ import {
   ScrollView,
   Platform,
   ImageBackground,
-  Pressable
+  Pressable,
+  ToastAndroid
 } from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -15,6 +16,7 @@ import ButtonLarge from '../components/Buttons';
 import {useRoute} from '@react-navigation/native';
 import DatePicker from 'react-native-date-picker';
 import {useWindowDimensions} from 'react-native';
+import Toast from 'react-native-simple-toast'
 
 const ServiceCenterScreen = ({navigation}) => {
   const [date, setDate] = useState(new Date());
@@ -91,6 +93,7 @@ const ServiceCenterScreen = ({navigation}) => {
             date={time}
             onConfirm={value => {
               setOpen2(false);
+              if(date.toString().substring(4,10) === value.toString().substring(4,10)){
               const obj3 = {
                 serviceType: route.params.serviceType,
                 vehicleNumber: route.params.vehicleNumber,
@@ -102,7 +105,12 @@ const ServiceCenterScreen = ({navigation}) => {
                 mobileNumber: route.params.mobileNumber,
                 dealerPhoneNumber: route.params.dealerPhoneNumber,
               };
+            
               navigation.navigate('BookingDetails', obj3);
+              }
+              else{
+                Toast.show("Date and time must match")
+              }
             }}
             onCancel={() => {
               setOpen2(false);
