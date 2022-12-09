@@ -51,7 +51,7 @@ const ServiceCenterScreen = ({navigation}) => {
             styles.ratingComponent,
             {paddingHorizontal: paddingHorizontal},
           ]}>
-          <Star rating={Math.floor(route.params.dealerRating)} />
+          <Star rating={Math.ceil(route.params.dealerRating)} />
         </View>
 
         <View style={styles.textContainer}>

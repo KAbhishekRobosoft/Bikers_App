@@ -19,14 +19,12 @@ import { verifyOtp } from '../services/UserCredentials';
 
 const OtpScreen = ({navigation}) => {
   const data = useSelector(state => state.auth);
-  console.log(data.userData.mobile)
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (data.userData.mobile === '7026324187') {
       setTimeout(async () => {
         const response = await sendOtp(data.userData.mobile);
-        console.log(response)
       }, 500);
     }
   }, []);

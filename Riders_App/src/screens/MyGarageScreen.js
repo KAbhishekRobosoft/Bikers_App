@@ -38,7 +38,7 @@ export const MyGarage = ({navigation}) => {
           .filter(ele => new Date(ele.slotDate) > Date.now())
           .map(ele => new Date(ele.slotDate).getTime() - time2);
         const minTime = Math.min(...time);
-        const due = Math.floor(minTime / (1000 * 3600 * 24));
+        const due = Math.ceil(minTime / (1000 * 3600 * 24));
         setDay(due);
         dispatch(addAllServices(response2));
       } catch (e) {
@@ -64,10 +64,10 @@ export const MyGarage = ({navigation}) => {
         {serviceData.length > 0 ? (
           new Date(serviceData[0]?.slotDate) >= Date.now() ? (
             <View style={styles.serviceDueView}>
-              {day < 1 ? (
-                <Text style={styles.daysText}>{day + 1} day</Text>
+              {day <= 1 ? (
+                <Text style={styles.daysText}>{day} day</Text>
               ) : (
-                <Text style={styles.daysText}>{day + 1} days</Text>
+                <Text style={styles.daysText}>{day} days</Text>
               )}
               <Text style={styles.daysDescription}>Next Service due</Text>
             </View>

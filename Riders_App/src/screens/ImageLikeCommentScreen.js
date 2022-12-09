@@ -42,7 +42,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
   const [imgData, setImgData] = useState({});
   const state = useSelector(state => state.milestone.initialState);
   const {height, width} = useWindowDimensions();
-  const keyboard= width > height ? (Platform.OS === 'ios' ? 50 : 0) : (Platform.OS === 'ios' ? 100 : 0);
+  const keyboard= width > height ? (Platform.OS === 'ios' ? 10 : 0) : (Platform.OS === 'ios' ? 50 : 50);
   const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
   const loading = useSelector(state => state.milestone.isLoading);
   const authData = useSelector(state => state.auth);
@@ -142,7 +142,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
           <View>
             <KeyboardAvoidingView
               keyboardVerticalOffset={keyboard}
-              behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+              behavior={Platform.OS === 'ios' ? 'position' : 'height'}>
               <ScrollView
                 bounces={false}
                 showsVerticalScrollIndicator={false}
@@ -710,14 +710,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Roboto',
     letterSpacing: 0.8,
-    marginLeft: '3%',
+    marginLeft: '6%',
     width: '80%',
+    height: 70
   },
   iconContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     marginLeft: '3%',
-    width: '72%',
+    width: '80%',
   },
   likeCommentView: {
     height: 30,
