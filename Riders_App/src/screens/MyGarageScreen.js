@@ -64,7 +64,7 @@ export const MyGarage = ({navigation}) => {
         {serviceData.length > 0 ? (
           new Date(serviceData[0]?.slotDate) >= Date.now() ? (
             <View style={styles.serviceDueView}>
-              {day < 1 ? (
+              {day <= 1 ? (
                 <Text style={styles.daysText}>{day} day</Text>
               ) : (
                 <Text style={styles.daysText}>{day} days</Text>
