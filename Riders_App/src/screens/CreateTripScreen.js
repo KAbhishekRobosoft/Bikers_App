@@ -25,7 +25,6 @@ import {getCoordinates} from '../services/Maps';
 import GetLocation from 'react-native-get-location';
 import {getLocationName} from '../services/Maps';
 import {setLoading} from '../redux/MileStoneSlice';
-import {deSetLoading} from '../redux/MileStoneSlice';
 import {tripStore} from '../redux/MileStoneSlice';
 import {calculateRoute} from '../services/Maps';
 import Toast from 'react-native-simple-toast';
@@ -488,6 +487,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     height: '10%',
   },
+  
   startDateView: {
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',

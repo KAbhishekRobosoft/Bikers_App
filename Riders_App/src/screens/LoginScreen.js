@@ -8,20 +8,24 @@ import {
   View,
   ScrollView,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState} from 'react';
 import ButtonLarge from '../components/Buttons';
 import {Input} from '../components/InputFields';
 import {Password} from '../components/InputFields';
 import {Formik, Field} from 'formik';
+import LinearGradient from 'react-native-linear-gradient';
 import * as yup from 'yup';
-import {useDispatch} from 'react-redux';
-import { checkIn } from '../services/UserCredentials';
+import {useDispatch, useSelector} from 'react-redux';
+import {checkIn} from '../services/UserCredentials';
 import Toast from 'react-native-simple-toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {login} from '../redux/AuthSlice';
 import {setForgotPassword} from '../redux/AuthSlice';
 import {setImage} from '../redux/AuthSlice';
+import { setLoad } from '../redux/ContactSlice';
+import { desetLoad } from '../redux/ContactSlice';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),
@@ -37,10 +41,11 @@ const registerValidationSchema = yup.object().shape({
 const LoginScreen = ({navigation}) => {
   const [secureText, setSecureText] = useState(true);
   const dispatch = useDispatch();
-  const keyboardVerticalOffset = Platform.OS === 'ios' ? 10 : 0;
+  const loading= useSelector(state=>state.contact.isLoading)
 
   async function signIn(values) {
     let image = '';
+    dispatch(setLoad())
     const response = await checkIn(values);
     if (response !== undefined) {
       try {
@@ -52,6 +57,7 @@ const LoginScreen = ({navigation}) => {
         image = 'https' + response.profileImage.substring(4);
         dispatch(setImage(image));
       }
+      dispatch(desetLoad())
       dispatch(login(response));
       Toast.show('Logged in Successfully!');
     } else {
@@ -64,7 +70,10 @@ const LoginScreen = ({navigation}) => {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={{flex: 1}}>
-        <ScrollView horizontal={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
+        <ScrollView
+          horizontal={false}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}>
           <View style={styles.main}>
             <View style={styles.logoView}>
               <Image
@@ -119,13 +128,27 @@ const LoginScreen = ({navigation}) => {
                       </Pressable>
                     </View>
 
-                    <View style={styles.buttonView}>
+                    {!loading && <View style={styles.buttonView}>
                       <ButtonLarge
                         disabled={!isValid}
                         title="LOGIN"
                         onPress={handleSubmit}
                       />
-                    </View>
+                    </View>}
+
+                    {loading && <View style={styles.buttonView}>
+                      <Pressable>
+                        <View style={styles.container}>
+                          <LinearGradient
+                            start={{x: 0, y: 0}}
+                            end={{x: 1, y: 0}}
+                            colors={['#ED7E2B', '#F4A264']}
+                            style={styles.gradient}>
+                           <ActivityIndicator color="white" size="large" />
+                          </LinearGradient>
+                        </View>
+                      </Pressable>
+                    </View>}
                   </>
                 )}
               </Formik>
@@ -213,15 +236,25 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
   },
   forgetTextView: {
-    // width: '85%',
-    // borderWidth: 1,
-    // marginHorizontal: 140,
     width: '100%',
-    // paddingEnd: '10%'
-    //alignItems: 'center',
-    // justifyContent: 'center',
-    //paddingRight: '9%',
-    //  borderWidth:1
+  },
+
+  container: {
+    shadowColor: 'rgba(126,118,118,0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 4,
+    shadowOpacity: 0.9,
+    borderRadius: 20,
+  },
+  gradient: {
+    height: 42,
+    width: 279,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   forgetText: {
     color: '#EF8B40',

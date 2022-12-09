@@ -23,6 +23,7 @@ const OtpScreen = ({navigation}) => {
   const ref = useRef();
   const [loading, setLoading] = useState(false);
   const data = useSelector(state => state.auth);
+  console.log(data.userData.mobile)
   const dispatch = useDispatch();
 
   useEffect(() => {

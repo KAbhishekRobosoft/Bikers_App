@@ -31,17 +31,15 @@ const BookingSummary = ({navigation}) => {
   const [rate, setRate] = useState(route.params.ratings);
 
   const handlePast = () => {
-    if(route.params.invoice.length > 0){
+    if (route.params.invoice.length > 0) {
       const obj = {
-        date: route.params.slotDate,
-        //invoice: route.params.invoice
+        invoice: route.params.invoice,
+        service: route.params.serviceType,
       };
       navigation.navigate('Invoice', obj);
+    } else {
+      Toast.show('Invoice yet to be generated');
     }
-    else{
-        Toast.show("Invoice yet to be generated")
-    }
-
   };
   const ratingCompleted = async rating => {
     setRate(rating);
@@ -203,7 +201,19 @@ const BookingSummary = ({navigation}) => {
                 {(route.params.serviceType !== 'Free service' && route.params.invoice.length > 0) ? (
                   <>
                     <Text style={styles.totalText}>Total bill payed</Text>
-                    <Text style={styles.ruppesText}>Rs 4,000 /-</Text>
+                    <Text style={styles.ruppesText}>Rs {route.params.invoice[0].total} /-</Text>
+                    {route.params.invoice.length == 0 ? (
+                      <Text
+                        style={{
+                          fontFamily: 'Roboto-Regular',
+                          color: 'orange',
+                          fontSize: 18,
+                          textAlign: 'center',
+                          fontWeight: 'bold',
+                        }}>
+                        Invoice yet to be generated
+                      </Text>
+                    ) : null}
                   </>
                 ) : <Text style={{fontFamily:"Roboto-Regular",color:"orange",fontSize:18,textAlign:"center",fontWeight:"bold"}}>Invoice yet to be generated</Text>}
 
@@ -388,7 +398,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#4F504F',
     width: '60%',
-    textAlign: 'center',
+    textAlign: 'right',
   },
   textInputCommentText: {
     fontFamily: 'Roboto-Regular',

@@ -6,7 +6,7 @@ const contactSlice = createSlice({
     contactsData: [],
     filterData: [],
     addTripContacts: [],
-    
+    isLoading:false
   },
 
   reducers: {
@@ -38,6 +38,14 @@ const contactSlice = createSlice({
         }
         return ele;
       });
+    },
+
+    setLoad:(state)=>{
+        state.isLoading= true
+    },
+
+    desetLoad:(state)=>{
+      state.isLoading= false
     },
 
     selectUnMarked: (state, action) => {
@@ -85,6 +93,13 @@ const contactSlice = createSlice({
     deleteContactsData: (state, action) => {
       state.contactsData = [];
     },
+    setLoad: state => {
+      state.isLoading = true;
+    },
+
+    deSetLoad: state => {
+      state.isLoading = false;
+    },
   },
 });
 
@@ -97,6 +112,8 @@ export const {
   deleteTripContacts,
   deleteAllTripContacts,
   deleteContactsData,
+  setLoad,
+  desetLoad
 } = contactSlice.actions;
 
 export default contactSlice.reducer;
