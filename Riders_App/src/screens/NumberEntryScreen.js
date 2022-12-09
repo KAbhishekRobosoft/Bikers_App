@@ -139,7 +139,6 @@ const styles = StyleSheet.create({
     width: '90%',
     height: 50,
     flexDirection: 'row',
-    // marginTop: 25,
     borderColor: '#B4B3B3',
     borderBottomWidth: 1,
   },
