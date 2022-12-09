@@ -60,6 +60,7 @@ const Profile = ({navigation}) => {
       height: 200,
       cropping: true,
     }).then(async image => {
+
       const payload = new FormData();
       payload.append('image', {
         uri: image.path,
@@ -75,7 +76,7 @@ const Profile = ({navigation}) => {
         Toast.show('Profile image updated succesfully');
         dispatch(setInitialState(state));
       }
-    });
+    }).catch(er=>Toast.show("User cancelled selection"))
   }
 
   useEffect(() => {
