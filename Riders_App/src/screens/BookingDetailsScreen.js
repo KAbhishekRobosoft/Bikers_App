@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {
-  FlatList,
   SafeAreaView,
   StyleSheet,
   TextInput,
@@ -13,6 +12,7 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
 import {Formik, Field} from 'formik';
@@ -22,9 +22,9 @@ import {BookService} from '../services/Services';
 import {useDispatch, useSelector} from 'react-redux';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setToken} from '../redux/AuthSlice';
-import { setLoad } from '../redux/ContactSlice';
-import { deSetLoad } from '../redux/ContactSlice';
-import Toast from 'react-native-simple-toast'
+import {setLoad} from '../redux/ContactSlice';
+import {deSetLoad} from '../redux/ContactSlice';
+import Toast from 'react-native-simple-toast';
 import LinearGradient from 'react-native-linear-gradient';
 
 const BookingDetails = ({navigation}) => {
@@ -33,7 +33,7 @@ const BookingDetails = ({navigation}) => {
   const [comment, setComment] = useState(route.params.comment);
   const dispatch = useDispatch();
   const keyboardVerticalOffset = Platform.OS === 'ios' ? 10 : 60;
-  const loading= useSelector(state=>state.contact.isLoading)
+  const loading = useSelector(state => state.contact.isLoading);
 
   const handleEditable = () => {
     setEditable(true);
@@ -83,28 +83,28 @@ const BookingDetails = ({navigation}) => {
               city: route.params.dealerCity,
               comment: '',
             }}
-            //.substring(16,21)
+
             onSubmit={async values => {
-              try{
-                dispatch(setLoad())
-              const value = {
-                vehicleNumber: values.vehicle,
-                serviceType: values.serviceType,
-                slotDate: route.params.slotDate,
-                time: route.params.time,
-                dealer: values.dealer,
-                city: values.city,
-                comments: comment,
-                dealerPhoneNumber: route.params.dealerPhoneNumber,
-              };
-              const key = await getVerifiedKeys(authData.userToken);
-              dispatch(setToken(key));
-              const response = await BookService(key, value);
-              dispatch(deSetLoad())
-              navigation.navigate('BookingSuccess');
-              }catch(er){
-                dispatch(deSetLoad())
-                Toast.show("Network Error")
+              try {
+                dispatch(setLoad());
+                const value = {
+                  vehicleNumber: values.vehicle,
+                  serviceType: values.serviceType,
+                  slotDate: route.params.slotDate,
+                  time: route.params.time,
+                  dealer: values.dealer,
+                  city: values.city,
+                  comments: comment,
+                  dealerPhoneNumber: route.params.dealerPhoneNumber,
+                };
+                const key = await getVerifiedKeys(authData.userToken);
+                dispatch(setToken(key));
+                const response = await BookService(key, value);
+                dispatch(deSetLoad());
+                navigation.navigate('BookingSuccess');
+              } catch (er) {
+                dispatch(deSetLoad());
+                Toast.show('Network Error');
               }
             }}>
             {({handleSubmit, values, isValid, handleChange}) => (
@@ -176,18 +176,22 @@ const BookingDetails = ({navigation}) => {
                   />
                 </View>
                 <View style={styles.buttonView}>
-                  {!loading && <ButtonLarge title="BOOK" onPress={handleSubmit} />}
-                  {loading && <Pressable >
-                    <View style={styles.container}>
-                      <LinearGradient
-                        start={{x: 0, y: 0}}
-                        end={{x: 1, y: 0}}
-                        colors={['#ED7E2B', '#F4A264']}
-                        style={styles.gradient}>
-                            <ActivityIndicator size="large" color="white"/>
-                      </LinearGradient>
-                    </View>
-                  </Pressable>}
+                  {!loading && (
+                    <ButtonLarge title="BOOK" onPress={handleSubmit} />
+                  )}
+                  {loading && (
+                    <Pressable>
+                      <View style={styles.container}>
+                        <LinearGradient
+                          start={{x: 0, y: 0}}
+                          end={{x: 1, y: 0}}
+                          colors={['#ED7E2B', '#F4A264']}
+                          style={styles.gradient}>
+                          <ActivityIndicator size="large" color="white" />
+                        </LinearGradient>
+                      </View>
+                    </Pressable>
+                  )}
                 </View>
               </>
             )}
@@ -295,7 +299,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  
+
   textInputCommentView: {
     marginHorizontal: 25,
     paddingTop: 20,
