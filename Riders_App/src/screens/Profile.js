@@ -1,4 +1,4 @@
-import React, {useEffect, useState,useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,6 @@ import {
   ScrollView,
   ActivityIndicator,
   TouchableOpacity,
-  RefreshControl,
 } from 'react-native';
 
 import Modal from 'react-native-modal';
@@ -37,22 +36,7 @@ const Profile = ({navigation}) => {
   const dispatch = useDispatch();
   const loading = useSelector(state => state.milestone.isLoading);
   const [visible, setVisible] = useState(false);
-  const [refreshing, setRefreshing] = useState(false);
   const [visible1, setVisible1] = useState(false);
-
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    try {
-      const cred = await getVerifiedKeys(token.userToken);
-      dispatch(setToken(cred));
-      const data = await profileData(cred, userData.mobile);
-      Toast.show("Updating Profile")
-      setPersonData(data);
-    } catch (error) {
-      Toast.show('Error occured in Refreshing');
-    }
-    setRefreshing(false);
-  }, []);
 
   function setImage() {
     ImagePicker.openPicker({
@@ -108,9 +92,6 @@ const Profile = ({navigation}) => {
     <SafeAreaView style={styles.safeArea}>
       {JSON.stringify(personData) !== '{}' ? (
         <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
           style={{flex: 1}}>
           {JSON.stringify(personData) !== '{}' && (
             <LinearGradient
