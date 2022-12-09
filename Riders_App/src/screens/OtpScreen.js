@@ -26,14 +26,13 @@ const OtpScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (data.userData.mobile === '7026324187') {
+    if (data.userData.mobile === '5555') {
       setTimeout(async () => {
         const response = await sendOtp(data.userData.mobile);
         console.log(response);
       }, 500);
     }
   }, []);
-  console.log(data.userData.mobile);
 
   return (
     <SafeAreaView style={styles.main}>
@@ -58,13 +57,12 @@ const OtpScreen = ({navigation}) => {
           <View style={styles.optView}>
             <TextInput
               ref={ref}
-              
               cursorColor={'white'}
               name="otp"
               style={styles.otpText}
               onChangeText={async value => {
                 if (value.length === 4) {
-                  if (data.userData.mobile === '7026324187') {
+                  if (data.userData.mobile === '5555') {
                     try {
                       setLoading(true);
 
@@ -95,9 +93,11 @@ const OtpScreen = ({navigation}) => {
                             Toast.show('User already exists');
                           }
                         }
+                      } else {
+                        Toast.show('Wrong OTP');
                       }
+                      ref.current.clear()
                       setLoading(false);
-                      value=""
                     } catch (er) {
                       Toast.show('Error occurred');
                     }
