@@ -37,7 +37,9 @@ export const PersonalDetails = () => {
     );
   }
   return (
-    <ScrollView style={styles.scrollView}>
+    <ScrollView style={styles.scrollView}
+    showsVerticalScrollIndicator={false}
+    >
       <View style={styles.container}>
         <View style={styles.inputView}>
           <Text style={styles.text}>Licence No.</Text>

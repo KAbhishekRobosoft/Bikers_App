@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useCallback} from 'react';
 import {
   View,
   Text,
@@ -10,17 +10,19 @@ import {
   ScrollView,
   ActivityIndicator,
   TouchableOpacity,
+  RefreshControl,
 } from 'react-native';
+
 import Modal from 'react-native-modal';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector, useDispatch} from 'react-redux';
 import ActivityList from '../components/MyActivityList';
 import Icon2 from 'react-native-vector-icons/Ionicons';
-import { getSortedTripDetails } from '../services/Trips';
-import { profileData } from '../services/Profile';
+import {getSortedTripDetails} from '../services/Trips';
+import {profileData} from '../services/Profile';
 import {getVerifiedKeys, month} from '../utils/Functions';
 import ImagePicker from 'react-native-image-crop-picker';
-import { uploadProfileImage } from '../services/Profile';
+import {uploadProfileImage} from '../services/Profile';
 import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
 import {setToken} from '../redux/AuthSlice';
 import {setInitialState} from '../redux/MileStoneSlice';
@@ -35,7 +37,22 @@ const Profile = ({navigation}) => {
   const dispatch = useDispatch();
   const loading = useSelector(state => state.milestone.isLoading);
   const [visible, setVisible] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [visible1, setVisible1] = useState(false);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      const cred = await getVerifiedKeys(token.userToken);
+      dispatch(setToken(cred));
+      const data = await profileData(cred, userData.mobile);
+      Toast.show("Updating Profile")
+      setPersonData(data);
+    } catch (error) {
+      Toast.show('Error occured in Refreshing');
+    }
+    setRefreshing(false);
+  }, []);
 
   function setImage() {
     ImagePicker.openPicker({
@@ -64,6 +81,7 @@ const Profile = ({navigation}) => {
   useEffect(() => {
     dispatch(deSetLoading());
     setTimeout(async () => {
+      try{
       const cred = await getVerifiedKeys(token.userToken);
       dispatch(setToken(cred));
       const data = await profileData(cred, userData.mobile);
@@ -71,6 +89,9 @@ const Profile = ({navigation}) => {
       const tripdata = await getSortedTripDetails(cred);
       setTripDetails(tripdata);
       dispatch(setLoading());
+      }catch(er){
+        Toast.show("Network Error")
+      }
     }, 500);
   }, [state]);
 
@@ -85,7 +106,11 @@ const Profile = ({navigation}) => {
   return (
     <SafeAreaView style={styles.safeArea}>
       {JSON.stringify(personData) !== '{}' ? (
-        <ScrollView style={{flex: 1}}>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          style={{flex: 1}}>
           {JSON.stringify(personData) !== '{}' && (
             <LinearGradient
               start={{x: 0, y: 0}}
@@ -195,26 +220,26 @@ const Profile = ({navigation}) => {
         avoidKeyboard={true}
         animationIn={'slideInUp'}
         animationOut={'slideOutDown'}>
-          <View style={styles.modalView}>
+        <View style={styles.modalView}>
           <Pressable
-              onPress={() => {
-                  setVisible(false)
-              }}>
-              <Icon2
-                name="close"
-                size={25}
-                color={'#A4A4A4'}
-                style={styles.times}
-              />
-            </Pressable>
-            <Image
-              source={require('../assets/images/appicon.png')}
-              style={styles.imageIcon}
+            onPress={() => {
+              setVisible(false);
+            }}>
+            <Icon2
+              name="close"
+              size={25}
+              color={'#A4A4A4'}
+              style={styles.times}
             />
-            <ScrollView style={{marginTop: 10}}>
-              {JSON.stringify(personData) !== '{}' ?( 
-                  personData.userDetails.following.length > 0 ? (
-                    personData.userDetails.following.map(ele => {
+          </Pressable>
+          <Image
+            source={require('../assets/images/appicon.png')}
+            style={styles.imageIcon}
+          />
+          <ScrollView style={{marginTop: 10}}>
+            {JSON.stringify(personData) !== '{}' ? (
+              personData.userDetails.following.length > 0 ? (
+                personData.userDetails.following.map(ele => {
                   return (
                     <View key={ele._id} style={styles.followingView}>
                       <Text
@@ -240,15 +265,19 @@ const Profile = ({navigation}) => {
                 })
               ) : (
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Text style={{fontSize: 16,color:"black",fontFamily: 'Roboto-Regular'}}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: 'black',
+                      fontFamily: 'Roboto-Regular',
+                    }}>
                     Not following anyone at the moment
                   </Text>
                 </View>
-                  )
-                ):null
-              }             
-            </ScrollView>
-          </View>
+              )
+            ) : null}
+          </ScrollView>
+        </View>
       </Modal>
 
       <Modal
@@ -257,26 +286,26 @@ const Profile = ({navigation}) => {
         avoidKeyboard={true}
         animationIn={'slideInUp'}
         animationOut={'slideOutDown'}>
-          <View style={styles.modalView}>
-                 <Pressable
-              onPress={() => {
-                setVisible1(false)
-              }}>
-              <Icon2
-                name="close"
-                size={25}
-                color={'#A4A4A4'}
-                style={styles.times}
-              />
-            </Pressable>
-            <Image
-              source={require('../assets/images/appicon.png')}
-              style={styles.imageIcon}
+        <View style={styles.modalView}>
+          <Pressable
+            onPress={() => {
+              setVisible1(false);
+            }}>
+            <Icon2
+              name="close"
+              size={25}
+              color={'#A4A4A4'}
+              style={styles.times}
             />
-            <ScrollView style={{marginTop: 10}}>
-              {JSON.stringify(personData) !== '{}' ?( 
-                  personData.userDetails.followers.length > 0 ? (
-                    personData.userDetails.followers.map(ele => {
+          </Pressable>
+          <Image
+            source={require('../assets/images/appicon.png')}
+            style={styles.imageIcon}
+          />
+          <ScrollView style={{marginTop: 10}}>
+            {JSON.stringify(personData) !== '{}' ? (
+              personData.userDetails.followers.length > 0 ? (
+                personData.userDetails.followers.map(ele => {
                   return (
                     <View key={ele._id} style={styles.followingView}>
                       <Text
@@ -298,21 +327,23 @@ const Profile = ({navigation}) => {
                         {ele.followerPhone}
                       </Text>
                     </View>
-                    
                   );
                 })
-
               ) : (
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <Text style={{fontSize: 16, fontFamily: 'Roboto-Regular',color:'black'}}>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      fontFamily: 'Roboto-Regular',
+                      color: 'black',
+                    }}>
                     No followers at the moment
                   </Text>
                 </View>
-                  )
-                ):null
-              }
-            </ScrollView>
-          </View>
+              )
+            ) : null}
+          </ScrollView>
+        </View>
       </Modal>
     </SafeAreaView>
   );
@@ -327,7 +358,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f7f5c9',
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems:"center",
+    alignItems: 'center',
   },
 
   gradientCreateButton: {
@@ -395,7 +426,7 @@ const styles = StyleSheet.create({
   },
 
   times: {
-    alignSelf:"flex-end",
+    alignSelf: 'flex-end',
     marginTop: 5,
   },
 

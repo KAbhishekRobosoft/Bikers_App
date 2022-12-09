@@ -6,6 +6,7 @@ const contactSlice = createSlice({
     contactsData: [],
     filterData: [],
     addTripContacts: [],
+    isLoading:false
   },
 
   reducers: {
@@ -37,6 +38,14 @@ const contactSlice = createSlice({
         }
         return ele;
       });
+    },
+
+    setLoad:(state)=>{
+        state.isLoading= true
+    },
+
+    desetLoad:(state)=>{
+      state.isLoading= false
     },
 
     selectUnMarked: (state, action) => {
@@ -96,6 +105,8 @@ export const {
   deleteTripContacts,
   deleteAllTripContacts,
   deleteContactsData,
+  setLoad,
+  desetLoad
 } = contactSlice.actions;
 
 export default contactSlice.reducer;

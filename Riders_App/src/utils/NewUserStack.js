@@ -25,13 +25,14 @@ import Invoice from '../screens/Invoice';
 import OwnersManualScreen from '../screens/OwnersManualScreen';
 import OwnersManualDetailScreen from '../screens/OwnersManualDetailScreen';
 import OwnerManualEdit from '../screens/OwnerManualEditableScreen';
-import AddDetailsStack from './AddDetailsStack';
+
 import {ToolKit} from '../screens/ToolKitScreen';
 import {Accessories} from '../screens/AccessoriesScreen';
 import LogoutScreen from '../screens/LogoutScreen';
 import ProfileUpdationScreen from '../screens/ProfileUpdationScreen';
 import ViewProfileScreen from '../screens/ViewProfileScreen';
 import ImageLikeCommentScreen from '../screens/ImageLikeCommentScreen';
+import { AddPersonalDetails } from '../screens/AddPersonalDetailsScreen';
 
 
 const Stack = createNativeStackNavigator();
@@ -190,8 +191,8 @@ function NewUserStack() {
       />
       <Stack.Screen
         options={{headerShown: false}}
-        name="AddDetailsStack"
-        component={AddDetailsStack}
+        name="AddPersonalDetails"
+        component={AddPersonalDetails}
       />
       <Stack.Screen
         options={{headerShown: false}}

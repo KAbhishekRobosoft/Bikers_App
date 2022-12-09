@@ -519,6 +519,7 @@ const styles = StyleSheet.create({
   buttonView: {
     paddingTop: 40,
     alignItems: 'center',
+    top:90
   },
   calenderImg: {
     width: 22,
