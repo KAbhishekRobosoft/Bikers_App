@@ -105,9 +105,10 @@ export const Milestone = () => {
                       };
                       dispatch(setMileStoneData(obj));
                       dispatch(setMileStone(false));
-                      dispatch(deSetLoad());
+                      dispatch(deSetLoad())
                       Toast.show('Milestone added');
                     } catch (er) {
+                      dispatch(deSetLoad())
                       Toast.show('Please enter valid location');
                     }
                   } else {

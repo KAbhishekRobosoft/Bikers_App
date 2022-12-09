@@ -113,7 +113,7 @@ export const {
   deleteAllTripContacts,
   deleteContactsData,
   setLoad,
-  desetLoad
+  deSetLoad
 } = contactSlice.actions;
 
 export default contactSlice.reducer;

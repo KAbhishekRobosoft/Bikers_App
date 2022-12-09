@@ -27,7 +27,7 @@ const OtpScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (data.userData.mobile === '5555') {
+    if (data.userData.mobile === '7026324187') {
       setTimeout(async () => {
         const response = await sendOtp(data.userData.mobile);
         console.log(response);
@@ -63,7 +63,7 @@ const OtpScreen = ({navigation}) => {
               style={styles.otpText}
               onChangeText={async value => {
                 if (value.length === 4) {
-                  if (data.userData.mobile === '5555') {
+                  if (data.userData.mobile === '7026324187') {
                     try {
                       setLoading(true);
 

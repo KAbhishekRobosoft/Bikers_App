@@ -340,6 +340,7 @@ const CreateTrip = ({navigation}) => {
             <View style={styles.btn}>
               <ButtonLarge
                 onPress={async () => {
+                  if(from,whereto,tripName !== ''){
                   try {
                     const resp = await getCoordinates(from);
                     const resp1 = await getCoordinates(whereto);
@@ -383,6 +384,10 @@ const CreateTrip = ({navigation}) => {
                     navigation.navigate('TripSummary');
                   } catch (er) {
                     Toast.show('Please Enter requested details');
+                  }
+                  }
+                  else{
+                      Toast.show("Please fill all the fields")
                   }
                 }}
                 title="Done"

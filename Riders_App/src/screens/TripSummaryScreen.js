@@ -27,7 +27,7 @@ import {deleteMilestonesData} from '../redux/MileStoneSlice';
 import {setLoading} from '../redux/MileStoneSlice';
 import {deSetLoading} from '../redux/MileStoneSlice';
 import {setLoad} from '../redux/ContactSlice';
-import {desetLoad} from '../redux/ContactSlice';
+import {deSetLoad} from '../redux/ContactSlice';
 import LinearGradient from 'react-native-linear-gradient';
 
 export const TripSummary = ({navigation}) => {
@@ -196,7 +196,7 @@ export const TripSummary = ({navigation}) => {
                       const cred = await getVerifiedKeys(authData.userToken);
                       dispatch(setToken(cred));
                       const resp = await createTrip(tripDetails, cred);
-                      dispatch(desetLoad());
+                      dispatch(deSetLoad());
                       if (resp !== undefined)
                         navigation.navigate('CreateTripSuccess');
                       else Toast.show('Trip Creation Unsuccessfull');
@@ -265,7 +265,6 @@ const styles = StyleSheet.create({
   },
   gradientCreateButton: {
     height: 42,
-    // width: 279,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -307,7 +306,6 @@ const styles = StyleSheet.create({
   mapView: {
     height: 270,
     width: '100%',
-    // borderWidth: 1,
     backgroundColor: 'grey',
   },
   summaryView: {

@@ -25,7 +25,7 @@ import {login} from '../redux/AuthSlice';
 import {setForgotPassword} from '../redux/AuthSlice';
 import {setImage} from '../redux/AuthSlice';
 import { setLoad } from '../redux/ContactSlice';
-import { desetLoad } from '../redux/ContactSlice';
+import { deSetLoad } from '../redux/ContactSlice';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),
@@ -57,7 +57,7 @@ const LoginScreen = ({navigation}) => {
         image = 'https' + response.profileImage.substring(4);
         dispatch(setImage(image));
       }
-      dispatch(desetLoad())
+      dispatch(deSetLoad())
       dispatch(login(response));
       Toast.show('Logged in Successfully!');
     } else {
