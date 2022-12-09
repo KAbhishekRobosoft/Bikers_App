@@ -17,15 +17,18 @@ import {useSelector, useDispatch} from 'react-redux';
 import BikeImageComponent from '../components/BikeImageComponent';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setToken} from '../redux/AuthSlice';
-import { createTrip } from '../services/Trips';
+import {createTrip} from '../services/Trips';
 import Toast from 'react-native-simple-toast';
 import MapView, {Marker} from 'react-native-maps';
 import {Polyline} from 'react-native-maps';
-import { calculateRoute } from '../services/Maps';
+import {calculateRoute} from '../services/Maps';
 import uuid from 'react-native-uuid';
 import {deleteMilestonesData} from '../redux/MileStoneSlice';
 import {setLoading} from '../redux/MileStoneSlice';
 import {deSetLoading} from '../redux/MileStoneSlice';
+import {setLoad} from '../redux/ContactSlice';
+import {deSetLoad} from '../redux/ContactSlice';
+import LinearGradient from 'react-native-linear-gradient';
 
 export const TripSummary = ({navigation}) => {
   const mapRef = useRef(null);
@@ -36,7 +39,8 @@ export const TripSummary = ({navigation}) => {
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
   const [route, setRoute] = useState([]);
-
+  const loading1 = useSelector(state => state.contact.isLoading);
+console.log(loading1);
   useEffect(() => {
     dispatch(deSetLoading());
     setTimeout(async () => {
@@ -61,7 +65,7 @@ export const TripSummary = ({navigation}) => {
       }, 500);
     }, 500);
   }, []);
-  
+
   if (loading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -153,8 +157,7 @@ export const TripSummary = ({navigation}) => {
                   </Text>
                   <View style={styles.lineView}></View>
                   <Text style={styles.fromToText}>
-                    {tripDetails?.destination[0]?.place
-                      .length > 12
+                    {tripDetails?.destination[0]?.place.length > 12
                       ? tripDetails?.destination[0]?.place.substring(0, 10) +
                         '..'
                       : tripDetails?.destination[0]?.place.substring(0, 11)}
@@ -186,17 +189,35 @@ export const TripSummary = ({navigation}) => {
                 )}
               </View>
               <View style={styles.buttonView}>
-                <CreateButton
-                  onPress={async () => {
-                    const cred = await getVerifiedKeys(authData.userToken);
-                    dispatch(setToken(cred));
-                    const resp = await createTrip(tripDetails, cred);
-                    if (resp !== undefined)
-                      navigation.navigate('CreateTripSuccess');
-                    else Toast.show('Trip Creation Unsuccessfull');
-                  }}
-                  title="CREATE"
-                />
+                {!loading1 && (
+                  <CreateButton
+                    onPress={async () => {
+                      dispatch(setLoad());
+                      const cred = await getVerifiedKeys(authData.userToken);
+                      dispatch(setToken(cred));
+                      const resp = await createTrip(tripDetails, cred);
+                      dispatch(deSetLoad());
+                      if (resp !== undefined)
+                        navigation.navigate('CreateTripSuccess');
+                      else Toast.show('Trip Creation Unsuccessfull');
+                    }}
+                    title="CREATE"
+                  />
+                )}
+
+                {loading1 && (
+                    <Pressable>
+                      <View style={styles.containerCreateButton}>
+                        <LinearGradient
+                          start={{x: 0, y: 0}}
+                          end={{x: 1, y: 0}}
+                          colors={['#ED7E2B', '#F4A264']}
+                          style={styles.gradientCreateButton}>
+                            <ActivityIndicator color="white" />
+                        </LinearGradient>
+                      </View>
+                    </Pressable>
+                )}
               </View>
             </View>
           </ScrollView>
@@ -209,7 +230,6 @@ export const TripSummary = ({navigation}) => {
 const styles = StyleSheet.create({
   mainView: {
     backgroundColor: 'white',
-    // height: '100%',
   },
 
   container: {
@@ -231,6 +251,24 @@ const styles = StyleSheet.create({
   scrollView: {
     height: '100%',
   },
+
+  containerCreateButton: {
+    shadowColor: 'rgba(126,118,118,0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 4,
+    shadowOpacity: 0.9,
+    width: 400,
+    height: 42,
+  },
+  gradientCreateButton: {
+    height: 42,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   header: {
     flexDirection: 'row',
     width: '100%',
@@ -268,7 +306,6 @@ const styles = StyleSheet.create({
   mapView: {
     height: 270,
     width: '100%',
-    // borderWidth: 1,
     backgroundColor: 'grey',
   },
   summaryView: {

@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  Toast
 } from 'react-native';
 
 import { uploadImage } from '../services/UserCredentials';
@@ -60,7 +61,7 @@ function RegisterUserIntro({navigation}) {
         dispatch(setImage('https' + resp.url.substring(4)));
         navigation.navigate('ImageSuccess');
       }
-    });
+    }).catch(er=>Toast.show("User cancelled selection"))
   };
 
   const {width, height} = useWindowDimensions();

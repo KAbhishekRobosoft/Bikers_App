@@ -20,6 +20,7 @@ import {setRegistered} from '../redux/AuthSlice';
 import {setUserData} from '../redux/AuthSlice';
 
 const registerValidationSchema = yup.object().shape({
+
   userName: yup.string().required('Name is required'),
   mobile: yup
     .string()
@@ -42,6 +43,7 @@ const registerValidationSchema = yup.object().shape({
 });
 
 const Register = ({navigation}) => {
+  
   const [secureText, setSecureText] = useState(true);
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);

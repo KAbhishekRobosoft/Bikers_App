@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {
-  FlatList,
   SafeAreaView,
   StyleSheet,
   TextInput,
@@ -11,16 +10,22 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
 import {Formik, Field} from 'formik';
 import {useRoute} from '@react-navigation/native';
 import {BookingDetailsInput} from '../components/InputFields';
-import { BookService } from '../services/Services';
+import {BookService} from '../services/Services';
 import {useDispatch, useSelector} from 'react-redux';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setToken} from '../redux/AuthSlice';
+import {setLoad} from '../redux/ContactSlice';
+import {deSetLoad} from '../redux/ContactSlice';
+import Toast from 'react-native-simple-toast';
+import LinearGradient from 'react-native-linear-gradient';
 
 const BookingDetails = ({navigation}) => {
   const route = useRoute();
@@ -28,6 +33,7 @@ const BookingDetails = ({navigation}) => {
   const [comment, setComment] = useState(route.params.comment);
   const dispatch = useDispatch();
   const keyboardVerticalOffset = Platform.OS === 'ios' ? 10 : 60;
+  const loading = useSelector(state => state.contact.isLoading);
 
   const handleEditable = () => {
     setEditable(true);
@@ -71,29 +77,35 @@ const BookingDetails = ({navigation}) => {
               mobile: route.params.mobileNumber,
               vehicle: route.params.vehicleNumber,
               serviceType: route.params.serviceType,
-              slotDate: route.params.slotDate.substring(0,15),
-              time: route.params.time.substring(16,21),
+              slotDate: route.params.slotDate.substring(0, 15),
+              time: route.params.time.substring(16, 21),
               dealer: route.params.dealerName,
               city: route.params.dealerCity,
               comment: '',
             }}
-            //.substring(16,21)
-            onSubmit={async values => {
-              const value = {
-                vehicleNumber: values.vehicle,
-                serviceType: values.serviceType,
-                slotDate: route.params.slotDate,
-                time: route.params.time,
-                dealer: values.dealer,
-                city: values.city,
-                comments: comment,
-                dealerPhoneNumber: route.params.dealerPhoneNumber,
-              };
-              const key = await getVerifiedKeys(authData.userToken);
-              dispatch(setToken(key));
-              const response = await BookService(key, value);
 
-              navigation.navigate('BookingSuccess');
+            onSubmit={async values => {
+              try {
+                dispatch(setLoad());
+                const value = {
+                  vehicleNumber: values.vehicle,
+                  serviceType: values.serviceType,
+                  slotDate: route.params.slotDate,
+                  time: route.params.time,
+                  dealer: values.dealer,
+                  city: values.city,
+                  comments: comment,
+                  dealerPhoneNumber: route.params.dealerPhoneNumber,
+                };
+                const key = await getVerifiedKeys(authData.userToken);
+                dispatch(setToken(key));
+                const response = await BookService(key, value);
+                dispatch(deSetLoad());
+                navigation.navigate('BookingSuccess');
+              } catch (er) {
+                dispatch(deSetLoad());
+                Toast.show('Network Error');
+              }
             }}>
             {({handleSubmit, values, isValid, handleChange}) => (
               <>
@@ -164,7 +176,22 @@ const BookingDetails = ({navigation}) => {
                   />
                 </View>
                 <View style={styles.buttonView}>
-                  <ButtonLarge title="BOOK" onPress={handleSubmit} />
+                  {!loading && (
+                    <ButtonLarge title="BOOK" onPress={handleSubmit} />
+                  )}
+                  {loading && (
+                    <Pressable>
+                      <View style={styles.container}>
+                        <LinearGradient
+                          start={{x: 0, y: 0}}
+                          end={{x: 1, y: 0}}
+                          colors={['#ED7E2B', '#F4A264']}
+                          style={styles.gradient}>
+                          <ActivityIndicator size="large" color="white" />
+                        </LinearGradient>
+                      </View>
+                    </Pressable>
+                  )}
                 </View>
               </>
             )}
@@ -179,7 +206,7 @@ export default BookingDetails;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   header: {
     flexDirection: 'row',
@@ -254,6 +281,25 @@ const styles = StyleSheet.create({
     color: '#4F504F',
     paddingBottom: 10,
   },
+
+  container: {
+    shadowColor: 'rgba(126,118,118,0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 4,
+    shadowOpacity: 0.9,
+    borderRadius: 20,
+  },
+  gradient: {
+    height: 42,
+    width: 279,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   textInputCommentView: {
     marginHorizontal: 25,
     paddingTop: 20,

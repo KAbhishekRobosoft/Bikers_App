@@ -9,16 +9,18 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
+  RefreshControl
 } from 'react-native';
+
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector, useDispatch} from 'react-redux';
-import { profileData } from '../services/Profile';
+import {profileData} from '../services/Profile';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
 import {setToken} from '../redux/AuthSlice';
 import {setInitialState} from '../redux/MileStoneSlice';
 import Toast from 'react-native-simple-toast';
-import { followRider } from '../services/Profile';
+import {followRider} from '../services/Profile';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const ViewProfileScreen = ({navigation, route}) => {
@@ -27,6 +29,7 @@ const ViewProfileScreen = ({navigation, route}) => {
   const state = useSelector(state => state.milestone.initialState);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.milestone.isLoading);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     setTimeout(async () => {
@@ -39,6 +42,20 @@ const ViewProfileScreen = ({navigation, route}) => {
     }, 500);
   }, [state]);
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      const cred = await getVerifiedKeys(token.userToken);
+      dispatch(setToken(cred));
+      const data = await profileData(cred, route.params.mobile);
+      Toast.show('Updating Profile');
+      setPersonData(data);
+    } catch (error) {
+      Toast.show('Error occured in Refreshing');
+    }
+    setRefreshing(false);
+  }, []);
+
   if (loading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -48,7 +65,11 @@ const ViewProfileScreen = ({navigation, route}) => {
   }
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView style={{flex: 1}}>
+      <ScrollView
+        style={{flex: 1}}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
         {JSON.stringify(personData) !== '{}' && (
           <LinearGradient
             start={{x: 0, y: 0}}

@@ -66,8 +66,6 @@ const ChatScreen = ({navigation, route}) => {
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
-    const cred = await getVerifiedKeys(auth.userToken);
-    dispatch(setToken(cred));
     const resp = await getChat(cred, route.params.id);
     if (resp !== undefined) {
       Toast.show('Getting Chats');

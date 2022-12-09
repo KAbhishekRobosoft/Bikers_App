@@ -21,14 +21,16 @@ import Recommendations from '../components/Recommendations';
 import {Milestone} from '../components/AddMilestones';
 import {useDispatch, useSelector} from 'react-redux';
 import {setMileStone} from '../redux/MileStoneSlice';
-import { getCoordinates } from '../services/Maps';
+import {getCoordinates} from '../services/Maps';
 import GetLocation from 'react-native-get-location';
-import { getLocationName } from '../services/Maps';
+import {getLocationName} from '../services/Maps';
 import {setLoading} from '../redux/MileStoneSlice';
-import {deSetLoading} from '../redux/MileStoneSlice';
 import {tripStore} from '../redux/MileStoneSlice';
-import { calculateRoute } from '../services/Maps';
+import {calculateRoute} from '../services/Maps';
 import Toast from 'react-native-simple-toast';
+import {setLoad} from '../redux/ContactSlice';
+import {deSetLoad} from '../redux/ContactSlice';
+import LinearGradient from 'react-native-linear-gradient';
 
 const CreateTrip = ({navigation}) => {
   useEffect(() => {
@@ -56,6 +58,7 @@ const CreateTrip = ({navigation}) => {
   const mileStones = useSelector(state => state.milestone.mileStone);
   const milesonesData = useSelector(state => state.milestone.milestoneData);
   const loading = useSelector(state => state.milestone.isLoading);
+  const loading1 = useSelector(state => state.contact.isLoading);
   const dispatch = useDispatch();
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -75,7 +78,6 @@ const CreateTrip = ({navigation}) => {
   const contactsData = useSelector(state => state.contact);
 
   const whereto = useSelector(state => state.milestone.setTo);
-
   if (loading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -89,7 +91,6 @@ const CreateTrip = ({navigation}) => {
         <Pressable
           onPress={() => {
             navigation.goBack();
-            dispatch(deSetLoading());
           }}>
           <Icon3 name="arrow-back" color={'white'} size={25} />
         </Pressable>
@@ -137,23 +138,21 @@ const CreateTrip = ({navigation}) => {
               onChangeText={value => setFrom(value)}
             />
           </View>
-         
-              <View style={styles.locationNamesView}>
-                <Icon2
-                  name="gps-fixed"
-                  size={22}
-                  color="#A4A4A4"
-                  style={{
-                    marginLeft: 10,
-                  }}
-                />
-                <View style={{marginLeft: -10}}>
-                  <Text style={styles.textUdupi}>{currLoc}</Text>
-                  <Text style={styles.textCurrentLocation}>
-                    current location
-                  </Text>
-                </View>
-              </View>
+
+          <View style={styles.locationNamesView}>
+            <Icon2
+              name="gps-fixed"
+              size={22}
+              color="#A4A4A4"
+              style={{
+                marginLeft: 10,
+              }}
+            />
+            <View style={{marginLeft: -10}}>
+              <Text style={styles.textUdupi}>{currLoc}</Text>
+              <Text style={styles.textCurrentLocation}>current location</Text>
+            </View>
+          </View>
 
           <View style={styles.textInputView}>
             {tripName ? (
@@ -342,55 +341,77 @@ const CreateTrip = ({navigation}) => {
               <Text style={styles.text}>Add a milestone</Text>
             </View>
             <View style={styles.btn}>
-              <ButtonLarge
-                onPress={async () => {
-                  try {
-                    const resp = await getCoordinates(from);
-                    const resp1 = await getCoordinates(whereto);
-                    const dist = await calculateRoute(
-                      resp.lat,
-                      resp.lon,
-                      resp1.lat,
-                      resp1.lon,
-                    );
-                    const msInHour = 1000 * 60 * 60;
-                    const obj = {
-                      tripName: tripName,
-                      source: [
-                        {
-                          place: from,
-                          latitude: resp.lat,
-                          longitude: resp.lon,
-                        },
-                      ],
-                      destination: [
-                        {
-                          place: whereto,
-                          latitude: resp1.lat,
-                          longitude: resp1.lon,
-                        },
-                      ],
-                      startDate: date.toString(),
-                      endDate: endDate.toString(),
-                      startTime: time.toString(),
-                      distance: dist.summary.lengthInMeters / 1000,
-                      riders: contactsData.addTripContacts,
-                      milestones: milesonesData,
-                      duration: Math.round(
-                        Math.abs(
-                          new Date(dist.summary.arrivalTime) -
-                            new Date(dist.summary.departureTime),
-                        ) / msInHour,
-                      ),
-                    };
-                    dispatch(tripStore(obj));
-                    navigation.navigate('TripSummary');
-                  } catch (er) {
-                    Toast.show('Please Enter requested details');
-                  }
-                }}
-                title="Done"
-              />
+              {!loading1 && (
+                <ButtonLarge
+                  onPress={async () => {
+                    if ((from, whereto, tripName !== '')) {
+                      try {
+                        dispatch(setLoad());
+                        const resp = await getCoordinates(from);
+                        const resp1 = await getCoordinates(whereto);
+                        const dist = await calculateRoute(
+                          resp.lat,
+                          resp.lon,
+                          resp1.lat,
+                          resp1.lon,
+                        );
+                        const msInHour = 1000 * 60 * 60;
+                        const obj = {
+                          tripName: tripName,
+                          source: [
+                            {
+                              place: from,
+                              latitude: resp.lat,
+                              longitude: resp.lon,
+                            },
+                          ],
+                          destination: [
+                            {
+                              place: whereto,
+                              latitude: resp1.lat,
+                              longitude: resp1.lon,
+                            },
+                          ],
+                          startDate: date.toString(),
+                          endDate: endDate.toString(),
+                          startTime: time.toString(),
+                          distance: dist.summary.lengthInMeters / 1000,
+                          riders: contactsData.addTripContacts,
+                          milestones: milesonesData,
+                          duration: Math.round(
+                            Math.abs(
+                              new Date(dist.summary.arrivalTime) -
+                                new Date(dist.summary.departureTime),
+                            ) / msInHour,
+                          ),
+                        };
+                        dispatch(tripStore(obj));
+                        dispatch(deSetLoad());
+                        navigation.navigate('TripSummary');
+                      } catch (er) {
+                        dispatch(deSetLoad());
+                        Toast.show('Please Enter requested details');
+                      }
+                    } else {
+                      Toast.show('Please fill all the fields');
+                    }
+                  }}
+                  title="Done"
+                />
+              )}
+              {loading1 && (
+                <Pressable>
+                  <View style={styles.container}>
+                    <LinearGradient
+                      start={{x: 0, y: 0}}
+                      end={{x: 1, y: 0}}
+                      colors={['#ED7E2B', '#F4A264']}
+                      style={styles.gradient}>
+                      <ActivityIndicator size="large" color="white" />
+                    </LinearGradient>
+                  </View>
+                </Pressable>
+              )}
             </View>
           </View>
         </ScrollView>
@@ -491,6 +512,25 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     height: '10%',
   },
+
+  container: {
+    shadowColor: 'rgba(126,118,118,0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 4,
+    shadowOpacity: 0.9,
+    borderRadius: 20,
+  },
+  gradient: {
+    height: 42,
+    width: 279,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   startDateView: {
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',

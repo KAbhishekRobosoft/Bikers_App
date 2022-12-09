@@ -14,19 +14,19 @@ import MapNavBar, {
   MapBottomBar,
   MapChatButton,
 } from '../components/MapDisplayItmes';
-import { calculateRoute } from '../services/Maps';
+import {calculateRoute} from '../services/Maps';
 import uuid from 'react-native-uuid';
 import {setLoading} from '../redux/MileStoneSlice';
 import {deSetLoading} from '../redux/MileStoneSlice';
 import {useDispatch, useSelector} from 'react-redux';
-import Toast from 'react-native-simple-toast'
+import Toast from 'react-native-simple-toast';
 
 const MapDisplayScreen = ({navigation, route}) => {
   const [direction, setDirection] = useState([]);
   const mapRef = useRef(null);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.milestone.isLoading);
-  const state= useSelector(state=>state.milestone.initialState)
+  const state = useSelector(state => state.milestone.initialState);
   const [latitude, setLatitude] = useState(parseFloat(route.params.latitude));
   const [longitude, setLongitude] = useState(
     parseFloat(route.params.longitude),
@@ -41,33 +41,32 @@ const MapDisplayScreen = ({navigation, route}) => {
   useEffect(() => {
     dispatch(deSetLoading());
     setTimeout(async () => {
-      try{
-      const dir = await calculateRoute(
-        latitude,
-        longitude,
-        latitude1,
-        longitude1,
-      );
-      setDirection(dir.legs[0].points);
-      dispatch(setLoading());
-      setTimeout(()=>{
-        try{
-        mapRef.current.animateToRegion(
-          {
-            latitude: latitude,
-            longitude: longitude,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.2,
-          },
-          3 * 1000,
+      try {
+        const dir = await calculateRoute(
+          latitude,
+          longitude,
+          latitude1,
+          longitude1,
         );
-        }
-        catch{
-          Toast.show("Failed to animate direction")
-        }
-      },500)}
-      catch(er){
-        Toast.show("Error Occurred")
+        setDirection(dir.legs[0].points);
+        dispatch(setLoading());
+        setTimeout(() => {
+          try {
+            mapRef.current.animateToRegion(
+              {
+                latitude: latitude,
+                longitude: longitude,
+                latitudeDelta: 0.05,
+                longitudeDelta: 0.2,
+              },
+              3 * 1000,
+            );
+          } catch {
+            Toast.show('Failed to animate direction');
+          }
+        }, 500);
+      } catch (er) {
+        Toast.show('Error Occurred');
       }
     }, 500);
   }, [state]);
@@ -237,11 +236,11 @@ const MapDisplayScreen = ({navigation, route}) => {
                 setLongitude={setLongitude}
                 navigation={navigation}
                 tripName={route.params.tripName}
-                id= {route.params.id}
-                mobile= {route.params.mobile}
+                id={route.params.id}
+                mobile={route.params.mobile}
                 rider={route.params.riders}
               />
-              <View style={[styles.bottomContainer,{top}]}>
+              <View style={[styles.bottomContainer, {top}]}>
                 <MapBottomBar
                   id={route.params.id}
                   musicControl={musicControl}
@@ -261,9 +260,10 @@ const MapDisplayScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   bottomContainer: {
     flex: 1,
-  
+    
+    
   },
-  
+
   mapStyle: {
     position: 'absolute',
     top: 0,
