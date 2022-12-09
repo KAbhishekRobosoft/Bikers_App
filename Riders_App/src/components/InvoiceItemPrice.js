@@ -1,9 +1,9 @@
 import React from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 
-const InvoiceItem = ({ele,id}) => {
+const InvoiceItem = ({ele}) => {
   return (
-    <View style={styles.ProducttextContainer} key={id}>
+    <View style={styles.ProducttextContainer}>
       <Text style={styles.productText}>{ele.itemName}</Text>
       <View style={styles.unitContainer}>
         <Text style={styles.productText}>{ele.itemQuantity}</Text>

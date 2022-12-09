@@ -19,12 +19,14 @@ import { verifyOtp } from '../services/UserCredentials';
 
 const OtpScreen = ({navigation}) => {
   const data = useSelector(state => state.auth);
+  console.log(data.userData.mobile)
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (data.userData.mobile === '8197781170') {
+    if (data.userData.mobile === '7026324187') {
       setTimeout(async () => {
         const response = await sendOtp(data.userData.mobile);
+        console.log(response)
       }, 500);
     }
   }, []);
@@ -56,7 +58,7 @@ const OtpScreen = ({navigation}) => {
               style={styles.otpText}
               onChangeText={async value => {
                 if (value.length === 4) {
-                  if (data.userData.mobile === '8197781170') {
+                  if (data.userData.mobile === '7026324187') {
                     try {
                       const resp = await verifyOtp(value.toString());
                       if (resp === true) {

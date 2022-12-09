@@ -93,6 +93,13 @@ const contactSlice = createSlice({
     deleteContactsData: (state, action) => {
       state.contactsData = [];
     },
+    setLoad: state => {
+      state.isLoading = true;
+    },
+
+    deSetLoad: state => {
+      state.isLoading = false;
+    },
   },
 });
 
@@ -106,7 +113,11 @@ export const {
   deleteAllTripContacts,
   deleteContactsData,
   setLoad,
+<<<<<<< HEAD
   desetLoad
+=======
+  deSetLoad
+>>>>>>> 195146cb267cd6a07f0106cd95a87527d7a6a289
 } = contactSlice.actions;
 
 export default contactSlice.reducer;

@@ -9,15 +9,17 @@ import {
   Pressable,
   ScrollView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
 import {useDispatch, useSelector} from 'react-redux';
-import { searchProducts } from '../services/OwnerAndBike';
-import { LikeProducts } from '../services/OwnerAndBike';
+import {searchProducts} from '../services/OwnerAndBike';
+import {LikeProducts} from '../services/OwnerAndBike';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setInitialState} from '../redux/MileStoneSlice';
 import {setToken} from '../redux/AuthSlice';
+import {setLoading, deSetLoading} from '../redux/MileStoneSlice';
 
 export const Accessories = ({navigation}) => {
   const [text, setText] = useState('');
@@ -26,14 +28,17 @@ export const Accessories = ({navigation}) => {
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth);
   const state = useSelector(state => state.milestone.initialState);
+  const loading = useSelector(state => state.milestone.isLoading);
 
   useEffect(() => {
+    dispatch(deSetLoading());
     setTimeout(async () => {
       const key = await getVerifiedKeys(auth.userToken);
       dispatch(setToken(key));
       const Data = await searchProducts(text, key);
       setAccessories(Data);
-    });
+      dispatch(setLoading());
+    }, 500);
   }, [state]);
 
   const handleSearch = async value => {
@@ -105,28 +110,43 @@ export const Accessories = ({navigation}) => {
           />
         </View>
       </View>
-      <ScrollView
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        style={{marginTop: 20}}>
-        <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
-          {accessories.length > 0
-            ? accessories.map(item => {
-                return (
-                  <View style={styles.mainView} key={item._id}>
-                    <View style={styles.subView}>
-                      <Text style={styles.dateText}>18 NOV</Text>
-                      {item.likedBy.length > 0 ? ( 
-                        item.likedBy.filter(ele => ele.mobile === number)
-                          .length > 0 ? (
-                          <Pressable onPress={() => handleUnLike(item)}>
-                            <FontAwesome
-                              name="thumbs-up"
-                              color={'rgba(150,75,0,0.5)'}
-                              size={18}
-                              solid={true}
-                            />
-                          </Pressable>
+      {loading ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size="large" color="orange" />
+        </View>
+      ) : (
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          style={{marginTop: 20}}>
+          <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
+            {accessories.length > 0
+              ? accessories.map(item => {
+                  return (
+                    <View style={styles.mainView} key={item._id}>
+                      <View style={styles.subView}>
+                        <Text style={styles.dateText}>18 NOV</Text>
+                        {item.likedBy.length > 0 ? (
+                          item.likedBy.filter(ele => ele.mobile === number)
+                            .length > 0 ? (
+                            <Pressable onPress={() => handleUnLike(item)}>
+                              <FontAwesome
+                                name="thumbs-up"
+                                color={'rgba(150,75,0,0.5)'}
+                                size={18}
+                                solid={true}
+                              />
+                            </Pressable>
+                          ) : (
+                            <Pressable onPress={() => handleLike(item)}>
+                              <FontAwesome
+                                name="thumbs-up"
+                                color={'rgba(150,75,0,0.5)'}
+                                size={18}
+                                solid={false}
+                              />
+                            </Pressable>
+                          )
                         ) : (
                           <Pressable onPress={() => handleLike(item)}>
                             <FontAwesome
@@ -136,34 +156,25 @@ export const Accessories = ({navigation}) => {
                               solid={false}
                             />
                           </Pressable>
-                        )
-                      ) : (
-                        <Pressable onPress={() => handleLike(item)}>
-                          <FontAwesome
-                            name="thumbs-up"
-                            color={'rgba(150,75,0,0.5)'}
-                            size={18}
-                            solid={false}
-                          />
-                        </Pressable>
-                      )}
+                        )}
+                      </View>
+                      <Image
+                        source={{uri: 'https' + item.productImage.substring(4)}}
+                        style={styles.image}
+                      />
+                      <View style={styles.costTitleText}>
+                        <Text style={styles.titleText}>{item.productName}</Text>
+                        <Text style={styles.costText}>
+                          Rs {item.productPrice} /-
+                        </Text>
+                      </View>
                     </View>
-                    <Image
-                      source={{uri: 'https' + item.productImage.substring(4)}}
-                      style={styles.image}
-                    />
-                    <View style={styles.costTitleText}>
-                      <Text style={styles.titleText}>{item.productName}</Text>
-                      <Text style={styles.costText}>
-                        Rs {item.productPrice} /-
-                      </Text>
-                    </View>
-                  </View>
-                );
-              })
-            : null}
-        </View>
-      </ScrollView>
+                  );
+                })
+              : null}
+          </View>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };
