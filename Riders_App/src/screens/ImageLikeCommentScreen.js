@@ -129,7 +129,6 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
             <Pressable
               onPress={() => {
                 navigation.goBack();
-                dispatch(setInitialState(state));
               }}>
               <Icon
                 name="md-arrow-back"

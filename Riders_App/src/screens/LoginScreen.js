@@ -26,8 +26,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {login} from '../redux/AuthSlice';
 import {setForgotPassword} from '../redux/AuthSlice';
 import {setImage} from '../redux/AuthSlice';
-import {deSetLoad, setLoad} from '../redux/ContactSlice';
-import {desetLoad} from '../redux/ContactSlice';
+import { setLoad } from '../redux/ContactSlice';
+import { deSetLoad } from '../redux/ContactSlice';
 
 const registerValidationSchema = yup.object().shape({
   number: yup.string().required('Number/Email  is required'),

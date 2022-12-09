@@ -265,7 +265,6 @@ const styles = StyleSheet.create({
   },
   gradientCreateButton: {
     height: 42,
-    // width: 279,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -307,7 +306,6 @@ const styles = StyleSheet.create({
   mapView: {
     height: 270,
     width: '100%',
-    // borderWidth: 1,
     backgroundColor: 'grey',
   },
   summaryView: {
