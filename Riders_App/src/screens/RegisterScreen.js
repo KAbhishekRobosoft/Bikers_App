@@ -20,12 +20,11 @@ import {setRegistered} from '../redux/AuthSlice';
 import {setUserData} from '../redux/AuthSlice';
 
 const registerValidationSchema = yup.object().shape({
-
   userName: yup.string().required('Name is required'),
   mobile: yup
     .string()
     .matches(/(\d){10}\b/, 'Enter a valid mobile number')
-    .required(''),
+    .required('Enter a valid mobile number'),
   email: yup
     .string()
     .matches(
@@ -39,15 +38,14 @@ const registerValidationSchema = yup.object().shape({
     .matches(/\w*[A-Z]\w*/, 'Password must have a capital letter')
     .matches(/\d/, 'Password must have a number')
     .min(6, ({min}) => `Password must be at least ${min} characters`)
-    .required(''),
+    .required('Enter password'),
 });
 
 const Register = ({navigation}) => {
-  
   const [secureText, setSecureText] = useState(true);
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
- 
+
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <KeyboardAvoidingView
@@ -58,15 +56,13 @@ const Register = ({navigation}) => {
             onPress={() => {
               navigation.goBack();
             }}>
-            <Icon
-              name="md-arrow-back"
-              color={'white'}
-              size={25}
-              style={styles.icon}
-            />
+            <View style={styles.iconHeader}>
+              <Icon name="md-arrow-back" color={'white'} size={25} />
+            </View>
           </Pressable>
           <Text style={styles.headerText}>Register</Text>
         </View>
+
         <ScrollView
           style={styles.scrollview}
           showsVerticalScrollIndicator={false}
@@ -152,7 +148,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 64,
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     alignItems: 'center',
     shadowColor: 'rgba(0,0,0,0.24)',
     shadowOffset: {
@@ -162,10 +158,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.9,
     elevation: 5,
-    opacity: 0.9,
   },
   shadow: {
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     shadowColor: 'grey',
     shadowOffset: {
       width: 0,
@@ -182,8 +177,11 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     fontFamily: 'Roboto-Medium',
   },
-  icon: {
-    marginHorizontal: 20,
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   name: {
     width: 18,

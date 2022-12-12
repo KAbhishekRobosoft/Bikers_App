@@ -1,5 +1,3 @@
-
-
 import {Formik, Field} from 'formik';
 import React from 'react';
 import {
@@ -18,7 +16,7 @@ import {setUserData} from '../redux/AuthSlice';
 import {getVerifiedKeys} from '../utils/Functions';
 import pdf from 'react-native-html-to-pdf';
 import {PlaceholderTextFieldOwnerManual} from '../components/InputFields';
-import { updateOwnerDetails } from '../services/OwnerAndBike';
+import {updateOwnerDetails} from '../services/OwnerAndBike';
 import Share from 'react-native-share';
 import {BikeDetails} from '../components/BikeDetailsComponent';
 import Toast from 'react-native-simple-toast';
@@ -29,7 +27,7 @@ const OwnerManualEdit = ({navigation}) => {
   const dispatch = useDispatch();
   const authData = useSelector(state => state.auth);
   const bikedata = useSelector(state => state.shop.allBikeData);
-  
+
   const update = async values => {
     const obj = {
       city: values.city,
@@ -177,145 +175,146 @@ const OwnerManualEdit = ({navigation}) => {
       const shareResponse = await Share.open(shareOptions);
       Toast.show('Shared Successfully');
     } catch (error) {
-        Toast.show("Error occurred while sharing")
+      Toast.show('Error occurred while sharing');
     }
   };
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{flex: 1}}>
-      <View style={styles.mainView}>
-        <View style={[styles.header]}>
-          <View style={styles.subHeader}>
-            <Pressable
-              onPress={() => {
-                navigation.goBack();
-              }}>
-              <Icon
-                name="md-arrow-back"
-                color={'white'}
-                size={25}
-                style={styles.icon}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}>
+        <View style={styles.mainView}>
+          <View style={[styles.header]}>
+            <View style={styles.subHeader}>
+              <Pressable
+                onPress={() => {
+                  navigation.goBack();
+                }}>
+                <View style={styles.iconHeader}>
+                  <Icon name="md-arrow-back" color={'white'} size={25} />
+                </View>
+              </Pressable>
+              <Text style={styles.headerText}>Owners Manual</Text>
+            </View>
+            <Pressable onPress={createPDF}>
+              <Image
+                source={require('../assets/images/share.png')}
+                style={styles.editImage}
               />
             </Pressable>
-            <Text style={styles.headerText}>Owners Manual</Text>
           </View>
-          <Pressable onPress={createPDF}>
-            <Image
-              source={require('../assets/images/share.png')}
-              style={styles.editImage}
-            />
-          </Pressable>
+          <ScrollView style={{height: '88%'}}>
+            <View style={styles.personalDetailView}>
+              <Formik
+                initialValues={{
+                  licence: userDetails.lisenceNumber,
+                  name: userDetails.userName,
+                  doorNumber: userDetails.doorNumber,
+                  city: userDetails.city,
+                  state: userDetails.state,
+                  pincode: JSON.stringify(userDetails.pincode),
+                  mobile: userDetails.mobile,
+                  email: userDetails.email,
+                }}
+                onSubmit={values => update(values)}>
+                {({values, handleSubmit, isValid, resetForm}) => (
+                  <>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        marginTop: 20,
+                        marginHorizontal: '5%',
+                        justifyContent: 'space-between',
+                      }}>
+                      <Text style={styles.personaldetailText}>
+                        Personal Details
+                      </Text>
+                      <Pressable onPress={handleSubmit}>
+                        <Image source={require('../assets/images/save.png')} />
+                      </Pressable>
+                    </View>
+                    <View
+                      style={{
+                        width: '90%',
+                        alignSelf: 'center',
+                        marginTop: 20,
+                      }}>
+                      <Field
+                        component={PlaceholderTextFieldOwnerManual}
+                        name="licence"
+                        placeholder="Licence No."
+                        keyboardType="numeric"
+                        value={values.licence}
+                        editable={false}
+                        onTouchStart={() => Toast.show('Cant Be Edited')}
+                      />
+                      <Field
+                        component={PlaceholderTextFieldOwnerManual}
+                        name="name"
+                        placeholder="Name"
+                        keyboardType="default"
+                        value={values.name}
+                        editable={false}
+                        defaultValue={userDetails.name}
+                        onTouchStart={() => Toast.show('Cant Be Edited')}
+                      />
+                      <Field
+                        component={PlaceholderTextFieldOwnerManual}
+                        name="doorNumber"
+                        placeholder="Door No."
+                        keyboardType="numeric"
+                        value={values.doorNumber}
+                      />
+                      <Field
+                        component={PlaceholderTextFieldOwnerManual}
+                        name="city"
+                        placeholder="City"
+                        keyboardType="default"
+                        value={values.city}
+                      />
+                      <Field
+                        component={PlaceholderTextFieldOwnerManual}
+                        name="state"
+                        placeholder="State"
+                        keyboardType="default"
+                        value={values.state}
+                      />
+                      <Field
+                        component={PlaceholderTextFieldOwnerManual}
+                        name="pincode"
+                        placeholder="Pincode"
+                        keyboardType="numeric"
+                        value={values.pincode}
+                      />
+                      <Field
+                        component={PlaceholderTextFieldOwnerManual}
+                        name="mobile"
+                        placeholder="Mobile"
+                        keyboardType="default"
+                        value={values.mobile}
+                        editable={false}
+                        onTouchStart={() => Toast.show('Cant Be Edited')}
+                      />
+                      <Field
+                        component={PlaceholderTextFieldOwnerManual}
+                        name="email"
+                        placeholder="Email"
+                        keyboardType="default"
+                        value={values.email}
+                        editable={false}
+                        onTouchStart={() => Toast.show('Cant Be Edited')}
+                      />
+                    </View>
+                  </>
+                )}
+              </Formik>
+            </View>
+            <View style={{marginTop: 10, bottom: 8}}>
+              <BikeDetails header="Bike Details" />
+            </View>
+          </ScrollView>
         </View>
-        <ScrollView style={{height: '88%'}}>
-          <View style={styles.personalDetailView}>
-            <Formik
-              initialValues={{
-                licence: userDetails.lisenceNumber,
-                name: userDetails.userName,
-                doorNumber: userDetails.doorNumber,
-                city: userDetails.city,
-                state: userDetails.state,
-                pincode: JSON.stringify(userDetails.pincode),
-                mobile: userDetails.mobile,
-                email: userDetails.email,
-              }}
-              onSubmit={values => update(values)}>
-              {({values, handleSubmit, isValid, resetForm}) => (
-                <>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginTop: 20,
-                      marginHorizontal: '5%',
-                      justifyContent: 'space-between',
-                    }}>
-                    <Text style={styles.personaldetailText}>
-                      Personal Details
-                    </Text>
-                    <Pressable onPress={handleSubmit}>
-                      <Image source={require('../assets/images/save.png')} />
-                    </Pressable>
-                  </View>
-                  <View
-                    style={{width: '90%', alignSelf: 'center', marginTop: 20}}>
-                    <Field
-                      component={PlaceholderTextFieldOwnerManual}
-                      name="licence"
-                      placeholder="Licence No."
-                      keyboardType="numeric"
-                      value={values.licence}
-                      editable={false}
-                      onTouchStart={() => Toast.show('Cant Be Edited')}
-                    />
-                    <Field
-                      component={PlaceholderTextFieldOwnerManual}
-                      name="name"
-                      placeholder="Name"
-                      keyboardType="default"
-                      value={values.name}
-                      editable={false}
-                      defaultValue={userDetails.name}
-                      onTouchStart={() => Toast.show('Cant Be Edited')}
-                    />
-                    <Field
-                      component={PlaceholderTextFieldOwnerManual}
-                      name="doorNumber"
-                      placeholder="Door No."
-                      keyboardType="numeric"
-                      value={values.doorNumber}
-                    />
-                    <Field
-                      component={PlaceholderTextFieldOwnerManual}
-                      name="city"
-                      placeholder="City"
-                      keyboardType="default"
-                      value={values.city}
-                    />
-                    <Field
-                      component={PlaceholderTextFieldOwnerManual}
-                      name="state"
-                      placeholder="State"
-                      keyboardType="default"
-                      value={values.state}
-                    />
-                    <Field
-                      component={PlaceholderTextFieldOwnerManual}
-                      name="pincode"
-                      placeholder="Pincode"
-                      keyboardType="numeric"
-                      value={values.pincode}
-                    />
-                    <Field
-                      component={PlaceholderTextFieldOwnerManual}
-                      name="mobile"
-                      placeholder="Mobile"
-                      keyboardType="default"
-                      value={values.mobile}
-                      editable={false}
-                      onTouchStart={() => Toast.show('Cant Be Edited')}
-                    />
-                    <Field
-                      component={PlaceholderTextFieldOwnerManual}
-                      name="email"
-                      placeholder="Email"
-                      keyboardType="default"
-                      value={values.email}
-                      editable={false}
-                      onTouchStart={() => Toast.show('Cant Be Edited')}
-                    />
-                  </View>
-                </>
-              )}
-            </Formik>
-          </View>
-          <View style={{marginTop: 10, bottom: 8}}>
-            <BikeDetails header="Bike Details" />
-          </View>
-        </ScrollView>
-      </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -329,7 +328,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 64,
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     alignItems: 'center',
     shadowColor: 'grey',
     shadowOffset: {
@@ -340,7 +339,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     elevation: 5,
     justifyContent: 'space-between',
-    opacity: 0.9,
   },
   subHeader: {
     flexDirection: 'row',
@@ -353,8 +351,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     fontFamily: 'Roboto-Medium',
   },
-  icon: {
-    marginHorizontal: 20,
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   editImage: {
     resizeMode: 'contain',

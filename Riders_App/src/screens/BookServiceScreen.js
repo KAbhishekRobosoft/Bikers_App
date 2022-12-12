@@ -19,13 +19,13 @@ import {DropDownInputField2} from '../components/InputFields';
 import InsetShadow from 'react-native-inset-shadow';
 import ButtonLarge from '../components/Buttons';
 import * as yup from 'yup';
-import { updateMobileNumber } from '../services/UserCredentials';
+import {updateMobileNumber} from '../services/UserCredentials';
 import {useDispatch, useSelector} from 'react-redux';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setToken} from '../redux/AuthSlice';
 import {updateUserCredentials} from '../redux/AuthSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { attempts } from '../services/UserCredentials';
+import {attempts} from '../services/UserCredentials';
 import Toast from 'react-native-simple-toast';
 
 export const BookService = ({navigation}) => {
@@ -110,12 +110,9 @@ export const BookService = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}>
-          <Icon
-            name="md-arrow-back"
-            color={'white'}
-            size={25}
-            style={styles.icon}
-          />
+          <View style={styles.iconHeader}>
+            <Icon name="md-arrow-back" color={'white'} size={25} />
+          </View>
         </Pressable>
         <Text style={styles.headerText}>Book a Service</Text>
       </View>
@@ -138,11 +135,7 @@ export const BookService = ({navigation}) => {
               comment: '',
             }}
             onSubmit={values => {
-              if (
-                (selectedVehicle,
-                values.vehicleNumber,
-                selected != null)
-              ) {
+              if ((selectedVehicle, values.vehicleNumber, selected != null)) {
                 const obj = {
                   mobileNumber: values.mobileNumber,
                   vehicleType: selectedVehicle,
@@ -247,7 +240,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 64,
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     alignItems: 'center',
     shadowColor: 'rgba(0,0,0,0.24)',
     shadowOffset: {
@@ -257,10 +250,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.9,
     elevation: 5,
-    opacity: 0.9,
   },
   shadow: {
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     shadowColor: 'grey',
     shadowOffset: {
       width: 0,
@@ -277,8 +269,11 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     fontFamily: 'Roboto-Medium',
   },
-  icon: {
-    marginHorizontal: 20,
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   firstInputField: {
     flexDirection: 'row',

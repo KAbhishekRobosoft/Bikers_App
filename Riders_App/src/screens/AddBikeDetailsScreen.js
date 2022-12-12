@@ -12,8 +12,8 @@ import {
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
-import { addBikeDetails, } from '../services/OwnerAndBike';
-import { getBikeDetails } from '../services/OwnerAndBike';
+import {addBikeDetails} from '../services/OwnerAndBike';
+import {getBikeDetails} from '../services/OwnerAndBike';
 import {useDispatch, useSelector} from 'react-redux';
 import {addBikeType, addBikeData} from '../redux/AccessoriesSlice';
 import {Formik, Field} from 'formik';
@@ -95,12 +95,9 @@ const AddBikeDetails = ({navigation}) => {
               onPress={() => {
                 navigation.goBack();
               }}>
-              <Icon
-                name="md-arrow-back"
-                color="white"
-                size={25}
-                style={styles.icon}
-              />
+              <View style={styles.iconHeader}>
+                <Icon name="md-arrow-back" color="white" size={25} />
+              </View>
             </Pressable>
             <Text style={styles.headerText}>Add Bike Details</Text>
           </View>
@@ -268,7 +265,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 64,
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     alignItems: 'center',
     shadowColor: 'grey',
     shadowOffset: {
@@ -279,7 +276,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     elevation: 5,
     justifyContent: 'space-between',
-    opacity: 0.9,
   },
   subHeader: {
     flexDirection: 'row',
@@ -292,8 +288,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     fontFamily: 'Roboto-Medium',
   },
-  icon: {
-    marginHorizontal: 20,
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   editImage: {
     resizeMode: 'contain',

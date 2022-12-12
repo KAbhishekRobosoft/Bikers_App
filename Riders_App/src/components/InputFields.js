@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   Pressable,
+  useWindowDimensions,
 } from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -120,7 +121,7 @@ export const PlaceholderTextField = props => {
     <View>
       <View style={styles.inputTextView2}>
         <View style={styles.placeholderView2}>
-          {props.defaultValue  || props.value ? (
+          {props.defaultValue || props.value ? (
             <View style={styles.commonPlaceholder}>
               <Text style={styles.text}>{props.placeholder}</Text>
             </View>
@@ -143,7 +144,6 @@ export const PlaceholderTextField = props => {
             }}
             editable={props.editable}
             selectTextOnFocus={props.selectTextOnFocus}
-            
             {...inputProps}
           />
         </View>
@@ -216,7 +216,7 @@ export const GarageInputField = props => {
 export const DropDownInputField = props => {
   return (
     <View>
-      <View style={{height: 25, marginTop: 15, paddingLeft: 5, paddingTop: 6,}}>
+      <View style={{height: 25, marginTop: 15, paddingLeft: 5, paddingTop: 6}}>
         {props.values ? (
           <View>
             <Text style={styles.text}>{props.placeholder}</Text>
@@ -227,7 +227,6 @@ export const DropDownInputField = props => {
       </View>
       <View style={{marginTop: -38}}>
         <SelectList
-        
           defaultOption={props.defaultOption}
           data={props.data}
           setSelected={props.setSelected}
@@ -251,7 +250,7 @@ export const DropDownInputField = props => {
 export const DropDownInputField2 = props => {
   return (
     <View style={{marginTop: -30}}>
-      <View style={{height: 25, marginTop: 15, paddingLeft: 5, paddingTop: 6,}}>
+      <View style={{height: 25, marginTop: 15, paddingLeft: 5, paddingTop: 6}}>
         {props.values ? (
           <View>
             <Text style={styles.text}>{props.placeholder}</Text>
@@ -306,8 +305,8 @@ const styles = StyleSheet.create({
     borderColor: '#B4B3B3',
     borderBottomWidth: 1,
     paddingBottom: 10,
-    marginLeft: 40,
     alignItems: 'flex-end',
+    alignSelf: 'center',
   },
   inputTextView2: {
     width: '100%',
@@ -337,7 +336,7 @@ const styles = StyleSheet.create({
     width: '8%',
   },
   textInput: {
-    marginVertical: Platform.OS === 'android' ? -28 : -8,
+    marginVertical: Platform.OS === 'android' ? -26 : -8,
     fontSize: 16,
     marginLeft: 10,
     fontFamily: 'Roboto-Regular',
@@ -348,7 +347,7 @@ const styles = StyleSheet.create({
     width: '90%',
     marginVertical: Platform.OS === 'android' ? -17 : -3,
     fontSize: 16,
-    marginLeft: 5,
+    marginLeft: 10,
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
   },
@@ -367,12 +366,10 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
-
   eye: {
     width: 24,
     height: 14,
   },
-
   iconView: {
     paddingTop: 45,
   },
@@ -385,15 +382,15 @@ const styles = StyleSheet.create({
     borderColor: 'red',
   },
   text: {
-    height: 17,
+    height: 19,
     color: '#9F9F9F',
     fontSize: 14,
     letterSpacing: 0.29,
     lineHeight: 17,
   },
   placeholder: {
-    marginLeft: 10,
-    paddingBottom: 5,
+    marginLeft: Platform.OS === 'android' ? 14 : 12,
+    paddingBottom: 7,
   },
   placeholderView: {
     flexDirection: 'column',
@@ -484,8 +481,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',
-    // borderWidth: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   titleText: {
     paddingBottom: 5,

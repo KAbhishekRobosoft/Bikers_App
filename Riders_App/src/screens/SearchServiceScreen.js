@@ -69,7 +69,7 @@ const SearchServiceScreen = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}>
-          <Icon2 name="md-arrow-back" color={'#ED7E2B'} size={25} />
+          <Icon2 name="md-arrow-back" color={'#ED7E2B'} size={25}/>
         </Pressable>
       </View>
       <View style={styles.searchView}>
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     paddingHorizontal: 20,
     top:10,
-    left:10
+    // left:10
   },
   scrollView: {
     width: '100%',

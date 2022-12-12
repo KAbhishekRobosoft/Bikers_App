@@ -42,22 +42,23 @@ const BookingDetails = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
+      {/* <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={keyboardVerticalOffset}
-        style={{flex: 1}}>
+        style={{flex: 1}}> */}
         <View style={[styles.header]}>
           <View style={styles.subHeader}>
             <Pressable
               onPress={() => {
                 navigation.goBack();
               }}>
+              <View style={styles.iconHeader}>
               <Icon
                 name="md-arrow-back"
                 color={'white'}
                 size={25}
-                style={styles.icon}
               />
+              </View>
             </Pressable>
             <Text style={styles.headerText}>Booking Details</Text>
           </View>
@@ -83,7 +84,6 @@ const BookingDetails = ({navigation}) => {
               city: route.params.dealerCity,
               comment: '',
             }}
-
             onSubmit={async values => {
               try {
                 dispatch(setLoad());
@@ -176,28 +176,25 @@ const BookingDetails = ({navigation}) => {
                   />
                 </View>
                 <View style={styles.buttonView}>
-                  {!loading && (
-                    <ButtonLarge title="BOOK" onPress={handleSubmit} />
-                  )}
-                  {loading && (
-                    <Pressable>
-                      <View style={styles.container}>
-                        <LinearGradient
-                          start={{x: 0, y: 0}}
-                          end={{x: 1, y: 0}}
-                          colors={['#ED7E2B', '#F4A264']}
-                          style={styles.gradient}>
-                          <ActivityIndicator size="large" color="white" />
-                        </LinearGradient>
-                      </View>
-                    </Pressable>
-                  )}
+                  <ButtonLarge title="BOOK" onPress={handleSubmit} />
+
+                  {/* <Pressable>
+                    <View style={styles.container}>
+                      <LinearGradient
+                        start={{x: 0, y: 0}}
+                        end={{x: 1, y: 0}}
+                        colors={['#ED7E2B', '#F4A264']}
+                        style={styles.gradient}>
+                        <ActivityIndicator size="large" color="white" />
+                      </LinearGradient>
+                    </View>
+                  </Pressable> */}
                 </View>
               </>
             )}
           </Formik>
         </ScrollView>
-      </KeyboardAvoidingView>
+      {/* </KeyboardAvoidingView> */}
     </SafeAreaView>
   );
 };
@@ -212,7 +209,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 64,
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     alignItems: 'center',
     shadowColor: 'grey',
     shadowOffset: {
@@ -223,7 +220,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     elevation: 5,
     justifyContent: 'space-between',
-    opacity: 0.9,
   },
   subHeader: {
     flexDirection: 'row',
@@ -236,8 +232,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     fontFamily: 'Roboto-Medium',
   },
-  icon: {
-    marginHorizontal: 20,
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   editImage: {
     marginHorizontal: 25,
@@ -280,17 +279,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#4F504F',
     paddingBottom: 10,
-  },
-
-  container: {
-    shadowColor: 'rgba(126,118,118,0.5)',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowRadius: 4,
-    shadowOpacity: 0.9,
-    borderRadius: 20,
   },
   gradient: {
     height: 42,
