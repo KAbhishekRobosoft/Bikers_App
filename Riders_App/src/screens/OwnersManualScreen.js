@@ -14,19 +14,17 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fliteredBikeDetails} from '../redux/AccessoriesSlice';
 import Toast from 'react-native-simple-toast';
 
-
 const OwnersManualScreen = ({navigation}) => {
   useEffect(() => {}, [selected]);
   const Data = useSelector(state => state.shop.bikeType);
   const [selected, setSelected] = useState();
   const dispatch = useDispatch();
   const submit = () => {
-    if (selected ===1) {
-     Toast.show('Select Vehicle Type')
+    if (selected === 1) {
+      Toast.show('Select Vehicle Type');
     } else {
       dispatch(fliteredBikeDetails(selected));
       navigation.navigate('OwnersManualDetail');
-     
     }
   };
 
@@ -37,12 +35,9 @@ const OwnersManualScreen = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}>
-          <Icon
-            name="md-arrow-back"
-            color="white"
-            size={25}
-            style={styles.icon}
-          />
+          <View style={styles.iconHeader}>
+            <Icon name="md-arrow-back" color="white" size={25} />
+          </View>
         </Pressable>
         <Text style={styles.headerText}>Owners Manual</Text>
       </View>
@@ -54,7 +49,6 @@ const OwnersManualScreen = ({navigation}) => {
             setSelected={value => setSelected(value)}
             placeholder="Vehicle Type"
             defaultOption={{key: 1, value: 'Vehicle Type'}}
-       
           />
         </View>
         <View style={styles.btn}>
@@ -72,7 +66,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 64,
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     alignItems: 'center',
     shadowColor: 'rgba(0,0,0,0.24)',
     shadowOffset: {
@@ -85,7 +79,7 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   shadow: {
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     shadowColor: 'grey',
     shadowOffset: {
       width: 0,
@@ -102,9 +96,6 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     fontFamily: 'Roboto-Medium',
   },
-  icon: {
-    marginHorizontal: 20,
-  },
   scrollView: {
     height: '90%',
   },
@@ -115,5 +106,11 @@ const styles = StyleSheet.create({
   dropDrowView: {
     width: '80%',
     alignSelf: 'center',
+  },
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

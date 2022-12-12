@@ -145,7 +145,6 @@ const Invoice = ({navigation}) => {
               name="md-arrow-back"
               color={'#ED7F2C'}
               size={25}
-              style={styles.icon}
             />
           </Pressable>
           <Pressable onPress={createPDF}>

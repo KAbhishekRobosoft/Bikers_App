@@ -37,7 +37,7 @@ const registerValidationSchema = yup.object().shape({
     .matches(/\w*[A-Z]\w*/, 'Password must have a capital letter')
     .matches(/\d/, 'Password must have a number')
     .min(6, ({min}) => `Password must be at least ${min} characters`)
-    .required(''),
+    .required('Password is required'),
 });
 
 const LoginScreen = ({navigation}) => {
@@ -287,9 +287,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontFamily: 'Roboto-Regular',
     width: '80%',
-    // borderWidth: 1,
-    marginLeft: 40,
     textAlign: 'right',
+    alignSelf: 'center'
   },
   buttonView: {
     marginTop: 30,

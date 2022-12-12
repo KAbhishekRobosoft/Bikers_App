@@ -40,7 +40,7 @@ export const TripSummary = ({navigation}) => {
   const dispatch = useDispatch();
   const [route, setRoute] = useState([]);
   const loading1 = useSelector(state => state.contact.isLoading);
-console.log(loading1);
+  console.log(loading1);
   useEffect(() => {
     dispatch(deSetLoading());
     setTimeout(async () => {
@@ -84,12 +84,9 @@ console.log(loading1);
                 onPress={() => {
                   navigation.goBack();
                 }}>
-                <Icon
-                  name="md-arrow-back"
-                  color={'white'}
-                  size={25}
-                  style={styles.icon}
-                />
+                <View style={styles.iconHeader}>
+                  <Icon name="md-arrow-back" color={'white'} size={25} />
+                </View>
               </Pressable>
               <Text style={styles.headerText}>TripSummary</Text>
             </View>
@@ -206,17 +203,17 @@ console.log(loading1);
                 )}
 
                 {loading1 && (
-                    <Pressable>
-                      <View style={styles.containerCreateButton}>
-                        <LinearGradient
-                          start={{x: 0, y: 0}}
-                          end={{x: 1, y: 0}}
-                          colors={['#ED7E2B', '#F4A264']}
-                          style={styles.gradientCreateButton}>
-                            <ActivityIndicator color="white" />
-                        </LinearGradient>
-                      </View>
-                    </Pressable>
+                  <Pressable>
+                    <View style={styles.containerCreateButton}>
+                      <LinearGradient
+                        start={{x: 0, y: 0}}
+                        end={{x: 1, y: 0}}
+                        colors={['#ED7E2B', '#F4A264']}
+                        style={styles.gradientCreateButton}>
+                        <ActivityIndicator color="white" />
+                      </LinearGradient>
+                    </View>
+                  </Pressable>
                 )}
               </View>
             </View>
@@ -273,7 +270,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 64,
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     alignItems: 'center',
     shadowColor: 'grey',
     shadowOffset: {
@@ -284,7 +281,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     elevation: 5,
     justifyContent: 'space-between',
-    opacity: 0.9,
   },
   subHeader: {
     flexDirection: 'row',
@@ -297,8 +293,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     fontFamily: 'Roboto-Medium',
   },
-  icon: {
-    marginHorizontal: 22,
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   editImage: {
     marginHorizontal: 25,

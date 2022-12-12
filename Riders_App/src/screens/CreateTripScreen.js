@@ -92,7 +92,9 @@ const CreateTrip = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}>
-          <Icon3 name="arrow-back" color={'white'} size={25} />
+          <View style={styles.iconHeader}>
+            <Icon3 name="arrow-back" color={'white'} size={25} />
+          </View>
         </Pressable>
         <Text style={styles.headerText}>Create a trip</Text>
       </View>
@@ -428,7 +430,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 64,
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     alignItems: 'center',
     shadowColor: 'grey',
     shadowOffset: {
@@ -438,7 +440,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOpacity: 0.9,
     elevation: 5,
-    paddingHorizontal: 20,
   },
 
   headerText: {
@@ -448,7 +449,12 @@ const styles = StyleSheet.create({
     marginLeft: 38,
     fontFamily: 'Roboto-Medium',
   },
-
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   textUdupi: {
     fontFamily: 'Roboto-Regular',
     color: '#717171',

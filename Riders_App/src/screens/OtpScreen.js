@@ -21,7 +21,6 @@ import {useRef} from 'react';
 
 const OtpScreen = ({navigation}) => {
   const ref = useRef();
-  //const [loading, setLoading] = useState(false);
   const data = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
@@ -145,7 +144,6 @@ const OtpScreen = ({navigation}) => {
             </View>
           </View>
           <View style={styles.textView2}>
-            
             <Text style={styles.secondsText}>20 minutes left</Text>
           </View>
         </View>
