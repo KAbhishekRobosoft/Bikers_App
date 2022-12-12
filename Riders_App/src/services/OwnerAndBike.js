@@ -93,7 +93,9 @@ export const getBikeDetails = async token => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log();
     return response.data;
+
   } catch (error) {
     console.log('Error Occured in get Bike details');
   }
@@ -134,5 +136,19 @@ export const LikeProducts = async (value, token) => {
     return response.data;
   } catch (error) {
     console.log('Error Occured in like products');
+  }
+};
+
+
+export const prefilledBikes = async token => {
+  try {
+    const response = await axios.get(BASE_URL + '/bike/getVehicleType', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.log('error occurred in attempts api');
   }
 };
