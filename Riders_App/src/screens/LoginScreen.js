@@ -41,6 +41,7 @@ const registerValidationSchema = yup.object().shape({
 });
 
 const LoginScreen = ({navigation}) => {
+
   const [secureText, setSecureText] = useState(true);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.contact.isLoading);
@@ -48,11 +49,11 @@ const LoginScreen = ({navigation}) => {
   const textView =
     height > width
       ? Platform.OS === 'ios'
-        ? 10
-        : 20
+        ? 0
+        : 0
       : Platform.OS === 'ios'
-      ? 10
-      : 20;
+      ? 65
+      : 65;
   async function signIn(values) {
     try {
       let image = '';
@@ -226,13 +227,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'relative',
    
+   
   },
   inputTextView1: {
     width: '100%',
+   
   },
   inputTextView2: {
     width: '100%',
     justifyContent: 'center',
+  
+
   },
   userLogo: {
     width: 18,

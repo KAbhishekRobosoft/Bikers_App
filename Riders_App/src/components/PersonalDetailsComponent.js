@@ -41,7 +41,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputView}>
           <Text style={styles.text}>Licence No.</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Licence"
@@ -54,7 +54,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputView}>
           <Text style={styles.text}>Name</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Name"
@@ -67,7 +67,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputView}>
           <Text style={styles.text}>Door No.</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Door"
@@ -80,7 +80,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputView}>
           <Text style={styles.text}>City</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="City"
@@ -93,7 +93,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputView}>
           <Text style={styles.text}>State</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="State"
@@ -106,7 +106,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputView}>
           <Text style={styles.text}>Pincode</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Pincode"
@@ -119,7 +119,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputView}>
           <Text style={styles.text}>Mobile</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Mobile"
@@ -133,7 +133,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputViewLast}>
           <Text style={styles.text}>Email</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Email"

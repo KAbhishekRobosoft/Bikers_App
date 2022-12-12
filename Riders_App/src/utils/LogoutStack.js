@@ -20,11 +20,7 @@ function LogoutStack() {
           name="AddBikeDetails"
           component={AddBikeDetails}
         />
-        {/* <Stack.Screen
-          options={{headerShown: false}}
-          name="Garage"
-          component={MyGarageStack}
-        /> */}
+
       </Stack.Navigator>
   );
 }

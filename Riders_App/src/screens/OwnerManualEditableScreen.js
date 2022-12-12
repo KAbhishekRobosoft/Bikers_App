@@ -175,7 +175,7 @@ const OwnerManualEdit = ({navigation}) => {
       const shareResponse = await Share.open(shareOptions);
       Toast.show('Shared Successfully');
     } catch (error) {
-      Toast.show('Error occurred while sharing');
+        console.log('error while sharing');
     }
   };
 
