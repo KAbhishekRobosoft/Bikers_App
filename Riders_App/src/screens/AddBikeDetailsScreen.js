@@ -138,7 +138,7 @@ const AddBikeDetails = ({navigation}) => {
                     <View style={styles.inputView}>
                       <Text style={styles.text}>Vehicle No</Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
                         <TextInput
                           style={styles.inputText}
                           name="vehicleNumber"
@@ -152,7 +152,7 @@ const AddBikeDetails = ({navigation}) => {
                     <View style={styles.inputView}>
                       <Text style={styles.text}>Engine</Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
                         <TextInput
                           name="engineNumber"
                           style={styles.inputText}
@@ -166,7 +166,7 @@ const AddBikeDetails = ({navigation}) => {
                     <View style={styles.inputView}>
                       <Text style={styles.text}>Frame No</Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
                         <TextInput
                           name="frameNumber"
                           style={styles.inputText}
@@ -180,7 +180,7 @@ const AddBikeDetails = ({navigation}) => {
                     <View style={styles.inputView}>
                       <Text style={styles.text}>Battery make</Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
 
                         <TextInput
                           name="batteryMake"
@@ -195,7 +195,7 @@ const AddBikeDetails = ({navigation}) => {
                     <View style={styles.inputView}>
                       <Text style={styles.text}>Reg No.</Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
 
                         <TextInput
                           name="registerNumber"
@@ -210,7 +210,7 @@ const AddBikeDetails = ({navigation}) => {
                     <View style={styles.inputView}>
                       <Text style={styles.text}>Model</Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
 
                         <TextInput
                           name="model"
@@ -226,7 +226,7 @@ const AddBikeDetails = ({navigation}) => {
                     <View style={styles.inputView}>
                       <Text style={styles.text}>Color</Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
                         <TextInput
                           name="color"
                           style={styles.inputText}
@@ -242,7 +242,7 @@ const AddBikeDetails = ({navigation}) => {
                         <Text style={styles.text}>Dealer code</Text>
                       </Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
                         <TextInput
                           name="dealerCode"
                           style={styles.inputText}
