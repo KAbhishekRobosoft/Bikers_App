@@ -16,7 +16,8 @@ import ButtonLarge from '../components/Buttons';
 import {useDispatch, useSelector} from 'react-redux';
 import {setUserData} from '../redux/AuthSlice';
 import {deSetForgotPassword} from '../redux/AuthSlice';
-import Toast from 'react-native-simple-toast'
+import Toast from 'react-native-simple-toast';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 function NumberEntryScreen({navigation}) {
   const [text, setText] = useState('');
@@ -35,10 +36,9 @@ function NumberEntryScreen({navigation}) {
             navigation.goBack();
             dispatch(deSetForgotPassword());
           }}>
-          <Image
-            style={styles.back_pic}
-            source={require('../assets/images/back_arrow.png')}
-          />
+          <View style={styles.iconHeader}>
+            <Icon name="md-arrow-back" size={26} color="grey" />
+          </View>
         </Pressable>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={{flex: 1}}>
@@ -112,7 +112,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   blueCircle: {
     width: 246,
     height: 86,
@@ -133,7 +138,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
     color: '#4F504F',
-    marginHorizontal: 60,
   },
   textInputView: {
     width: '90%',
@@ -143,7 +147,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   placeholder: {
-    marginLeft: 10,
     paddingBottom: 5,
   },
   text: {

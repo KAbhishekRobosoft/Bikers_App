@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, {useEffect} from 'react';
-import { getOwnerDetails } from '../services/OwnerAndBike';
+import {getOwnerDetails} from '../services/OwnerAndBike';
 import {useDispatch, useSelector} from 'react-redux';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setUserData} from '../redux/AuthSlice';
@@ -18,7 +18,6 @@ export const PersonalDetails = () => {
   const userDetails = useSelector(state => state.auth.userData);
   const authData = useSelector(state => state.auth);
   const loading = useSelector(state => state.milestone.isLoading);
-
 
   useEffect(() => {
     dispatch(deSetLoading());
@@ -37,8 +36,7 @@ export const PersonalDetails = () => {
     );
   }
   return (
-    <ScrollView style={styles.scrollView}
-    showsVerticalScrollIndicator={false}>
+    <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <View style={styles.inputView}>
           <Text style={styles.text}>Licence No.</Text>
@@ -114,7 +112,7 @@ export const PersonalDetails = () => {
               placeholder="Pincode"
               editable={false}
               placeholderTextColor="#4F504F"
-             defaultValue={JSON.stringify(userDetails?.pincode)}
+              defaultValue={JSON.stringify(userDetails?.pincode)}
             />
           </View>
         </View>
@@ -203,7 +201,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#4F504F',
     textAlign: 'center',
-    width: '80%',
+    width: '100%',
   },
   inputTextView: {
     alignItems: 'center',

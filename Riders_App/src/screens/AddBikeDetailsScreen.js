@@ -8,6 +8,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -19,10 +20,14 @@ import {addBikeType, addBikeData} from '../redux/AccessoriesSlice';
 import {Formik, Field} from 'formik';
 import Toast from 'react-native-simple-toast';
 import {getVerifiedKeys} from '../utils/Functions';
+import {setLoad} from '../redux/ContactSlice';
+import {deSetLoad} from '../redux/ContactSlice';
+import LinearGradient from 'react-native-linear-gradient';
 
 const AddBikeDetails = ({navigation}) => {
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  const loading = useSelector(state => state.contact.isLoading);
 
   const initialValues = {
     vehicleType: '',
@@ -49,6 +54,7 @@ const AddBikeDetails = ({navigation}) => {
         values.model &&
         values.dealerCode !== ''
       ) {
+        dispatch(setLoad());
         const obj = {
           vehicleType: values.vehicleType,
           vehicleNumber: values.vehicleNumber,
@@ -70,17 +76,19 @@ const AddBikeDetails = ({navigation}) => {
         dispatch(addBikeType(BikeTypes));
         dispatch(addBikeData(response)); // <-----------Redux
         resetForm({initialValues});
-
         Toast.show('Bike Details Added');
         if (authData.registered) {
+          dispatch(deSetLoad());
           navigation.navigate('subStack');
         } else {
+          dispatch(deSetLoad());
           navigation.goBack();
         }
       } else {
         Toast.show('Enter all the Details');
       }
     } catch (error) {
+      dispatch(deSetLoad());
       Toast.show('Error occured');
     }
   };
@@ -120,7 +128,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         style={styles.inputText}
                         name="vehicleType"
-                        placeholder="Vehicle Type"
+                        placeholder="Eg:- Royal Enfield"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('vehicleType')}
                         value={values.vehicleType}
@@ -134,7 +142,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         style={styles.inputText}
                         name="vehicleNumber"
-                        placeholder="Vehicle No"
+                        placeholder="Eg:- KA20AB1234"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('vehicleNumber')}
                         value={values.vehicleNumber}
@@ -148,7 +156,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         name="engineNumber"
                         style={styles.inputText}
-                        placeholder="Engine"
+                        placeholder="Eg:- 5RE56F6A"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('engineNumber')}
                         value={values.engineNumber}
@@ -162,7 +170,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         name="frameNumber"
                         style={styles.inputText}
-                        placeholder="Frame No"
+                        placeholder="Eg:- E45G45CV"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('frameNumber')}
                         value={values.frameNumber}
@@ -177,7 +185,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         name="batteryMake"
                         style={styles.inputText}
-                        placeholder="Battery make"
+                        placeholder="Eg:- Exide-120V"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('batteryMake')}
                         value={values.batteryMake}
@@ -192,7 +200,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         name="registerNumber"
                         style={styles.inputText}
-                        placeholder="Reg No."
+                        placeholder="Eg:- DL6RS4532"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('registerNumber')}
                         value={values.registerNumber}
@@ -208,7 +216,7 @@ const AddBikeDetails = ({navigation}) => {
                         name="model"
                         keyboardType="numeric"
                         style={styles.inputText}
-                        placeholder="Model"
+                        placeholder="Eg:- 2017"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('model')}
                         value={values.model}
@@ -222,7 +230,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         name="color"
                         style={styles.inputText}
-                        placeholder="Color"
+                        placeholder="Eg:- Black"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('color')}
                         value={values.color}
@@ -238,7 +246,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         name="dealerCode"
                         style={styles.inputText}
-                        placeholder="Dealer code"
+                        placeholder="Eg:-RDF3421"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('dealerCode')}
                         value={values.dealerCode}
@@ -247,7 +255,22 @@ const AddBikeDetails = ({navigation}) => {
                   </View>
                 </View>
                 <View style={styles.btn}>
-                  <ButtonLarge title="Submit" onPress={handleSubmit} />
+                  {!loading && (
+                    <ButtonLarge title="Submit" onPress={handleSubmit} />
+                  )}
+                  {loading && (
+                    <Pressable>
+                      <View style={styles.container1}>
+                        <LinearGradient
+                          start={{x: 0, y: 0}}
+                          end={{x: 1, y: 0}}
+                          colors={['#ED7E2B', '#F4A264']}
+                          style={styles.gradient1}>
+                          <ActivityIndicator color="white" />
+                        </LinearGradient>
+                      </View>
+                    </Pressable>
+                  )}
                 </View>
               </>
             )}
@@ -354,6 +377,7 @@ const styles = StyleSheet.create({
     color: '#4F504F',
     textAlign: 'center',
     width: '80%',
+    height: 40
   },
   inputTextView: {
     alignItems: 'center',
@@ -368,5 +392,22 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     marginTop: 25,
     marginLeft: '5.6%',
+  },
+  container1: {
+    shadowColor: 'rgba(126,118,118,0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 4,
+    shadowOpacity: 0.9,
+    borderRadius: 20,
+  },
+  gradient1: {
+    height: 42,
+    width: 279,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

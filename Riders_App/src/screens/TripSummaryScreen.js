@@ -40,7 +40,6 @@ export const TripSummary = ({navigation}) => {
   const dispatch = useDispatch();
   const [route, setRoute] = useState([]);
   const loading1 = useSelector(state => state.contact.isLoading);
-  console.log(loading1);
   useEffect(() => {
     dispatch(deSetLoading());
     setTimeout(async () => {
@@ -382,7 +381,7 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   buttonView: {
-    paddingTop: 40,
+    paddingTop: 70,
     alignItems: 'center',
   },
   calenderImg: {

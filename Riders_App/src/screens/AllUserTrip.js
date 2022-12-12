@@ -9,12 +9,14 @@ import {
   FlatList,
   RefreshControl,
   ActivityIndicator,
+  ScrollView,
+  Text,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AllTripList from '../components/AllTripList';
-import { SearchAllUserInputTrips } from '../services/Trips';
+import {SearchAllUserInputTrips} from '../services/Trips';
 import {getVerifiedKeys} from '../utils/Functions';
-import { SearchAllUserTrips } from '../services/Trips';
+import {SearchAllUserTrips} from '../services/Trips';
 import {setToken} from '../redux/AuthSlice';
 import {setLoading} from '../redux/MileStoneSlice';
 import {deSetLoading} from '../redux/MileStoneSlice';
@@ -22,6 +24,9 @@ import Toast from 'react-native-simple-toast';
 
 const AllUserTrip = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
+  const [tripDetails2, setTripDetails2] = useState([]);
+  const [search, setSearch] = useState(false);
+  const [searchTrips, setSearchTrips] = useState([]);
   const authData = useSelector(state => state.auth);
   const state = useSelector(state => state.milestone.initialState);
   const dispatch = useDispatch();
@@ -35,6 +40,7 @@ const AllUserTrip = ({navigation}) => {
       dispatch(setToken(key));
       const tripdata = await SearchAllUserTrips(key);
       setTripDetails(tripdata);
+      setTripDetails2(tripdata);
       dispatch(setLoading());
     }, 500);
   }, [state]);
@@ -60,6 +66,8 @@ const AllUserTrip = ({navigation}) => {
     const key = await getVerifiedKeys(authData.userToken);
     const response = await SearchAllUserInputTrips(key, value);
     setTripDetails(response);
+    setSearchTrips(response);
+    setSearch(true);
   };
 
   if (loading) {
@@ -89,15 +97,39 @@ const AllUserTrip = ({navigation}) => {
           style={styles.inputText}
         />
       </View>
-      <FlatList
-      showsVerticalScrollIndicator={false}
-        data={tripDetails}
-        keyExtractor={details => details._id}
-        renderItem={renderItem}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      />
+      {tripDetails2.length === 0 && (
+        <ScrollView>
+          <View style={styles.NoTripView}>
+            <Image
+              style={styles.img}
+              source={require('../assets/images/Illustration_5.png')}
+            />
+            <Text style={styles.NoTripText}>
+              You are not part of any trip at the moment.
+            </Text>
+          </View>
+        </ScrollView>
+      )}
+
+      {tripDetails.length > 0 && (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={tripDetails}
+          keyExtractor={details => details._id}
+          renderItem={renderItem}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        />
+      )}
+      {search
+        ? searchTrips.length === 0 && (
+            <>
+              <Text style={styles.NoResultText}>No results found!</Text>
+            </>
+          )
+        : null}
+
       <Pressable
         style={styles.addButton}
         onPress={() => navigation.navigate('CreateTrip')}>
@@ -129,6 +161,7 @@ const styles = StyleSheet.create({
   inputText: {
     marginLeft: 10,
     width: '100%',
+    height: 40
   },
 
   searchIcon: {
@@ -146,6 +179,29 @@ const styles = StyleSheet.create({
     right: 20,
     height: 65,
     paddingBottom: 15,
+  },
+  NoTripView: {
+    marginTop: 90,
+  },
+  img: {
+    width: '100%',
+    height: 280,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
+  NoTripText: {
+    color: '#4F504F',
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
+    alignSelf: 'center',
+    marginVertical: 10,
+  },
+  NoResultText: {
+    color: '#4F504F',
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
+    alignSelf: 'center',
+    marginTop: '50%',
   },
 });
 

@@ -74,7 +74,7 @@ export const MyGarage = ({navigation}) => {
             </View>
           ) : (
             <View style={styles.serviceDueView}>
-              <Text style={styles.daysText}>No service Due</Text>
+              <Text style={styles.daysText}>No service due</Text>
             </View>
           )
         ) : (
