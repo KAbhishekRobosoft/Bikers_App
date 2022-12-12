@@ -84,7 +84,6 @@ const AddBikeDetails = ({navigation}) => {
         dispatch(addBikeData(response)); // <-----------Redux
         resetForm({initialValues});
 
-        //Toast.show('Bike Details Added');
         if (authData.registered) {
           navigation.navigate('subStack');
         } else {
