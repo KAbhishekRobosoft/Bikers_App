@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, {useEffect} from 'react';
-import { getOwnerDetails } from '../services/OwnerAndBike';
+import {getOwnerDetails} from '../services/OwnerAndBike';
 import {useDispatch, useSelector} from 'react-redux';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setUserData} from '../redux/AuthSlice';
@@ -18,7 +18,6 @@ export const PersonalDetails = () => {
   const userDetails = useSelector(state => state.auth.userData);
   const authData = useSelector(state => state.auth);
   const loading = useSelector(state => state.milestone.isLoading);
-
 
   useEffect(() => {
     dispatch(deSetLoading());
@@ -37,13 +36,12 @@ export const PersonalDetails = () => {
     );
   }
   return (
-    <ScrollView style={styles.scrollView}
-    showsVerticalScrollIndicator={false}>
+    <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <View style={styles.inputView}>
           <Text style={styles.text}>Licence No.</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Licence"
@@ -56,7 +54,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputView}>
           <Text style={styles.text}>Name</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Name"
@@ -69,7 +67,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputView}>
           <Text style={styles.text}>Door No.</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Door"
@@ -82,7 +80,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputView}>
           <Text style={styles.text}>City</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="City"
@@ -95,7 +93,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputView}>
           <Text style={styles.text}>State</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="State"
@@ -108,20 +106,20 @@ export const PersonalDetails = () => {
         <View style={styles.inputView}>
           <Text style={styles.text}>Pincode</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Pincode"
               editable={false}
               placeholderTextColor="#4F504F"
-             defaultValue={JSON.stringify(userDetails?.pincode)}
+              defaultValue={JSON.stringify(userDetails?.pincode)}
             />
           </View>
         </View>
         <View style={styles.inputView}>
           <Text style={styles.text}>Mobile</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Mobile"
@@ -135,7 +133,7 @@ export const PersonalDetails = () => {
         <View style={styles.inputViewLast}>
           <Text style={styles.text}>Email</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Email"
@@ -203,7 +201,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#4F504F',
     textAlign: 'center',
-    width: '80%',
+    width: '99%',
   },
   inputTextView: {
     alignItems: 'center',

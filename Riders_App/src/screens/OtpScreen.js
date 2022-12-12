@@ -62,7 +62,6 @@ const OtpScreen = ({navigation}) => {
                 if (value.length === 4) {
                   if (data.userData.mobile === '7026324187') {
                     try {
-                      setLoading(true);
 
                       const resp = await verifyOtp(value.toString());
                       if (resp === true) {
@@ -95,12 +94,10 @@ const OtpScreen = ({navigation}) => {
                         Toast.show('Wrong OTP');
                       }
                       ref.current.clear()
-                      setLoading(false);
                     } catch (er) {
                       Toast.show('Error occurred');
                     }
                   } else {
-                    setLoading(false);
                     try {
                       if (
                         data.registered === true &&
