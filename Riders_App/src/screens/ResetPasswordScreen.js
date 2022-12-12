@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
@@ -58,10 +58,12 @@ const ResetPasswordScreen = ({navigation}) => {
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
         <Pressable onPress={() => navigation.goBack()}>
-          <Icon name="arrow-left" size={24} color="grey" />
+          <View style={styles.iconHeader}>
+            <Icon name="md-arrow-back" size={26} color="grey" />
+          </View>
         </Pressable>
       </View>
-      <ScrollView bounces={false}>
+      <ScrollView bounces={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
         <View style={styles.imgContainer}>
           <Image
             style={styles.resetImg}
@@ -167,7 +169,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 60,
     justifyContent: 'center',
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
   },
   imgContainer: {
     width: '100%',
@@ -232,5 +234,12 @@ const styles = StyleSheet.create({
     width: 24,
     height: 14,
     resizeMode: 'contain',
+    left: 300,
+  },
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

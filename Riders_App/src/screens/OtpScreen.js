@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {useDispatch, useSelector} from 'react-redux';
 import {register} from '../services/UserCredentials';
 import {setOtpVerfied} from '../redux/AuthSlice';
@@ -36,7 +36,9 @@ const OtpScreen = ({navigation}) => {
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
         <Pressable onPress={() => navigation.navigate('Login')}>
-          <Icon name="arrow-left" size={24} color="grey" />
+          <View style={styles.iconHeader}>
+            <Icon name="md-arrow-back" size={26} color="grey" />
+          </View>
         </Pressable>
       </View>
       <ScrollView style={{height: '100%'}}>
@@ -62,7 +64,6 @@ const OtpScreen = ({navigation}) => {
                 if (value.length === 4) {
                   if (data.userData.mobile === '7026324187') {
                     try {
-
                       const resp = await verifyOtp(value.toString());
                       if (resp === true) {
                         if (
@@ -85,6 +86,7 @@ const OtpScreen = ({navigation}) => {
                           );
                           if (response !== undefined) {
                             dispatch(setOtpVerfied());
+                            Toast.show('Registered successfully')
                             navigation.navigate('Login');
                           } else {
                             Toast.show('User already exists');
@@ -93,7 +95,7 @@ const OtpScreen = ({navigation}) => {
                       } else {
                         Toast.show('Wrong OTP');
                       }
-                      ref.current.clear()
+                      ref.current.clear();
                     } catch (er) {
                       Toast.show('Error occurred');
                     }
@@ -119,6 +121,7 @@ const OtpScreen = ({navigation}) => {
                         );
                         if (response !== undefined) {
                           dispatch(setOtpVerfied());
+                          Toast.show('Registered successfully')
                           navigation.navigate('Login');
                         } else {
                           Toast.show('User already exists');
@@ -157,7 +160,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 60,
     justifyContent: 'center',
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
   },
 
   imageIcon: {
@@ -167,7 +170,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 10,
   },
-
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   modalView: {
     backgroundColor: 'white',
     width: '100%',
@@ -232,7 +240,7 @@ const styles = StyleSheet.create({
     marginTop: 100,
   },
   otpText: {
-    letterSpacing: Platform.OS === 'ios' ? 49 : 48,
+    letterSpacing: Platform.OS === 'ios' ? 49 : 43,
     textAlign: 'left',
     height: Platform.OS === 'ios' ? 30 : 60,
     width: Platform.OS === 'ios' ? '100%' : '110%',

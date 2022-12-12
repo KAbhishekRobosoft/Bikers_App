@@ -109,7 +109,7 @@ const LoginScreen = ({navigation}) => {
                 }}>
                 {({values, handleSubmit, isValid}) => (
                   <>
-                    <View style={[styles.inputTextView1,{paddingLeft:textView}]}>
+                    <View style={styles.inputTextView1}>
                       <Field
                         component={Input}
                         name="number"
@@ -121,7 +121,7 @@ const LoginScreen = ({navigation}) => {
                         keyboardType="number-pad"
                       />
                     </View>
-                    <View style={[styles.inputTextView2,{paddingLeft:textView}]}>
+                    <View style={styles.inputTextView2}>
                       <Field
                         component={Password}
                         name="password"

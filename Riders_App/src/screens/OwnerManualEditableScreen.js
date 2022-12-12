@@ -198,10 +198,12 @@ const OwnerManualEdit = ({navigation}) => {
               <Text style={styles.headerText}>Owners Manual</Text>
             </View>
             <Pressable onPress={createPDF}>
+            <View style={{ height: 60, width: 60, alignItems: 'center', justifyContent: 'center'}}>
               <Image
                 source={require('../assets/images/share.png')}
                 style={styles.editImage}
               />
+              </View>
             </Pressable>
           </View>
           <ScrollView style={{height: '88%'}}>
@@ -339,6 +341,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     elevation: 5,
     justifyContent: 'space-between',
+    paddingHorizontal: 10,
   },
   subHeader: {
     flexDirection: 'row',

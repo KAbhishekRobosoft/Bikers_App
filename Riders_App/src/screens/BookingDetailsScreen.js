@@ -46,154 +46,153 @@ const BookingDetails = ({navigation}) => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={keyboardVerticalOffset}
         style={{flex: 1}}> */}
-        <View style={[styles.header]}>
-          <View style={styles.subHeader}>
-            <Pressable
-              onPress={() => {
-                navigation.goBack();
-              }}>
-              <View style={styles.iconHeader}>
-              <Icon
-                name="md-arrow-back"
-                color={'white'}
-                size={25}
-              />
-              </View>
-            </Pressable>
-            <Text style={styles.headerText}>Booking Details</Text>
-          </View>
-          <Pressable onPress={handleEditable}>
-            <Image
-              source={require('../assets/images/ic_mode_edit_black.png')}
-              style={styles.editImage}
-            />
-          </Pressable>
-        </View>
-        <ScrollView
-          style={{marginTop: '5%'}}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}>
-          <Formik
-            initialValues={{
-              mobile: route.params.mobileNumber,
-              vehicle: route.params.vehicleNumber,
-              serviceType: route.params.serviceType,
-              slotDate: route.params.slotDate.substring(0, 15),
-              time: route.params.time.substring(16, 21),
-              dealer: route.params.dealerName,
-              city: route.params.dealerCity,
-              comment: '',
-            }}
-            onSubmit={async values => {
-              try {
-                dispatch(setLoad());
-                const value = {
-                  vehicleNumber: values.vehicle,
-                  serviceType: values.serviceType,
-                  slotDate: route.params.slotDate,
-                  time: route.params.time,
-                  dealer: values.dealer,
-                  city: values.city,
-                  comments: comment,
-                  dealerPhoneNumber: route.params.dealerPhoneNumber,
-                };
-                const key = await getVerifiedKeys(authData.userToken);
-                dispatch(setToken(key));
-                const response = await BookService(key, value);
-                dispatch(deSetLoad());
-                navigation.navigate('BookingSuccess');
-              } catch (er) {
-                dispatch(deSetLoad());
-                Toast.show('Network Error');
-              }
+      <View style={[styles.header]}>
+        <View style={styles.subHeader}>
+          <Pressable
+            onPress={() => {
+              navigation.goBack();
             }}>
-            {({handleSubmit, values, isValid, handleChange}) => (
-              <>
-                <Field
-                  component={BookingDetailsInput}
-                  name="mobile"
-                  title="Mobile Number"
+            <View style={styles.iconHeader}>
+              <Icon name="md-arrow-back" color={'white'} size={25} />
+            </View>
+          </Pressable>
+          <Text style={styles.headerText}>Booking Details</Text>
+        </View>
+        <Pressable onPress={handleEditable}>
+          <Image
+            source={require('../assets/images/ic_mode_edit_black.png')}
+            style={styles.editImage}
+          />
+        </Pressable>
+      </View>
+      <ScrollView
+        style={{marginTop: '5%'}}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}>
+        <Formik
+          initialValues={{
+            mobile: route.params.mobileNumber,
+            vehicle: route.params.vehicleNumber,
+            serviceType: route.params.serviceType,
+            slotDate: route.params.slotDate.substring(0, 15),
+            time: route.params.time.substring(16, 21),
+            dealer: route.params.dealerName,
+            city: route.params.dealerCity,
+            comment: '',
+          }}
+          onSubmit={async values => {
+            try {
+              dispatch(setLoad());
+              const value = {
+                vehicleNumber: values.vehicle,
+                serviceType: values.serviceType,
+                slotDate: route.params.slotDate,
+                time: route.params.time,
+                dealer: values.dealer,
+                city: values.city,
+                comments: comment,
+                dealerPhoneNumber: route.params.dealerPhoneNumber,
+              };
+              const key = await getVerifiedKeys(authData.userToken);
+              dispatch(setToken(key));
+              const response = await BookService(key, value);
+              dispatch(deSetLoad());
+              navigation.navigate('BookingSuccess');
+            } catch (er) {
+              dispatch(deSetLoad());
+              Toast.show('Network Error');
+            }
+          }}>
+          {({handleSubmit, values, isValid, handleChange}) => (
+            <>
+              <Field
+                component={BookingDetailsInput}
+                name="mobile"
+                title="Mobile Number"
+                editable={editable}
+                onChangeText={handleChange('mobile')}
+                value={values.mobile}
+              />
+              <Field
+                component={BookingDetailsInput}
+                name="vehicle"
+                title="Vehicle Number"
+                editable={editable}
+                onChangeText={handleChange('vehicle')}
+                value={values.vehicle}
+              />
+              <Field
+                component={BookingDetailsInput}
+                name="serviceType"
+                title="Service Type"
+                editable={editable}
+                onChangeText={handleChange('serviceType')}
+                value={values.serviceType}
+              />
+              <Field
+                component={BookingDetailsInput}
+                name="slotDate"
+                title="Slot Date"
+                editable={editable}
+                onChangeText={handleChange('slotDate')}
+                value={values.slotDate}
+              />
+              <Field
+                component={BookingDetailsInput}
+                name="time"
+                title="Time"
+                editable={editable}
+                onChangeText={handleChange('time')}
+                value={values.time}
+              />
+              <Field
+                component={BookingDetailsInput}
+                name="dealer"
+                title="Dealer"
+                editable={editable}
+                onChangeText={handleChange('dealer')}
+                value={values.dealer}
+              />
+              <Field
+                component={BookingDetailsInput}
+                name="city"
+                title="City"
+                editable={editable}
+                onChangeText={handleChange('city')}
+                value={values.city}
+              />
+              <View style={styles.textInputCommentView}>
+                <Text style={styles.titleTextComment}>Comment</Text>
+                <TextInput
+                  style={styles.textInputText}
                   editable={editable}
-                  onChangeText={handleChange('mobile')}
-                  value={values.mobile}
+                  name="comment"
+                  defaultValue={route.params.comment}
+                  onChangeText={value => setComment(value)}
                 />
-                <Field
-                  component={BookingDetailsInput}
-                  name="vehicle"
-                  title="Vehicle Number"
-                  editable={editable}
-                  onChangeText={handleChange('vehicle')}
-                  value={values.vehicle}
-                />
-                <Field
-                  component={BookingDetailsInput}
-                  name="serviceType"
-                  title="Service Type"
-                  editable={editable}
-                  onChangeText={handleChange('serviceType')}
-                  value={values.serviceType}
-                />
-                <Field
-                  component={BookingDetailsInput}
-                  name="slotDate"
-                  title="Slot Date"
-                  editable={editable}
-                  onChangeText={handleChange('slotDate')}
-                  value={values.slotDate}
-                />
-                <Field
-                  component={BookingDetailsInput}
-                  name="time"
-                  title="Time"
-                  editable={editable}
-                  onChangeText={handleChange('time')}
-                  value={values.time}
-                />
-                <Field
-                  component={BookingDetailsInput}
-                  name="dealer"
-                  title="Dealer"
-                  editable={editable}
-                  onChangeText={handleChange('dealer')}
-                  value={values.dealer}
-                />
-                <Field
-                  component={BookingDetailsInput}
-                  name="city"
-                  title="City"
-                  editable={editable}
-                  onChangeText={handleChange('city')}
-                  value={values.city}
-                />
-                <View style={styles.textInputCommentView}>
-                  <Text style={styles.titleTextComment}>Comment</Text>
-                  <TextInput
-                    style={styles.textInputText}
-                    editable={editable}
-                    name="comment"
-                    defaultValue={route.params.comment}
-                    onChangeText={value => setComment(value)}
-                  />
-                </View>
-                <View style={styles.buttonView}>
+              </View>
+              <View style={styles.buttonView}>
+                {!loading && (
                   <ButtonLarge title="BOOK" onPress={handleSubmit} />
-
-                  {/* <Pressable>
-                    <View style={styles.container}>
+                )}
+                {loading && (
+                  <Pressable>
+                    <View style={styles.container1}>
                       <LinearGradient
                         start={{x: 0, y: 0}}
                         end={{x: 1, y: 0}}
                         colors={['#ED7E2B', '#F4A264']}
-                        style={styles.gradient}>
-                        <ActivityIndicator size="large" color="white" />
+                        style={styles.gradient1}>
+                        <ActivityIndicator color="white" />
                       </LinearGradient>
                     </View>
-                  </Pressable> */}
-                </View>
-              </>
-            )}
-          </Formik>
-        </ScrollView>
+                  </Pressable>
+                )}
+              </View>
+            </>
+          )}
+        </Formik>
+      </ScrollView>
       {/* </KeyboardAvoidingView> */}
     </SafeAreaView>
   );
@@ -300,5 +299,21 @@ const styles = StyleSheet.create({
     marginTop: 25,
     alignItems: 'center',
   },
-
+  container1: {
+    shadowColor: 'rgba(126,118,118,0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 4,
+    shadowOpacity: 0.9,
+    borderRadius: 20,
+  },
+  gradient1: {
+    height: 42,
+    width: 279,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });

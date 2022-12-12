@@ -8,6 +8,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -19,6 +20,9 @@ import {addBikeType, addBikeData} from '../redux/AccessoriesSlice';
 import {Formik, Field} from 'formik';
 import Toast from 'react-native-simple-toast';
 import {getVerifiedKeys} from '../utils/Functions';
+import {setLoad} from '../redux/ContactSlice';
+import {deSetLoad} from '../redux/ContactSlice';
+import LinearGradient from 'react-native-linear-gradient';
 import {useState} from 'react';
 import {useEffect} from 'react';
 import {DropDownInputField} from '../components/InputFields';
@@ -37,6 +41,7 @@ const AddBikeDetails = ({navigation}) => {
   }, []);
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  const loading = useSelector(state => state.contact.isLoading);
 
   const initialValues = {
     vehicleNumber: '',
@@ -62,6 +67,7 @@ const AddBikeDetails = ({navigation}) => {
         values.model &&
         values.dealerCode !== ''
       ) {
+        dispatch(setLoad());
         const obj = {
           vehicleType: selected,
           vehicleNumber: values.vehicleNumber,
@@ -83,16 +89,18 @@ const AddBikeDetails = ({navigation}) => {
         dispatch(addBikeType(BikeTypes));
         dispatch(addBikeData(response)); // <-----------Redux
         resetForm({initialValues});
-
         if (authData.registered) {
+          dispatch(deSetLoad());
           navigation.navigate('subStack');
         } else {
+          dispatch(deSetLoad());
           navigation.goBack();
         }
       } else {
         Toast.show('Enter all the Details');
       }
     } catch (error) {
+      dispatch(deSetLoad());
       Toast.show('Error occured');
     }
   };
@@ -256,7 +264,22 @@ const AddBikeDetails = ({navigation}) => {
                   </View>
                 </View>
                 <View style={styles.btn}>
-                  <ButtonLarge title="Submit" onPress={handleSubmit} />
+                  {!loading && (
+                    <ButtonLarge title="Submit" onPress={handleSubmit} />
+                  )}
+                  {loading && (
+                    <Pressable>
+                      <View style={styles.container1}>
+                        <LinearGradient
+                          start={{x: 0, y: 0}}
+                          end={{x: 1, y: 0}}
+                          colors={['#ED7E2B', '#F4A264']}
+                          style={styles.gradient1}>
+                          <ActivityIndicator color="white" />
+                        </LinearGradient>
+                      </View>
+                    </Pressable>
+                  )}
                 </View>
               </>
             )}
@@ -337,16 +360,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 3,
-    paddingTop: 30,
+    paddingTop: 25,
+    
   },
   inputViewLast: {
-    width: '86%',
+    width: '89%',
     height: 70,
     borderBottomColor: '#B4B3B3',
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 20,
+    paddingTop: 15,
+    
   },
   text: {
     alignSelf: 'center',
@@ -362,7 +387,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#4F504F',
     textAlign: 'center',
-    width: '80%',
+    width: '100%',
+    height: 60,
   },
   inputTextView: {
     alignItems: 'center',
@@ -377,5 +403,22 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     marginTop: 25,
     marginLeft: '5.6%',
+  },
+  container1: {
+    shadowColor: 'rgba(126,118,118,0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 4,
+    shadowOpacity: 0.9,
+    borderRadius: 20,
+  },
+  gradient1: {
+    height: 42,
+    width: 279,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

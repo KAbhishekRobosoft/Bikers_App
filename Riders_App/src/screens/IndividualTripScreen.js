@@ -9,6 +9,8 @@ import {
   FlatList,
   RefreshControl,
   ActivityIndicator,
+  Text,
+  ScrollView,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import AllTripList from '../components/AllTripList';
@@ -24,6 +26,9 @@ import {deSetLoading, setLoading} from '../redux/MileStoneSlice';
 
 const AllTrips = ({navigation}) => {
   const [tripDetails, setTripDetails] = useState([]);
+  const [tripDetails2, setTripDetails2] = useState([]);
+  const [search, setSearch] = useState(false);
+  const [searchTrips, setSearchTrips] = useState([]);
   const authData = useSelector(state => state.auth);
   const state = useSelector(state => state.milestone.initialState);
   const [refreshing, setRefreshing] = useState(false);
@@ -38,6 +43,7 @@ const AllTrips = ({navigation}) => {
         dispatch(setToken(key));
         const tripdata = await UserTrips(key);
         setTripDetails(tripdata);
+        setTripDetails2(tripdata);
         dispatch(setLoading());
         let bikeResponse = await getBikeDetails(key);
         let BikeTypes = bikeResponse.map(e => {
@@ -47,7 +53,6 @@ const AllTrips = ({navigation}) => {
         dispatch(addBikeData(bikeResponse));
         const response = await getOwnerDetails(key);
         dispatch(setUserData(response[0]));
-        
       } catch (er) {
         Toast.show('Error Occurred');
       }
@@ -80,6 +85,8 @@ const AllTrips = ({navigation}) => {
     const key = await getVerifiedKeys(authData.userToken);
     const response = await SearchUserTrips(key, value);
     setTripDetails(response);
+    setSearchTrips(response);
+    setSearch(true);
   };
 
   if (loading) {
@@ -109,16 +116,37 @@ const AllTrips = ({navigation}) => {
           style={styles.inputText}
         />
       </View>
-      <FlatList
-      showsVerticalScrollIndicator={false}
-        data={tripDetails}
-        keyExtractor={details => details._id}
-        renderItem={renderItem}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      />
-
+      {tripDetails2.length === 0 && (
+        <ScrollView>
+          <View style={styles.NoTripView}>
+            <Image
+              style={styles.img}
+              source={require('../assets/images/Illustration_5.png')}
+            />
+            <Text style={styles.NoTripText}>
+              You have not created any trips at the moment.
+            </Text>
+          </View>
+        </ScrollView>
+      )}
+      {tripDetails.length > 0 && (
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={tripDetails}
+          keyExtractor={details => details._id}
+          renderItem={renderItem}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        />
+      )}
+      {search
+        ? searchTrips.length === 0 && (
+            <>
+              <Text style={styles.NoResultText}>No results found!</Text>
+            </>
+          )
+        : null}
       <Pressable
         style={styles.addButton}
         onPress={() => {
@@ -146,21 +174,32 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.9,
     elevation: 5,
-    opacity: 0.9,
     backgroundColor: 'white',
   },
 
   inputText: {
     marginLeft: 10,
     width: '70%',
+    height: 40
   },
-
+  NoTripText: {
+    color: '#4F504F',
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
+    alignSelf: 'center',
+    marginVertical: 10,
+  },
   searchIcon: {
     tintColor: 'grey',
     alignSelf: 'center',
     marginLeft: 12,
   },
-
+  img: {
+    width: '100%',
+    height: 280,
+    resizeMode: 'contain',
+    alignSelf: 'center',
+  },
   addButton: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -176,6 +215,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     alignSelf: 'center',
     marginTop: 50,
+  },
+  NoTripView: {
+    marginTop: 90,
+    borderWidth: 1,
+  },
+  NoResultText: {
+    color: '#4F504F',
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
+    alignSelf: 'center',
+    marginTop: '50%',
   },
 });
 

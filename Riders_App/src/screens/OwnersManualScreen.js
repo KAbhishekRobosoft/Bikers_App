@@ -76,18 +76,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.9,
     elevation: 5,
-    opacity: 0.9,
-  },
-  shadow: {
-    backgroundColor: '#F2944E',
-    shadowColor: 'grey',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowRadius: 3,
-    shadowOpacity: 0.9,
-    elevation: 5,
   },
   headerText: {
     color: '#FFFFFF',

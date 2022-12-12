@@ -135,14 +135,14 @@ export const BookService = ({navigation}) => {
               comment: '',
             }}
             onSubmit={values => {
-              if ((selectedVehicle, values.vehicleNumber, selected != null)) {
-                const obj = {
-                  mobileNumber: values.mobileNumber,
-                  vehicleType: selectedVehicle,
-                  vehicleNumber: values.vehicleNumber,
-                  serviceType: selected,
-                  comment: comment,
-                };
+              const obj = {
+                mobileNumber: values.mobileNumber,
+                vehicleType: selectedVehicle,
+                vehicleNumber: values.vehicleNumber,
+                serviceType: selected,
+                comment: comment,
+              };
+              if ((selectedVehicle, selected != null && obj.vehicleNumber != "")) {
                 navigation.navigate('SearchService', obj);
               } else {
                 Toast.show('Enter all Details');

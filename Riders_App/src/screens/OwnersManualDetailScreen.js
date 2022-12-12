@@ -21,7 +21,9 @@ const OwnersManualDetailScreen = ({navigation}) => {
             onPress={() => {
               navigation.navigate('OwnerManualEdit');
             }}>
-            <Icon name="pencil" color={'white'} size={24} />
+            <View style={{ height: 60, width: 60, alignItems: 'center', justifyContent: 'center'}}>
+              <Icon name="pencil" color={'white'} size={24} />
+            </View>
           </Pressable>
         </View>
       </View>
@@ -53,8 +55,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.9,
     elevation: 5,
-    opacity: 0.9,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
   },
   shadow: {
     backgroundColor: '#F2944E',
@@ -70,7 +71,6 @@ const styles = StyleSheet.create({
   headerText: {
     color: '#FFFFFF',
     fontSize: 20,
-    fontWeight: '500',
     marginRight: '30%',
     fontFamily: 'Roboto-Medium',
   },

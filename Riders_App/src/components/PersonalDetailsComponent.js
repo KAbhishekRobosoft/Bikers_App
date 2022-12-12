@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#4F504F',
     textAlign: 'center',
-    width: '99%',
+    width: '100%',
   },
   inputTextView: {
     alignItems: 'center',
