@@ -362,6 +362,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 3,
     paddingTop: 25,
     
+    
   },
   inputViewLast: {
     width: '89%',
@@ -388,7 +389,8 @@ const styles = StyleSheet.create({
     color: '#4F504F',
     textAlign: 'center',
     width: '100%',
-    height: 60,
+    height: 55,
+   
   },
   inputTextView: {
     alignItems: 'center',
