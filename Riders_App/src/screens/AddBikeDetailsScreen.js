@@ -88,6 +88,7 @@ const AddBikeDetails = ({navigation}) => {
     <SafeAreaView style={{backgroundColor: '#ffffff', flex: 1}}>
       <KeyboardAvoidingView
         style={{flex: 1}}
+        keyboardVerticalOffset={Platform.OS=='ios'?30:40}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={[styles.header]}>
           <View style={styles.subHeader}>
@@ -123,7 +124,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         style={styles.inputText}
                         name="vehicleType"
-                        placeholder="Vehicle Type"
+                        placeholder="Eg:- Royal Enfield"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('vehicleType')}
                         value={values.vehicleType}
@@ -137,7 +138,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         style={styles.inputText}
                         name="vehicleNumber"
-                        placeholder="Vehicle No"
+                        placeholder="Eg:- KA20AB1234"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('vehicleNumber')}
                         value={values.vehicleNumber}
@@ -151,7 +152,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         name="engineNumber"
                         style={styles.inputText}
-                        placeholder="Engine"
+                        placeholder="Eg:- 5RE56F6A"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('engineNumber')}
                         value={values.engineNumber}
@@ -165,7 +166,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         name="frameNumber"
                         style={styles.inputText}
-                        placeholder="Frame No"
+                        placeholder="Eg:- E45G45CV"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('frameNumber')}
                         value={values.frameNumber}
@@ -180,7 +181,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         name="batteryMake"
                         style={styles.inputText}
-                        placeholder="Battery make"
+                        placeholder="Eg:- Exide-120V"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('batteryMake')}
                         value={values.batteryMake}
@@ -195,7 +196,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         name="registerNumber"
                         style={styles.inputText}
-                        placeholder="Reg No."
+                        placeholder="Eg:- DL6RS4532"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('registerNumber')}
                         value={values.registerNumber}
@@ -211,7 +212,7 @@ const AddBikeDetails = ({navigation}) => {
                         name="model"
                         keyboardType="numeric"
                         style={styles.inputText}
-                        placeholder="Model"
+                        placeholder="Eg:- 2017"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('model')}
                         value={values.model}
@@ -225,7 +226,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         name="color"
                         style={styles.inputText}
-                        placeholder="Color"
+                        placeholder="Eg:- Black"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('color')}
                         value={values.color}
@@ -241,7 +242,7 @@ const AddBikeDetails = ({navigation}) => {
                       <TextInput
                         name="dealerCode"
                         style={styles.inputText}
-                        placeholder="Dealer code"
+                        placeholder="Eg:-RDF3421"
                         placeholderTextColor="#4F504F"
                         onChangeText={handleChange('dealerCode')}
                         value={values.dealerCode}
