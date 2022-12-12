@@ -42,10 +42,7 @@ const BookingDetails = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={keyboardVerticalOffset}
-        style={{flex: 1}}>
+
         <View style={[styles.header]}>
           <View style={styles.subHeader}>
             <Pressable
@@ -181,12 +178,12 @@ const BookingDetails = ({navigation}) => {
                   )}
                   {loading && (
                     <Pressable>
-                      <View style={styles.container}>
+                      <View style={styles.container1}>
                         <LinearGradient
                           start={{x: 0, y: 0}}
                           end={{x: 1, y: 0}}
                           colors={['#ED7E2B', '#F4A264']}
-                          style={styles.gradient}>
+                          style={styles.gradient1}>
                           <ActivityIndicator size="large" color="white" />
                         </LinearGradient>
                       </View>
@@ -197,7 +194,6 @@ const BookingDetails = ({navigation}) => {
             )}
           </Formik>
         </ScrollView>
-      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -282,7 +278,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
 
-  container: {
+  container1: {
     shadowColor: 'rgba(126,118,118,0.5)',
     shadowOffset: {
       width: 0,
@@ -292,7 +288,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     borderRadius: 20,
   },
-  gradient: {
+  gradient1: {
     height: 42,
     width: 279,
     borderRadius: 20,
@@ -312,4 +308,5 @@ const styles = StyleSheet.create({
     marginTop: 25,
     alignItems: 'center',
   },
+
 });
