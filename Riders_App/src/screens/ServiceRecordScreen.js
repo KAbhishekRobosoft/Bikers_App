@@ -71,7 +71,7 @@ const ServiceRecord = ({navigation}) => {
           />
         </View>
         {!bikeSelected == '' && !serviceSelected == '' ? (
-          <View>
+          <View style={{marginTop: -10}}>
             {serviceData.length > 0 ? (
               serviceData
                 .filter(ele => ele.serviceType === serviceSelected)

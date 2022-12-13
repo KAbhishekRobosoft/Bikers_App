@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 65,
     position: 'absolute',
-    bottom: 50,
+    bottom: 15,
     right: 20,
     height: 65,
     paddingBottom: 15,

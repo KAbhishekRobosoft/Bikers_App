@@ -84,12 +84,9 @@ export const AddPersonalDetails = ({navigation}) => {
                 onPress={() => {
                   navigation.goBack();
                 }}>
-                <Icon
-                  name="md-arrow-back"
-                  color="white"
-                  size={25}
-                  style={styles.icon}
-                />
+                <View style={styles.iconHeader}>
+                  <Icon name="md-arrow-back" color="white" size={25} />
+                </View>
               </Pressable>
               <Text style={styles.headerText}>Add Personal Details</Text>
             </View>
@@ -247,6 +244,12 @@ const styles = StyleSheet.create({
     width: 24,
     height: 27,
   },
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   personalDetailView: {
     alignSelf: 'center',
     backgroundColor: '#FFFFFF',
@@ -261,7 +264,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     elevation: 14,
     borderRadius: 8,
-    
   },
   personaldetailText: {
     fontFamily: 'Roboto-Regular',

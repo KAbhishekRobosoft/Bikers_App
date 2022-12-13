@@ -8,6 +8,7 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
@@ -221,7 +222,6 @@ export const GetParticularTripSummary = ({navigation, route}) => {
       {route.params.data.tripStatus === 'completed' && (
         <>
           <ScrollView
-       
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
@@ -520,9 +520,8 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   buttonView: {
-    paddingTop: 40,
     alignItems: 'center',
-    top:50
+    top:Platform.OS === 'ios' ? '15%' : '22%'
   },
   calenderImg: {
     width: 22,

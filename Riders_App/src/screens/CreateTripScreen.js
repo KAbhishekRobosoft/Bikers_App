@@ -343,77 +343,59 @@ const CreateTrip = ({navigation}) => {
               <Text style={styles.text}>Add a milestone</Text>
             </View>
             <View style={styles.btn}>
-              {!loading1 && (
-                <ButtonLarge
-                  onPress={async () => {
-                    if ((from, whereto, tripName !== '')) {
-                      try {
-                        dispatch(setLoad());
-                        const resp = await getCoordinates(from);
-                        const resp1 = await getCoordinates(whereto);
-                        const dist = await calculateRoute(
-                          resp.lat,
-                          resp.lon,
-                          resp1.lat,
-                          resp1.lon,
-                        );
-                        const msInHour = 1000 * 60 * 60;
-                        const obj = {
-                          tripName: tripName,
-                          source: [
-                            {
-                              place: from,
-                              latitude: resp.lat,
-                              longitude: resp.lon,
-                            },
-                          ],
-                          destination: [
-                            {
-                              place: whereto,
-                              latitude: resp1.lat,
-                              longitude: resp1.lon,
-                            },
-                          ],
-                          startDate: date.toString(),
-                          endDate: endDate.toString(),
-                          startTime: time.toString(),
-                          distance: dist.summary.lengthInMeters / 1000,
-                          riders: contactsData.addTripContacts,
-                          milestones: milesonesData,
-                          duration: Math.round(
-                            Math.abs(
-                              new Date(dist.summary.arrivalTime) -
-                                new Date(dist.summary.departureTime),
-                            ) / msInHour,
-                          ),
-                        };
-                        dispatch(tripStore(obj));
-                        dispatch(deSetLoad());
-                        navigation.navigate('TripSummary');
-                      } catch (er) {
-                        dispatch(deSetLoad());
-                        Toast.show('Please Enter requested details');
-                      }
-                    } else {
-                      Toast.show('Please fill all the fields');
+              <ButtonLarge
+                onPress={async () => {
+                  if ((from, whereto, tripName !== '')) {
+                    try {
+                      const resp = await getCoordinates(from);
+                      const resp1 = await getCoordinates(whereto);
+                      const dist = await calculateRoute(
+                        resp.lat,
+                        resp.lon,
+                        resp1.lat,
+                        resp1.lon,
+                      );
+                      const msInHour = 1000 * 60 * 60;
+                      const obj = {
+                        tripName: tripName,
+                        source: [
+                          {
+                            place: from,
+                            latitude: resp.lat,
+                            longitude: resp.lon,
+                          },
+                        ],
+                        destination: [
+                          {
+                            place: whereto,
+                            latitude: resp1.lat,
+                            longitude: resp1.lon,
+                          },
+                        ],
+                        startDate: date.toString(),
+                        endDate: endDate.toString(),
+                        startTime: time.toString(),
+                        distance: dist.summary.lengthInMeters / 1000,
+                        riders: contactsData.addTripContacts,
+                        milestones: milesonesData,
+                        duration: Math.round(
+                          Math.abs(
+                            new Date(dist.summary.arrivalTime) -
+                              new Date(dist.summary.departureTime),
+                          ) / msInHour,
+                        ),
+                      };
+                      dispatch(tripStore(obj));
+                      navigation.navigate('TripSummary');
+                    } catch (er) {
+                      Toast.show('Please Enter requested details');
                     }
-                  }}
-                  title="Done"
-                />
-              )}
-              {loading1 && (
-                <Pressable>
-                  <View style={styles.container}>
-                    <LinearGradient
-                      start={{x: 0, y: 0}}
-                      end={{x: 1, y: 0}}
-                      colors={['#ED7E2B', '#F4A264']}
-                      style={styles.gradient}>
-                      <ActivityIndicator size="large" color="white" />
-                    </LinearGradient>
-                  </View>
-                </Pressable>
-              )}
+                  } else {
+                    Toast.show('Please fill all the fields');
+                  }
+                }}
+                title="Done"
+              />
             </View>
           </View>
         </ScrollView>
