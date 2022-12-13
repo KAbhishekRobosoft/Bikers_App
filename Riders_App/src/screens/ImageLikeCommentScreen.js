@@ -146,7 +146,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                 fontFamily: 'Roboto-Medium',
                 fontSize: 20,
                 lineHeight: 28,
-                marginLeft:30
+                marginLeft: 30,
               }}>
               Gallery
             </Text>
@@ -190,11 +190,29 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
 
                       {imgData.liked ? (
                         <Pressable onPress={() => likeAdd()}>
-                          <Icons name="heart" color="red" size={18} />
+                          <View
+                            style={{
+                              height: 30,
+                              width: 40,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              marginTop: -8,
+                            }}>
+                            <Icons name="heart" color="red" size={18} />
+                          </View>
                         </Pressable>
                       ) : (
                         <Pressable onPress={() => likeAdd()}>
-                          <Icons name="heart-o" color="grey" size={18} />
+                          <View
+                            style={{
+                              height: 30,
+                              width: 40,
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              marginTop: -8,
+                            }}>
+                            <Icons name="heart-o" color="grey" size={18} />
+                          </View>
                         </Pressable>
                       )}
                     </View>
@@ -207,10 +225,10 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                       <View
                         style={{
                           flexDirection: 'row',
-                          width: 130,
-
+                          width: 100,
                           justifyContent: 'space-around',
                           alignItems: 'center',
+                          marginLeft: 25,
                         }}>
                         <Text style={styles.text}>
                           {' '}
@@ -224,7 +242,16 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                         setLikeView(false);
                         Setcomments(false);
                       }}>
-                      <Icons name="comment" color="grey" size={18} />
+                      <View
+                        style={{
+                          height: 30,
+                          width: 40,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          marginTop: -8,
+                        }}>
+                        <Icons name="comment" color="grey" size={18} />
+                      </View>
                     </Pressable>
                   </View>
                   {comments ? (

@@ -117,60 +117,68 @@ export const Accessories = ({navigation}) => {
           showsVerticalScrollIndicator={false}
           style={{marginTop: 20}}>
           <View style={{flexWrap: 'wrap', flexDirection: 'row'}}>
-            {accessories.length > 0
-              ? accessories.map(item => {
-                  return (
-                    <View style={styles.mainView} key={item._id}>
-                      <View style={styles.subView}>
-                        <Text style={styles.dateText}>18 NOV</Text>
-                        {item.likedBy.length > 0 ? (
-                          item.likedBy.filter(ele => ele.mobile === number)
-                            .length > 0 ? (
-                            <Pressable onPress={() => handleUnLike(item)}>
+            {accessories.length > 0 ? (
+              accessories.map(item => {
+                return (
+                  <View style={styles.mainView} key={item._id}>
+                    <View style={styles.subView}>
+                      <Text style={styles.dateText}>18 NOV</Text>
+                      {item.likedBy.length > 0 ? (
+                        item.likedBy.filter(ele => ele.mobile === number)
+                          .length > 0 ? (
+                          <Pressable onPress={() => handleUnLike(item)}>
+                            <View style={styles.likeIcon}>
                               <FontAwesome
                                 name="thumbs-up"
                                 color={'rgba(150,75,0,0.5)'}
                                 size={18}
                                 solid={true}
                               />
-                            </Pressable>
-                          ) : (
-                            <Pressable onPress={() => handleLike(item)}>
+                            </View>
+                          </Pressable>
+                        ) : (
+                          <Pressable onPress={() => handleLike(item)}>
+                            <View style={styles.likeIcon}>
                               <FontAwesome
                                 name="thumbs-up"
                                 color={'rgba(150,75,0,0.5)'}
                                 size={18}
                                 solid={false}
                               />
-                            </Pressable>
-                          )
-                        ) : (
-                          <Pressable onPress={() => handleLike(item)}>
+                            </View>
+                          </Pressable>
+                        )
+                      ) : (
+                        <Pressable onPress={() => handleLike(item)}>
+                          <View style={styles.likeIcon}>
                             <FontAwesome
                               name="thumbs-up"
                               color={'rgba(150,75,0,0.5)'}
                               size={18}
                               solid={false}
                             />
-                          </Pressable>
-                        )}
-                      </View>
-                      <Image
-                        source={{uri: 'https' + item.productImage.substring(4)}}
-                        style={styles.image}
-                      />
-                      <View style={styles.costTitleText}>
-                        <Text style={styles.titleText}>{item.productName}</Text>
-                        <Text style={styles.costText}>
-                          Rs {item.productPrice} /-
-                        </Text>
-                      </View>
+                          </View>
+                        </Pressable>
+                      )}
                     </View>
-                  );
-                })
-              : <>
-              <Text style={styles.NoResultText}>No results found!</Text>
-            </>}
+                    <Image
+                      source={{uri: 'https' + item.productImage.substring(4)}}
+                      style={styles.image}
+                    />
+                    <View style={styles.costTitleText}>
+                      <Text style={styles.titleText}>{item.productName}</Text>
+                      <Text style={styles.costText}>
+                        Rs {item.productPrice} /-
+                      </Text>
+                    </View>
+                  </View>
+                );
+              })
+            ) : (
+              <>
+                <Text style={styles.NoResultText}>No results found!</Text>
+              </>
+            )}
           </View>
         </ScrollView>
       )}
@@ -300,6 +308,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Roboto-Regular',
     marginTop: 50,
-    marginLeft: '38%'
+    marginLeft: '38%',
   },
+  likeIcon: {height: 30, width: 40, alignItems: 'center'},
 });

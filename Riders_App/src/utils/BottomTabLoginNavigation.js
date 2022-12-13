@@ -14,7 +14,7 @@ const BottomTabLoginNavigation = () => {
       initialRouteName="UpcomingList"
       activeColor="#ffffff"
       inactiveColor="blue"
-      barStyle={{backgroundColor: '#ED7E2B', height: 65}}>
+      barStyle={{backgroundColor: '#ED7E2B', height: 59}}>
       <Tab.Screen
         name="Trips"
         component={UpcomingList}
@@ -27,8 +27,8 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/Bike.png')}
                 style={{
                   tintColor: '#ffffff',
-                  width: 50,
-                  height: 27,
+                  width: 35,
+                  height: 22,
                   resizeMode: 'contain',
                 }}
               />
@@ -68,8 +68,8 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/list.png')}
                 style={{
                   tintColor: 'white',
-                  width: 50,
-                  height: 27,
+                  width: 35,
+                  height: 22,
                   resizeMode: 'contain',
                   opacity: 0.9,
                 }}
@@ -89,8 +89,8 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/user.png')}
                 style={{
                   tintColor: 'white',
-                  width: 50,
-                  height: 27,
+                  width: 35,
+                  height: 22,
                   resizeMode: 'contain',
                   opacity: 0.8,
                 }}
