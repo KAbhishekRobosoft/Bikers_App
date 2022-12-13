@@ -496,7 +496,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                                           <Image
                                             style={{
                                               height: 25,
-                                              width: 30,
+                                              width: 25,
                                               borderRadius: 30,
                                             }}
                                             source={{
