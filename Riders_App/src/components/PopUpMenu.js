@@ -16,7 +16,6 @@ import Icon1 from 'react-native-vector-icons/MaterialCommunityIcons';
 const PopUpMenu = ({color, options, size}) => {
   const [visible, setVisible] = useState(false);
   const scale = useRef(new Animated.Value(0)).current;
-  const [modal1, setmodal1] = React.useState(false);
   const {height, width} = useWindowDimensions();
   const left = width > height ? (Platform.OS === 'ios' ? '85%' : '80%') : '71%';
 
@@ -33,13 +32,16 @@ const PopUpMenu = ({color, options, size}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => resizeBox(1)}>
-        <Icon
-          name="ellipsis-vertical"
-          color={color}
-          size={size}
-          style={styles.icon}
-        />
+        <View style={styles.iconHeader}>
+          <Icon
+            name="ellipsis-vertical"
+            color={color}
+            size={size}
+            style={styles.icon}
+          />
+        </View>
       </TouchableOpacity>
+
       <Modal
         transparent
         visible={visible}
@@ -55,12 +57,13 @@ const PopUpMenu = ({color, options, size}) => {
             ]}>
             {options.map((option, index) => (
               <TouchableOpacity key={index} onPress={option.action}>
-                <Text style={styles.title}>{option.title}</Text>
+                <View style={styles.iconHeader}>
+                  <Text style={styles.title}>{option.title}</Text>
+                </View>
               </TouchableOpacity>
             ))}
           </Animated.View>
         </SafeAreaView>
-        
       </Modal>
     </View>
   );
@@ -106,6 +109,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'Roboto',
   },
+  iconHeader: {
+    height: 30,
+    width: 70,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 
   option: {
     flexDirection: 'row',
@@ -113,6 +122,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '80%',
   },
+  
 
   bottompopupContainer: {
     height: 90,

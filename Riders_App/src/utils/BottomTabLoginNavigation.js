@@ -27,8 +27,8 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/Bike.png')}
                 style={{
                   tintColor: '#ffffff',
-                  width: 35,
-                  height: 22,
+                  width: 50,
+                  height: 27,
                   resizeMode: 'contain',
                 }}
               />
@@ -68,8 +68,8 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/list.png')}
                 style={{
                   tintColor: 'white',
-                  width: 35,
-                  height: 22,
+                  width: 50,
+                  height: 27,
                   resizeMode: 'contain',
                   opacity: 0.9,
                 }}
@@ -89,8 +89,8 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/user.png')}
                 style={{
                   tintColor: 'white',
-                  width: 35,
-                  height: 22,
+                  width: 50,
+                  height: 27,
                   resizeMode: 'contain',
                   opacity: 0.8,
                 }}
