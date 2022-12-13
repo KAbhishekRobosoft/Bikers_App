@@ -146,7 +146,7 @@ const AddBikeDetails = ({navigation}) => {
                     <View style={styles.inputView}>
                       <Text style={styles.text}>Vehicle No</Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
                         <TextInput
                           style={styles.inputText}
                           name="vehicleNumber"
@@ -160,7 +160,7 @@ const AddBikeDetails = ({navigation}) => {
                     <View style={styles.inputView}>
                       <Text style={styles.text}>Engine</Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
                         <TextInput
                           name="engineNumber"
                           style={styles.inputText}
@@ -174,7 +174,7 @@ const AddBikeDetails = ({navigation}) => {
                     <View style={styles.inputView}>
                       <Text style={styles.text}>Frame No</Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
                         <TextInput
                           name="frameNumber"
                           style={styles.inputText}
@@ -188,7 +188,7 @@ const AddBikeDetails = ({navigation}) => {
                     <View style={styles.inputView}>
                       <Text style={styles.text}>Battery make</Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
 
                         <TextInput
                           name="batteryMake"
@@ -203,7 +203,7 @@ const AddBikeDetails = ({navigation}) => {
                     <View style={styles.inputView}>
                       <Text style={styles.text}>Reg No.</Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
 
                         <TextInput
                           name="registerNumber"
@@ -218,7 +218,7 @@ const AddBikeDetails = ({navigation}) => {
                     <View style={styles.inputView}>
                       <Text style={styles.text}>Model</Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
 
                         <TextInput
                           name="model"
@@ -234,7 +234,7 @@ const AddBikeDetails = ({navigation}) => {
                     <View style={styles.inputView}>
                       <Text style={styles.text}>Color</Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
                         <TextInput
                           name="color"
                           style={styles.inputText}
@@ -250,7 +250,7 @@ const AddBikeDetails = ({navigation}) => {
                         <Text style={styles.text}>Dealer code</Text>
                       </Text>
                       <View style={styles.inputTextView}>
-                        <Text>:</Text>
+                        <Text style={{color: 'black'}}>:</Text>
                         <TextInput
                           name="dealerCode"
                           style={styles.inputText}
@@ -360,16 +360,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 3,
-    paddingTop: 30,
+    paddingTop: 25,
+    
+    
   },
   inputViewLast: {
-    width: '86%',
+    width: '89%',
     height: 70,
     borderBottomColor: '#B4B3B3',
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 20,
+    paddingTop: 15,
+    
   },
   text: {
     alignSelf: 'center',
@@ -385,8 +388,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#4F504F',
     textAlign: 'center',
-    width: '80%',
-    height: 40,
+    width: '100%',
+    height: 55,
+   
   },
   inputTextView: {
     alignItems: 'center',
