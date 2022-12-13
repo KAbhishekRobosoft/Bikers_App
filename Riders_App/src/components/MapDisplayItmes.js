@@ -174,40 +174,42 @@ export const MapNavBar = ({
           />
         </View>
       </Pressable>
-      <PopUpMenu
-        color="orange"
-        size={25}
-        options={[
-          {
-            title: 'End Trip',
-            action: async () => {
-              if (auth.userCredentials.mobile === mobile) {
-                const cred = await getVerifiedKeys(auth.userToken);
-                dispatch(setToken(cred));
-                const resp = await endTrip(id, cred);
-                if (resp !== undefined) {
-                  navigation.navigate('BottomTabLoginNavigation');
-                  dispatch(setInitialState(state));
-                  Toast.show('Trip Ended');
+      <View style={{width: 20}}>
+        <PopUpMenu
+          color="orange"
+          size={25}
+          options={[
+            {
+              title: 'End Trip',
+              action: async () => {
+                if (auth.userCredentials.mobile === mobile) {
+                  const cred = await getVerifiedKeys(auth.userToken);
+                  dispatch(setToken(cred));
+                  const resp = await endTrip(id, cred);
+                  if (resp !== undefined) {
+                    navigation.navigate('BottomTabLoginNavigation');
+                    dispatch(setInitialState(state));
+                    Toast.show('Trip Ended');
+                  } else {
+                    Toast.show("Couldn't end the trip");
+                  }
                 } else {
-                  Toast.show("Couldn't end the trip");
+                  Toast.show('Only admin can end the trip');
                 }
-              } else {
-                Toast.show('Only admin can end the trip');
-              }
+              },
             },
-          },
-          {
-            title: 'Clear',
-            action: () => {
-              setAtm(false);
-              setSleep(false);
-              setFuel(false);
-              setFood(false);
+            {
+              title: 'Clear',
+              action: () => {
+                setAtm(false);
+                setSleep(false);
+                setFuel(false);
+                setFood(false);
+              },
             },
-          },
-        ]}
-      />
+          ]}
+        />
+      </View>
     </View>
   );
 };

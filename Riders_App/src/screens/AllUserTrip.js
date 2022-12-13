@@ -80,23 +80,25 @@ const AllUserTrip = ({navigation}) => {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-      <View style={styles.searchView}>
-        <Image
-          source={require('../assets/images/search.png')}
-          style={styles.searchIcon}
-        />
-        <TextInput
-          name="Search a Trip"
-          placeholder="Search a Trip"
-          placeholderTextColor="rgba(166,166,166,0.87)"
-          fontFamily="Roboto-Medium"
-          fontSize={12}
-          alignSelf={'center'}
-          marginLeft={6}
-          onChangeText={text => handleSearch(text)}
-          style={styles.inputText}
-        />
-      </View>
+      {tripDetails2.length !== 0 && (
+        <View style={styles.searchView}>
+          <Image
+            source={require('../assets/images/search.png')}
+            style={styles.searchIcon}
+          />
+          <TextInput
+            name="Search a Trip"
+            placeholder="Search a Trip"
+            placeholderTextColor="rgba(166,166,166,0.87)"
+            fontFamily="Roboto-Medium"
+            fontSize={12}
+            alignSelf={'center'}
+            marginLeft={6}
+            onChangeText={text => handleSearch(text)}
+            style={styles.inputText}
+          />
+        </View>
+      )}
       {tripDetails2.length === 0 && (
         <ScrollView>
           <View style={styles.NoTripView}>
@@ -161,7 +163,7 @@ const styles = StyleSheet.create({
   inputText: {
     marginLeft: 10,
     width: '100%',
-    height: 40
+    height: 40,
   },
 
   searchIcon: {

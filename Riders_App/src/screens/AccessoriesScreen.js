@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
   },
   mainView: {
     borderWidth: 1,
-    height: 200,
+    height: 215,
     width: '50%',
     borderColor: 'rgba(150,75,0,0.15)',
   },

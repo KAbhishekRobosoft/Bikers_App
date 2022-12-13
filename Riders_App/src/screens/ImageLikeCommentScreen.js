@@ -44,11 +44,11 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
   const keyboard =
     width > height
       ? Platform.OS === 'ios'
-        ? 10
+        ? 40
         : 0
       : Platform.OS === 'ios'
-      ? 50
-      : 50;
+      ? 80
+      : 70;
   const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
   const loading = useSelector(state => state.milestone.isLoading);
   const authData = useSelector(state => state.auth);
@@ -96,13 +96,18 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
   async function comment() {
     const cred = await getVerifiedKeys(authData.userToken);
     dispatch(setToken(cred));
-    const resp = await addComments(cred, imgData.photos._id, commentText);
-    if (resp !== undefined) {
-      textRef.current.clear();
-      Toast.show('Comment added successfully');
-      dispatch(setInitialState(state));
+    if (!/^\s*$/.test(commentText)) {
+      const resp = await addComments(cred, imgData.photos._id, commentText);
+      if (resp !== undefined) {
+        textRef.current.clear();
+        Toast.show('Comment added successfully');
+        dispatch(setInitialState(state));
+        setCommentText('');
+      } else {
+        Toast.show('Failed to add a comment');
+      }
     } else {
-      Toast.show('Failed to add a comment');
+      Toast.show('Enter a valid comment ');
     }
   }
 
@@ -154,7 +159,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
           <View>
             <KeyboardAvoidingView
               keyboardVerticalOffset={keyboard}
-              behavior={Platform.OS === 'ios' ? 'position' : 'height'}>
+              behavior={Platform.OS === 'ios' ? 'height' : 'height'}>
               <ScrollView
                 bounces={false}
                 showsVerticalScrollIndicator={false}
@@ -734,7 +739,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'space-between',
-    marginBottom: 140,
+    marginBottom: 180,
   },
   bottomshadow: {
     backgroundColor: '#FFFFFF',

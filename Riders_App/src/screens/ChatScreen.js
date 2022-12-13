@@ -49,7 +49,14 @@ const ChatScreen = ({navigation, route}) => {
       : Platform.OS === 'ios'
       ? '95%'
       : '90%';
-
+  const width1 =
+    width > height
+      ? Platform.OS === 'ios'
+        ? '60%'
+        : '60%'
+      : Platform.OS === 'ios'
+      ? '80%'
+      : '80%';
   useEffect(() => {
     setTimeout(async () => {
       const cred = await getVerifiedKeys(auth.userToken);
@@ -148,30 +155,32 @@ const ChatScreen = ({navigation, route}) => {
             </View>
           </Pressable>
           <Text style={styles.headerText}>{route.params.tripName}</Text>
-          <PopUpMenu
-            options={[
-              {
-                title: 'Group Info',
-                action: () => {
-                  handleToggle();
+          <View style={{width: 60}}>
+            <PopUpMenu
+              options={[
+                {
+                  title: 'Group Info',
+                  action: () => {
+                    handleToggle();
+                  },
                 },
-              },
-              {
-                title: 'Notifications',
-                action: () => {
-                  alert('bye');
+                {
+                  title: 'Notifications',
+                  action: () => {
+                    alert('bye');
+                  },
                 },
-              },
-              {
-                title: 'Clear Chat',
-                action: () => {
-                  handleClearChat();
+                {
+                  title: 'Clear Chat',
+                  action: () => {
+                    handleClearChat();
+                  },
                 },
-              },
-            ]}
-            color="white"
-            size={30}
-          />
+              ]}
+              color="white"
+              size={30}
+            />
+          </View>
         </View>
       </Pressable>
 
@@ -179,7 +188,7 @@ const ChatScreen = ({navigation, route}) => {
         source={require('../assets/images/chat.png')}
         style={styles.image}></ImageBackground>
 
-      <View style={{height: '80%'}}>
+      <View style={{height: width1}}>
         <FlatList
           data={chat}
           showsHorizontalScrollIndicator={false}
@@ -226,13 +235,18 @@ const ChatScreen = ({navigation, route}) => {
           </Pressable>
           <Pressable
             onPress={async () => {
-              const cred = await getVerifiedKeys(auth.userToken);
-              dispatch(setToken(cred));
-              const resp = await sendChat(cred, route.params.id, text);
-              if (resp.message === 'chat saved successfully!!') {
-                Toast.show('Refreshing');
-                textRef.current.clear();
-                dispatch(setInitialState(state));
+              if (!/^\s*$/.test(text)) {
+                const cred = await getVerifiedKeys(auth.userToken);
+                dispatch(setToken(cred));
+                const resp = await sendChat(cred, route.params.id, text);
+                if (resp.message === 'chat saved successfully!!') {
+                  Toast.show('Refreshing');
+                  textRef.current.clear();
+                  dispatch(setInitialState(state));
+                  setText('');
+                }
+              } else {
+                Toast.show('Type a valid chat');
               }
             }}>
             <Image
