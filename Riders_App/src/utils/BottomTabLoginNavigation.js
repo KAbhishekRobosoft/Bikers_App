@@ -1,8 +1,6 @@
 import {Image} from 'react-native';
 import React from 'react';
-import AddBikeDetails from '../screens/AddBikeDetailsScreen';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 import UpcomingList from '../screens/IndividualTripScreen';
 import LogoutStack from '../utils/LogoutStack';
 import Profile from '../screens/Profile';
@@ -29,8 +27,8 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/Bike.png')}
                 style={{
                   tintColor: '#ffffff',
-                  width: 50,
-                  height: 27,
+                  width: 35,
+                  height: 22,
                   resizeMode: 'contain',
                 }}
               />
@@ -70,8 +68,8 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/list.png')}
                 style={{
                   tintColor: 'white',
-                  width: 50,
-                  height: 27,
+                  width: 35,
+                  height: 22,
                   resizeMode: 'contain',
                   opacity: 0.9,
                 }}
@@ -91,8 +89,8 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/user.png')}
                 style={{
                   tintColor: 'white',
-                  width: 50,
-                  height: 27,
+                  width: 35,
+                  height: 22,
                   resizeMode: 'contain',
                   opacity: 0.8,
                 }}
