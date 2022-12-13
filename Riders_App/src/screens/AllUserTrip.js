@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
   inputText: {
     marginLeft: 10,
     width: '100%',
-    height: 40
+    height: 40,
   },
 
   searchIcon: {

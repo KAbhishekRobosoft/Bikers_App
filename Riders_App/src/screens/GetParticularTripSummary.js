@@ -528,7 +528,7 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     alignItems: 'center',
-    top: Platform.OS === 'ios' ? '15%' : 90,
+    top: Platform.OS === 'ios' ? '10%' : '10%',
   },
   calenderImg: {
     width: 22,

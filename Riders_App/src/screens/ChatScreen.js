@@ -150,30 +150,32 @@ const ChatScreen = ({navigation, route}) => {
             </View>
           </Pressable>
           <Text style={styles.headerText}>{route.params.tripName}</Text>
-          <PopUpMenu
-            options={[
-              {
-                title: 'Group Info',
-                action: () => {
-                  handleToggle();
+          <View style={{width: 60}}>
+            <PopUpMenu
+              options={[
+                {
+                  title: 'Group Info',
+                  action: () => {
+                    handleToggle();
+                  },
                 },
-              },
-              {
-                title: 'Notifications',
-                action: () => {
-                  alert('bye');
+                {
+                  title: 'Notifications',
+                  action: () => {
+                    alert('bye');
+                  },
                 },
-              },
-              {
-                title: 'Clear Chat',
-                action: () => {
-                  handleClearChat();
+                {
+                  title: 'Clear Chat',
+                  action: () => {
+                    handleClearChat();
+                  },
                 },
-              },
-            ]}
-            color="white"
-            size={30}
-          />
+              ]}
+              color="white"
+              size={30}
+            />
+          </View>
         </View>
       </Pressable>
 

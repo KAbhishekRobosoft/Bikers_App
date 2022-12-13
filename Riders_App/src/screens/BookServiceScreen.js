@@ -143,8 +143,12 @@ export const BookService = ({navigation}) => {
                 serviceType: selected,
                 comment: comment,
               };
-
-              navigation.navigate('SearchService', obj);
+              if(selectedVehicle, selected != null){
+                navigation.navigate('SearchService', obj);
+              }else{
+                Toast.show('Enter all details');
+              }
+              
             }}>
             {({handleSubmit, values}) => (
               <>

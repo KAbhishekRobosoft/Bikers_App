@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     height: 50,
     width: 50,
-    marginBottom: 20,
+    marginBottom: 5,
   },
 
   riderName: {

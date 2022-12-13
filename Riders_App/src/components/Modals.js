@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Text,
-  Pressable,
-  ScrollView,
-} from 'react-native';
+import {StyleSheet, View, Text, Pressable, ScrollView} from 'react-native';
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import Modal from 'react-native-modal';
 
@@ -20,20 +14,15 @@ export const Modals = props => {
           borderRadius: 17,
         }}>
         <Pressable onPress={props.press}>
-          <Icon2
-            name="close"
-            size={27}
-            color={'#A4A4A4'}
-            style={styles.times}
-          />
+          <View style={styles.iconTimes}>
+            <Icon2 name="close" size={27} color={'#A4A4A4'} />
+          </View>
         </Pressable>
         <Text style={styles.modalHeader}>{props.title}</Text>
         <ScrollView
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}>
-          <Text style={styles.modalDescription}>
-            {props.text}
-          </Text>
+          <Text style={styles.modalDescription}>{props.text}</Text>
         </ScrollView>
       </View>
     </Modal>
@@ -41,10 +30,12 @@ export const Modals = props => {
 };
 
 const styles = StyleSheet.create({
-  times: {
-    resizeMode: 'contain',
-    marginTop: 15,
-    marginLeft: 280,
+  iconTimes: {
+    width: 50,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'flex-end',
   },
   modalHeader: {
     fontFamily: 'Roboto-Regular',
@@ -63,5 +54,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 40,
     marginTop: 13,
     paddingBottom: 20,
+    textAlign:'justify'
   },
 });
