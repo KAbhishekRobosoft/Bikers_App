@@ -51,10 +51,8 @@ const BottomTabLoginNavigation = () => {
                 style={{
                   tintColor: 'white',
                   width: 35,
-                  height: 22,
+                  height: 25,
                   resizeMode: 'contain',
-                 
-                  
                 }}
               />
             );
@@ -73,7 +71,7 @@ const BottomTabLoginNavigation = () => {
                 style={{
                   tintColor: 'white',
                   width: 35,
-                  height: 25,
+                  height: 22,
                   resizeMode: 'contain',
                   opacity: 0.9,
                 }}
@@ -107,14 +105,8 @@ const BottomTabLoginNavigation = () => {
       <Tab.Screen
         name="Logout"
         component={LogoutStack}
-        // listeners={({navigation}) => ({
-        //   tabPress: e => {
-        //     e.preventDefault();
-        //     navigation.navigate('Logout')
-        //   },
-        // })}
         options={{
-          title: "More",
+          title: 'More',
           tabBarIcon: ({focused}) => {
             return (
               <Image
@@ -122,7 +114,7 @@ const BottomTabLoginNavigation = () => {
                 style={{
                   tintColor: 'white',
                   width: 27,
-                  height: 27,
+                  height: 22,
                   resizeMode: 'contain',
                 }}
               />
