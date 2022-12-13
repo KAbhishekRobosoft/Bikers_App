@@ -22,12 +22,12 @@ import {getVerifiedKeys} from '../utils/Functions';
 import {useDispatch, useSelector} from 'react-redux';
 import {setToken} from '../redux/AuthSlice';
 import {setInitialState} from '../redux/MileStoneSlice';
-import { getChat } from '../services/Chats';
-import { sendChat } from '../services/Chats';
-import { uploadChatImage } from '../services/Chats';
+import {getChat} from '../services/Chats';
+import {sendChat} from '../services/Chats';
+import {uploadChatImage} from '../services/Chats';
 import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modal';
-import { clearChat } from '../services/Chats';
+import {clearChat} from '../services/Chats';
 
 const ChatScreen = ({navigation, route}) => {
   const textRef = useRef(null);
@@ -66,6 +66,8 @@ const ChatScreen = ({navigation, route}) => {
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
+    const cred = await getVerifiedKeys(auth.userToken);
+    dispatch(setToken(cred));
     const resp = await getChat(cred, route.params.id);
     if (resp !== undefined) {
       Toast.show('Getting Chats');
@@ -142,11 +144,7 @@ const ChatScreen = ({navigation, route}) => {
               navigation.goBack();
             }}>
             <View style={styles.iconHeader}>
-            <Icon
-              name="md-arrow-back"
-              color={'white'}
-              size={25}
-            />
+              <Icon name="md-arrow-back" color={'white'} size={25} />
             </View>
           </Pressable>
           <Text style={styles.headerText}>{route.params.tripName}</Text>
