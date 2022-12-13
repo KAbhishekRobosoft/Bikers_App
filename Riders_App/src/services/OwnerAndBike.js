@@ -93,7 +93,6 @@ export const getBikeDetails = async token => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log();
     return response.data;
   } catch (error) {
     console.log('Error Occured in get Bike details');

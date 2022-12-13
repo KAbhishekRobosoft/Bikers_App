@@ -3,9 +3,9 @@ import React from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 import AllTrips from '../screens/IndividualTripScreen';
-import Profile from '../screens/Profile'
+import Profile from '../screens/Profile';
 import LogoutStack from './LogoutStack';
-import {MyGarage} from '../screens/MyGarageScreen'
+import {MyGarage} from '../screens/MyGarageScreen';
 import AllUserTrip from '../screens/AllUserTrip';
 
 const Tab = createMaterialBottomTabNavigator();
@@ -15,7 +15,6 @@ const BottomTabNavigation = () => {
     <Tab.Navigator
       shifting={true}
       initialRouteName="WelcomeAboardScreen"
-
       activeColor="#ffffff"
       barStyle={{backgroundColor: '#ED7E2B', height: 65}}>
       <Tab.Screen
@@ -32,7 +31,6 @@ const BottomTabNavigation = () => {
                   width: 35,
                   height: 22,
                   resizeMode: 'contain',
-
                 }}
               />
             );
@@ -42,13 +40,8 @@ const BottomTabNavigation = () => {
       <Tab.Screen
         name="Garage"
         component={MyGarage}
-        // listeners={{
-        //   tabPress: e => {
-        //     e.preventDefault();
-        //   },
-        // }}
-        
-        options={{title:"My Garage",
+        options={{
+          title: 'My Garage',
           tabBarIcon: ({focused}) => {
             return (
               <Image
@@ -56,7 +49,7 @@ const BottomTabNavigation = () => {
                 style={{
                   tintColor: 'white',
                   width: 35,
-                  height: 22,
+                  height: 25,
                   resizeMode: 'contain',
                 }}
               />
@@ -67,11 +60,6 @@ const BottomTabNavigation = () => {
       <Tab.Screen
         name="Activities"
         component={AllUserTrip}
-        // listeners={{
-        //   tabPress: e => {
-        //     e.preventDefault();
-        //   },
-        // }}
         options={{
           tabBarIcon: ({focused}) => {
             return (
@@ -90,11 +78,6 @@ const BottomTabNavigation = () => {
       />
       <Tab.Screen
         name="Profile"
-        // listeners={{
-        //   tabPress: e => {
-        //     e.preventDefault();
-        //   },
-        // }}
         component={Profile}
         options={{
           tabBarIcon: ({focused}) => {
@@ -106,6 +89,7 @@ const BottomTabNavigation = () => {
                   width: 35,
                   height: 22,
                   resizeMode: 'contain',
+                  opacity: 0.8,
                 }}
               />
             );
@@ -114,22 +98,16 @@ const BottomTabNavigation = () => {
       />
       <Tab.Screen
         name="Logout"
-        
-        // listeners={{
-        //   tabPress: e => {
-        //     e.preventDefault();
-        //   },
-        // }}
-        
         component={LogoutStack}
         options={{
+          title: 'More',
           tabBarIcon: ({focused}) => {
             return (
               <Image
                 source={require('../assets/images/more.png')}
                 style={{
                   tintColor: 'white',
-                  width: 22,
+                  width: 27,
                   height: 22,
                   resizeMode: 'contain',
                 }}

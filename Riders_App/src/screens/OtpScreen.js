@@ -86,7 +86,7 @@ const OtpScreen = ({navigation}) => {
                           );
                           if (response !== undefined) {
                             dispatch(setOtpVerfied());
-                            Toast.show('Registered successfully')
+                            Toast.show('Registered successfully');
                             navigation.navigate('Login');
                           } else {
                             Toast.show('User already exists');
@@ -121,7 +121,7 @@ const OtpScreen = ({navigation}) => {
                         );
                         if (response !== undefined) {
                           dispatch(setOtpVerfied());
-                          Toast.show('Registered successfully')
+                          Toast.show('Registered successfully');
                           navigation.navigate('Login');
                         } else {
                           Toast.show('User already exists');
@@ -144,7 +144,8 @@ const OtpScreen = ({navigation}) => {
             </View>
           </View>
           <View style={styles.textView2}>
-            <Text style={styles.secondsText}>20 minutes left</Text>
+            <Text style={styles.resendText}>Re-send Again</Text>
+            <Text style={styles.secondsText}>20 seconds left</Text>
           </View>
         </View>
       </ScrollView>
@@ -222,15 +223,26 @@ const styles = StyleSheet.create({
 
   textView1: {
     marginTop: 50,
+   
   },
   textView2: {
-    marginTop: 30,
+    marginTop: 40,
+   
+    width:200,
+    alignItems:'center'
   },
   resendText: {
     color: '#F7931E',
+    fontSize: 16,
+    lineHeight: 24,
+    fontFamily: 'Roboto-Regular',
+
   },
   secondsText: {
     color: 'rgba(174,168,168,0.87)',
+    marginTop: 20,
+    fontSize: 16,
+    lineHeight: 24,
   },
 
   optView: {
