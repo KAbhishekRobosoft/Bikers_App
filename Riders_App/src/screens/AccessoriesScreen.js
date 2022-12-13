@@ -64,7 +64,7 @@ export const Accessories = ({navigation}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
       <View style={[styles.header, styles.shadow]}>
         <Pressable
           onPress={() => {
@@ -168,7 +168,9 @@ export const Accessories = ({navigation}) => {
                     </View>
                   );
                 })
-              : null}
+              : <>
+              <Text style={styles.NoResultText}>No results found!</Text>
+            </>}
           </View>
         </ScrollView>
       )}
@@ -292,5 +294,12 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 12,
     color: 'rgb(249, 105, 14)',
+  },
+  NoResultText: {
+    color: '#4F504F',
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
+    marginTop: 50,
+    marginLeft: '38%'
   },
 });

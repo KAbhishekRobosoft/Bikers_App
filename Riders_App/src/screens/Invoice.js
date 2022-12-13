@@ -141,11 +141,9 @@ const Invoice = ({navigation}) => {
             onPress={() => {
               navigation.goBack();
             }}>
-            <Icon
-              name="md-arrow-back"
-              color={'#ED7F2C'}
-              size={25}
-            />
+            <View style={styles.iconHeader}>
+              <Icon name="md-arrow-back" color={'#ED7F2C'} size={25} />
+            </View>
           </Pressable>
           <Pressable onPress={createPDF}>
             <Image
@@ -313,8 +311,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginHorizontal: 30,
-    marginTop: 20,
+    paddingEnd: 20
   },
 
   backicon: {
@@ -348,7 +345,12 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginHorizontal: '6%',
   },
-
+  iconHeader: {
+    height: 64,
+    width: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   invoiceText: {
     height: 28,
     lineHeight: 28,

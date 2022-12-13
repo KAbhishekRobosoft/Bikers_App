@@ -34,7 +34,6 @@ import Toast from 'react-native-simple-toast';
 import {deleteComment} from '../services/Trips';
 
 const ImageLikeCommentScreen = ({navigation, route}) => {
-
   const [refreshing, setRefreshing] = useState(false);
   const [comments, Setcomments] = useState(false);
   const [distinctComments, SetdistinctComments] = useState(false);
@@ -42,7 +41,14 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
   const [imgData, setImgData] = useState({});
   const state = useSelector(state => state.milestone.initialState);
   const {height, width} = useWindowDimensions();
-  const keyboard= width > height ? (Platform.OS === 'ios' ? 10 : 0) : (Platform.OS === 'ios' ? 50 : 50);
+  const keyboard =
+    width > height
+      ? Platform.OS === 'ios'
+        ? 10
+        : 0
+      : Platform.OS === 'ios'
+      ? 50
+      : 50;
   const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
   const loading = useSelector(state => state.milestone.isLoading);
   const authData = useSelector(state => state.auth);
@@ -130,13 +136,20 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
               onPress={() => {
                 navigation.goBack();
               }}>
-              <Icon
-                name="md-arrow-back"
-                color="grey"
-                size={25}
-                style={styles.icon}
-              />
+              <View style={styles.iconHeader}>
+                <Icon name="md-arrow-back" color="white" size={25} />
+              </View>
             </Pressable>
+            <Text
+              style={{
+                color: '#FFFFFF',
+                fontFamily: 'Roboto-Medium',
+                fontSize: 20,
+                lineHeight: 28,
+                marginLeft:30
+              }}>
+              Gallery
+            </Text>
           </View>
           <View>
             <KeyboardAvoidingView
@@ -652,8 +665,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    height: 40,
-    justifyContent: 'center',
+    height: 64,
+    alignItems: 'center',
+    backgroundColor: 'rgba(20, 20, 20, 0.4)',
+    flexDirection: 'row',
+    width: '100%',
   },
   imgContainer: {
     height: 550,
@@ -670,7 +686,7 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
   },
   icon: {
-    marginHorizontal: 20,
+    //marginHorizontal: 20,
   },
   bottomContainer: {
     height: 60,
@@ -711,7 +727,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.8,
     marginLeft: '6%',
     width: '80%',
-    height: 70
+    height: 70,
   },
   iconContainer: {
     flexDirection: 'row',
@@ -738,5 +754,11 @@ const styles = StyleSheet.create({
   textComment: {
     color: '#FF9636',
     fontFamily: 'Roboto-Regular',
+  },
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

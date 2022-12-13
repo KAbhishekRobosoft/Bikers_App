@@ -50,11 +50,9 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/wrench.png')}
                 style={{
                   tintColor: 'white',
-                  width: 40,
-                  height: 27,
+                  width: 35,
+                  height: 25,
                   resizeMode: 'contain',
-                 
-                  
                 }}
               />
             );
@@ -107,13 +105,8 @@ const BottomTabLoginNavigation = () => {
       <Tab.Screen
         name="Logout"
         component={LogoutStack}
-        // listeners={({navigation}) => ({
-        //   tabPress: e => {
-        //     e.preventDefault();
-        //     navigation.navigate('Logout')
-        //   },
-        // })}
         options={{
+          title: 'More',
           tabBarIcon: ({focused}) => {
             return (
               <Image
@@ -121,7 +114,7 @@ const BottomTabLoginNavigation = () => {
                 style={{
                   tintColor: 'white',
                   width: 27,
-                  height: 27,
+                  height: 22,
                   resizeMode: 'contain',
                 }}
               />
