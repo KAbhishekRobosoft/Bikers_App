@@ -29,8 +29,8 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/Bike.png')}
                 style={{
                   tintColor: '#ffffff',
-                  width: 50,
-                  height: 27,
+                  width: 35,
+                  height: 22,
                   resizeMode: 'contain',
                 }}
               />
@@ -50,8 +50,8 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/wrench.png')}
                 style={{
                   tintColor: 'white',
-                  width: 40,
-                  height: 27,
+                  width: 35,
+                  height: 22,
                   resizeMode: 'contain',
                  
                   
@@ -72,8 +72,8 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/list.png')}
                 style={{
                   tintColor: 'white',
-                  width: 50,
-                  height: 27,
+                  width: 35,
+                  height: 25,
                   resizeMode: 'contain',
                   opacity: 0.9,
                 }}
@@ -93,8 +93,8 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/user.png')}
                 style={{
                   tintColor: 'white',
-                  width: 50,
-                  height: 27,
+                  width: 35,
+                  height: 22,
                   resizeMode: 'contain',
                   opacity: 0.8,
                 }}
@@ -114,6 +114,7 @@ const BottomTabLoginNavigation = () => {
         //   },
         // })}
         options={{
+          title: "More",
           tabBarIcon: ({focused}) => {
             return (
               <Image
