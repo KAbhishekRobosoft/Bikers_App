@@ -17,7 +17,6 @@ export const CreateTripSuccess = ({navigation}) => {
       greet="Success!!"
       text2="You have created a new trip"
       onPress={() => {
-        console.log('sdfdfd');
         dispatch(deSetRegistered());
         dispatch(deleteAllTripContacts());
         dispatch(deleteMilestonesData());

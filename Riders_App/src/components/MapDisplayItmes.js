@@ -40,12 +40,14 @@ export const MapNavBar = ({
         onPress={() => {
           navigation.goBack();
         }}>
-        <Icon
-          name="md-arrow-back"
-          color={'grey'}
-          size={25}
-          style={styles.icon}
-        />
+        <View style={styles.iconHeader}>
+          <Icon
+            name="md-arrow-back"
+            color={'grey'}
+            size={25}
+            style={styles.icon}
+          />
+        </View>
       </Pressable>
       <Pressable
         onPress={async () => {
@@ -69,13 +71,15 @@ export const MapNavBar = ({
               Toast.show('Turn on the location');
             });
         }}>
-        <Image
-          source={require('../assets/images/insertcard.png')}
-          style={{
-            height: 24,
-            width: 24,
-          }}
-        />
+        <View style={styles.iconHeader}>
+          <Image
+            source={require('../assets/images/insertcard.png')}
+            style={{
+              height: 24,
+              width: 24,
+            }}
+          />
+        </View>
       </Pressable>
       <Pressable
         onPress={() => {
@@ -99,13 +103,15 @@ export const MapNavBar = ({
               Toast.show('Turn on the location');
             });
         }}>
-        <Image
-          source={require('../assets/images/gasstation.png')}
-          style={{
-            height: 24,
-            width: 21,
-          }}
-        />
+        <View style={styles.iconHeader}>
+          <Image
+            source={require('../assets/images/gasstation.png')}
+            style={{
+              height: 24,
+              width: 21,
+            }}
+          />
+        </View>
       </Pressable>
       <Pressable
         onPress={() => {
@@ -129,13 +135,15 @@ export const MapNavBar = ({
               Toast.show('Turn on the location');
             });
         }}>
-        <Image
-          source={require('../assets/images/bed.png')}
-          style={{
-            height: 18,
-            width: 24,
-          }}
-        />
+        <View style={styles.iconHeader}>
+          <Image
+            source={require('../assets/images/bed.png')}
+            style={{
+              height: 18,
+              width: 24,
+            }}
+          />
+        </View>
       </Pressable>
       <Pressable
         onPress={() => {
@@ -159,10 +167,12 @@ export const MapNavBar = ({
               Toast.show('Turn on the location');
             });
         }}>
-        <Image
-          source={require('../assets/images/restaurant.png')}
-          style={styles.icon}
-        />
+        <View style={styles.iconHeader}>
+          <Image
+            source={require('../assets/images/restaurant.png')}
+            style={styles.icon}
+          />
+        </View>
       </Pressable>
       <PopUpMenu
         color="orange"
@@ -230,7 +240,13 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-  
+  },
+
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   indicatorContiner: {

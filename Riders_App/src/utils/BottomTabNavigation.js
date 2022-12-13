@@ -6,6 +6,7 @@ import AllTrips from '../screens/IndividualTripScreen';
 import Profile from '../screens/Profile'
 import LogoutStack from './LogoutStack';
 import {MyGarage} from '../screens/MyGarageScreen'
+import AllUserTrip from '../screens/AllUserTrip';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -64,8 +65,8 @@ const BottomTabNavigation = () => {
         }}
       />
       <Tab.Screen
-        name="All Trips"
-        component={AllTrips}
+        name="Activities"
+        component={AllUserTrip}
         // listeners={{
         //   tabPress: e => {
         //     e.preventDefault();

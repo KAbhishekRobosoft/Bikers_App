@@ -8,6 +8,7 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
@@ -90,12 +91,13 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                 onPress={() => {
                   navigation.goBack();
                 }}>
+                <View style={styles.iconHeader}>
                 <Icon
                   name="md-arrow-back"
                   color={'white'}
                   size={25}
-                  style={styles.icon}
                 />
+                </View>
               </Pressable>
               <Text style={styles.headerText}>Trip Summary</Text>
             </View>
@@ -220,7 +222,6 @@ export const GetParticularTripSummary = ({navigation, route}) => {
       {route.params.data.tripStatus === 'completed' && (
         <>
           <ScrollView
-       
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
@@ -407,7 +408,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 64,
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     alignItems: 'center',
     shadowColor: 'grey',
     shadowOffset: {
@@ -418,7 +419,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     elevation: 5,
     justifyContent: 'space-between',
-    opacity: 0.9,
   },
   subHeader: {
     flexDirection: 'row',
@@ -431,8 +431,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     fontFamily: 'Roboto-Medium',
   },
-  icon: {
-    marginHorizontal: 22,
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   editImage: {
     marginHorizontal: 25,
@@ -517,9 +520,8 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   buttonView: {
-    paddingTop: 40,
     alignItems: 'center',
-    top:90
+    top:Platform.OS === 'ios' ? '15%' : '22%'
   },
   calenderImg: {
     width: 22,

@@ -7,16 +7,17 @@ import {
   TextInput,
   Pressable,
   ScrollView,
-  ToastAndroid,
+  useWindowDimensions,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useState} from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
 import {Formik, Field} from 'formik';
 import * as yup from 'yup';
-import Toast from 'react-native-simple-toast'
-import { useSelector } from 'react-redux';
-import { resetPassword } from '../services/UserCredentials';
+import Toast from 'react-native-simple-toast';
+import {useSelector} from 'react-redux';
+import {resetPassword} from '../services/UserCredentials';
 
 const passwordValidationSchema = yup.object().shape({
   password: yup
@@ -33,17 +34,36 @@ const passwordValidationSchema = yup.object().shape({
 });
 
 const ResetPasswordScreen = ({navigation}) => {
+  const {height, width} = useWindowDimensions();
+  const eyeLeft =
+    width > height
+      ? Platform.OS === 'ios'
+        ? 600
+        : 630
+      : Platform.OS === 'ios'
+      ? 290
+      : 290;
+  const eyeBottom =
+    width > height
+      ? Platform.OS === 'ios'
+        ? 8
+        : 10
+      : Platform.OS === 'ios'
+      ? 0
+      : 0;
   const [secureText, setSecureText] = useState(true);
-  const authData= useSelector(state=>state.auth)
+  const authData = useSelector(state => state.auth);
 
   return (
     <SafeAreaView style={styles.main}>
       <View style={styles.header}>
         <Pressable onPress={() => navigation.goBack()}>
-          <Icon name="arrow-left" size={24} color="grey" />
+          <View style={styles.iconHeader}>
+            <Icon name="md-arrow-back" size={26} color="grey" />
+          </View>
         </Pressable>
       </View>
-      <ScrollView bounces={false}>
+      <ScrollView bounces={false} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
         <View style={styles.imgContainer}>
           <Image
             style={styles.resetImg}
@@ -61,12 +81,12 @@ const ResetPasswordScreen = ({navigation}) => {
               confirmPassword: '',
             }}
             onSubmit={async values => {
-              const resp= await resetPassword({mobile:authData.userData.mobile,password:values.password})
-              if(resp !== undefined)
-                  navigation.navigate('ResetSuccess');
-
-              else  
-                Toast.show('Request Could not be fullfilled')
+              const resp = await resetPassword({
+                mobile: authData.userData.mobile,
+                password: values.password,
+              });
+              if (resp !== undefined) navigation.navigate('ResetSuccess');
+              else Toast.show('Request Could not be fullfilled');
             }}>
             {({
               values,
@@ -93,12 +113,16 @@ const ResetPasswordScreen = ({navigation}) => {
                     <Text style={styles.errorText}>{errors.password}</Text>
                   )}
                   <View>
-                    <Pressable onPress={() => setSecureText(!secureText)}>
+                    <TouchableOpacity
+                      onPress={() => setSecureText(!secureText)}>
                       <Image
-                        style={styles.eyeImg}
+                        style={[
+                          styles.eyeImg,
+                          {left: eyeLeft, bottom: eyeBottom},
+                        ]}
                         source={require('../assets/images/eye.png')}
                       />
-                    </Pressable>
+                    </TouchableOpacity>
                   </View>
                 </View>
                 <View style={styles.inputTextView}>
@@ -145,7 +169,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 60,
     justifyContent: 'center',
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
   },
   imgContainer: {
     width: '100%',
@@ -169,7 +193,7 @@ const styles = StyleSheet.create({
   },
   bottomView: {
     alignItems: 'center',
-    paddingTop: 40,
+    paddingVertical: 40,
   },
 
   textInput: {
@@ -194,7 +218,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   btn: {
-    marginTop: 40,
+    marginTop: 50,
   },
   errorText: {
     fontSize: 10,
@@ -202,7 +226,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     position: 'absolute',
     bottom: -14,
-    marginHorizontal: "30%",
+    marginHorizontal: '30%',
     width: '87%',
     textAlign: 'center',
   },
@@ -210,8 +234,12 @@ const styles = StyleSheet.create({
     width: 24,
     height: 14,
     resizeMode: 'contain',
-    // position:'absolute',
-    // alignSelf:'center',
     left: 300,
+  },
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

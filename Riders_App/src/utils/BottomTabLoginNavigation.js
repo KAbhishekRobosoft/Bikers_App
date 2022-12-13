@@ -3,7 +3,6 @@ import React from 'react';
 import AddBikeDetails from '../screens/AddBikeDetailsScreen';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
-// import MyGarageStack from './MyGarageStack';
 import UpcomingList from '../screens/IndividualTripScreen';
 import LogoutStack from '../utils/LogoutStack';
 import Profile from '../screens/Profile';
@@ -14,27 +13,24 @@ const Tab = createMaterialBottomTabNavigator();
 const BottomTabLoginNavigation = () => {
   return (
     <Tab.Navigator
-      // shifting={true}
-      //labeled={false}
       initialRouteName="UpcomingList"
       activeColor="#ffffff"
       inactiveColor="blue"
-      
       barStyle={{backgroundColor: '#ED7E2B', height: 65}}>
       <Tab.Screen
         name="Trips"
         component={UpcomingList}
         options={{
           tabBarLabel: 'Trips',
-         
+
           tabBarIcon: ({focused}) => {
             return (
               <Image
                 source={require('../assets/images/Bike.png')}
                 style={{
                   tintColor: '#ffffff',
-                  width: 35,
-                  height: 22,
+                  width: 50,
+                  height: 27,
                   resizeMode: 'contain',
                 }}
               />
@@ -54,10 +50,11 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/wrench.png')}
                 style={{
                   tintColor: 'white',
-                  width: 35,
-                  height: 22,
+                  width: 40,
+                  height: 27,
                   resizeMode: 'contain',
-                  opacity: 3,
+                 
+                  
                 }}
               />
             );
@@ -75,10 +72,10 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/list.png')}
                 style={{
                   tintColor: 'white',
-                  width: 35,
-                  height: 22,
+                  width: 50,
+                  height: 27,
                   resizeMode: 'contain',
-                  opacity:0.9
+                  opacity: 0.9,
                 }}
               />
             );
@@ -96,10 +93,10 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/user.png')}
                 style={{
                   tintColor: 'white',
-                  width: 35,
-                  height: 22,
+                  width: 50,
+                  height: 27,
                   resizeMode: 'contain',
-                  opacity:0.8
+                  opacity: 0.8,
                 }}
               />
             );
@@ -123,8 +120,8 @@ const BottomTabLoginNavigation = () => {
                 source={require('../assets/images/more.png')}
                 style={{
                   tintColor: 'white',
-                  width: 22,
-                  height: 22,
+                  width: 27,
+                  height: 27,
                   resizeMode: 'contain',
                 }}
               />

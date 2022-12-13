@@ -1,7 +1,6 @@
 import axios from 'axios';
-import Toast from 'react-native-simple-toast'
+import Toast from 'react-native-simple-toast';
 const BASE_URL = 'https://ride-app-node.vercel.app/api/v1';
-
 
 export const addOwnerDetails = async (values, token) => {
   try {
@@ -81,6 +80,7 @@ export const addBikeDetails = async (values, token) => {
         },
       },
     );
+    Toast.show(response.data.message);
   } catch (error) {
     console.log('Error Occured in adding Bike Details');
   }
@@ -99,7 +99,7 @@ export const getBikeDetails = async token => {
   }
 };
 
-export const searchProducts = async (value,token) => {
+export const searchProducts = async (value, token) => {
   try {
     const response = await axios.post(
       `${BASE_URL}/product/searchProducts`,
@@ -134,5 +134,18 @@ export const LikeProducts = async (value, token) => {
     return response.data;
   } catch (error) {
     console.log('Error Occured in like products');
+  }
+};
+
+export const prefilledBikes = async token => {
+  try {
+    const response = await axios.get(BASE_URL + '/bike/getVehicleType', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.log('error occurred in attempts api');
   }
 };

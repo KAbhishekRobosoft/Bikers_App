@@ -19,14 +19,15 @@ import {DropDownInputField2} from '../components/InputFields';
 import InsetShadow from 'react-native-inset-shadow';
 import ButtonLarge from '../components/Buttons';
 import * as yup from 'yup';
-import { updateMobileNumber } from '../services/UserCredentials';
+import {updateMobileNumber} from '../services/UserCredentials';
 import {useDispatch, useSelector} from 'react-redux';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setToken} from '../redux/AuthSlice';
 import {updateUserCredentials} from '../redux/AuthSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { attempts } from '../services/UserCredentials';
+import {attempts} from '../services/UserCredentials';
 import Toast from 'react-native-simple-toast';
+import {DisabledButtonLarge} from '../components/Buttons';
 
 export const BookService = ({navigation}) => {
   const phnumber = useSelector(state => state.auth.userCredentials);
@@ -110,12 +111,9 @@ export const BookService = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}>
-          <Icon
-            name="md-arrow-back"
-            color={'white'}
-            size={25}
-            style={styles.icon}
-          />
+          <View style={styles.iconHeader}>
+            <Icon name="md-arrow-back" color={'white'} size={25} />
+          </View>
         </Pressable>
         <Text style={styles.headerText}>Book a Service</Text>
       </View>
@@ -138,22 +136,15 @@ export const BookService = ({navigation}) => {
               comment: '',
             }}
             onSubmit={values => {
-              if (
-                (selectedVehicle,
-                values.vehicleNumber,
-                selected != null)
-              ) {
-                const obj = {
-                  mobileNumber: values.mobileNumber,
-                  vehicleType: selectedVehicle,
-                  vehicleNumber: values.vehicleNumber,
-                  serviceType: selected,
-                  comment: comment,
-                };
-                navigation.navigate('SearchService', obj);
-              } else {
-                Toast.show('Enter all Details');
-              }
+              const obj = {
+                mobileNumber: values.mobileNumber,
+                vehicleType: selectedVehicle,
+                vehicleNumber: values.vehicleNumber,
+                serviceType: selected,
+                comment: comment,
+              };
+
+              navigation.navigate('SearchService', obj);
             }}>
             {({handleSubmit, values}) => (
               <>
@@ -200,24 +191,31 @@ export const BookService = ({navigation}) => {
                 <Text style={styles.alertText}>
                   The new number will be yor login id
                 </Text>
-                <Field
-                  component={PlaceholderTextField}
-                  name="vehicleNumber"
-                  placeholder="Vehicle number"
-                  keyboardType="default"
-                  value={values.vehicleNumber}
-                />
-                <DropDownInputField
-                  data={data}
-                  values={selected}
-                  setSelected={value => setSelected(value)}
-                  placeholder="Service Type"
-                />
                 <DropDownInputField2
                   data={Data}
                   values={selectedVehicle}
                   setSelected={value => setSelectedVehicle(value)}
                   placeholder="Vehicle Type"
+                />
+                <View
+                  style={{
+                    marginTop: -35,
+                    borderColor: '#B4B3B3',
+                    marginHorizontal: 3,
+                  }}>
+                  <Field
+                    component={PlaceholderTextField}
+                    name="vehicleNumber"
+                    placeholder="Vehicle number"
+                    keyboardType="default"
+                    value={values.vehicleNumber}
+                  />
+                </View>
+                <DropDownInputField
+                  data={data}
+                  values={selected}
+                  setSelected={value => setSelected(value)}
+                  placeholder="Service Type"
                 />
                 <Text style={styles.commentText}>Comments</Text>
                 <View style={styles.commentTextInputView}>
@@ -230,9 +228,21 @@ export const BookService = ({navigation}) => {
                     />
                   </InsetShadow>
                 </View>
-                <View style={styles.btnView}>
-                  <ButtonLarge title="FIND A DEALER" onPress={handleSubmit} />
-                </View>
+                {selected != null && selectedVehicle != null && (
+                  <View style={styles.btnView}>
+                    <ButtonLarge title="FIND A DEALER" onPress={handleSubmit} />
+                  </View>
+                )}
+                {(selected == null ||
+                  selectedVehicle == null ||
+                  values.vehicleNumber == null) && (
+                  <View style={styles.btnView}>
+                    <DisabledButtonLarge
+                      title="FIND A DEALER"
+                      onPress={handleSubmit}
+                    />
+                  </View>
+                )}
               </>
             )}
           </Formik>
@@ -247,7 +257,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 64,
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     alignItems: 'center',
     shadowColor: 'rgba(0,0,0,0.24)',
     shadowOffset: {
@@ -257,10 +267,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.9,
     elevation: 5,
-    opacity: 0.9,
   },
   shadow: {
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     shadowColor: 'grey',
     shadowOffset: {
       width: 0,
@@ -277,8 +286,11 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     fontFamily: 'Roboto-Medium',
   },
-  icon: {
-    marginHorizontal: 20,
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   firstInputField: {
     flexDirection: 'row',
@@ -322,6 +334,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     color: '#D50000',
     fontSize: 12,
+    lineHeight: 20
   },
   errorText: {
     fontSize: 10,

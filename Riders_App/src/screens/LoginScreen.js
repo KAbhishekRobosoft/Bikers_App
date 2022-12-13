@@ -37,10 +37,11 @@ const registerValidationSchema = yup.object().shape({
     .matches(/\w*[A-Z]\w*/, 'Password must have a capital letter')
     .matches(/\d/, 'Password must have a number')
     .min(6, ({min}) => `Password must be at least ${min} characters`)
-    .required(''),
+    .required('Password is required'),
 });
 
 const LoginScreen = ({navigation}) => {
+
   const [secureText, setSecureText] = useState(true);
   const dispatch = useDispatch();
   const loading = useSelector(state => state.contact.isLoading);
@@ -48,11 +49,11 @@ const LoginScreen = ({navigation}) => {
   const textView =
     height > width
       ? Platform.OS === 'ios'
-        ? 10
-        : 20
+        ? 0
+        : 0
       : Platform.OS === 'ios'
-      ? 10
-      : 20;
+      ? 65
+      : 65;
   async function signIn(values) {
     try {
       let image = '';
@@ -226,13 +227,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'relative',
    
+   
   },
   inputTextView1: {
     width: '100%',
+   
   },
   inputTextView2: {
     width: '100%',
     justifyContent: 'center',
+  
+
   },
   userLogo: {
     width: 18,
@@ -282,9 +287,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontFamily: 'Roboto-Regular',
     width: '80%',
-    // borderWidth: 1,
-    marginLeft: 40,
     textAlign: 'right',
+    alignSelf: 'center'
   },
   buttonView: {
     marginTop: 30,

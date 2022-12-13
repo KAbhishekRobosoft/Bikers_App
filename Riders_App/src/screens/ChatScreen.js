@@ -22,12 +22,12 @@ import {getVerifiedKeys} from '../utils/Functions';
 import {useDispatch, useSelector} from 'react-redux';
 import {setToken} from '../redux/AuthSlice';
 import {setInitialState} from '../redux/MileStoneSlice';
-import { getChat } from '../services/Chats';
-import { sendChat } from '../services/Chats';
-import { uploadChatImage } from '../services/Chats';
+import {getChat} from '../services/Chats';
+import {sendChat} from '../services/Chats';
+import {uploadChatImage} from '../services/Chats';
 import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modal';
-import { clearChat } from '../services/Chats';
+import {clearChat} from '../services/Chats';
 
 const ChatScreen = ({navigation, route}) => {
   const textRef = useRef(null);
@@ -66,6 +66,8 @@ const ChatScreen = ({navigation, route}) => {
 
   const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
+    const cred = await getVerifiedKeys(auth.userToken);
+    dispatch(setToken(cred));
     const resp = await getChat(cred, route.params.id);
     if (resp !== undefined) {
       Toast.show('Getting Chats');
@@ -135,18 +137,15 @@ const ChatScreen = ({navigation, route}) => {
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Pressable onPress={() => handleToggle()}>
+      <Pressable>
         <View style={[styles.header, styles.shadow]}>
           <Pressable
             onPress={() => {
               navigation.goBack();
             }}>
-            <Icon
-              name="md-arrow-back"
-              color={'white'}
-              size={25}
-              style={styles.icon}
-            />
+            <View style={styles.iconHeader}>
+              <Icon name="md-arrow-back" color={'white'} size={25} />
+            </View>
           </Pressable>
           <Text style={styles.headerText}>{route.params.tripName}</Text>
           <PopUpMenu
@@ -296,7 +295,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 64,
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     alignItems: 'center',
     shadowColor: 'rgba(0,0,0,0.24)',
     shadowOffset: {
@@ -306,11 +305,10 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.9,
     elevation: 5,
-    opacity: 0.9,
     justifyContent: 'space-between',
   },
   shadow: {
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     shadowColor: 'grey',
     shadowOffset: {
       width: 0,
@@ -327,8 +325,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Medium',
     right: '95%',
   },
-  icon: {
-    marginHorizontal: 20,
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   bottomContainer: {
     height: 60,

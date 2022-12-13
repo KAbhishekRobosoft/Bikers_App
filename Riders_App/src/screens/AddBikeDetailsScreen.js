@@ -8,24 +8,42 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ButtonLarge from '../components/Buttons';
-import { addBikeDetails, } from '../services/OwnerAndBike';
-import { getBikeDetails } from '../services/OwnerAndBike';
+import {addBikeDetails, prefilledBikes} from '../services/OwnerAndBike';
+import {getBikeDetails} from '../services/OwnerAndBike';
 import {useDispatch, useSelector} from 'react-redux';
 import {addBikeType, addBikeData} from '../redux/AccessoriesSlice';
 import {Formik, Field} from 'formik';
 import Toast from 'react-native-simple-toast';
 import {getVerifiedKeys} from '../utils/Functions';
+import {setLoad} from '../redux/ContactSlice';
+import {deSetLoad} from '../redux/ContactSlice';
+import LinearGradient from 'react-native-linear-gradient';
+import {useState} from 'react';
+import {useEffect} from 'react';
+import {DropDownInputField} from '../components/InputFields';
 
 const AddBikeDetails = ({navigation}) => {
+  const [prefilledBikeData, setPrefilledBikeData] = useState([]);
+  const [selected, setSelected] = useState();
+  useEffect(() => {
+    const pre = async () => {
+      let cred = await getVerifiedKeys(authData.userToken);
+      const prefilled = await prefilledBikes(cred);
+      const data = prefilled.map(e => e.vehicleType);
+      setPrefilledBikeData(data);
+    };
+    pre();
+  }, []);
   const authData = useSelector(state => state.auth);
   const dispatch = useDispatch();
+  const loading = useSelector(state => state.contact.isLoading);
 
   const initialValues = {
-    vehicleType: '',
     vehicleNumber: '',
     engineNumber: '',
     frameNumber: '',
@@ -39,7 +57,7 @@ const AddBikeDetails = ({navigation}) => {
   const submit = async (values, {resetForm}) => {
     try {
       if (
-        values.vehicleType &&
+        selected !== undefined &&
         values.vehicleNumber &&
         values.engineNumber &&
         values.frameNumber &&
@@ -49,8 +67,9 @@ const AddBikeDetails = ({navigation}) => {
         values.model &&
         values.dealerCode !== ''
       ) {
+        dispatch(setLoad());
         const obj = {
-          vehicleType: values.vehicleType,
+          vehicleType: selected,
           vehicleNumber: values.vehicleNumber,
           engineNumber: values.engineNumber,
           frameNumber: values.frameNumber,
@@ -70,17 +89,18 @@ const AddBikeDetails = ({navigation}) => {
         dispatch(addBikeType(BikeTypes));
         dispatch(addBikeData(response)); // <-----------Redux
         resetForm({initialValues});
-
-        Toast.show('Bike Details Added');
         if (authData.registered) {
+          dispatch(deSetLoad());
           navigation.navigate('subStack');
         } else {
+          dispatch(deSetLoad());
           navigation.goBack();
         }
       } else {
         Toast.show('Enter all the Details');
       }
     } catch (error) {
+      dispatch(deSetLoad());
       Toast.show('Error occured');
     }
   };
@@ -88,6 +108,7 @@ const AddBikeDetails = ({navigation}) => {
     <SafeAreaView style={{backgroundColor: '#ffffff', flex: 1}}>
       <KeyboardAvoidingView
         style={{flex: 1}}
+        keyboardVerticalOffset={Platform.OS == 'ios' ? 30 : 40}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
         <View style={[styles.header]}>
           <View style={styles.subHeader}>
@@ -95,12 +116,9 @@ const AddBikeDetails = ({navigation}) => {
               onPress={() => {
                 navigation.goBack();
               }}>
-              <Icon
-                name="md-arrow-back"
-                color="white"
-                size={25}
-                style={styles.icon}
-              />
+              <View style={styles.iconHeader}>
+                <Icon name="md-arrow-back" color="white" size={25} />
+              </View>
             </Pressable>
             <Text style={styles.headerText}>Add Bike Details</Text>
           </View>
@@ -116,141 +134,152 @@ const AddBikeDetails = ({navigation}) => {
             {({values, handleSubmit, isValid, resetForm, handleChange}) => (
               <>
                 <View style={styles.container}>
-                  <View style={styles.inputView}>
-                    <Text style={styles.text}>Vehicle Type</Text>
-                    <View style={styles.inputTextView}>
-                      <Text>:</Text>
-                      <TextInput
-                        style={styles.inputText}
-                        name="vehicleType"
-                        placeholder="Vehicle Type"
-                        placeholderTextColor="#4F504F"
-                        onChangeText={handleChange('vehicleType')}
-                        value={values.vehicleType}
-                      />
-                    </View>
+                  <View style={{width: '89%', alignSelf: 'center'}}>
+                    <DropDownInputField
+                      data={prefilledBikeData}
+                      values={selected}
+                      setSelected={value => setSelected(value)}
+                      placeholder="Vehicle Type"
+                    />
                   </View>
-                  <View style={styles.inputView}>
-                    <Text style={styles.text}>Vehicle No</Text>
-                    <View style={styles.inputTextView}>
-                      <Text>:</Text>
-                      <TextInput
-                        style={styles.inputText}
-                        name="vehicleNumber"
-                        placeholder="Vehicle No"
-                        placeholderTextColor="#4F504F"
-                        onChangeText={handleChange('vehicleNumber')}
-                        value={values.vehicleNumber}
-                      />
+                  <View style={{marginTop: -28}}>
+                    <View style={styles.inputView}>
+                      <Text style={styles.text}>Vehicle No</Text>
+                      <View style={styles.inputTextView}>
+                        <Text style={{color: 'black'}}>:</Text>
+                        <TextInput
+                          style={styles.inputText}
+                          name="vehicleNumber"
+                          placeholder="Eg:- KA20AB1234"
+                          placeholderTextColor="#4F504F"
+                          onChangeText={handleChange('vehicleNumber')}
+                          value={values.vehicleNumber}
+                        />
+                      </View>
                     </View>
-                  </View>
-                  <View style={styles.inputView}>
-                    <Text style={styles.text}>Engine</Text>
-                    <View style={styles.inputTextView}>
-                      <Text>:</Text>
-                      <TextInput
-                        name="engineNumber"
-                        style={styles.inputText}
-                        placeholder="Engine"
-                        placeholderTextColor="#4F504F"
-                        onChangeText={handleChange('engineNumber')}
-                        value={values.engineNumber}
-                      />
+                    <View style={styles.inputView}>
+                      <Text style={styles.text}>Engine</Text>
+                      <View style={styles.inputTextView}>
+                        <Text style={{color: 'black'}}>:</Text>
+                        <TextInput
+                          name="engineNumber"
+                          style={styles.inputText}
+                          placeholder="Eg:- 5RE56F6A"
+                          placeholderTextColor="#4F504F"
+                          onChangeText={handleChange('engineNumber')}
+                          value={values.engineNumber}
+                        />
+                      </View>
                     </View>
-                  </View>
-                  <View style={styles.inputView}>
-                    <Text style={styles.text}>Frame No</Text>
-                    <View style={styles.inputTextView}>
-                      <Text>:</Text>
-                      <TextInput
-                        name="frameNumber"
-                        style={styles.inputText}
-                        placeholder="Frame No"
-                        placeholderTextColor="#4F504F"
-                        onChangeText={handleChange('frameNumber')}
-                        value={values.frameNumber}
-                      />
+                    <View style={styles.inputView}>
+                      <Text style={styles.text}>Frame No</Text>
+                      <View style={styles.inputTextView}>
+                        <Text style={{color: 'black'}}>:</Text>
+                        <TextInput
+                          name="frameNumber"
+                          style={styles.inputText}
+                          placeholder="Eg:- E45G45CV"
+                          placeholderTextColor="#4F504F"
+                          onChangeText={handleChange('frameNumber')}
+                          value={values.frameNumber}
+                        />
+                      </View>
                     </View>
-                  </View>
-                  <View style={styles.inputView}>
-                    <Text style={styles.text}>Battery make</Text>
-                    <View style={styles.inputTextView}>
-                      <Text>:</Text>
+                    <View style={styles.inputView}>
+                      <Text style={styles.text}>Battery make</Text>
+                      <View style={styles.inputTextView}>
+                        <Text style={{color: 'black'}}>:</Text>
 
-                      <TextInput
-                        name="batteryMake"
-                        style={styles.inputText}
-                        placeholder="Battery make"
-                        placeholderTextColor="#4F504F"
-                        onChangeText={handleChange('batteryMake')}
-                        value={values.batteryMake}
-                      />
+                        <TextInput
+                          name="batteryMake"
+                          style={styles.inputText}
+                          placeholder="Eg:- Exide-120V"
+                          placeholderTextColor="#4F504F"
+                          onChangeText={handleChange('batteryMake')}
+                          value={values.batteryMake}
+                        />
+                      </View>
                     </View>
-                  </View>
-                  <View style={styles.inputView}>
-                    <Text style={styles.text}>Reg No.</Text>
-                    <View style={styles.inputTextView}>
-                      <Text>:</Text>
+                    <View style={styles.inputView}>
+                      <Text style={styles.text}>Reg No.</Text>
+                      <View style={styles.inputTextView}>
+                        <Text style={{color: 'black'}}>:</Text>
 
-                      <TextInput
-                        name="registerNumber"
-                        style={styles.inputText}
-                        placeholder="Reg No."
-                        placeholderTextColor="#4F504F"
-                        onChangeText={handleChange('registerNumber')}
-                        value={values.registerNumber}
-                      />
+                        <TextInput
+                          name="registerNumber"
+                          style={styles.inputText}
+                          placeholder="Eg:- DL6RS4532"
+                          placeholderTextColor="#4F504F"
+                          onChangeText={handleChange('registerNumber')}
+                          value={values.registerNumber}
+                        />
+                      </View>
                     </View>
-                  </View>
-                  <View style={styles.inputView}>
-                    <Text style={styles.text}>Model</Text>
-                    <View style={styles.inputTextView}>
-                      <Text>:</Text>
+                    <View style={styles.inputView}>
+                      <Text style={styles.text}>Model</Text>
+                      <View style={styles.inputTextView}>
+                        <Text style={{color: 'black'}}>:</Text>
 
-                      <TextInput
-                        name="model"
-                        keyboardType="numeric"
-                        style={styles.inputText}
-                        placeholder="Model"
-                        placeholderTextColor="#4F504F"
-                        onChangeText={handleChange('model')}
-                        value={values.model}
-                      />
+                        <TextInput
+                          name="model"
+                          keyboardType="numeric"
+                          style={styles.inputText}
+                          placeholder="Eg:- 2017"
+                          placeholderTextColor="#4F504F"
+                          onChangeText={handleChange('model')}
+                          value={values.model}
+                        />
+                      </View>
                     </View>
-                  </View>
-                  <View style={styles.inputView}>
-                    <Text style={styles.text}>Color</Text>
-                    <View style={styles.inputTextView}>
-                      <Text>:</Text>
-                      <TextInput
-                        name="color"
-                        style={styles.inputText}
-                        placeholder="Color"
-                        placeholderTextColor="#4F504F"
-                        onChangeText={handleChange('color')}
-                        value={values.color}
-                      />
+                    <View style={styles.inputView}>
+                      <Text style={styles.text}>Color</Text>
+                      <View style={styles.inputTextView}>
+                        <Text style={{color: 'black'}}>:</Text>
+                        <TextInput
+                          name="color"
+                          style={styles.inputText}
+                          placeholder="Eg:- Black"
+                          placeholderTextColor="#4F504F"
+                          onChangeText={handleChange('color')}
+                          value={values.color}
+                        />
+                      </View>
                     </View>
-                  </View>
-                  <View style={styles.inputViewLast}>
-                    <Text style={styles.text}>
-                      <Text style={styles.text}>Dealer code</Text>
-                    </Text>
-                    <View style={styles.inputTextView}>
-                      <Text>:</Text>
-                      <TextInput
-                        name="dealerCode"
-                        style={styles.inputText}
-                        placeholder="Dealer code"
-                        placeholderTextColor="#4F504F"
-                        onChangeText={handleChange('dealerCode')}
-                        value={values.dealerCode}
-                      />
+                    <View style={styles.inputViewLast}>
+                      <Text style={styles.text}>
+                        <Text style={styles.text}>Dealer code</Text>
+                      </Text>
+                      <View style={styles.inputTextView}>
+                        <Text style={{color: 'black'}}>:</Text>
+                        <TextInput
+                          name="dealerCode"
+                          style={styles.inputText}
+                          placeholder="Eg:-RDF3421"
+                          placeholderTextColor="#4F504F"
+                          onChangeText={handleChange('dealerCode')}
+                          value={values.dealerCode}
+                        />
+                      </View>
                     </View>
                   </View>
                 </View>
                 <View style={styles.btn}>
-                  <ButtonLarge title="Submit" onPress={handleSubmit} />
+                  {!loading && (
+                    <ButtonLarge title="Submit" onPress={handleSubmit} />
+                  )}
+                  {loading && (
+                    <Pressable>
+                      <View style={styles.container1}>
+                        <LinearGradient
+                          start={{x: 0, y: 0}}
+                          end={{x: 1, y: 0}}
+                          colors={['#ED7E2B', '#F4A264']}
+                          style={styles.gradient1}>
+                          <ActivityIndicator color="white" />
+                        </LinearGradient>
+                      </View>
+                    </Pressable>
+                  )}
                 </View>
               </>
             )}
@@ -268,7 +297,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 64,
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     alignItems: 'center',
     shadowColor: 'grey',
     shadowOffset: {
@@ -279,7 +308,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     elevation: 5,
     justifyContent: 'space-between',
-    opacity: 0.9,
   },
   subHeader: {
     flexDirection: 'row',
@@ -292,8 +320,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     fontFamily: 'Roboto-Medium',
   },
-  icon: {
-    marginHorizontal: 20,
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   editImage: {
     resizeMode: 'contain',
@@ -329,16 +360,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 3,
-    paddingTop: 30,
+    paddingTop: 25,
+    
+    
   },
   inputViewLast: {
-    width: '86%',
+    width: '89%',
     height: 70,
     borderBottomColor: '#B4B3B3',
     alignSelf: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 20,
+    paddingTop: 15,
+    
   },
   text: {
     alignSelf: 'center',
@@ -354,7 +388,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#4F504F',
     textAlign: 'center',
-    width: '80%',
+    width: '100%',
+    height: 55,
+   
   },
   inputTextView: {
     alignItems: 'center',
@@ -369,5 +405,22 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     marginTop: 25,
     marginLeft: '5.6%',
+  },
+  container1: {
+    shadowColor: 'rgba(126,118,118,0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowRadius: 4,
+    shadowOpacity: 0.9,
+    borderRadius: 20,
+  },
+  gradient1: {
+    height: 42,
+    width: 279,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

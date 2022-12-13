@@ -47,12 +47,13 @@ export const ToolKit = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}>
+          <View style={styles.iconHeader}>
           <Icon
             name="md-arrow-back"
             color={'white'}
             size={25}
-            style={styles.icon}
           />
+          </View>
         </Pressable>
         <Text style={styles.headerText}>Tool Kit</Text>
       </View>
@@ -206,7 +207,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 64,
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     alignItems: 'center',
     shadowColor: 'rgba(0,0,0,0.24)',
     shadowOffset: {
@@ -216,10 +217,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.9,
     elevation: 5,
-    opacity: 0.9,
   },
   shadow: {
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     shadowColor: 'grey',
     shadowOffset: {
       width: 0,
@@ -236,8 +236,11 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     fontFamily: 'Roboto-Medium',
   },
-  icon: {
-    marginHorizontal: 20,
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textInput: {
     color: '#4F504F',

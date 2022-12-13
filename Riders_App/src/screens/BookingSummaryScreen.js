@@ -21,7 +21,7 @@ import {month1} from '../utils/Functions';
 import {AirbnbRating} from 'react-native-ratings';
 import {getRatings} from '../services/Services';
 import {useRoute} from '@react-navigation/native';
-import Toast from 'react-native-simple-toast'
+import Toast from 'react-native-simple-toast';
 
 const BookingSummary = ({navigation}) => {
   const dispatch = useDispatch();
@@ -58,12 +58,9 @@ const BookingSummary = ({navigation}) => {
             onPress={() => {
               navigation.goBack();
             }}>
-            <Icon
-              name="md-arrow-back"
-              color={'white'}
-              size={25}
-              style={styles.icon}
-            />
+            <View style={styles.iconHeader}>
+              <Icon name="md-arrow-back" color={'white'} size={25} />
+            </View>
           </Pressable>
           <Text style={styles.headerText}>Booking Details</Text>
         </View>
@@ -198,10 +195,13 @@ const BookingSummary = ({navigation}) => {
             }}>
             {new Date(route.params.slotDate) < Date.now() ? (
               <>
-                {(route.params.serviceType !== 'Free service' && route.params.invoice.length > 0) ? (
+                {route.params.serviceType !== 'Free service' &&
+                route.params.invoice.length > 0 ? (
                   <>
                     <Text style={styles.totalText}>Total bill payed</Text>
-                    <Text style={styles.ruppesText}>Rs {route.params.invoice[0].total} /-</Text>
+                    <Text style={styles.ruppesText}>
+                      Rs {route.params.invoice[0].total} /-
+                    </Text>
                     {route.params.invoice.length == 0 ? (
                       <Text
                         style={{
@@ -215,7 +215,18 @@ const BookingSummary = ({navigation}) => {
                       </Text>
                     ) : null}
                   </>
-                ) : <Text style={{fontFamily:"Roboto-Regular",color:"orange",fontSize:18,textAlign:"center",fontWeight:"bold"}}>Invoice yet to be generated</Text>}
+                ) : (
+                  <Text
+                    style={{
+                      fontFamily: 'Roboto-Regular',
+                      color: 'orange',
+                      fontSize: 18,
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                    }}>
+                    Invoice yet to be generated
+                  </Text>
+                )}
 
                 <Text style={styles.totalText}>Rate the Service</Text>
                 {disabled ? (
@@ -262,7 +273,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 64,
-    backgroundColor: '#ED7E2B',
+    backgroundColor: '#F2944E',
     alignItems: 'center',
     shadowColor: 'grey',
     shadowOffset: {
@@ -273,7 +284,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     elevation: 5,
     justifyContent: 'space-between',
-    opacity: 0.9,
   },
   subHeader: {
     flexDirection: 'row',
@@ -286,8 +296,11 @@ const styles = StyleSheet.create({
     marginLeft: '10%',
     fontFamily: 'Roboto-Medium',
   },
-  icon: {
-    marginHorizontal: 20,
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   invoiceImage: {
     marginHorizontal: 25,
@@ -369,21 +382,23 @@ const styles = StyleSheet.create({
   },
   textInputView: {
     marginHorizontal: 18,
-    paddingTop: 28,
+    paddingTop: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingEnd: 3,
     marginTop: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',
+    alignItems: 'center',
+    height: 70
   },
   titleText: {
-    paddingBottom: 5,
+    // paddingBottom: 5,
     fontFamily: 'Roboto-Medium',
     fontWeight: 'bold',
     fontSize: 14,
     color: '#4F504F',
-    width: '35%',
+    width: '40%',
   },
   titleTextComment: {
     marginBottom: 10,
@@ -399,6 +414,8 @@ const styles = StyleSheet.create({
     color: '#4F504F',
     width: '60%',
     textAlign: 'right',
+    paddingRight: 8,
+    height: 48
   },
   textInputCommentText: {
     fontFamily: 'Roboto-Regular',

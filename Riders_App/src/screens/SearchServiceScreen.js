@@ -14,8 +14,8 @@ import Icon2 from 'react-native-vector-icons/Ionicons';
 import {useRoute} from '@react-navigation/native';
 import {useRef} from 'react';
 import SearchServiceComponent from '../components/SearchServiceComponent';
-import { getLocationName } from '../services/Maps';
-import { searchServiceCenter } from '../services/Services';
+import {getLocationName} from '../services/Maps';
+import {searchServiceCenter} from '../services/Services';
 import {getVerifiedKeys} from '../utils/Functions';
 import {useDispatch, useSelector} from 'react-redux';
 import {setToken} from '../redux/AuthSlice';
@@ -69,7 +69,9 @@ const SearchServiceScreen = ({navigation}) => {
           onPress={() => {
             navigation.goBack();
           }}>
-          <Icon2 name="md-arrow-back" color={'#ED7E2B'} size={25} />
+          <View style={styles.iconHeader}>
+            <Icon2 name="md-arrow-back" color={'#ED7E2B'} size={28} />
+          </View>
         </Pressable>
       </View>
       <View style={styles.searchView}>
@@ -157,9 +159,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 30,
     justifyContent: 'flex-end',
-    paddingHorizontal: 20,
-    top:10,
-    left:10
+    top: 10,
   },
   scrollView: {
     width: '100%',
@@ -295,5 +295,12 @@ const styles = StyleSheet.create({
     height: 16,
     alignSelf: 'center',
     resizeMode: 'contain',
+  },
+  iconHeader: {
+    width: 70,
+    height: 50,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    paddingLeft: 15,
   },
 });
