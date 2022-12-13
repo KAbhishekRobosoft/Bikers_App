@@ -284,7 +284,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     elevation: 5,
     justifyContent: 'space-between',
-    opacity: 0.9,
   },
   subHeader: {
     flexDirection: 'row',
@@ -383,21 +382,23 @@ const styles = StyleSheet.create({
   },
   textInputView: {
     marginHorizontal: 18,
-    paddingTop: 28,
+    paddingTop: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingEnd: 3,
     marginTop: 5,
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',
+    alignItems: 'center',
+    height: 70
   },
   titleText: {
-    paddingBottom: 5,
+    // paddingBottom: 5,
     fontFamily: 'Roboto-Medium',
     fontWeight: 'bold',
     fontSize: 14,
     color: '#4F504F',
-    width: '35%',
+    width: '40%',
   },
   titleTextComment: {
     marginBottom: 10,
@@ -413,6 +414,8 @@ const styles = StyleSheet.create({
     color: '#4F504F',
     width: '60%',
     textAlign: 'right',
+    paddingRight: 8,
+    height: 48
   },
   textInputCommentText: {
     fontFamily: 'Roboto-Regular',

@@ -8,6 +8,7 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
@@ -17,9 +18,9 @@ import {useSelector, useDispatch} from 'react-redux';
 import BikeImageComponent from '../components/BikeImageComponent';
 import MapView, {Marker} from 'react-native-maps';
 import {Polyline} from 'react-native-maps';
-import { getImagePreview } from '../services/Trips';
+import {getImagePreview} from '../services/Trips';
 import {getVerifiedKeys, month1} from '../utils/Functions';
-import { calculateRoute } from '../services/Maps';
+import {calculateRoute} from '../services/Maps';
 import {deSetLoading} from '../redux/MileStoneSlice';
 import {setLoading} from '../redux/MileStoneSlice';
 import uuid from 'react-native-uuid';
@@ -81,7 +82,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
   }
 
   return (
-    <SafeAreaView style={{backgroundColor: 'white',flex:1}}>
+    <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
       {route.params.data.tripStatus === 'upcoming' && (
         <View style={styles.mainView}>
           <View style={[styles.header]}>
@@ -91,11 +92,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                   navigation.goBack();
                 }}>
                 <View style={styles.iconHeader}>
-                <Icon
-                  name="md-arrow-back"
-                  color={'white'}
-                  size={25}
-                />
+                  <Icon name="md-arrow-back" color={'white'} size={25} />
                 </View>
               </Pressable>
               <Text style={styles.headerText}>Trip Summary</Text>
@@ -166,9 +163,12 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                   </Text>
                   <View style={styles.lineView}></View>
                   <Text style={styles.fromToText}>
-                  {route.params.data.destination[0].place.length > 12
-                        ? route.params.data.destination[0].place.substring(0, 10) + '..'
-                        : route.params.data.destination[0].place.substring(0, 11)}
+                    {route.params.data.destination[0].place.length > 12
+                      ? route.params.data.destination[0].place.substring(
+                          0,
+                          10,
+                        ) + '..'
+                      : route.params.data.destination[0].place.substring(0, 11)}
                   </Text>
                 </View>
               </View>
@@ -221,7 +221,6 @@ export const GetParticularTripSummary = ({navigation, route}) => {
       {route.params.data.tripStatus === 'completed' && (
         <>
           <ScrollView
-       
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
             <View style={styles.mainView}>
@@ -231,12 +230,9 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                     onPress={() => {
                       navigation.goBack();
                     }}>
-                    <Icon
-                      name="md-arrow-back"
-                      color={'white'}
-                      size={25}
-                      style={styles.icon}
-                    />
+                    <View style={styles.iconHeader}>
+                      <Icon name="md-arrow-back" color={'white'} size={25} />
+                    </View>
                   </Pressable>
                   <Text style={styles.headerText}>Trip Summary</Text>
                 </View>
@@ -307,8 +303,14 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                     <View style={styles.lineView}></View>
                     <Text style={styles.fromToText}>
                       {route.params.data.destination[0].place.length > 12
-                        ? route.params.data.destination[0].place.substring(0, 10) + '..'
-                        : route.params.data.destination[0].place.substring(0, 11)}
+                        ? route.params.data.destination[0].place.substring(
+                            0,
+                            10,
+                          ) + '..'
+                        : route.params.data.destination[0].place.substring(
+                            0,
+                            11,
+                          )}
                     </Text>
                   </View>
                 </View>
@@ -364,7 +366,12 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                   })
                 ) : (
                   <View style={{marginTop: Platform.OS === 'ios' ? 100 : 100}}>
-                    <Text style={{fontFamily: 'Roboto-Regular', fontSize: 16,color:'black'}}>
+                    <Text
+                      style={{
+                        fontFamily: 'Roboto-Regular',
+                        fontSize: 16,
+                        color: 'black',
+                      }}>
                       No Images Posted
                     </Text>
                   </View>
@@ -520,9 +527,8 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   buttonView: {
-    paddingTop: 40,
     alignItems: 'center',
-    top:50
+    top: Platform.OS === 'ios' ? '15%' : '22%',
   },
   calenderImg: {
     width: 22,

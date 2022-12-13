@@ -218,7 +218,6 @@ const styles = StyleSheet.create({
   },
   NoTripView: {
     marginTop: 90,
-    borderWidth: 1,
   },
   NoResultText: {
     color: '#4F504F',

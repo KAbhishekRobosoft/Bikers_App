@@ -17,6 +17,22 @@ export const CreateButton = props => {
     </Pressable>
   );
 };
+export const DisabledButtonLarge = (props) => {
+  return (
+    <Pressable
+      onPress={props.onPress}
+      disabled={props.disabled}
+      style={styles.mainContainer}>
+      <LinearGradient
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 0}}
+        colors={['#ED7E2B', '#F4A264']}
+        style={styles.gradient2}>
+        <Text style={styles.text}>{props.title}</Text>
+      </LinearGradient>
+    </Pressable>
+  );
+}
 const ButtonLarge = props => {
   return (
     <Pressable
@@ -54,6 +70,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  gradient2: {
+    height: 42,
+    width: 279,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: 0.5
   },
   containerCreateButton: {
     shadowColor: 'rgba(126,118,118,0.5)',

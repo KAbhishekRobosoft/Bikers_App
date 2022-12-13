@@ -27,6 +27,7 @@ import {updateUserCredentials} from '../redux/AuthSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {attempts} from '../services/UserCredentials';
 import Toast from 'react-native-simple-toast';
+import {DisabledButtonLarge} from '../components/Buttons';
 
 export const BookService = ({navigation}) => {
   const phnumber = useSelector(state => state.auth.userCredentials);
@@ -142,11 +143,8 @@ export const BookService = ({navigation}) => {
                 serviceType: selected,
                 comment: comment,
               };
-              if ((selectedVehicle, selected != null && obj.vehicleNumber != "")) {
-                navigation.navigate('SearchService', obj);
-              } else {
-                Toast.show('Enter all Details');
-              }
+
+              navigation.navigate('SearchService', obj);
             }}>
             {({handleSubmit, values}) => (
               <>
@@ -193,24 +191,31 @@ export const BookService = ({navigation}) => {
                 <Text style={styles.alertText}>
                   The new number will be yor login id
                 </Text>
-                <Field
-                  component={PlaceholderTextField}
-                  name="vehicleNumber"
-                  placeholder="Vehicle number"
-                  keyboardType="default"
-                  value={values.vehicleNumber}
-                />
-                <DropDownInputField
-                  data={data}
-                  values={selected}
-                  setSelected={value => setSelected(value)}
-                  placeholder="Service Type"
-                />
                 <DropDownInputField2
                   data={Data}
                   values={selectedVehicle}
                   setSelected={value => setSelectedVehicle(value)}
                   placeholder="Vehicle Type"
+                />
+                <View
+                  style={{
+                    marginTop: -35,
+                    borderColor: '#B4B3B3',
+                    marginHorizontal: 3,
+                  }}>
+                  <Field
+                    component={PlaceholderTextField}
+                    name="vehicleNumber"
+                    placeholder="Vehicle number"
+                    keyboardType="default"
+                    value={values.vehicleNumber}
+                  />
+                </View>
+                <DropDownInputField
+                  data={data}
+                  values={selected}
+                  setSelected={value => setSelected(value)}
+                  placeholder="Service Type"
                 />
                 <Text style={styles.commentText}>Comments</Text>
                 <View style={styles.commentTextInputView}>
@@ -223,9 +228,21 @@ export const BookService = ({navigation}) => {
                     />
                   </InsetShadow>
                 </View>
-                <View style={styles.btnView}>
-                  <ButtonLarge title="FIND A DEALER" onPress={handleSubmit} />
-                </View>
+                {selected != null && selectedVehicle != null && (
+                  <View style={styles.btnView}>
+                    <ButtonLarge title="FIND A DEALER" onPress={handleSubmit} />
+                  </View>
+                )}
+                {(selected == null ||
+                  selectedVehicle == null ||
+                  values.vehicleNumber == null) && (
+                  <View style={styles.btnView}>
+                    <DisabledButtonLarge
+                      title="FIND A DEALER"
+                      onPress={handleSubmit}
+                    />
+                  </View>
+                )}
               </>
             )}
           </Formik>
@@ -317,6 +334,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     color: '#D50000',
     fontSize: 12,
+    lineHeight: 20
   },
   errorText: {
     fontSize: 10,

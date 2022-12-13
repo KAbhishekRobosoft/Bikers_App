@@ -152,11 +152,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey',
     resizeMode: 'contain',
   },
-  backBtn: {
-    // paddingLeft: 20,
-    // marginTop: 5,
-    // backgroundColor: 'black',
-  },
   scrollView: {
     width: '100%',
   },

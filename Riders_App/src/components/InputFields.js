@@ -218,7 +218,7 @@ export const DropDownInputField = props => {
     <View>
       <View style={{height: 25, marginTop: 15, paddingLeft: 5, paddingTop: 6}}>
         {props.values ? (
-          <View>
+          <View style={{marginTop: -4}}>
             <Text style={styles.text}>{props.placeholder}</Text>
           </View>
         ) : (
@@ -249,10 +249,10 @@ export const DropDownInputField = props => {
 
 export const DropDownInputField2 = props => {
   return (
-    <View style={{marginTop: -30}}>
+    <View style={{marginTop: -7}}>
       <View style={{height: 25, marginTop: 15, paddingLeft: 5, paddingTop: 6}}>
         {props.values ? (
-          <View>
+          <View style={{marginTop: -4}}>
             <Text style={styles.text}>{props.placeholder}</Text>
           </View>
         ) : (
@@ -382,11 +382,10 @@ const styles = StyleSheet.create({
     borderColor: 'red',
   },
   text: {
-    height: 19,
+    height: 21,
     color: '#9F9F9F',
     fontSize: 14,
     letterSpacing: 0.29,
-    lineHeight: 17,
   },
   placeholder: {
     marginLeft: Platform.OS === 'android' ? 14 : 12,
@@ -495,7 +494,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Regular',
     fontSize: 14,
     color: '#4F504F',
-    width: '80%',
-    textAlign: 'left',
+    width: Platform.OS === 'ios' ? '50%' : '55%',
+    textAlign: 'right',
   },
 });
