@@ -226,13 +226,19 @@ const ChatScreen = ({navigation, route}) => {
           </Pressable>
           <Pressable
             onPress={async () => {
+              if(text.length !== 0){
               const cred = await getVerifiedKeys(auth.userToken);
               dispatch(setToken(cred));
               const resp = await sendChat(cred, route.params.id, text);
               if (resp.message === 'chat saved successfully!!') {
                 Toast.show('Refreshing');
                 textRef.current.clear();
+                setText('')
                 dispatch(setInitialState(state));
+              }
+              }
+              else{
+                Toast.show("Type a valid chat")
               }
             }}>
             <Image
