@@ -127,7 +127,7 @@ export const Accessories = ({navigation}) => {
                         item.likedBy.filter(ele => ele.mobile === number)
                           .length > 0 ? (
                           <Pressable onPress={() => handleUnLike(item)}>
-                            <View style={styles.iconHeader}>
+                            <View style={styles.likeIcon}>
                               <FontAwesome
                                 name="thumbs-up"
                                 color={'rgba(150,75,0,0.5)'}
@@ -138,24 +138,26 @@ export const Accessories = ({navigation}) => {
                           </Pressable>
                         ) : (
                           <Pressable onPress={() => handleLike(item)}>
-                          <View>
+                            <View style={styles.likeIcon}>
+                              <FontAwesome
+                                name="thumbs-up"
+                                color={'rgba(150,75,0,0.5)'}
+                                size={18}
+                                solid={false}
+                              />
+                            </View>
+                          </Pressable>
+                        )
+                      ) : (
+                        <Pressable onPress={() => handleLike(item)}>
+                          <View style={styles.likeIcon}>
                             <FontAwesome
                               name="thumbs-up"
                               color={'rgba(150,75,0,0.5)'}
                               size={18}
                               solid={false}
                             />
-                            </View>
-                          </Pressable>
-                        )
-                      ) : (
-                        <Pressable onPress={() => handleLike(item)}>
-                          <FontAwesome
-                            name="thumbs-up"
-                            color={'rgba(150,75,0,0.5)'}
-                            size={18}
-                            solid={false}
-                          />
+                          </View>
                         </Pressable>
                       )}
                     </View>
@@ -308,4 +310,5 @@ const styles = StyleSheet.create({
     marginTop: 50,
     marginLeft: '38%',
   },
+  likeIcon: {height: 30, width: 40, alignItems: 'center'},
 });
