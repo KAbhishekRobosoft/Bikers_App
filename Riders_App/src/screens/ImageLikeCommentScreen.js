@@ -94,15 +94,20 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
   }, []);
 
   async function comment() {
-    const cred = await getVerifiedKeys(authData.userToken);
-    dispatch(setToken(cred));
-    const resp = await addComments(cred, imgData.photos._id, commentText);
-    if (resp !== undefined) {
-      textRef.current.clear();
-      Toast.show('Comment added successfully');
-      dispatch(setInitialState(state));
+    if (commentText.length !== 0) {
+      const cred = await getVerifiedKeys(authData.userToken);
+      dispatch(setToken(cred));
+      const resp = await addComments(cred, imgData.photos._id, commentText);
+      if (resp !== undefined) {
+        textRef.current.clear();
+        Toast.show('Comment added successfully');
+        setCommentText('')
+        dispatch(setInitialState(state));
+      } else {
+        Toast.show('Failed to add a comment');
+      }
     } else {
-      Toast.show('Failed to add a comment');
+      Toast.show('Enter a valid comment');
     }
   }
 
