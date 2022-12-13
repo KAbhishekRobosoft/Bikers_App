@@ -248,15 +248,20 @@ const BookingSummary = ({navigation}) => {
                 )}
               </>
             ) : (
-              <Text
-                style={{
-                  fontFamily: 'Roboto-Regular',
-                  fontSize: 18,
-                  color: '#ED7E2B',
-                  marginTop: '10%',
-                }}>
-                Service not yet completed.
-              </Text>
+              <>
+                {route.params.invoice.length == 0 ? (
+                  <Text
+                    style={{
+                      fontFamily: 'Roboto-Regular',
+                      color: 'orange',
+                      fontSize: 18,
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                    }}>
+                    Invoice yet to be generated
+                  </Text>
+                ) : null}
+              </>
             )}
           </View>
         </View>
@@ -390,7 +395,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',
     alignItems: 'center',
-    height: 70
+    height: 70,
   },
   titleText: {
     // paddingBottom: 5,
@@ -415,7 +420,7 @@ const styles = StyleSheet.create({
     width: '60%',
     textAlign: 'right',
     paddingRight: 8,
-    height: 48
+    height: 48,
   },
   textInputCommentText: {
     fontFamily: 'Roboto-Regular',

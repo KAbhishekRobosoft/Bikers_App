@@ -44,11 +44,11 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
   const keyboard =
     width > height
       ? Platform.OS === 'ios'
-        ? 10
+        ? 40
         : 0
       : Platform.OS === 'ios'
-      ? 50
-      : 50;
+      ? 80
+      : 70;
   const top = width > height ? (Platform.OS === 'ios' ? '80%' : '80%') : '95%';
   const loading = useSelector(state => state.milestone.isLoading);
   const authData = useSelector(state => state.auth);
@@ -94,20 +94,20 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
   }, []);
 
   async function comment() {
-    if (commentText.length !== 0) {
-      const cred = await getVerifiedKeys(authData.userToken);
-      dispatch(setToken(cred));
+    const cred = await getVerifiedKeys(authData.userToken);
+    dispatch(setToken(cred));
+    if (!/^\s*$/.test(commentText)) {
       const resp = await addComments(cred, imgData.photos._id, commentText);
       if (resp !== undefined) {
         textRef.current.clear();
         Toast.show('Comment added successfully');
-        setCommentText('')
         dispatch(setInitialState(state));
+        setCommentText('');
       } else {
         Toast.show('Failed to add a comment');
       }
     } else {
-      Toast.show('Enter a valid comment');
+      Toast.show('Enter a valid comment ');
     }
   }
 
@@ -159,7 +159,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
           <View>
             <KeyboardAvoidingView
               keyboardVerticalOffset={keyboard}
-              behavior={Platform.OS === 'ios' ? 'position' : 'height'}>
+              behavior={Platform.OS === 'ios' ? 'height' : 'height'}>
               <ScrollView
                 bounces={false}
                 showsVerticalScrollIndicator={false}
@@ -689,7 +689,6 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
     </SafeAreaView>
   );
 };
-
 export default ImageLikeCommentScreen;
 
 const styles = StyleSheet.create({
@@ -704,7 +703,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   imgContainer: {
-    height: 550,
+    height: 500,
     width: '70%',
     alignItems: 'center',
     alignSelf: 'center',
@@ -716,9 +715,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
     borderColor: 'grey',
-  },
-  icon: {
-    //marginHorizontal: 20,
   },
   bottomContainer: {
     height: 60,
@@ -739,7 +735,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     justifyContent: 'space-between',
-    marginBottom: 140,
+    marginBottom: 180,
   },
   bottomshadow: {
     backgroundColor: '#FFFFFF',

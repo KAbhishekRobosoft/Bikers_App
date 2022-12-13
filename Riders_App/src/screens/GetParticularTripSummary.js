@@ -189,7 +189,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
                   </Pressable>
                 </View>
                 {route.params.data.riders.length === 0 && (
-                  <Text style={styles.text}>Invite other riders</Text>
+                  <Text style={styles.text}>No riders added</Text>
                 )}
                 {route.params.data.riders.length > 0 && (
                   <BikeImageComponent data={route.params.data.riders.length} />
@@ -528,7 +528,7 @@ const styles = StyleSheet.create({
   },
   buttonView: {
     alignItems: 'center',
-    top: Platform.OS === 'ios' ? '15%' : '22%',
+    top: Platform.OS === 'ios' ? '15%' : 90,
   },
   calenderImg: {
     width: 22,

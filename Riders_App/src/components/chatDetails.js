@@ -37,14 +37,14 @@ export const ReceiverContainer = ({chat}) => {
     <View>
       <View style={styles.container}>
         <View style={{top: 20}}>
-          {chat.senderImage === '' && (
+          {!chat.hasOwnProperty('senderImage') && (
             <Image
               source={require('../assets/images/smile.png')}
               style={styles.profile}
             />
           )}
 
-          {chat.senderImage !== '' && (
+          {chat.hasOwnProperty('senderImage') && (
             <Image
               source={{uri:'https'+chat.senderImage.substring(4)}}
               style={styles.profile}
