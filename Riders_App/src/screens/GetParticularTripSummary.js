@@ -176,25 +176,59 @@ export const GetParticularTripSummary = ({navigation, route}) => {
 
             <View style={styles.listView}>
               <TripSummaryList data={route.params.data.milestones} />
-              <View style={styles.recommendationsView}>
-                <RecommendationTripSummary />
-              </View>
-              <View style={styles.addUserView}>
-                <View style={styles.addUserImgView}>
-                  <Pressable>
-                    <Image
-                      style={styles.calenderImg}
-                      source={require('../assets/images/adduser.png')}
-                    />
-                  </Pressable>
+              {route.params.data.recommendations.length > 0 ? (
+                <View style={styles.recommendationsView}>
+                  <RecommendationTripSummary
+                    recommendations={route.params.data.recommendations}
+                  />
                 </View>
-                {route.params.data.riders.length === 0 && (
-                  <Text style={styles.text}>No riders added</Text>
-                )}
-                {route.params.data.riders.length > 0 && (
-                  <BikeImageComponent data={route.params.data.riders.length} />
-                )}
-              </View>
+              ) : (
+                <View style={styles.recommendationsView}>
+                  <Text
+                    style={{
+                      fontFamily: 'Roboto-Regular',
+                      fontSize: 18,
+                      color: '#F2944E',
+                      alignSelf: 'center',
+                      bottom: 10,
+                    }}>
+                    No Recommendations Added
+                  </Text>
+                </View>
+              )}
+              {route.params.data.riders.length === 0 && (
+                <View style={styles.recommendationsView}>
+                  <Text
+                    style={{
+                      fontFamily: 'Roboto-Regular',
+                      fontSize: 18,
+                      color: '#F2944E',
+                      alignSelf: 'center',
+                      bottom: 10,
+                    }}>
+                    No Riders Invited
+                  </Text>
+                </View>
+              )}
+
+              {route.params.data.riders.length > 0 && (
+                <>
+                  <View style={styles.addUserView}>
+                    <View style={styles.addUserImgView}>
+                      <Pressable>
+                        <Image
+                          style={styles.calenderImg}
+                          source={require('../assets/images/adduser.png')}
+                        />
+                      </Pressable>
+                    </View>
+                    <BikeImageComponent
+                      data={route.params.data.riders.length}
+                    />
+                  </View>
+                </>
+              )}
+
               <View style={styles.buttonView}>
                 <CreateButton
                   onPress={() => {

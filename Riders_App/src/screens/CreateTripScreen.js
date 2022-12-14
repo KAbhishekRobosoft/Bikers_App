@@ -75,6 +75,13 @@ const CreateTrip = ({navigation}) => {
   const [placeholder1, setPlaceholder1] = useState('Where do you want to go?');
   const [placeholder2, setPlaceholder2] = useState('From');
   const [placeholder3, setPlaceholder3] = useState('Name of the trip');
+  const recommendations = useSelector(state => state.milestone.recommendations);
+  const [open, setOpen] = useState(true);
+  const [ridingGear, setRidingGear] = useState(false);
+  const [winterWear, setWinterWear] = useState(false);
+  const [summerWear, setSummerWear] = useState(false);
+  const [water, setWater] = useState(false);
+  const [food, setFood] = useState(false);
   const contactsData = useSelector(state => state.contact);
 
   const whereto = useSelector(state => state.milestone.setTo);
@@ -299,7 +306,20 @@ const CreateTrip = ({navigation}) => {
             </View>
           </View>
           <View>
-            {recommend ? <Recommendations /> : null}
+            {recommend ? (
+              <Recommendations
+                setRidingGear={setRidingGear}
+                ridingGear={ridingGear}
+                setSummerWear={setSummerWear}
+                summerWear={summerWear}
+                setWinterWear={setWinterWear}
+                winterWear={winterWear}
+                setFood={setFood}
+                food={food}
+                setWater={setWater}
+                water={water}
+              />
+            ) : null}
 
             <View style={styles.addUserView}>
               <View style={styles.addUserImgView}>
@@ -378,6 +398,7 @@ const CreateTrip = ({navigation}) => {
                         distance: dist.summary.lengthInMeters / 1000,
                         riders: contactsData.addTripContacts,
                         milestones: milesonesData,
+                        recommendations: recommendations,
                         duration: Math.round(
                           Math.abs(
                             new Date(dist.summary.arrivalTime) -

@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '500',
     fontFamily: 'Roboto-Medium',
-    right: '75%',
+    right: '95%',
   },
   iconHeader: {
     height: 64,
