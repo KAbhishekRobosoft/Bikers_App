@@ -8,7 +8,6 @@ import {
   Image,
   Pressable,
   ScrollView,
-  KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
 } from 'react-native';
@@ -32,7 +31,6 @@ const BookingDetails = ({navigation}) => {
   const [editable, setEditable] = useState(false);
   const [comment, setComment] = useState(route.params.comment);
   const dispatch = useDispatch();
-  const keyboardVerticalOffset = Platform.OS === 'ios' ? 10 : 60;
   const loading = useSelector(state => state.contact.isLoading);
 
   const handleEditable = () => {
@@ -42,10 +40,6 @@ const BookingDetails = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={keyboardVerticalOffset}
-        style={{flex: 1}}> */}
       <View style={[styles.header]}>
         <View style={styles.subHeader}>
           <Pressable
@@ -193,7 +187,6 @@ const BookingDetails = ({navigation}) => {
           )}
         </Formik>
       </ScrollView>
-      {/* </KeyboardAvoidingView> */}
     </SafeAreaView>
   );
 };

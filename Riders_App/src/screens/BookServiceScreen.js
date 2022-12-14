@@ -190,10 +190,10 @@ export const BookService = ({navigation}) => {
                   )}
                 </View>
                 <Text style={styles.alertText}>
-                  You will have only {attempt} atempts to change your number
+                  You will have only {attempt} atempts to change your number.
                 </Text>
                 <Text style={styles.alertText}>
-                  The new number will be yor login id
+                  The new number will be your login id
                 </Text>
                 <DropDownInputField2
                   data={Data}

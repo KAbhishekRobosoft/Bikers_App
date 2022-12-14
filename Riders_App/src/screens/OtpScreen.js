@@ -7,7 +7,6 @@ import {
   Pressable,
   TextInput,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -25,7 +24,7 @@ const OtpScreen = ({navigation}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (data.userData.mobile === '7026324187') {
+    if (data.userData.mobile === '8197781170') {
       setTimeout(async () => {
         const response = await sendOtp(data.userData.mobile);
       }, 500);
@@ -62,7 +61,7 @@ const OtpScreen = ({navigation}) => {
               style={styles.otpText}
               onChangeText={async value => {
                 if (value.length === 4) {
-                  if (data.userData.mobile === '7026324187') {
+                  if (data.userData.mobile === '8197781170') {
                     try {
                       const resp = await verifyOtp(value.toString());
                       if (resp === true) {
