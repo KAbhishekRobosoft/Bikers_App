@@ -29,7 +29,7 @@ export const BikeDetails = ({
           <View style={styles.inputView}>
             <Text style={styles.text}>Vehicle Type</Text>
             <View style={styles.inputTextView}>
-              <Text>:</Text>
+              <Text style={{color: 'black'}}>:</Text>
               <TextInput
                 style={styles.inputText}
                 placeholder="Vehicle Type"
@@ -45,7 +45,7 @@ export const BikeDetails = ({
           <View style={styles.inputView}>
             <Text style={styles.text}>Vehicle No</Text>
             <View style={styles.inputTextView}>
-              <Text>:</Text>
+              <Text style={{color: 'black'}}>:</Text>
               <TextInput
                 style={styles.inputText}
                 placeholder="Vehicle No"
@@ -61,7 +61,7 @@ export const BikeDetails = ({
         <View style={styles.inputView}>
           <Text style={styles.text}>Engine</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Engine"
@@ -76,7 +76,7 @@ export const BikeDetails = ({
         <View style={styles.inputView}>
           <Text style={styles.text}>Frame No</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Frame No"
@@ -91,7 +91,7 @@ export const BikeDetails = ({
         <View style={styles.inputView}>
           <Text style={styles.text}>Battery make</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
 
             <TextInput
               style={styles.inputText}
@@ -107,7 +107,7 @@ export const BikeDetails = ({
         <View style={styles.inputView}>
           <Text style={styles.text}>Reg No.</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
 
             <TextInput
               style={styles.inputText}
@@ -123,7 +123,7 @@ export const BikeDetails = ({
         <View style={styles.inputView}>
           <Text style={styles.text}>Model</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
 
             <TextInput
               style={styles.inputText}
@@ -139,7 +139,7 @@ export const BikeDetails = ({
         <View style={styles.inputView}>
           <Text style={styles.text}>Color</Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Color"
@@ -156,7 +156,7 @@ export const BikeDetails = ({
             <Text style={styles.text}>Dealer code</Text>
           </Text>
           <View style={styles.inputTextView}>
-            <Text>:</Text>
+            <Text style={{color: 'black'}}>:</Text>
             <TextInput
               style={styles.inputText}
               placeholder="Dealer code"
@@ -183,16 +183,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '90%',
     alignSelf: 'center',
-    shadowColor: 'rgba(175,170,170,0.5)',
+    shadowColor: 'grey',
     shadowOffset: {
       width: 0,
       height: 0,
     },
-    shadowRadius: 2,
+    shadowRadius: 10,
     shadowOpacity: 0.9,
-    elevation: 10,
+    elevation: 5,
     borderRadius: 8,
-    marginTop: 30,
+    marginVertical: 30,
   },
   inputView: {
     width: '89%',

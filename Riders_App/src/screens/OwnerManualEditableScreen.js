@@ -206,7 +206,7 @@ const OwnerManualEdit = ({navigation}) => {
               </View>
             </Pressable>
           </View>
-          <ScrollView style={{height: '88%'}}>
+          <ScrollView style={{height: '92%'}}>
             <View style={styles.personalDetailView}>
               <Formik
                 initialValues={{
@@ -343,6 +343,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 10,
   },
+
   subHeader: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -371,8 +372,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#FFFFFF',
     width: '90%',
-    marginTop: 30,
-    shadowColor: 'rgba(175,170,170,0.5)',
+    marginVertical: 30,
+    shadowColor: 'grey',
     shadowOffset: {
       width: 0,
       height: 0,

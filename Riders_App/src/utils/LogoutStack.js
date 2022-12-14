@@ -2,26 +2,33 @@ import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LogoutScreen from '../screens/LogoutScreen';
 import AddBikeDetails from '../screens/AddBikeDetailsScreen';
-// import MyGarageStack from './MyGarageStack';
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from '@react-navigation/stack';
 
-
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 function LogoutStack() {
   return (
-      <Stack.Navigator initialRouteName="LogoutScreen">
-        <Stack.Screen
-          options={{headerShown: false}}
-          name="LogoutScreen"
-          component={LogoutScreen}
-        />
-        <Stack.Screen
-          options={{headerShown: false}}
-          name="AddBikeDetails"
-          component={AddBikeDetails}
-        />
-
-      </Stack.Navigator>
+    <Stack.Navigator initialRouteName="LogoutScreen">
+      <Stack.Screen
+        options={{
+          headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+        name="LogoutScreen"
+        component={LogoutScreen}
+      />
+      <Stack.Screen
+        options={{
+          headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        }}
+        name="AddBikeDetails"
+        component={AddBikeDetails}
+      />
+    </Stack.Navigator>
   );
 }
 

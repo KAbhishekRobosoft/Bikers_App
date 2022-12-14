@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     width: '90%',
     marginTop: 15,
-    shadowColor: 'rgba(175,170,170,0.5)',
+    shadowColor: 'grey',
     shadowOffset: {
       width: 0,
       height: 0,
