@@ -249,15 +249,20 @@ const BookingSummary = ({navigation}) => {
                 )}
               </>
             ) : (
-              <Text
-                style={{
-                  fontFamily: 'Roboto-Regular',
-                  fontSize: 18,
-                  color: '#ED7E2B',
-                  marginTop: '10%',
-                }}>
-                Service not yet completed.
-              </Text>
+              <>
+                {route.params.invoice.length == 0 ? (
+                  <Text
+                    style={{
+                      fontFamily: 'Roboto-Regular',
+                      color: 'orange',
+                      fontSize: 18,
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                    }}>
+                    Invoice yet to be generated
+                  </Text>
+                ) : null}
+              </>
             )}
           </View>
         </View>

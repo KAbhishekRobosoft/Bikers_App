@@ -689,7 +689,6 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
     </SafeAreaView>
   );
 };
-
 export default ImageLikeCommentScreen;
 
 const styles = StyleSheet.create({
@@ -704,7 +703,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   imgContainer: {
-    height: 550,
+    height: 500,
     width: '70%',
     alignItems: 'center',
     alignSelf: 'center',
@@ -716,9 +715,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginTop: 10,
     borderColor: 'grey',
-  },
-  icon: {
-    //marginHorizontal: 20,
   },
   bottomContainer: {
     height: 60,

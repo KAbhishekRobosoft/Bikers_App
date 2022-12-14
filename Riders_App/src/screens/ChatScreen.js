@@ -49,14 +49,9 @@ const ChatScreen = ({navigation, route}) => {
       : Platform.OS === 'ios'
       ? '95%'
       : '90%';
-  const width1 =
-    width > height
-      ? Platform.OS === 'ios'
-        ? '60%'
-        : '60%'
-      : Platform.OS === 'ios'
-      ? '80%'
-      : '80%';
+
+  const height1= width > height ? (Platform.OS === "ios" ? '60%' : '60%') : (Platform.OS === "ios" ? '80%' : '80%')
+
   useEffect(() => {
     setTimeout(async () => {
       const cred = await getVerifiedKeys(auth.userToken);
@@ -188,7 +183,7 @@ const ChatScreen = ({navigation, route}) => {
         source={require('../assets/images/chat.png')}
         style={styles.image}></ImageBackground>
 
-      <View style={{height: width1}}>
+      <View style={{height:height1}}>
         <FlatList
           data={chat}
           showsHorizontalScrollIndicator={false}
@@ -235,18 +230,18 @@ const ChatScreen = ({navigation, route}) => {
           </Pressable>
           <Pressable
             onPress={async () => {
-              if (!/^\s*$/.test(text)) {
-                const cred = await getVerifiedKeys(auth.userToken);
-                dispatch(setToken(cred));
-                const resp = await sendChat(cred, route.params.id, text);
-                if (resp.message === 'chat saved successfully!!') {
-                  Toast.show('Refreshing');
-                  textRef.current.clear();
-                  dispatch(setInitialState(state));
-                  setText('');
-                }
-              } else {
-                Toast.show('Type a valid chat');
+              if(!(/^\s*$/.test(text))){
+              const cred = await getVerifiedKeys(auth.userToken);
+              dispatch(setToken(cred));
+              const resp = await sendChat(cred, route.params.id, text);
+              if (resp.message === 'chat saved successfully!!') {
+                textRef.current.clear();
+                setText('')
+                dispatch(setInitialState(state));
+              }
+              }
+              else{
+                Toast.show("Type a valid chat")
               }
             }}>
             <Image
