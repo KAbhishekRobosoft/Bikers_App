@@ -8,6 +8,8 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
+  useWindowDimensions,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {TripSummaryList} from '../components/summarizeMilestones';
@@ -40,6 +42,7 @@ export const TripSummary = ({navigation}) => {
   const dispatch = useDispatch();
   const [route, setRoute] = useState([]);
   const loading1 = useSelector(state => state.contact.isLoading);
+  const recommendations = useSelector(state => state.milestone.recommendations);
   useEffect(() => {
     dispatch(deSetLoading());
     setTimeout(async () => {
@@ -74,7 +77,7 @@ export const TripSummary = ({navigation}) => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
       {route.length > 0 ? (
         <View style={styles.mainView}>
           <View style={[styles.header]}>
@@ -100,7 +103,11 @@ export const TripSummary = ({navigation}) => {
               />
             </Pressable>
           </View>
-          <ScrollView style={styles.scrollView}>
+          <ScrollView
+            style={styles.scrollView}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            bounces={false}>
             <View style={styles.mapView}>
               <MapView
                 ref={mapRef}
@@ -161,60 +168,89 @@ export const TripSummary = ({navigation}) => {
                 </View>
               </View>
             </View>
+
             <View style={styles.listView}>
               <TripSummaryList data={milestonedata} />
-              <View style={styles.recommendationsView}>
-                <RecommendationTripSummary />
-              </View>
-              <View style={styles.addUserView}>
-                <View style={styles.addUserImgView}>
-                  <Pressable>
-                    <Image
-                      style={styles.calenderImg}
-                      source={require('../assets/images/adduser.png')}
-                    />
-                  </Pressable>
+              {recommendations.length > 0 ? (
+                <View style={styles.recommendationsView}>
+                  <RecommendationTripSummary
+                    recommendations={recommendations}
+                  />
                 </View>
-                {contactsData.addTripContacts.length === 0 && (
-                  <Text style={styles.text}>Invite other riders</Text>
-                )}
-                {contactsData.addTripContacts.length > 0 && (
+              ) : (
+                <View style={styles.recommendationsView}>
+                  <Text
+                    style={{
+                      fontFamily: 'Roboto-Regular',
+                      fontSize: 18,
+                      color: '#F2944E',
+                      alignSelf: 'center',
+                      bottom: 10,
+                    }}>
+                    No Recommendations Added
+                  </Text>
+                </View>
+              )}
+
+              {contactsData.addTripContacts.length === 0 && (
+                <View style={styles.recommendationsView}>
+                  <Text
+                    style={{
+                      fontFamily: 'Roboto-Regular',
+                      fontSize: 18,
+                      color: '#F2944E',
+                      alignSelf: 'center',
+                      bottom: 10,
+                    }}>
+                    No Riders Invited
+                  </Text>
+                </View>
+              )}
+              {contactsData.addTripContacts.length > 0 && (
+                <View style={styles.addUserView}>
+                  <View style={styles.addUserImgView}>
+                    <Pressable>
+                      <Image
+                        style={styles.calenderImg}
+                        source={require('../assets/images/adduser.png')}
+                      />
+                    </Pressable>
+                  </View>
                   <BikeImageComponent
                     data={contactsData.addTripContacts.length}
                   />
-                )}
-              </View>
-              <View style={styles.buttonView}>
-                {!loading1 && (
-                  <CreateButton
-                    onPress={async () => {
-                      dispatch(setLoad());
-                      const cred = await getVerifiedKeys(authData.userToken);
-                      dispatch(setToken(cred));
-                      const resp = await createTrip(tripDetails, cred);
-                      dispatch(deSetLoad());
-                      if (resp !== undefined)
-                        navigation.navigate('CreateTripSuccess');
-                      else Toast.show('Trip Creation Unsuccessfull');
-                    }}
-                    title="CREATE"
-                  />
-                )}
-
-                {loading1 && (
-                  <Pressable>
-                    <View style={styles.containerCreateButton}>
-                      <LinearGradient
-                        start={{x: 0, y: 0}}
-                        end={{x: 1, y: 0}}
-                        colors={['#ED7E2B', '#F4A264']}
-                        style={styles.gradientCreateButton}>
-                        <ActivityIndicator color="white" />
-                      </LinearGradient>
-                    </View>
-                  </Pressable>
-                )}
-              </View>
+                </View>
+              )}
+            </View>
+            <View style={styles.buttonView}>
+              {!loading1 && (
+                <CreateButton
+                  onPress={async () => {
+                    dispatch(setLoad());
+                    const cred = await getVerifiedKeys(authData.userToken);
+                    dispatch(setToken(cred));
+                    const resp = await createTrip(tripDetails, cred);
+                    dispatch(deSetLoad());
+                    if (resp !== undefined)
+                      navigation.navigate('CreateTripSuccess');
+                    else Toast.show('Trip Creation Unsuccessfull');
+                  }}
+                  title="CREATE"
+                />
+              )}
+              {loading1 && (
+                <Pressable>
+                  <View style={styles.containerCreateButton}>
+                    <LinearGradient
+                      start={{x: 0, y: 0}}
+                      end={{x: 1, y: 0}}
+                      colors={['#ED7E2B', '#F4A264']}
+                      style={styles.gradientCreateButton}>
+                      <ActivityIndicator color="white" />
+                    </LinearGradient>
+                  </View>
+                </Pressable>
+              )}
             </View>
           </ScrollView>
         </View>
@@ -245,7 +281,7 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   scrollView: {
-    height: '100%',
+    height: '95%',
   },
 
   containerCreateButton: {
@@ -375,14 +411,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(151,151,151,0.4)',
   },
   listView: {
-    marginVertical: 155,
+    marginVertical: 150,
+    justifyContent: 'center',
   },
   recommendationsView: {
     paddingTop: 20,
   },
   buttonView: {
-    paddingTop: 70,
     alignItems: 'center',
+    width: '100%',
+    position: 'absolute',
+    bottom: Platform.OS === 'ios' ? 40 : 45,
   },
   calenderImg: {
     width: 22,

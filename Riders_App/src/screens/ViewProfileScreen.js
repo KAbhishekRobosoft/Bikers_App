@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useCallback} from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   Pressable,
   ScrollView,
   ActivityIndicator,
-  RefreshControl
+  RefreshControl,
 } from 'react-native';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -85,12 +85,9 @@ const ViewProfileScreen = ({navigation, route}) => {
                 navigation.goBack();
                 dispatch(setInitialState(state));
               }}>
-              <Icon
-                name="md-arrow-back"
-                color="white"
-                size={25}
-                style={styles.icon}
-              />
+              <View style={styles.iconHeader}>
+                <Icon name="md-arrow-back" color="white" size={25} />
+              </View>
             </Pressable>
             <View style={styles.profileContainer}>
               {personData.userDetails.hasOwnProperty('profileImage') ? (
@@ -204,6 +201,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 300,
     width: '100%',
+    bottom: 10
   },
 
   profileImage: {
@@ -243,7 +241,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     letterSpacing: 0,
   },
-
+  iconHeader: {
+    height: 64,
+    width: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   bioText: {
     color: '#FFFFFF',
     height: 28,

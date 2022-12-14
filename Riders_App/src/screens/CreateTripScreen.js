@@ -28,9 +28,10 @@ import {setLoading} from '../redux/MileStoneSlice';
 import {tripStore} from '../redux/MileStoneSlice';
 import {calculateRoute} from '../services/Maps';
 import Toast from 'react-native-simple-toast';
-import {setLoad} from '../redux/ContactSlice';
-import {deSetLoad} from '../redux/ContactSlice';
-import LinearGradient from 'react-native-linear-gradient';
+import { deleteRecommendations } from '../redux/MileStoneSlice';
+import {emptySetTo} from '../redux/MileStoneSlice';
+import {deleteMilestonesData} from '../redux/MileStoneSlice';
+import {deleteAllTripContacts} from '../redux/ContactSlice';
 
 const CreateTrip = ({navigation}) => {
   useEffect(() => {
@@ -58,7 +59,6 @@ const CreateTrip = ({navigation}) => {
   const mileStones = useSelector(state => state.milestone.mileStone);
   const milesonesData = useSelector(state => state.milestone.milestoneData);
   const loading = useSelector(state => state.milestone.isLoading);
-  const loading1 = useSelector(state => state.contact.isLoading);
   const dispatch = useDispatch();
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -75,6 +75,13 @@ const CreateTrip = ({navigation}) => {
   const [placeholder1, setPlaceholder1] = useState('Where do you want to go?');
   const [placeholder2, setPlaceholder2] = useState('From');
   const [placeholder3, setPlaceholder3] = useState('Name of the trip');
+  const recommendations = useSelector(state => state.milestone.recommendations);
+  const [open, setOpen] = useState(true);
+  const [ridingGear, setRidingGear] = useState(false);
+  const [winterWear, setWinterWear] = useState(false);
+  const [summerWear, setSummerWear] = useState(false);
+  const [water, setWater] = useState(false);
+  const [food, setFood] = useState(false);
   const contactsData = useSelector(state => state.contact);
 
   const whereto = useSelector(state => state.milestone.setTo);
@@ -91,6 +98,10 @@ const CreateTrip = ({navigation}) => {
         <Pressable
           onPress={() => {
             navigation.goBack();
+            dispatch(deleteRecommendations())
+            dispatch(emptySetTo());
+            dispatch(deleteAllTripContacts());
+            dispatch(deleteMilestonesData());
           }}>
           <View style={styles.iconHeader}>
             <Icon3 name="arrow-back" color={'white'} size={25} />
@@ -299,7 +310,20 @@ const CreateTrip = ({navigation}) => {
             </View>
           </View>
           <View>
-            {recommend ? <Recommendations /> : null}
+            {recommend ? (
+              <Recommendations
+                setRidingGear={setRidingGear}
+                ridingGear={ridingGear}
+                setSummerWear={setSummerWear}
+                summerWear={summerWear}
+                setWinterWear={setWinterWear}
+                winterWear={winterWear}
+                setFood={setFood}
+                food={food}
+                setWater={setWater}
+                water={water}
+              />
+            ) : null}
 
             <View style={styles.addUserView}>
               <View style={styles.addUserImgView}>
@@ -378,6 +402,7 @@ const CreateTrip = ({navigation}) => {
                         distance: dist.summary.lengthInMeters / 1000,
                         riders: contactsData.addTripContacts,
                         milestones: milesonesData,
+                        recommendations: recommendations,
                         duration: Math.round(
                           Math.abs(
                             new Date(dist.summary.arrivalTime) -

@@ -8,8 +8,6 @@ import {
   Image,
   ScrollView,
   TextInput,
-  editable,
-  ToastAndroid,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
@@ -29,7 +27,6 @@ const BookingSummary = ({navigation}) => {
   const [disabled, setDisabled] = useState(true);
   const route = useRoute();
   const [rate, setRate] = useState(route.params.ratings);
-
   const handlePast = () => {
     if (route.params.invoice.length > 0) {
       const obj = {
@@ -202,7 +199,7 @@ const BookingSummary = ({navigation}) => {
                     <Text style={styles.ruppesText}>
                       Rs {route.params.invoice[0].total} /-
                     </Text>
-                    {route.params.invoice.length == 0 ? (
+                    {route.params.invoice.length === 0 ? (
                       <Text
                         style={{
                           fontFamily: 'Roboto-Regular',
@@ -216,16 +213,20 @@ const BookingSummary = ({navigation}) => {
                     ) : null}
                   </>
                 ) : (
-                  <Text
-                    style={{
-                      fontFamily: 'Roboto-Regular',
-                      color: 'orange',
-                      fontSize: 18,
-                      textAlign: 'center',
-                      fontWeight: 'bold',
-                    }}>
-                    Invoice yet to be generated
-                  </Text>
+                  <>
+                    {route.params.invoice.length === 0 ? (
+                      <Text
+                        style={{
+                          fontFamily: 'Roboto-Regular',
+                          color: 'orange',
+                          fontSize: 18,
+                          textAlign: 'center',
+                          fontWeight: 'bold',
+                        }}>
+                        Invoice yet to be generated
+                      </Text>
+                    ) : null}
+                  </>
                 )}
 
                 <Text style={styles.totalText}>Rate the Service</Text>
@@ -248,15 +249,20 @@ const BookingSummary = ({navigation}) => {
                 )}
               </>
             ) : (
-              <Text
-                style={{
-                  fontFamily: 'Roboto-Regular',
-                  fontSize: 18,
-                  color: '#ED7E2B',
-                  marginTop: '10%',
-                }}>
-                Service not yet completed.
-              </Text>
+              <>
+                {route.params.invoice.length == 0 ? (
+                  <Text
+                    style={{
+                      fontFamily: 'Roboto-Regular',
+                      color: 'orange',
+                      fontSize: 18,
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                    }}>
+                    Invoice yet to be generated
+                  </Text>
+                ) : null}
+              </>
             )}
           </View>
         </View>
@@ -390,7 +396,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#B4B3B3',
     alignItems: 'center',
-    height: 70
+    height: 70,
   },
   titleText: {
     // paddingBottom: 5,
@@ -415,7 +421,7 @@ const styles = StyleSheet.create({
     width: '60%',
     textAlign: 'right',
     paddingRight: 8,
-    height: 48
+    height: 48,
   },
   textInputCommentText: {
     fontFamily: 'Roboto-Regular',

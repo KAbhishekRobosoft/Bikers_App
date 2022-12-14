@@ -36,7 +36,7 @@ export const TripSummaryList = ({data}) => {
                     </Text>
                     <View style={styles.lineView1}></View>
                     <View style={styles.fromToView}>
-                      <TextInput style={styles.textUdupi}>{item.source[0].place}</TextInput>
+                      <TextInput style={styles.textUdupi} editable={false}>{item.source[0].place}</TextInput>
                       <View
                         style={{flexDirection: 'column', paddingHorizontal: 6}}>
                         <Text style={styles.descriptionOverLine}>
@@ -44,7 +44,7 @@ export const TripSummaryList = ({data}) => {
                         </Text>
                         <View style={styles.lineView2}></View>
                       </View>
-                      <TextInput style={styles.textUdupi}>{item.destination[0].place}</TextInput>
+                      <TextInput style={styles.textUdupi} editable={false}>{item.destination[0].place}</TextInput>
                     </View>
                   </LinearGradient>
                 </View>

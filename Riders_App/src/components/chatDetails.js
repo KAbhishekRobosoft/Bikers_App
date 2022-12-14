@@ -37,14 +37,14 @@ export const ReceiverContainer = ({chat}) => {
     <View>
       <View style={styles.container}>
         <View style={{top: 20}}>
-          {chat.senderImage === '' && (
+          {!chat.hasOwnProperty('senderImage') && (
             <Image
               source={require('../assets/images/smile.png')}
               style={styles.profile}
             />
           )}
 
-          {chat.senderImage !== '' && (
+          {chat.hasOwnProperty('senderImage') && (
             <Image
               source={{uri:'https'+chat.senderImage.substring(4)}}
               style={styles.profile}
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     borderRadius: 25,
     height: 50,
     width: 50,
-    marginBottom: 20,
+    marginBottom: 5,
   },
 
   riderName: {

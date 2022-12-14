@@ -2,7 +2,6 @@ import {Image} from 'react-native';
 import React from 'react';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
-import AllTrips from '../screens/IndividualTripScreen';
 import Profile from '../screens/Profile';
 import LogoutStack from './LogoutStack';
 import {MyGarage} from '../screens/MyGarageScreen';
@@ -16,7 +15,7 @@ const BottomTabNavigation = () => {
       shifting={true}
       initialRouteName="WelcomeAboardScreen"
       activeColor="#ffffff"
-      barStyle={{backgroundColor: '#ED7E2B', height: 65}}>
+      barStyle={{backgroundColor: '#ED7E2B', height: 59}}>
       <Tab.Screen
         name="Trips"
         component={WelcomeAboardScreen}

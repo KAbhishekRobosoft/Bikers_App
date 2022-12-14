@@ -1,8 +1,6 @@
 import {Image} from 'react-native';
 import React from 'react';
-import AddBikeDetails from '../screens/AddBikeDetailsScreen';
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
-import WelcomeAboardScreen from '../screens/WelcomeAboardScreen';
 import UpcomingList from '../screens/IndividualTripScreen';
 import LogoutStack from '../utils/LogoutStack';
 import Profile from '../screens/Profile';
@@ -16,7 +14,7 @@ const BottomTabLoginNavigation = () => {
       initialRouteName="UpcomingList"
       activeColor="#ffffff"
       inactiveColor="blue"
-      barStyle={{backgroundColor: '#ED7E2B', height: 65}}>
+      barStyle={{backgroundColor: '#ED7E2B', height: 59}}>
       <Tab.Screen
         name="Trips"
         component={UpcomingList}
