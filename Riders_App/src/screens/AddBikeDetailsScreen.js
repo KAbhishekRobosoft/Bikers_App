@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: '90%',
     alignSelf: 'center',
-    shadowColor: 'rgba(175,170,170,0.5)',
+    shadowColor: 'grey',
     shadowOffset: {
       width: 0,
       height: 0,

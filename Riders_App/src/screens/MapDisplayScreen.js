@@ -80,7 +80,14 @@ const MapDisplayScreen = ({navigation, route}) => {
   const [musicControlState, setMusicControlState] = useState(false);
 
   const {height, width} = useWindowDimensions();
-  const top = width > height ? (Platform.OS === 'ios' ? 280 : 280) : (Platform.OS === "ios" ? 670 : 707);
+  const top =
+    width > height
+      ? Platform.OS === 'ios'
+        ? 280
+        : 250
+      : Platform.OS === 'ios'
+      ? 670
+      : 677;
   const musicControl = () => {
     setMusicControlState(!musicControlState);
   };
@@ -260,8 +267,6 @@ const MapDisplayScreen = ({navigation, route}) => {
 const styles = StyleSheet.create({
   bottomContainer: {
     flex: 1,
-    
-    
   },
 
   mapStyle: {

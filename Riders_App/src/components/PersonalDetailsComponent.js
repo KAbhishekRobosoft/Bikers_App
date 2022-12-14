@@ -151,22 +151,26 @@ export const PersonalDetails = () => {
 const styles = StyleSheet.create({
   scrollView: {
     backgroundColor: 'white',
+  
+  
   },
   container: {
     backgroundColor: 'white',
     width: '90%',
     alignSelf: 'center',
-    shadowColor: 'rgba(175,170,170,0.5)',
+    shadowColor: 'grey',
     shadowOffset: {
       width: 0,
       height: 0,
     },
-    shadowRadius: 2,
+    shadowRadius: 3,
     shadowOpacity: 0.9,
-    elevation: 10,
+    elevation: 5,
     borderRadius: 8,
-    marginTop: 20,
+    marginVertical: 30,
+
   },
+
   inputView: {
     width: '89%',
     height: 70,

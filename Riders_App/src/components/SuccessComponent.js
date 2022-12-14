@@ -6,6 +6,7 @@ import {
   Image,
   TextInput,
   Pressable,
+  ScrollView,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -14,32 +15,35 @@ import ButtonLarge from './Buttons';
 export const Success = (props, {navigation}) => {
   return (
     <SafeAreaView style={styles.main}>
-      <View style={styles.header}>
-        <Pressable onPress={props.Press}>
-          <Icon name="md-arrow-back" size={25} color="grey" />
-        </Pressable>
-      </View>
-      <View style={styles.imgContainer}>
-        <Image
-          style={styles.successImg}
-          source={require('../assets/images/blueCircle.png')}
-        />
-        <Image
-          style={styles.greenTick}
-          source={require('../assets/images/greenTick.png')}
-        />
-        <View style={styles.textView1}>
-          <Text style={styles.successText}>{props.greet}</Text>
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <Pressable onPress={props.Press}>
+            <Icon name="md-arrow-back" size={25} color="grey" />
+          </Pressable>
         </View>
-        <View style={styles.textView2}>
-          <Text style={styles.text}>{props.text2}</Text>
-          <Text style={styles.text}>{props.text3}</Text>
+        <View style={styles.imgContainer}>
+          <Image
+            style={styles.successImg}
+            source={require('../assets/images/blueCircle.png')}
+          />
+          <Image
+            style={styles.greenTick}
+            source={require('../assets/images/greenTick.png')}
+          />
+          <View style={styles.textView1}>
+            <Text style={styles.successText}>{props.greet}</Text>
+          </View>
+          <View style={styles.textView2}>
+            <Text style={styles.text}>{props.text2}</Text>
+            <Text style={styles.text}>{props.text3}</Text>
+          </View>
+          <View style={styles.btn}>
+            <ButtonLarge onPress={props.onPress} title="Done" />
+          </View>
         </View>
-
-        <View style={styles.btn}>
-          <ButtonLarge onPress={props.onPress} title="Done" />
-        </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -92,7 +96,6 @@ const styles = StyleSheet.create({
   },
 
   btn: {
-    position: 'absolute',
-    bottom: 0,
+    marginTop: 30,
   },
 });

@@ -15,6 +15,7 @@
     "@react-navigation/material-bottom-tabs": "^6.2.4",
     "@react-navigation/material-top-tabs": "^6.3.0",
     "@react-navigation/native-stack": "^6.9.1",
+    "@react-navigation/stack": "^6.3.9",
     "@reduxjs/toolkit": "^1.9.0",
     "axios": "^0.26.1",
     "formik": "^2.2.9",

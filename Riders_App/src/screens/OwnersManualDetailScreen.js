@@ -6,7 +6,7 @@ import TopNavigation from '../utils/TopNavigation';
 const OwnersManualDetailScreen = ({navigation}) => {
   return (
     <SafeAreaView style={styles.main}>
-      <View style={[styles.header, styles.shadow]}>
+      {/* <View style={[styles.header, styles.shadow]}>
         <Pressable
           onPress={() => {
             navigation.goBack();
@@ -21,11 +21,44 @@ const OwnersManualDetailScreen = ({navigation}) => {
             onPress={() => {
               navigation.navigate('OwnerManualEdit');
             }}>
-            <View style={{ height: 60, width: 60, alignItems: 'center', justifyContent: 'center'}}>
+            <View
+              style={{
+                height: 60,
+                width: 60,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
               <Icon name="pencil" color={'white'} size={24} />
             </View>
           </Pressable>
         </View>
+      </View> */}
+      <View style={[styles.header]}>
+        <View style={styles.subHeader}>
+          <Pressable
+            onPress={() => {
+              navigation.goBack();
+            }}>
+            <View style={styles.iconHeader}>
+              <Icon name="md-arrow-back" color={'white'} size={25} />
+            </View>
+          </Pressable>
+          <Text style={styles.headerText}>Owners Manual</Text>
+        </View>
+        <Pressable
+          onPress={() => {
+            navigation.navigate('OwnerManualEdit');
+          }}>
+          <View
+            style={{
+              height: 60,
+              width: 60,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Icon name="pencil" color={'white'} size={24} />
+          </View>
+        </Pressable>
       </View>
       <TopNavigation editable={false} defaultValue={true} />
     </SafeAreaView>
@@ -55,10 +88,10 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     shadowOpacity: 0.9,
     elevation: 5,
-    paddingHorizontal: 10,
+    paddingHorizontal: 5,
   },
   shadow: {
-    backgroundColor: '#F2944E',
+    backgroundColor: '#ffffff',
     shadowColor: 'grey',
     shadowOffset: {
       width: 0,
@@ -68,11 +101,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     elevation: 5,
   },
+  // shadow: {
+  //   backgroundColor: '#FFFFFF',
+  //   shadowColor: 'grey',
+  //   shadowOffset: {
+  //     width: 0,
+  //     height: 2,
+  //   },
+  //   shadowRadius: 3,
+  //   shadowOpacity: 0.9,
+  //   elevation: 5,
+  //   borderRadius: 10,
+  // },
   headerText: {
     color: '#FFFFFF',
     fontSize: 20,
-    marginRight: '30%',
+
     fontFamily: 'Roboto-Medium',
+    marginLeft:25,
+   
   },
 
   scrollView: {
@@ -83,6 +130,10 @@ const styles = StyleSheet.create({
     height: 64,
     width: 50,
     justifyContent: 'center',
+    alignItems: 'center',
+  },
+  subHeader: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
 });
