@@ -26,17 +26,18 @@ import {
   setLoading,
 } from '../redux/MileStoneSlice';
 import {addLike} from '../services/Trips';
+import pdf from 'react-native-html-to-pdf';
 import {getParticularPhoto} from '../services/Trips';
 import {getVerifiedKeys} from '../utils/Functions';
 import {setToken} from '../redux/AuthSlice';
 import {addComments} from '../services/Trips';
 import Toast from 'react-native-simple-toast';
 import {deleteComment} from '../services/Trips';
+import Share from 'react-native-share';
 
 const ImageLikeCommentScreen = ({navigation, route}) => {
   const [refreshing, setRefreshing] = useState(false);
   const [comments, Setcomments] = useState(false);
-  const [distinctComments, SetdistinctComments] = useState(false);
   const [likeView, setLikeView] = useState(false);
   const [imgData, setImgData] = useState({});
   const state = useSelector(state => state.milestone.initialState);
@@ -111,6 +112,18 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
     }
   }
 
+  const share = async () => {
+    shareOptions = {
+      message: route.params.image,
+    };
+    try {
+      const shareResponse = await Share.open(shareOptions);
+
+      Toast.show('Shared Successfully');
+    } catch (error) {
+      console.log('error while sharing');
+    }
+  };
   if (loading) {
     return (
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -137,24 +150,77 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
       {JSON.stringify(imgData) !== '{}' ? (
         <>
           <View style={styles.header}>
-            <Pressable
-              onPress={() => {
-                navigation.goBack();
-              }}>
-              <View style={styles.iconHeader}>
-                <Icon name="md-arrow-back" color="white" size={25} />
-              </View>
-            </Pressable>
-            <Text
+            <View style={styles.header1}>
+              <Pressable
+                onPress={() => {
+                  navigation.goBack();
+                }}>
+                <View style={styles.iconHeader}>
+                  <Icon name="md-arrow-back" color="white" size={25} />
+                </View>
+              </Pressable>
+              <Text
+                style={{
+                  color: '#FFFFFF',
+                  fontFamily: 'Roboto-Medium',
+                  fontSize: 20,
+                  lineHeight: 28,
+                  marginLeft: 30,
+                }}>
+                Gallery
+              </Text>
+            </View>
+            <View
               style={{
-                color: '#FFFFFF',
-                fontFamily: 'Roboto-Medium',
-                fontSize: 20,
-                lineHeight: 28,
-                marginLeft: 30,
+                width: 68,
+                flexDirection: 'row',
+                alignItems: 'center',
+                right: 19,
               }}>
-              Gallery
-            </Text>
+              {imgData.liked ? (
+                <Pressable onPress={() => likeAdd()}>
+                  <View
+                    style={{
+                      height: 30,
+                      width: 40,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginTop: -8,
+                    }}>
+                    <Icons
+                      name="heart"
+                      style={{right: 40, top: 2}}
+                      color="red"
+                      size={25}
+                    />
+                  </View>
+                </Pressable>
+              ) : (
+                <Pressable onPress={() => likeAdd()}>
+                  <View
+                    style={{
+                      height: 30,
+                      width: 40,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      marginTop: -8,
+                    }}>
+                    <Icons
+                      name="heart-o"
+                      style={{right: 40, top: 2}}
+                      color="white"
+                      size={25}
+                    />
+                  </View>
+                </Pressable>
+              )}
+              <Pressable onPress={share}>
+                <Image
+                  style={{height: 28, width: 25}}
+                  source={require('../assets/images/share.png')}
+                />
+              </Pressable>
+            </View>
           </View>
           <View>
             <KeyboardAvoidingView
@@ -178,86 +244,54 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                   <View style={styles.likeCommentView}>
                     <View
                       style={{
-                        flexDirection: 'row',
-                        width: 68,
-                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        bottom: 2,
                       }}>
                       <Pressable
-                        onPress={() => {
-                          setLikeView(!likeView);
-                          Setcomments(false);
-                          SetdistinctComments(false);
-                        }}>
-                        <Text style={styles.text}>
-                          {imgData.photos.likeCount} Likes
-                        </Text>
-                      </Pressable>
-
-                      {imgData.liked ? (
-                        <Pressable onPress={() => likeAdd()}>
-                          <View
-                            style={{
-                              height: 30,
-                              width: 40,
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              marginTop: -8,
-                            }}>
-                            <Icons name="heart" color="red" size={18} />
-                          </View>
-                        </Pressable>
-                      ) : (
-                        <Pressable onPress={() => likeAdd()}>
-                          <View
-                            style={{
-                              height: 30,
-                              width: 40,
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              marginTop: -8,
-                            }}>
-                            <Icons name="heart-o" color="grey" size={18} />
-                          </View>
-                        </Pressable>
-                      )}
-                    </View>
-                    <Pressable
-                      onPress={() => {
-                        Setcomments(!comments);
-                        setLikeView(false);
-                        SetdistinctComments(false);
-                      }}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          width: 100,
-                          justifyContent: 'space-around',
-                          alignItems: 'center',
-                          marginLeft: 25,
-                        }}>
-                        <Text style={styles.text}>
-                          {' '}
-                          {imgData.photos.commentCount} Comments
-                        </Text>
-                      </View>
-                    </Pressable>
-                    <Pressable
-                      onPress={() => {
-                        SetdistinctComments(!distinctComments);
-                        setLikeView(false);
-                        Setcomments(false);
-                      }}>
-                      <View
                         style={{
                           height: 30,
                           width: 40,
                           justifyContent: 'center',
                           alignItems: 'center',
                           marginTop: -8,
+                          flexDirection: 'row',
+                        }}
+                        onPress={() => {
+                          setLikeView(!likeView);
+                          Setcomments(false);
                         }}>
-                        <Icons name="comment" color="grey" size={18} />
-                      </View>
-                    </Pressable>
+                        <Text style={styles.text}>
+                          {imgData.photos.likeCount}
+                        </Text>
+
+                        <View>
+                          <Icons name="heart-o" color="grey" size={15} />
+                        </View>
+                      </Pressable>
+                    </View>
+                    <View>
+                      <Pressable
+                        onPress={() => {
+                          Setcomments(!comments);
+                          setLikeView(false);
+                        }}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            marginLeft: 25,
+                          }}>
+                          <Text style={styles.text}>
+                            {imgData.photos.commentCount}
+                          </Text>
+                          <Image
+                            style={{width: 15, height: 14}}
+                            source={require('../assets/images/comment.png')}
+                          />
+                        </View>
+                      </Pressable>
+                    </View>
                   </View>
                   {comments ? (
                     <Animated.View
@@ -424,126 +458,6 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                       )}
                     </Animated.View>
                   ) : null}
-                  {distinctComments ? (
-                    <Animated.View
-                      style={[
-                        {
-                          height: 200,
-                          width: '100%',
-                          alignSelf: 'center',
-                          transform: [
-                            {translateX: position.x},
-                            {translateY: position.y},
-                          ],
-                          backgroundColor: 'black',
-                          borderRadius: 20,
-                          marginVertical: 15,
-                          shadowColor: 'rgba(142,142,142,0.5)',
-                          shadowOffset: {
-                            width: 0,
-                            height: 2,
-                          },
-                          shadowRadius: 4,
-                          shadowOpacity: 0.9,
-                          elevation: 4,
-                          opacity: 0.9,
-                          borderRadius: 20,
-                          marginVertical: 15,
-                        },
-                        styles.bottomshadow,
-                      ]}>
-                      {imgData.distinctComment?.length === 0 ? (
-                        <View
-                          style={{
-                            justifyContent: 'center',
-
-                            alignItems: 'center',
-                            height: 200,
-                          }}>
-                          <Text style={{fontWeight: 'bold', color: 'black'}}>
-                            No Distinct Comments
-                          </Text>
-                        </View>
-                      ) : (
-                        <ScrollView
-                          style={{padding: 5}}
-                          showsVerticalScrollIndicator={false}>
-                          {imgData.distinctComment?.length > 0 &&
-                            imgData.distinctComment.map(item => {
-                              return (
-                                <View
-                                  key={item._id}
-                                  style={{
-                                    flexDirection: 'row',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    paddingBottom: 3,
-                                  }}>
-                                  <View>
-                                    <Pressable
-                                      onPress={() => {
-                                        if (
-                                          authData.userCredentials.mobile !==
-                                          item.mobile
-                                        )
-                                          navigation.navigate('viewProfile', {
-                                            mobile: item.mobile,
-                                          });
-                                      }}>
-                                      <View
-                                        style={{
-                                          flexDirection: 'row',
-                                          alignItems: 'center',
-                                          height: 35,
-                                          paddingHorizontal: 10,
-                                        }}>
-                                        {item.hasOwnProperty('profileImage') ? (
-                                          <Image
-                                            style={{
-                                              height: 25,
-                                              width: 25,
-                                              borderRadius: 30,
-                                            }}
-                                            source={{
-                                              uri:
-                                                'https' +
-                                                item.profileImage.substring(4),
-                                            }}
-                                          />
-                                        ) : (
-                                          <Image
-                                            style={{
-                                              height: 25,
-                                              width: 30,
-                                              borderRadius: 30,
-                                            }}
-                                            source={require('../assets/images/photoless.png')}
-                                          />
-                                        )}
-
-                                        <Text
-                                          style={{
-                                            fontWeight: 'bold',
-                                            fontFamily: 'Roboto-Regular',
-                                            color: '#ED7E2B',
-                                            marginLeft: 10,
-                                            fontSize: 15,
-                                          }}>
-                                          {item.mobile ===
-                                          authData.userCredentials.mobile
-                                            ? 'You'
-                                            : item.userName}
-                                        </Text>
-                                      </View>
-                                    </Pressable>
-                                  </View>
-                                </View>
-                              );
-                            })}
-                        </ScrollView>
-                      )}
-                    </Animated.View>
-                  ) : null}
                   {likeView ? (
                     <Animated.View
                       style={[
@@ -592,12 +506,7 @@ const ImageLikeCommentScreen = ({navigation, route}) => {
                               justifyContent: 'center',
                               top: 10,
                             }}>
-                            <Icons
-                              name="heart"
-                              color="red"
-                              size={18}
-                              //style={styles.icon}
-                            />
+                            <Icons name="heart" color="red" size={18} />
                             <Text
                               style={{
                                 fontWeight: 'bold',
@@ -697,6 +606,7 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 64,
+    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'rgba(20, 20, 20, 0.4)',
     flexDirection: 'row',
@@ -769,11 +679,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginTop: 5,
+    right: 15,
     alignSelf: 'flex-end',
   },
   text: {
     color: 'grey',
     fontFamily: 'Roboto-Regular',
+    right: 5,
+    bottom: 1,
   },
   textLike: {
     color: '#FF5C4D',
@@ -788,5 +701,11 @@ const styles = StyleSheet.create({
     width: 50,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  header1: {
+    height: 64,
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });
