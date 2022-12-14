@@ -10,6 +10,7 @@ const milestoneSlice = createSlice({
     setTo: '',
     storeTrip: {},
     initialState: false,
+    recommendations: [],
   },
 
   reducers: {
@@ -45,7 +46,18 @@ const milestoneSlice = createSlice({
     },
     emptySetTo: (state, action) => {
       state.setTo = ''
-    }
+    },
+    addRecommendations: (state, action) => {
+      state.recommendations.push(action.payload);
+    },
+    filterRecommendations: (state, action) => {
+      state.recommendations = state.recommendations.filter(
+        ele => ele !== action.payload,
+      );
+    },
+    deleteRecommendations: (state, action) => {
+      state.recommendations = [];
+    },
   },
 });
 
@@ -60,5 +72,8 @@ export const {
   deleteStoreTrip,
   setInitialState,
   emptySetTo,
+  addRecommendations,
+  filterRecommendations,
+  deleteRecommendations
 } = milestoneSlice.actions;
 export default milestoneSlice.reducer;

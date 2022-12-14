@@ -177,7 +177,7 @@ export const GetParticularTripSummary = ({navigation, route}) => {
             <View style={styles.listView}>
               <TripSummaryList data={route.params.data.milestones} />
               <View style={styles.recommendationsView}>
-                <RecommendationTripSummary />
+                <RecommendationTripSummary recommendations={route.params.data.recommendations}/>
               </View>
               <View style={styles.addUserView}>
                 <View style={styles.addUserImgView}>
