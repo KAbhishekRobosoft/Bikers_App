@@ -28,9 +28,10 @@ import {setLoading} from '../redux/MileStoneSlice';
 import {tripStore} from '../redux/MileStoneSlice';
 import {calculateRoute} from '../services/Maps';
 import Toast from 'react-native-simple-toast';
-import {setLoad} from '../redux/ContactSlice';
-import {deSetLoad} from '../redux/ContactSlice';
-import LinearGradient from 'react-native-linear-gradient';
+import { deleteRecommendations } from '../redux/MileStoneSlice';
+import {emptySetTo} from '../redux/MileStoneSlice';
+import {deleteMilestonesData} from '../redux/MileStoneSlice';
+import {deleteAllTripContacts} from '../redux/ContactSlice';
 
 const CreateTrip = ({navigation}) => {
   useEffect(() => {
@@ -58,7 +59,6 @@ const CreateTrip = ({navigation}) => {
   const mileStones = useSelector(state => state.milestone.mileStone);
   const milesonesData = useSelector(state => state.milestone.milestoneData);
   const loading = useSelector(state => state.milestone.isLoading);
-  const loading1 = useSelector(state => state.contact.isLoading);
   const dispatch = useDispatch();
   const [open1, setOpen1] = useState(false);
   const [open2, setOpen2] = useState(false);
@@ -98,6 +98,10 @@ const CreateTrip = ({navigation}) => {
         <Pressable
           onPress={() => {
             navigation.goBack();
+            dispatch(deleteRecommendations())
+            dispatch(emptySetTo());
+            dispatch(deleteAllTripContacts());
+            dispatch(deleteMilestonesData());
           }}>
           <View style={styles.iconHeader}>
             <Icon3 name="arrow-back" color={'white'} size={25} />

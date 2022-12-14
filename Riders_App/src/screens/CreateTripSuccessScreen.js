@@ -6,7 +6,7 @@ import {deleteMilestonesData} from '../redux/MileStoneSlice';
 import {setInitialState} from '../redux/MileStoneSlice';
 import {emptySetTo} from '../redux/MileStoneSlice';
 import {deleteContactsData} from '../redux/ContactSlice';
-import {deSetRegistered, logOut} from '../redux/AuthSlice';
+import {deSetRegistered} from '../redux/AuthSlice';
 import { deleteRecommendations } from '../redux/MileStoneSlice';
 export const CreateTripSuccess = ({navigation}) => {
   const auth = useSelector(state => state.auth);
